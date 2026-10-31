@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f5f5f5"><meta name="description" content="SK Cyber Hub — discover useful Android apps, AI tools, software, games and learning resources in one modern directory."><meta name="keywords" content="SK Cyber Hub, Android apps, AI tools, free software, games, technology resources"><meta property="og:title" content="SK Cyber Hub | Discover Apps, AI Tools & Software"><meta property="og:description" content="One smart destination for apps, AI tools, software, games and digital resources."><meta property="og:type" content="website"><meta name="color-scheme" content="light">
+<meta name="theme-color" content="#080b0a"><meta name="description" content="SK Cyber Hub — discover useful Android apps, AI tools, software, games and learning resources in one modern directory."><meta name="keywords" content="SK Cyber Hub, Android apps, AI tools, free software, games, technology resources"><meta property="og:title" content="SK Cyber Hub | Discover Apps, AI Tools & Software"><meta property="og:description" content="One smart destination for apps, AI tools, software, games and digital resources."><meta property="og:type" content="website"><meta name="color-scheme" content="dark">
 <title>SK Cyber Hub | SAAD YOUSUF KAKAR</title>
 <style>
 :root{--bg:#070910;--panel:#0d1220;--panel2:#111a2b;--line:#1d2a40;--cyan:#31e7ff;--pink:#ff4fbc;--text:#edf7ff;--muted:#91a3b9;--green:#55f0b0}
@@ -393,6 +393,105 @@ header.top,.category-dock{background:#fff!important}
 button.primary,a.primary,.searchbox button,.back-top{
  background:#0078d4!important;color:#fff!important;border-color:#0078d4!important
 }
+
+
+/* === Microsoft Store-inspired Emerald redesign === */
+:root{
+ --bg:#080b0a;--panel:#111714;--panel2:#18221c;--line:#26372d;
+ --cyan:#35d07f;--pink:#77e6a5;--green:#35d07f;--text:#f4faf6;--muted:#a4b4aa;
+ color-scheme:dark;
+}
+html{background:var(--bg);scroll-padding-top:125px}
+body{background:var(--bg);color:var(--text);font-family:"Segoe UI",Inter,system-ui,Arial,sans-serif}
+.top{background:#090e0bf2;border-bottom:1px solid #26372d;box-shadow:0 5px 24px #0007}
+.nav{min-height:68px}
+.brand{gap:12px;color:#f5fff8;font-size:15px}
+.brand .mark{width:42px;height:42px;border-radius:12px;background:#10251a;border:1px solid #2b8d58;color:#75efaa;box-shadow:0 0 22px #35d07f20}
+.brand small{color:#9cac9f;letter-spacing:1.5px}
+.links{gap:18px;color:#c0cec4}
+.links a:hover{color:#72e6a0}
+.primary,.searchbox button{background:#35d07f;color:#07140c;border:1px solid #35d07f;border-radius:9px;box-shadow:none;font-weight:800}
+.primary:hover,.searchbox button:hover{background:#6be6a0;transform:translateY(-1px);box-shadow:0 5px 20px #35d07f25}
+.category-dock{top:68px;background:#0c120ef5;border-top:1px solid #1b2a20;border-bottom:1px solid #26372d;padding:9px 0;box-shadow:0 8px 24px #0006}
+.dock-inner{grid-template-columns:minmax(190px,.65fr) minmax(280px,1.35fr);gap:8px 14px}
+.category-toggle{height:46px;background:#151e18;border:1px solid #34473a;border-radius:10px;color:#effaf2;box-shadow:none}
+.category-toggle span{color:#65e49a}
+.dock-inner>.searchbox{min-height:46px;background:#151e18;border:1px solid #34473a;border-radius:10px;box-shadow:none}
+.dock-inner>.searchbox:focus-within{border-color:#35d07f;box-shadow:0 0 0 3px #35d07f20}
+.dock-inner>.searchbox input{color:#f4faf6}
+.dock-inner>.searchbox input::placeholder{color:#829388}
+.dock-inner>.searchbox button{border-radius:7px}
+.quick-nav{justify-content:flex-start;gap:7px}
+.quick-nav a{position:relative;background:transparent;border:1px solid transparent;border-radius:7px;color:#bdc9c0;padding:8px 13px}
+.quick-nav a:hover,.quick-nav a[aria-current="location"]{background:#14251a;border-color:#284a34;color:#75e9a2;box-shadow:none}
+.quick-nav a[aria-current="location"]:after{content:"";position:absolute;left:13px;right:13px;bottom:-10px;height:3px;border-radius:3px;background:#35d07f;box-shadow:0 0 10px #35d07f88}
+.store-hero{min-height:310px;margin-top:28px;margin-bottom:16px;padding:42px 48px;border:1px solid #2d4435;border-radius:20px;background:linear-gradient(115deg,#14251a 0%,#17231b 52%,#202b22 100%);box-shadow:0 18px 45px #0005}
+.store-hero:before{background:radial-gradient(circle at 78% 45%,#35d07f2b,transparent 34%)}
+.store-hero .eyebrow{background:#173322;border-color:#2d6945;color:#b9f6d0;border-radius:7px}
+.store-hero h1{color:#f5fff8;text-shadow:none}
+.store-hero h1 span{background:linear-gradient(90deg,#48df8d,#c6f5d7);-webkit-background-clip:text;background-clip:text}
+.store-hero .intro{color:#c0cec4}
+.hero-secondary{border:1px solid #496451;border-radius:9px;color:#e4f3e9}
+.hero-secondary:hover{background:#ffffff0c}
+.art-orbit{border-color:#68d99533}
+.art-tile{background:linear-gradient(145deg,#1b5333,#14251a);border:1px solid #51c980;color:#eafff1;box-shadow:0 18px 45px #0007}
+.art-tile span{color:#8df0b3}
+.section{padding-top:30px;padding-bottom:30px}
+.section-head{border-bottom:1px solid #26372d;padding-bottom:13px;margin-bottom:16px}
+.section h2{color:#f2faf4;font-size:22px}
+.section-head h2:before{background:#35d07f}
+.section-head p{color:#9eafa3}
+.section-count{background:#14251a;border-color:#2b4d36;color:#9cebb9}
+.resource-grid{gap:10px}
+.resource.tile{min-height:94px;background:#121a15;border:1px solid #293a2e;border-radius:16px;box-shadow:0 6px 18px #0003}
+.resource.tile:hover{background:#17231b;border-color:#3b9c60;box-shadow:0 10px 25px #0006;transform:translateY(-2px)}
+.resource .app-icon{background:linear-gradient(145deg,#1c3826,#1a2920);border:1px solid #355b40;color:#c8f6d7;border-radius:14px}
+.resource .tag{background:#14251a;border-color:#315b3e;color:#8de9ad}
+.resource .app-info p{color:#a9b8ad}
+.resource .arrow{background:#14251a;border-color:#315b3e;color:#79e6a0;border-radius:9px}
+.resource .arrow:hover{background:#1b3826}
+.category-menu{background:#111a14;border-color:#314a38;border-radius:12px}
+.category-menu a{border-color:#25372a;color:#e2eee5}
+.category-menu a:hover{background:#1a2b20;color:#82e9a7}
+.manager{background:#111a14;border-color:#31543b;border-radius:18px}
+.manager input,.manager select{background:#0b110d;border-color:#34483a;color:#f2faf4}
+.secondary{background:#18271d;border-color:#3a5942;color:#dff5e5}
+.manager-status{background:#101e15;border-color:#31543b;color:#b8f1ca}
+.notice{background:#111a14;border-color:#2e4434;color:#aebdb2;border-radius:15px}
+.notice b{color:#dff8e7}
+.footer{border-color:#26372d;color:#9eafa3}
+.back-top{background:#14251a;border-color:#398956;color:#7ce6a2}
+#empty{background:#111a14;border-color:#3b5844;color:#aebdb2}
+:focus-visible{outline:2px solid #35d07f;outline-offset:3px}
+::selection{background:#35d07f55;color:#fff}
+@media(max-width:760px){
+ .top .nav{min-height:62px}
+ .links{display:none}
+ .top .primary{font-size:11px;padding:9px 12px}
+ .category-dock{top:62px;padding:8px 0}
+ .dock-inner{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:7px}
+ .category-toggle{height:45px;padding:8px 9px;font-size:12px}
+ .dock-inner>.searchbox{height:45px;min-height:45px}
+ .dock-inner>.searchbox input{font-size:12px;padding:7px 5px}
+ .dock-inner>.searchbox button{font-size:11px;padding:8px 9px}
+ .quick-nav{grid-column:1/-1;justify-content:flex-start;overflow-x:auto;padding:2px 0 5px}
+ .quick-nav a{font-size:11px;padding:7px 10px}
+ .quick-nav a[aria-current="location"]:after{bottom:-5px;left:10px;right:10px}
+ .store-hero{width:92%;min-height:0;padding:27px 22px;margin-top:18px;border-radius:17px;grid-template-columns:1fr}
+ .store-hero-art{height:155px;margin-top:8px}
+ .orbit-one{width:210px;height:125px}.orbit-two{width:160px;height:185px}
+ .store-hero h1{font-size:clamp(32px,8vw,46px);letter-spacing:-1px}
+ .section{padding-top:23px;padding-bottom:23px}
+ .resource.tile{grid-template-columns:48px minmax(0,1fr) auto;gap:10px;padding:11px;border-radius:14px}
+ .resource .app-icon{width:46px;height:46px}
+}
+@media(max-width:360px){
+ .dock-inner{grid-template-columns:1fr}
+ .quick-nav{grid-column:1}
+ .store-hero{padding:23px 17px}
+ .resource .arrow{font-size:9px;padding:7px 6px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
 
 </style>
 </head>
