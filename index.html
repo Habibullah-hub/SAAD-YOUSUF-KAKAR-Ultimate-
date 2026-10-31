@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#070910"><meta name="description" content="SK Cyber Hub — discover useful Android apps, AI tools, software, games and learning resources in one modern directory."><meta name="keywords" content="SK Cyber Hub, Android apps, AI tools, free software, games, technology resources"><meta property="og:title" content="SK Cyber Hub | Discover Apps, AI Tools & Software"><meta property="og:description" content="One smart destination for apps, AI tools, software, games and digital resources."><meta property="og:type" content="website"><meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#f5f5f5"><meta name="description" content="SK Cyber Hub — discover useful Android apps, AI tools, software, games and learning resources in one modern directory."><meta name="keywords" content="SK Cyber Hub, Android apps, AI tools, free software, games, technology resources"><meta property="og:title" content="SK Cyber Hub | Discover Apps, AI Tools & Software"><meta property="og:description" content="One smart destination for apps, AI tools, software, games and digital resources."><meta property="og:type" content="website"><meta name="color-scheme" content="light">
 <title>SK Cyber Hub | SAAD YOUSUF KAKAR</title>
 <style>
 :root{--bg:#070910;--panel:#0d1220;--panel2:#111a2b;--line:#1d2a40;--cyan:#31e7ff;--pink:#ff4fbc;--text:#edf7ff;--muted:#91a3b9;--green:#55f0b0}
@@ -366,6 +366,32 @@ body{
 @media(max-width:760px){
  .category-dock{background:rgba(255,255,255,.97)!important}
  .quick-nav a{background:transparent!important}
+}
+
+
+/* Final high-priority light palette correction */
+:root{color-scheme:light!important}
+html,body{background:#f5f5f5!important;background-color:#f5f5f5!important;color:#242424!important}
+body:before,body:after{background:none!important;opacity:0!important}
+header.top, .category-dock, .category-menu, .manager, .notice,
+.store-hero, .section, .section-head, .resource-grid,
+.resource.tile, .tile, .user-resource, footer, .footer{
+ color:#242424!important;
+}
+header.top,.category-dock{background:#fff!important}
+.store-hero{background:linear-gradient(110deg,#eaf4fc,#f7f8fa 65%,#eee9f8)!important}
+.resource.tile,.tile,.manager,.notice,.category-menu,.user-resource{
+ background:#fff!important;border-color:#e5e5e5!important;
+}
+.resource.tile h3,.tile h3,.store-hero h1,.section h2,.section h3,
+.brand,.links a{color:#242424!important}
+.resource.tile p,.tile p,.section-head p,.store-hero .intro,
+.footer,.manager-note{color:#616161!important}
+.resource.tile .tag,.tag,.resource.tile .app-icon,.app-icon{
+ background:#f0f6fc!important;color:#005a9e!important;border-color:#d8e7f3!important
+}
+button.primary,a.primary,.searchbox button,.back-top{
+ background:#0078d4!important;color:#fff!important;border-color:#0078d4!important
 }
 
 </style>
