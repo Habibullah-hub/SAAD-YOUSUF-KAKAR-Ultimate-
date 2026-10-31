@@ -236,12 +236,16 @@ h1{text-shadow:0 8px 50px #31e7ff12}
 <script>
 const input=document.getElementById('search'), categoryLinks=[...document.querySelectorAll('#categoryMenu a')], empty=document.getElementById('empty');
 const categoryToggle=document.getElementById('categoryToggle'), categoryMenu=document.getElementById('categoryMenu');
-/* Accessible category menu controls */
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!categoryMenu.classList.contains('hidden')){categoryMenu.classList.add('hidden');categoryToggle.setAttribute('aria-expanded','false');categoryToggle.focus();}});
-document.addEventListener('click',e=>{if(!e.target.closest('.category-dropdown')&&!categoryMenu.classList.contains('hidden')){categoryMenu.classList.add('hidden');categoryToggle.setAttribute('aria-expanded','false');}});
-
-categoryToggle.addEventListener('click',()=>{const opening=categoryMenu.classList.contains('hidden');categoryMenu.classList.toggle('hidden');categoryToggle.setAttribute('aria-expanded',String(opening));});
-categoryMenu.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{categoryMenu.classList.add('hidden');categoryToggle.setAttribute('aria-expanded','false');}));
+const categoryDropdown=document.querySelector('.category-dropdown');
+let categoryCloseTimer=null;
+function closeCategoryMenu(){categoryMenu.classList.add('hidden');categoryToggle.setAttribute('aria-expanded','false');if(categoryCloseTimer!==null){clearTimeout(categoryCloseTimer);categoryCloseTimer=null;}}
+function startCategoryCloseTimer(){if(categoryCloseTimer!==null)clearTimeout(categoryCloseTimer);categoryCloseTimer=setTimeout(closeCategoryMenu,3000);}
+/* Close after 3 seconds without interaction; outside taps close it immediately. */
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!categoryMenu.classList.contains('hidden')){closeCategoryMenu();categoryToggle.focus();}});
+document.addEventListener('click',e=>{if(!e.target.closest('.category-dropdown')&&!categoryMenu.classList.contains('hidden'))closeCategoryMenu();});
+categoryDropdown.addEventListener('pointerdown',()=>{if(!categoryMenu.classList.contains('hidden'))startCategoryCloseTimer();});
+categoryToggle.addEventListener('click',()=>{const opening=categoryMenu.classList.contains('hidden');if(opening){categoryMenu.classList.remove('hidden');categoryToggle.setAttribute('aria-expanded','true');startCategoryCloseTimer();}else closeCategoryMenu();});
+categoryMenu.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeCategoryMenu));
 /* Instant search: results update on every keystroke */
 const searchFeedback=document.createElement('div');searchFeedback.className='search-feedback hidden';searchFeedback.setAttribute('aria-live','polite');document.querySelector('.category-dock .dock-inner').appendChild(searchFeedback);
 const clearSearch=document.createElement('button');clearSearch.type='button';clearSearch.className='search-clear';clearSearch.textContent='Clear';clearSearch.setAttribute('aria-label','Clear search');document.querySelector('.category-dock .searchbox').appendChild(clearSearch);
