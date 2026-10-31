@@ -37,6 +37,13 @@ h1{text-shadow:0 8px 50px #31e7ff12}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 
+.category-dropdown{max-width:620px;margin:8px auto 0;position:relative;z-index:5}
+.category-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;border:1px solid #31516b;border-radius:14px;padding:15px 18px;background:linear-gradient(100deg,#10283a,#19152c);color:#eafaff;font-weight:850;cursor:pointer;box-shadow:0 8px 28px #0004}
+.category-toggle span{color:var(--cyan);font-size:18px}
+.category-menu{margin-top:8px;border:1px solid #31516b;border-radius:14px;background:#0b1421;overflow:hidden;box-shadow:0 15px 35px #0008}
+.category-menu a{display:block;padding:12px 17px;border-bottom:1px solid #1d2a40;color:#d9eaff;font-weight:700}
+.category-menu a:last-child{border-bottom:0}
+.category-menu a:hover{background:#14283a;color:var(--cyan)}
 /* Resource manager: local testing prototype */
 .manager{border:1px solid #28506a;border-radius:18px;background:linear-gradient(145deg,#0d1a29,#0a101b);padding:22px;box-shadow:0 15px 40px #0004}
 .manager-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
@@ -59,14 +66,19 @@ h1{text-shadow:0 8px 50px #31e7ff12}
 <header class="top"><div class="wrap nav"><a class="brand" href="#"><span class="mark">SK</span><span>SK CYBER HUB<small>SAAD YOUSUF KAKAR</small></span></a><nav class="links"><a href="#explore">Explore</a><a href="#tools">AI Tools</a><a href="#about">About</a><a href="#add-resource">Add Resource</a></nav><a class="primary" href="#explore">Explore Hub ↗</a></div></header>
 <main>
 <section class="hero wrap"><div class="eyebrow"><span class="dot"></span> YOUR DIGITAL UNIVERSE</div><h1>Explore the <span>Future</span><br>of Digital World.</h1><p class="intro">One smart destination for AI tools, useful apps, software, documents, games and technology updates.</p><div class="searchbox"><input id="search" type="search" placeholder="Search tools, apps, software..." aria-label="Search directory"><button id="searchBtn">Search ↗</button></div><div class="stats"><div><b>01</b> One digital hub</div><div><b>06</b> Main categories</div><div><b>FREE FIRST</b> Budget-friendly vision</div></div></section>
-<section class="section wrap" id="explore"><div class="section-head"><div><h2>Explore Categories</h2><p>Choose a section to discover useful resources.</p></div></div><div class="grid" id="categories">
-<a class="tile" data-search="ai tools artificial intelligence prompts generators" href="#tools"><div class="ico">✦</div><h3>AI Tools</h3><p>Discover AI websites and productivity tools.</p><span class="arrow">Explore AI tools →</span></a>
-<a class="tile" data-search="apps android mobile applications" href="#apps"><div class="ico">▦</div><h3>Apps</h3><p>Useful mobile and web applications.</p><span class="arrow">Explore apps →</span></a>
-<a class="tile" data-search="software pc windows utilities" href="#software"><div class="ico">⌘</div><h3>Software</h3><p>Desktop software and helpful utilities.</p><span class="arrow">Explore software →</span></a>
-<a class="tile" data-search="documents pdf ebooks guides templates" href="#documents"><div class="ico">▤</div><h3>Documents</h3><p>Guides, PDFs, learning resources and templates.</p><span class="arrow">Explore documents →</span></a>
-<a class="tile" data-search="games android pc entertainment" href="#games"><div class="ico">◈</div><h3>Games</h3><p>Find games and gaming resources.</p><span class="arrow">Explore games →</span></a>
-<a class="tile" data-search="news technology updates science digital" href="#news"><div class="ico">⌁</div><h3>Tech News</h3><p>Technology updates and digital-world stories.</p><span class="arrow">Read news →</span></a>
-</div><p id="empty" class="empty hidden">No matching category found. Try another search.</p></section>
+<section class="section wrap" id="explore"><div class="section-head"><div><h2>Explore Categories</h2><p>Choose a section to discover useful resources.</p></div></div><div class="category-dropdown">
+ <button class="category-toggle" id="categoryToggle" type="button" aria-expanded="false" aria-controls="categoryMenu">☰ Browse All Categories <span>▾</span></button>
+ <div class="category-menu hidden" id="categoryMenu">
+  <a href="#tools" data-search="ai tools artificial intelligence">✦ AI Tools</a>
+  <a href="#apps" data-search="apps android mobile applications">▦ Apps</a>
+  <a href="#mod-apk" data-search="all apps mod apk modified applications">⚡ All Apps Mod APK</a>
+  <a href="#software" data-search="software pc windows utilities">⌘ Software</a>
+  <a href="#documents" data-search="documents pdf ebooks guides">▤ Documents</a>
+  <a href="#games" data-search="games android pc entertainment">◈ Games</a>
+  <a href="#news" data-search="news technology updates">⌁ Technology News</a>
+ </div>
+</div>
+<p id="empty" class="empty hidden">No matching category found. Try another search.</p></section>
 <section class="section wrap" id="tools"><div class="section-head"><div><h2>AI Tools Directory</h2><p>Official websites. Some services offer free access with limits; check each provider's terms.</p></div></div><div class="grid resource-grid">
 <a class="tile resource" data-search="chatgpt openai ai assistant writing research chatbot" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE ACCESS · LIMITS MAY APPLY</span><h3>ChatGPT</h3><p>AI assistant for writing, learning, brainstorming and more.</p><span class="arrow">Official website ↗</span></a>
 <a class="tile resource" data-search="google gemini ai assistant multimodal" href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE ACCESS · LIMITS MAY APPLY</span><h3>Google Gemini</h3><p>Google's AI assistant for questions, ideas and creative tasks.</p><span class="arrow">Official website ↗</span></a>
@@ -77,6 +89,7 @@ h1{text-shadow:0 8px 50px #31e7ff12}
 <a class="tile resource" data-search="f-droid android open source free apps" href="https://f-droid.org/" target="_blank" rel="noopener noreferrer"><span class="tag">OPEN SOURCE</span><h3>F-Droid</h3><p>Repository focused on free and open-source Android apps.</p><span class="arrow">Official website ↗</span></a>
 <a class="tile resource" data-search="vlc android video audio player videolan" href="https://play.google.com/store/apps/details?id=org.videolan.vlc" target="_blank" rel="noopener noreferrer"><span class="tag">FREE · OPEN SOURCE</span><h3>VLC for Android</h3><p>VideoLAN's media player for audio and video files.</p><span class="arrow">Google Play listing ↗</span></a>
 </div></section>
+<section class="section wrap" id="mod-apk"><div class="section-head"><div><h2>All Apps Mod APK</h2><p>Modified-app listings. External sources will be clearly identified; check permissions and publisher details before installing.</p></div></div><div class="grid resource-grid" id="modApkResources"><p class="empty">No Mod APK links added yet. Use Add & Test Resource to test a link; permanent publishing needs the admin system.</p></div></section>
 <section class="section wrap" id="software"><div class="section-head"><div><h2>Software</h2><p>Download from the publisher's official website.</p></div></div><div class="grid resource-grid">
 <a class="tile resource" data-search="vlc media player windows mac linux videolan" href="https://www.videolan.org/vlc/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE · OPEN SOURCE</span><h3>VLC Media Player</h3><p>Free media player for many audio and video formats.</p><span class="arrow">Official download page ↗</span></a>
 <a class="tile resource" data-search="libreoffice office documents writer spreadsheet presentation" href="https://www.libreoffice.org/download/download-libreoffice/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE · OPEN SOURCE</span><h3>LibreOffice</h3><p>Office suite for documents, spreadsheets and presentations.</p><span class="arrow">Official download page ↗</span></a>
@@ -103,7 +116,7 @@ h1{text-shadow:0 8px 50px #31e7ff12}
  <div class="manager">
   <div class="manager-grid">
    <div><label for="resourceName">Resource / App Name</label><input id="resourceName" type="text" placeholder="Example: SnapTube v7.69.1"></div>
-   <div><label for="resourceCategory">Category</label><select id="resourceCategory"><option>Apps</option><option>AI Tools</option><option>Software</option><option>Documents</option><option>Games</option><option>Technology News</option></select></div>
+   <div><label for="resourceCategory">Category</label><select id="resourceCategory"><option>Apps</option><option>All Apps Mod APK</option><option>AI Tools</option><option>Software</option><option>Documents</option><option>Games</option><option>Technology News</option></select></div>
    <div class="wide"><label for="resourceUrl">Direct Download URL / Website URL</label><input id="resourceUrl" type="url" placeholder="https://example.com/app.apk"></div>
    <div class="wide"><label for="resourceFile">Or select a file from your phone (local test only)</label><input id="resourceFile" type="file"></div>
   </div>
@@ -122,8 +135,11 @@ h1{text-shadow:0 8px 50px #31e7ff12}
 </main>
 <footer class="wrap footer"><span>© <span id="year"></span> SK Cyber Hub · SAAD YOUSUF KAKAR</span><span>Built to explore. Designed for everyone.</span></footer>
 <script>
-const input=document.getElementById('search'), cards=[...document.querySelectorAll('#categories .tile')], empty=document.getElementById('empty');
-function runSearch(){const q=input.value.trim().toLowerCase();let shown=0;cards.forEach(card=>{const match=!q||(card.innerText+' '+card.dataset.search).toLowerCase().includes(q);card.classList.toggle('hidden',!match);if(match)shown++});document.querySelectorAll('.resource').forEach(card=>{const match=!q||(card.innerText+' '+(card.dataset.search||'')).toLowerCase().includes(q);card.classList.toggle('hidden',!match);if(match)shown++});document.querySelectorAll('.resource-grid').forEach(grid=>{const section=grid.closest('section');section.classList.toggle('hidden',!!q&&!grid.querySelector('.resource:not(.hidden)'))});empty.classList.toggle('hidden',shown!==0)}
+const input=document.getElementById('search'), categoryLinks=[...document.querySelectorAll('#categoryMenu a')], empty=document.getElementById('empty');
+const categoryToggle=document.getElementById('categoryToggle'), categoryMenu=document.getElementById('categoryMenu');
+categoryToggle.addEventListener('click',()=>{const opening=categoryMenu.classList.contains('hidden');categoryMenu.classList.toggle('hidden');categoryToggle.setAttribute('aria-expanded',String(opening));});
+categoryMenu.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{categoryMenu.classList.add('hidden');categoryToggle.setAttribute('aria-expanded','false');}));
+function runSearch(){const q=input.value.trim().toLowerCase();let shown=0;categoryLinks.forEach(link=>{const match=!q||(link.innerText+' '+link.dataset.search).toLowerCase().includes(q);link.classList.toggle('hidden',!match);if(match)shown++});document.querySelectorAll('.resource').forEach(card=>{const match=!q||(card.innerText+' '+(card.dataset.search||'')).toLowerCase().includes(q);card.classList.toggle('hidden',!match);if(match)shown++});document.querySelectorAll('.resource-grid').forEach(grid=>{const section=grid.closest('section');section.classList.toggle('hidden',!!q&&!grid.querySelector('.resource:not(.hidden)')&&!grid.querySelector('.empty'))});empty.classList.toggle('hidden',shown!==0)}
 document.getElementById('searchBtn').addEventListener('click',runSearch);input.addEventListener('input',runSearch);input.addEventListener('keydown',e=>{if(e.key==='Enter')runSearch()});document.getElementById('year').textContent=new Date().getFullYear();
 
 const resourceName=document.getElementById('resourceName');
