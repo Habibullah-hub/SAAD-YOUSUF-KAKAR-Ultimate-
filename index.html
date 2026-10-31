@@ -121,6 +121,14 @@ h1{text-shadow:0 8px 50px #31e7ff12}
 .back-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
 .back-top:hover{background:#123044;box-shadow:0 0 22px #31e7ff30}
 @media(max-width:520px){.back-top{right:12px;bottom:12px;width:40px;height:40px}}
+
+/* Keep live search results immediately below the search toolbar */
+body.searching .hero{display:none}
+body.searching main>.section:first-child{padding-top:14px}
+body.searching main>.section{padding-top:14px;padding-bottom:14px}
+body.searching .section-head{margin-bottom:10px;padding-bottom:8px}
+body.searching .search-feedback{margin:0;padding:6px 10px}
+
 /* Professional directory refinements */
 :root{scroll-behavior:smooth}
 .top .primary{white-space:nowrap}
@@ -258,7 +266,7 @@ document.querySelectorAll('section.section').forEach(section=>{
  }
 });
 function runSearch(){
- const q=input.value.trim().toLowerCase();let matched=0;
+ const q=input.value.trim().toLowerCase();document.body.classList.toggle('searching',!!q);let matched=0;
  categoryLinks.forEach(link=>{const ok=!q||(link.innerText+' '+(link.dataset.search||'')).toLowerCase().includes(q);link.classList.toggle('hidden',!ok);});
  document.querySelectorAll('.resource-grid').forEach(grid=>{
   let gridMatches=0;
