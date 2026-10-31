@@ -92,6 +92,27 @@ h1{text-shadow:0 8px 50px #31e7ff12}
 }
 @media(max-width:360px){.dock-inner{grid-template-columns:1fr}.quick-nav{grid-column:1}}
 
+
+/* Google Play-inspired resource listing */
+.resource-grid{display:grid;grid-template-columns:1fr;gap:9px}
+.resource.tile{display:grid;grid-template-columns:58px minmax(0,1fr) auto;align-items:center;gap:14px;padding:13px 16px;border:1px solid #202f43;border-radius:15px;background:#0d1522;min-height:94px;box-shadow:none;transform:none}
+.resource.tile:hover{transform:translateY(-2px);background:#111e2e;border-color:#3b7188;box-shadow:0 8px 22px #0005}
+.resource .app-icon{width:56px;height:56px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#16354a,#29203e);border:1px solid #31536a;font-size:26px;box-shadow:inset 0 0 18px #31e7ff12}
+.resource .app-info{min-width:0}
+.resource h3{font-size:15px;margin:0 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.resource p{font-size:12px;margin:0;color:#a5b5c8;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.resource .tag{margin:0 0 4px;font-size:9px;padding:1px 7px}
+.resource .arrow{margin:0;padding:8px 11px;border:1px solid #31516b;border-radius:10px;color:var(--cyan);font-size:11px;white-space:nowrap}
+.resource .arrow:after{content:""}
+.search-feedback{grid-column:1/-1;margin:0 0 10px;padding:7px 11px;border-radius:9px;background:#0c1b28;color:#a9dbe9;font-size:11px}
+@media(max-width:520px){
+ .resource.tile{grid-template-columns:50px minmax(0,1fr) auto;gap:10px;padding:11px}
+ .resource .app-icon{width:48px;height:48px;border-radius:13px;font-size:22px}
+ .resource .arrow{padding:7px 8px;font-size:10px}
+ .resource h3{font-size:14px}
+ .resource p{font-size:11px}
+}
+
 </style>
 </head>
 <body>
@@ -175,8 +196,41 @@ const input=document.getElementById('search'), categoryLinks=[...document.queryS
 const categoryToggle=document.getElementById('categoryToggle'), categoryMenu=document.getElementById('categoryMenu');
 categoryToggle.addEventListener('click',()=>{const opening=categoryMenu.classList.contains('hidden');categoryMenu.classList.toggle('hidden');categoryToggle.setAttribute('aria-expanded',String(opening));});
 categoryMenu.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{categoryMenu.classList.add('hidden');categoryToggle.setAttribute('aria-expanded','false');}));
-function runSearch(){const q=input.value.trim().toLowerCase();let shown=0;categoryLinks.forEach(link=>{const match=!q||(link.innerText+' '+link.dataset.search).toLowerCase().includes(q);link.classList.toggle('hidden',!match);if(match)shown++});document.querySelectorAll('.resource').forEach(card=>{const match=!q||(card.innerText+' '+(card.dataset.search||'')).toLowerCase().includes(q);card.classList.toggle('hidden',!match);if(match)shown++});document.querySelectorAll('.resource-grid').forEach(grid=>{const section=grid.closest('section');section.classList.toggle('hidden',!!q&&!grid.querySelector('.resource:not(.hidden)')&&!grid.querySelector('.empty'))});empty.classList.toggle('hidden',shown!==0)}
-document.getElementById('searchBtn').addEventListener('click',runSearch);input.addEventListener('input',runSearch);input.addEventListener('keydown',e=>{if(e.key==='Enter')runSearch()});document.getElementById('year').textContent=new Date().getFullYear();
+/* Instant search: results update on every keystroke */
+const searchFeedback=document.createElement('div');searchFeedback.className='search-feedback hidden';searchFeedback.setAttribute('aria-live','polite');document.querySelector('.category-dock .dock-inner').appendChild(searchFeedback);
+function runSearch(){
+ const q=input.value.trim().toLowerCase();let matched=0;
+ categoryLinks.forEach(link=>{const ok=!q||(link.innerText+' '+(link.dataset.search||'')).toLowerCase().includes(q);link.classList.toggle('hidden',!ok);});
+ document.querySelectorAll('.resource-grid').forEach(grid=>{
+  let gridMatches=0;
+  grid.querySelectorAll('.resource').forEach(card=>{
+   const ok=!q||(card.innerText+' '+(card.dataset.search||'')).toLowerCase().includes(q);
+   card.classList.toggle('hidden',!ok);if(ok){gridMatches++;matched++;}
+  });
+  const placeholder=grid.querySelector('.empty');if(placeholder)placeholder.classList.toggle('hidden',!!q);
+  const section=grid.closest('section');section.classList.toggle('hidden',!!q&&gridMatches===0&&!placeholder);
+ });
+ const categoryMatches=categoryLinks.filter(a=>!a.classList.contains('hidden')).length;
+ const total=matched+categoryMatches;
+ empty.classList.toggle('hidden',!q||total>0);
+ searchFeedback.classList.toggle('hidden',!q);
+ searchFeedback.textContent=q?(matched+' matching resource'+(matched===1?'':'s')+' found · keep typing to refine'):'';
+}
+document.getElementById('searchBtn').addEventListener('click',runSearch);
+input.addEventListener('input',runSearch);
+input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runSearch()}});
+document.getElementById('year').textContent=new Date().getFullYear();
+/* Add consistent app-style icons and information wrappers to every directory listing */
+document.querySelectorAll('.resource').forEach(card=>{
+ const title=card.querySelector('h3')?.textContent||'App';
+ const key=title.toLowerCase();
+ const glyph=/chatgpt|gemini|canva|ai/.test(key)?'✦':/vlc|video|media/.test(key)?'▶':/gimp|photo|image/.test(key)?'▧':/game|steam|itch/.test(key)?'🎮':/book|gutenberg|docs|document|office/.test(key)?'▤':/news|verge|bbc|techcrunch/.test(key)?'📰':/play|store|app/.test(key)?'▦':'◈';
+ const icon=document.createElement('span');icon.className='app-icon';icon.setAttribute('aria-hidden','true');icon.textContent=glyph;
+ const info=document.createElement('span');info.className='app-info';
+ const tag=card.querySelector('.tag'),heading=card.querySelector('h3'),desc=card.querySelector('p');
+ if(tag)info.appendChild(tag);if(heading)info.appendChild(heading);if(desc)info.appendChild(desc);
+ card.prepend(icon);card.insertBefore(info,card.querySelector('.arrow'));
+});
 
 const resourceName=document.getElementById('resourceName');
 const resourceCategory=document.getElementById('resourceCategory');
