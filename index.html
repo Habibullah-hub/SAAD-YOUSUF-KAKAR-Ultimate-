@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#070910"><meta name="description" content="SK Cyber Hub — a futuristic directory for AI tools, apps, software, documents, games and technology news.">
+<meta name="theme-color" content="#070910"><meta name="description" content="SK Cyber Hub — discover useful Android apps, AI tools, software, games and learning resources in one modern directory."><meta name="keywords" content="SK Cyber Hub, Android apps, AI tools, free software, games, technology resources"><meta property="og:title" content="SK Cyber Hub | Discover Apps, AI Tools & Software"><meta property="og:description" content="One smart destination for apps, AI tools, software, games and digital resources."><meta property="og:type" content="website"><meta name="color-scheme" content="dark">
 <title>SK Cyber Hub | SAAD YOUSUF KAKAR</title>
 <style>
 :root{--bg:#070910;--panel:#0d1220;--panel2:#111a2b;--line:#1d2a40;--cyan:#31e7ff;--pink:#ff4fbc;--text:#edf7ff;--muted:#91a3b9;--green:#55f0b0}
@@ -113,6 +113,41 @@ h1{text-shadow:0 8px 50px #31e7ff12}
  .resource p{font-size:11px}
 }
 
+
+/* Professional directory refinements */
+:root{scroll-behavior:smooth}
+.top .primary{white-space:nowrap}
+.category-dock{border-top:1px solid #172638}
+.searchbox{position:relative}
+.searchbox input::placeholder{color:#71859c}
+.searchbox button{white-space:nowrap}
+.search-clear{border:1px solid #294058;border-radius:10px;padding:8px 10px;background:#101d2c;color:#a9c6d9;font-size:12px;font-weight:750;cursor:pointer}
+.search-clear:hover{border-color:var(--cyan);color:var(--cyan)}
+.search-feedback{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.section-head h2{display:flex;align-items:center;gap:9px}
+.section-head h2:before{content:"";display:inline-block;width:4px;height:22px;border-radius:4px;background:linear-gradient(var(--cyan),var(--pink))}
+.resource.tile{min-height:100px}
+.resource .app-icon{font-weight:900;color:#eafaff;letter-spacing:-1px}
+.resource .app-info .tag{display:table}
+.resource .arrow{background:#0b1a27}
+.resource .arrow:hover{background:#123044}
+#empty{margin:10px auto;max-width:900px;border:1px dashed #36516a;border-radius:12px;background:#0b1420}
+.notice{line-height:1.8}
+.footer{align-items:center}
+@media(max-width:760px){
+ .top .nav{min-height:62px}
+ .top .primary{font-size:11px;padding:9px 11px}
+ .category-dock{top:62px}
+ .category-toggle{border-radius:12px}
+ .dock-inner>.searchbox{grid-template-columns:minmax(0,1fr) auto auto}
+}
+@media(max-width:380px){
+ .dock-inner>.searchbox button{padding:8px 7px;font-size:10px}
+ .search-clear{padding:7px;font-size:10px}
+ .brand{gap:7px;font-size:13px}
+ .brand .mark{width:34px;height:34px}
+}
+
 </style>
 </head>
 <body>
@@ -198,6 +233,8 @@ categoryToggle.addEventListener('click',()=>{const opening=categoryMenu.classLis
 categoryMenu.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{categoryMenu.classList.add('hidden');categoryToggle.setAttribute('aria-expanded','false');}));
 /* Instant search: results update on every keystroke */
 const searchFeedback=document.createElement('div');searchFeedback.className='search-feedback hidden';searchFeedback.setAttribute('aria-live','polite');document.querySelector('.category-dock .dock-inner').appendChild(searchFeedback);
+const clearSearch=document.createElement('button');clearSearch.type='button';clearSearch.className='search-clear';clearSearch.textContent='Clear';clearSearch.setAttribute('aria-label','Clear search');document.querySelector('.category-dock .searchbox').appendChild(clearSearch);
+clearSearch.addEventListener('click',()=>{input.value='';runSearch();input.focus();});
 function runSearch(){
  const q=input.value.trim().toLowerCase();let matched=0;
  categoryLinks.forEach(link=>{const ok=!q||(link.innerText+' '+(link.dataset.search||'')).toLowerCase().includes(q);link.classList.toggle('hidden',!ok);});
@@ -208,7 +245,7 @@ function runSearch(){
    card.classList.toggle('hidden',!ok);if(ok){gridMatches++;matched++;}
   });
   const placeholder=grid.querySelector('.empty');if(placeholder)placeholder.classList.toggle('hidden',!!q);
-  const section=grid.closest('section');section.classList.toggle('hidden',!!q&&gridMatches===0&&!placeholder);
+  const section=grid.closest('section');section.classList.toggle('hidden',!!q&&gridMatches===0&&(!placeholder||placeholder.classList.contains('hidden')));
  });
  const categoryMatches=categoryLinks.filter(a=>!a.classList.contains('hidden')).length;
  const total=matched+categoryMatches;
@@ -224,7 +261,7 @@ document.getElementById('year').textContent=new Date().getFullYear();
 document.querySelectorAll('.resource').forEach(card=>{
  const title=card.querySelector('h3')?.textContent||'App';
  const key=title.toLowerCase();
- const glyph=/chatgpt|gemini|canva|ai/.test(key)?'✦':/vlc|video|media/.test(key)?'▶':/gimp|photo|image/.test(key)?'▧':/game|steam|itch/.test(key)?'🎮':/book|gutenberg|docs|document|office/.test(key)?'▤':/news|verge|bbc|techcrunch/.test(key)?'📰':/play|store|app/.test(key)?'▦':'◈';
+ const glyph=/chatgpt/.test(key)?'GPT':/gemini/.test(key)?'✦':/canva/.test(key)?'C':/f-droid/.test(key)?'F':/google play/.test(key)?'▶':/vlc/.test(key)?'VLC':/libreoffice/.test(key)?'LO':/gimp/.test(key)?'G':/steam/.test(key)?'S':/itch/.test(key)?'itch':/gutenberg/.test(key)?'PG':/google docs/.test(key)?'D':/crazygames/.test(key)?'CG':/bbc/.test(key)?'BBC':/verge/.test(key)?'V':/techcrunch/.test(key)?'TC':/game/.test(key)?'🎮':'◈';
  const icon=document.createElement('span');icon.className='app-icon';icon.setAttribute('aria-hidden','true');icon.textContent=glyph;
  const info=document.createElement('span');info.className='app-info';
  const tag=card.querySelector('.tag'),heading=card.querySelector('h3'),desc=card.querySelector('p');
