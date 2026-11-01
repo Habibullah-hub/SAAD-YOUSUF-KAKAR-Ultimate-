@@ -1243,6 +1243,58 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 @media(prefers-reduced-motion:reduce){.sk-news-suggest-chip,.news-section #newsSearchButton{transition:none!important}.news-section .news-status.is-loading:after{animation:none}}
 </style>
 
+<style id="sk-world-network-v1">
+#sk-world-network{position:relative;isolation:isolate}
+#sk-world-network .sk-world-kicker,#sk-world-network .sk-eyebrow{font-size:10px;letter-spacing:.16em;font-weight:900;color:#4bbda4}
+#sk-world-network .sk-world-kicker{padding:8px 11px;border:1px solid rgba(75,189,164,.28);border-radius:999px;background:rgba(25,110,92,.12)}
+#sk-world-network .sk-world-atlas{display:grid;grid-template-columns:minmax(150px,.8fr) minmax(0,1.5fr);align-items:center;gap:24px;padding:24px;border:1px solid rgba(80,177,158,.24);border-radius:24px;background:radial-gradient(circle at 15% 50%,rgba(31,130,116,.22),transparent 40%),linear-gradient(135deg,#071b27,#0b2633 55%,#102b3b);color:#f2fbff;overflow:hidden}
+#sk-world-network .sk-atlas-globe{position:relative;width:min(100%,190px);aspect-ratio:1;border-radius:50%;margin:auto;background:radial-gradient(circle at 32% 28%,#4ad5bd 0,#1d8f89 15%,#12506a 48%,#071a36 76%);box-shadow:inset -18px -14px 28px rgba(0,0,0,.45),0 0 45px rgba(43,196,175,.18);display:grid;place-items:center}
+#sk-world-network .sk-globe-core{font-size:38px;font-weight:1000;letter-spacing:-.08em;color:#e7fff9;text-shadow:0 0 20px rgba(106,255,220,.6)}
+#sk-world-network .sk-orbit{position:absolute;inset:14% -12%;border:1px solid rgba(127,255,227,.5);border-radius:50%;transform:rotate(-28deg)}
+#sk-world-network .sk-orbit-two{inset:0 20%;transform:rotate(35deg);border-color:rgba(140,201,255,.4)}
+#sk-world-network .sk-globe-point{position:absolute;width:8px;height:8px;border-radius:50%;background:#b7ffe8;box-shadow:0 0 13px #7fffe1}
+#sk-world-network .point-one{top:26%;left:34%}.point-two{top:54%;right:20%}.point-three{bottom:22%;left:28%}
+#sk-world-network .sk-atlas-copy h3{font-size:clamp(22px,3vw,32px);line-height:1.12;margin:8px 0;color:#fff}
+#sk-world-network .sk-atlas-copy p{color:#c2d9e3;max-width:620px;font-size:13px;line-height:1.7}
+#sk-world-network .sk-region-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
+#sk-world-network .sk-region-chips a{font-size:11px;font-weight:800;color:#eafff9;text-decoration:none;padding:8px 11px;border-radius:999px;border:1px solid rgba(151,222,213,.28);background:rgba(255,255,255,.07)}
+#sk-world-network .sk-region-chips a:focus-visible,#sk-world-network .sk-world-pillars a:focus-visible{outline:3px solid #7ee8d0;outline-offset:3px}
+#sk-world-network .sk-world-pillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin:15px 0 22px}
+#sk-world-network .sk-world-pillars a{display:flex;flex-direction:column;gap:6px;min-height:112px;padding:15px;border:1px solid var(--border,rgba(130,160,180,.2));border-radius:16px;background:var(--card,rgba(255,255,255,.04));text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
+#sk-world-network .sk-world-pillars a:hover{transform:translateY(-3px);border-color:#43bba4}
+#sk-world-network .sk-world-pillars span{font-size:9px;font-weight:900;letter-spacing:.12em;color:#3cb59c}
+#sk-world-network .sk-world-pillars b{font-size:14px}
+#sk-world-network .sk-world-pillars small{font-size:11px;line-height:1.45;color:var(--muted,#8fa5b5)}
+#sk-world-network .sk-shorts-panel{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(220px,1fr) minmax(250px,1.1fr);gap:18px;align-items:center;padding:20px;border:1px solid rgba(85,158,191,.25);border-radius:22px;background:linear-gradient(145deg,rgba(10,42,62,.96),rgba(8,26,43,.96));color:#f4fbff}
+#sk-world-network .sk-shorts-intro h3{font-size:21px;margin:7px 0}.sk-shorts-intro p{font-size:12px;line-height:1.65;color:#bfd1dc}
+#sk-world-network .sk-shorts-controls label{display:block;font-size:11px;font-weight:800;margin-bottom:7px;color:#d9f2f3}
+#sk-world-network .sk-shorts-controls input{width:100%;min-width:0;padding:11px;border-radius:11px;border:1px solid #31556b;background:#061a2a;color:white}
+#sk-world-network .sk-shorts-controls button{margin-top:9px}
+#sk-world-network .sk-shorts-controls .creator-status{font-size:10px;color:#b6cbd8}
+#sk-world-network .sk-shorts-player{min-height:150px;aspect-ratio:16/9;border-radius:15px;overflow:hidden;background:#03111d;display:grid;place-items:center}
+#sk-world-network .sk-shorts-player iframe{width:100%;height:100%;min-height:150px;border:0}
+#sk-world-network .sk-shorts-placeholder{display:flex;flex-direction:column;align-items:center;gap:7px;color:#c7dbe5;text-align:center;padding:15px}
+#sk-world-network .sk-shorts-placeholder span{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#0c806e;color:#fff}
+#sk-world-network .sk-shorts-placeholder small{font-size:10px;color:#91a9b9}
+#community .sk-community-panel{margin-top:20px;padding:18px;border:1px solid rgba(67,172,153,.28);border-radius:20px;background:linear-gradient(145deg,rgba(8,38,48,.92),rgba(7,24,37,.96));color:#f1fbff}
+#community .sk-community-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+#community .sk-community-head h3{margin:0;font-size:19px;color:#fff}
+#community .sk-community-head p{font-size:12px;color:#b8ccd6;margin:5px 0 13px}
+#community .sk-live-dot{font-size:9px;font-weight:900;letter-spacing:.1em;padding:6px 9px;border-radius:999px;background:rgba(41,177,143,.15);color:#83e7c8;border:1px solid rgba(92,213,179,.3)}
+#community .sk-community-panel label{display:block;font-size:11px;font-weight:800;margin:8px 0}
+#community .sk-community-panel textarea{width:100%;padding:12px;border-radius:12px;background:#061b29;border:1px solid #315365;color:#fff;resize:vertical}
+#community .sk-community-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:9px}
+#community .sk-community-actions small{margin-right:auto;color:#a9bfcb}
+#community .sk-community-feed{display:grid;gap:10px;margin-top:14px}
+#community .sk-post-card{padding:13px;border:1px solid rgba(124,171,188,.2);border-radius:14px;background:rgba(255,255,255,.035)}
+#community .sk-post-card p{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6;font-size:13px}
+#community .sk-post-meta{font-size:10px;color:#9db5c1}
+#community .sk-post-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:9px}
+#community .sk-post-actions button{font-size:11px;padding:7px 10px;border-radius:9px;border:1px solid rgba(120,176,188,.3);background:rgba(255,255,255,.05);color:#e9f7fa}
+@media(max-width:850px){#sk-world-network .sk-world-pillars{grid-template-columns:repeat(2,minmax(0,1fr))}#sk-world-network .sk-shorts-panel{grid-template-columns:1fr 1fr}#sk-world-network .sk-shorts-player{grid-column:1/-1}}
+@media(max-width:560px){#sk-world-network .sk-world-atlas{grid-template-columns:1fr;padding:18px}#sk-world-network .sk-atlas-globe{width:135px}#sk-world-network .sk-world-pillars{gap:8px}#sk-world-network .sk-world-pillars a{min-height:105px;padding:11px}#sk-world-network .sk-shorts-panel{grid-template-columns:1fr;padding:15px}#sk-world-network .sk-shorts-player{grid-column:auto}#community .sk-community-panel{padding:13px}#community .sk-community-head{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){#sk-world-network .sk-world-pillars a{transition:none}}
+</style>
 </head>
 <body>
 <div id="google_translate_element" aria-hidden="true"></div><div id="configAlert" class="config-alert"><span>SK Cyber Hub database is not connected. Set up its separate database tables to manage listings.</span><button type="button" onclick="openSupabaseModal()">Configure</button></div>
@@ -1476,7 +1528,15 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 <a class="tile resource" data-search="Google for Education learning tools" href="https://edu.google.com/" target="_blank" rel="noopener noreferrer"><span class="tag">LEARNING RESOURCES</span><h3>Google for Education</h3><p>Explore education tools and learning resources; account requirements may apply.</p><span class="arrow">Explore resources ↗</span></a>
 <a class="tile resource" data-search="OpenLearn free courses learning" href="https://www.open.edu/openlearn/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE LEARNING</span><h3>OpenLearn Free Courses</h3><p>Free learning materials; check course pages for certificates and completion details.</p><span class="arrow">Browse courses ↗</span></a></div></section>
 
-<section class="section wrap" id="community"><div class="section-head"><div><h2>Community & User Accounts</h2><p>Create a free member account to access future community features.</p></div></div><div class="notice"><b>Member registration is available.</b> Every new account is automatically assigned the member role. Only the website owner can grant administrator access through the Supabase SQL Editor. Registration is free; email confirmation may be required.</div><div class="hero-actions" style="margin-top:16px"><button class="primary" type="button" onclick="openMemberAuthModal('signup')">Create free account</button><button class="hero-secondary" type="button" onclick="openMemberAuthModal('login')">Member login</button></div><p id="memberSessionNote" class="notice" aria-live="polite" style="margin-top:12px">You are browsing as a guest.</p></section>
+<section class="section wrap" id="community"><div class="section-head"><div><h2>Community & User Accounts</h2><p>Create a free member account to access future community features.</p></div></div><div class="notice"><b>Member registration is available.</b> Every new account is automatically assigned the member role. Only the website owner can grant administrator access through the Supabase SQL Editor. Registration is free; email confirmation may be required.</div><div class="hero-actions" style="margin-top:16px"><button class="primary" type="button" onclick="openMemberAuthModal('signup')">Create free account</button><button class="hero-secondary" type="button" onclick="openMemberAuthModal('login')">Member login</button></div><p id="memberSessionNote" class="notice" aria-live="polite" style="margin-top:12px">You are browsing as a guest.</p>
+<div class="sk-community-panel" id="skCommunityPanel">
+ <div class="sk-community-head"><div><h3>SK Pulse · Global Community Feed</h3><p>Share a useful idea, learning milestone or creator tip with the community.</p></div><span class="sk-live-dot">COMMUNITY</span></div>
+ <label for="skCommunityPostText">Your public post</label>
+ <textarea id="skCommunityPostText" maxlength="800" rows="3" placeholder="Write something helpful… (maximum 800 characters)"></textarea>
+ <div class="sk-community-actions"><small id="skCommunityCharCount">0 / 800</small><button class="primary" id="skCommunityPublish" type="button">Publish post</button><button class="secondary" id="skCommunityRefresh" type="button">Refresh feed</button></div>
+ <p id="skCommunityStatus" class="creator-status" role="status" aria-live="polite">Public community posts require the SK Community database extension. Sign in with a free member account to publish.</p>
+ <div id="skCommunityFeed" class="sk-community-feed" aria-live="polite"></div>
+</div></section>
 
 <section class="section wrap" id="languages"><div class="section-head"><div><h2>Languages & Global Access</h2><p>Use the language button at the top of the website to choose a supported page language. World News has its own display-language selector.</p></div></div><div class="grid resource-grid">
 <a class="tile resource" data-search="google translate languages translation" href="https://translate.google.com/" target="_blank" rel="noopener noreferrer"><span class="tag">LANGUAGE SUPPORT</span><h3>Google Translate</h3><p>Translate text and web pages across supported languages.</p><span class="arrow">Open translator ↗</span></a>
@@ -1529,6 +1589,30 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
   <article class="platform-card quick-tool"><h3>Word & Character Counter</h3><label for="skWordInput">Paste or type text</label><textarea id="skWordInput" rows="4" placeholder="Write or paste your text here..."></textarea><p class="tool-result" id="skWordResult" aria-live="polite">0 words · 0 characters</p></article>
   <article class="platform-card quick-tool"><h3>Password Generator</h3><label for="skPassLength">Password length</label><input id="skPassLength" type="number" min="8" max="64" value="16"><button class="primary" type="button" id="skMakePass">Generate password</button><div class="tool-result" id="skPassResult" aria-live="polite">Your password will appear here.</div><button class="secondary" type="button" id="skCopyPass">Copy password</button><small>Generated locally. Never share your password.</small></article>
   <article class="platform-card quick-tool"><h3>Unit Converter</h3><label for="skUnitValue">Value</label><input id="skUnitValue" type="number" step="any" placeholder="Enter a number"><label for="skUnitType">Conversion</label><select id="skUnitType"><option value="m-ft">Meters to Feet</option><option value="km-mi">Kilometers to Miles</option><option value="kg-lb">Kilograms to Pounds</option><option value="c-f">Celsius to Fahrenheit</option><option value="l-gal">Liters to US Gallons</option></select><p class="tool-result" id="skLengthResult" aria-live="polite">Enter a value to convert.</p></article><article class="platform-card quick-tool"><h3>Image Compressor and Resizer</h3><label for="skImageFile">Choose an image from your phone</label><input id="skImageFile" type="file" accept="image/*"><label for="skImageWidth">Maximum width (pixels)</label><input id="skImageWidth" type="number" min="100" max="6000" value="1600"><label for="skImageQuality">Image quality (10-100)</label><input id="skImageQuality" type="number" min="10" max="100" value="80"><button class="primary" type="button" id="skCompressImage">Compress image on this device</button><p class="tool-result" id="skImageStatus" aria-live="polite">Your image stays in your browser; it is not uploaded.</p><a class="secondary hidden" id="skImageDownload" download="sk-cyber-hub-compressed.webp">Download compressed image</a></article>
+ </div>
+</section>
+<section class="section wrap" id="sk-world-network">
+ <div class="section-head"><div><h2>SK World Network · Discover beyond borders</h2><p>One gateway to global stories, creators, learning and opportunities. Choose a region to jump to relevant resources.</p></div><span class="sk-world-kicker">ONE WORLD · MANY PATHS</span></div>
+ <div class="sk-world-atlas">
+  <div class="sk-atlas-globe" aria-hidden="true"><span class="sk-orbit sk-orbit-one"></span><span class="sk-orbit sk-orbit-two"></span><span class="sk-globe-core">SK</span><span class="sk-globe-point point-one"></span><span class="sk-globe-point point-two"></span><span class="sk-globe-point point-three"></span></div>
+  <div class="sk-atlas-copy"><span class="sk-eyebrow">DISCOVER ATLAS</span><h3>Find what matters, wherever you are.</h3><p>Explore news, education and work opportunities by region. These shortcuts open curated sections; they do not track your location.</p>
+   <div class="sk-region-chips"><a href="#news">🌍 Global</a><a href="#jobs">🇸🇦 Saudi Arabia</a><a href="#jobs">🇵🇰 Pakistan</a><a href="#news">🇦🇪 Middle East</a><a href="#jobs">🇬🇧 United Kingdom</a><a href="#academy">🎓 Global Learning</a></div>
+  </div>
+ </div>
+ <div class="sk-world-pillars">
+  <a href="#news"><span>01 · WORLD</span><b>World News</b><small>Headlines and publisher links</small></a>
+  <a href="#smart-free-finder"><span>02 · DISCOVER</span><b>Smart Free Finder</b><small>Check free limits before use</small></a>
+  <a href="#creator-studio"><span>03 · CREATE</span><b>Creator Studio</b><small>Scripts, prompts and captions</small></a>
+  <a href="#global-search"><span>04 · SEARCH</span><b>Global Search</b><small>Search the resource directory</small></a>
+  <a href="#jobs"><span>05 · OPPORTUNITY</span><b>Jobs & Opportunities</b><small>Jobs, scholarships and remote work</small></a>
+  <a href="#deals"><span>06 · VALUE</span><b>Deals & Freebies</b><small>Offers with clear conditions</small></a>
+  <a href="#academy"><span>07 · LEARN</span><b>Global Academy</b><small>Free learning resources</small></a>
+  <a href="#community"><span>08 · CONNECT</span><b>SK Community</b><small>Share, learn and help responsibly</small></a>
+ </div>
+ <div class="sk-shorts-panel" id="skShortsPanel">
+  <div class="sk-shorts-intro"><span class="sk-eyebrow">SK SHORTS · VIDEO DISCOVERY</span><h3>Watch & learn in one place</h3><p>Paste a public YouTube video link to preview it here. Other platforms open on their official websites; SK Cyber Hub does not rehost copyrighted videos.</p></div>
+  <div class="sk-shorts-controls"><label for="skShortsUrl">Public YouTube video link</label><input id="skShortsUrl" type="url" inputmode="url" placeholder="https://www.youtube.com/watch?v=…"><button class="primary" id="skShortsLoad" type="button">Preview video</button><p id="skShortsStatus" class="creator-status" role="status" aria-live="polite">Only public YouTube watch, youtu.be or Shorts links are embedded.</p></div>
+  <div id="skShortsPlayer" class="sk-shorts-player"><div class="sk-shorts-placeholder"><span>▶</span><b>Your video preview appears here</b><small>Paste a public YouTube link above.</small></div></div>
  </div>
 </section>
 <section class="wrap" id="about"><div class="notice"><b>Our promise:</b> We aim to prioritize free and legitimate resources. External download links and advertisements will be clearly labelled. We will respect software licenses and copyright, and will not disguise download destinations. Any future ad-supported waiting step will be disclosed before the user continues. Sponsored placements and affiliate links, if introduced, will be clearly labelled and enabled only after the required provider approvals; no earnings are guaranteed.</div></section>
@@ -3670,4 +3754,79 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
 })();
 </script>
 
+<script id="sk-world-network-v1-script">
+(()=>{
+ const $=id=>document.getElementById(id);
+ const safeYouTubeId=value=>{
+  try{const u=new URL(value.trim());if(!['youtube.com','www.youtube.com','m.youtube.com','youtu.be','www.youtu.be'].includes(u.hostname))return '';
+   if(u.hostname.includes('youtu.be'))return u.pathname.split('/').filter(Boolean)[0]||'';
+   if(u.pathname==='/watch')return u.searchParams.get('v')||'';
+   const parts=u.pathname.split('/').filter(Boolean);if(['shorts','embed','live'].includes(parts[0]))return parts[1]||'';
+   return '';
+  }catch(e){return '';}
+ };
+ const urlInput=$('skShortsUrl'),loadButton=$('skShortsLoad'),player=$('skShortsPlayer'),videoStatus=$('skShortsStatus');
+ loadButton?.addEventListener('click',()=>{
+  const value=urlInput?.value||'',id=safeYouTubeId(value);
+  if(!id||!/^[A-Za-z0-9_-]{6,20}$/.test(id)){videoStatus.textContent='Valid public YouTube, youtu.be or Shorts link paste karein.';player.replaceChildren();return;}
+  const frame=document.createElement('iframe');frame.src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id);frame.title='SK Cyber Hub video preview';frame.loading='lazy';frame.referrerPolicy='strict-origin-when-cross-origin';frame.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';frame.allowFullscreen=true;
+  player.replaceChildren(frame);videoStatus.textContent='YouTube preview loaded. Playback is provided by YouTube.';
+ });
+ const postText=$('skCommunityPostText'),counter=$('skCommunityCharCount'),publish=$('skCommunityPublish'),refresh=$('skCommunityRefresh'),feed=$('skCommunityFeed'),status=$('skCommunityStatus');
+ postText?.addEventListener('input',()=>{counter.textContent=postText.value.length+' / 800';});
+ const signedUser=()=>window.currentMember||window.currentUser||null;
+ const escDate=value=>{try{return new Date(value).toLocaleString();}catch(e){return 'Recently';}};
+ function setStatus(message){if(status)status.textContent=message;}
+ function node(tag,cls,txt){const el=document.createElement(tag);if(cls)el.className=cls;if(txt!==undefined)el.textContent=txt;return el;}
+ async function loadFeed(){
+  if(!feed)return;
+  if(typeof supabaseClient==='undefined'||!supabaseClient){setStatus('پہلے SK Cyber Hub کو Supabase سے Connect کریں، پھر Community feed کھلے گی۔');return;}
+  setStatus('Community feed لوڈ ہو رہی ہے…');
+  const {data,error}=await supabaseClient.from('sk_posts').select('id,user_id,body,created_at,sk_post_likes(user_id),sk_post_comments(id,body,user_id,created_at)').eq('visibility','public').order('created_at',{ascending:false}).limit(25);
+  if(error){setStatus(error.code==='42P01'||/relation .* does not exist/i.test(error.message)?'Community database ابھی تیار نہیں۔ Admin کو SK-CYBER-HUB-COMMUNITY.sql ایک بار Supabase SQL Editor میں چلانا ہوگا.':('Feed load نہیں ہوئی: '+error.message));return;}
+  feed.replaceChildren();
+  if(!data?.length){feed.appendChild(node('p','sk-post-meta','ابھی کوئی پوسٹ نہیں۔ پہلی مفید پوسٹ آپ شیئر کر سکتے ہیں۔'));setStatus('Community تیار ہے · کوئی نئی پوسٹ نہیں۔');return;}
+  data.forEach(post=>{
+   const card=node('article','sk-post-card'),meta=node('div','sk-post-meta','SK Community Member · '+escDate(post.created_at)),body=node('p','',post.body),actions=node('div','sk-post-actions');
+   const likes=post.sk_post_likes||[],comments=post.sk_post_comments||[];
+   const like=node('button','',((likes.some(x=>x.user_id===signedUser()?.id))?'♥':'♡')+' Like · '+likes.length);
+   like.type='button';like.addEventListener('click',async()=>{
+    const user=signedUser();if(!user){setStatus('Like کرنے کے لیے پہلے Member Login کریں۔');return;}
+    const own=likes.some(x=>x.user_id===user.id);
+    const result=own?await supabaseClient.from('sk_post_likes').delete().eq('post_id',post.id).eq('user_id',user.id):await supabaseClient.from('sk_post_likes').insert({post_id:post.id,user_id:user.id});
+    if(result.error){setStatus('Like update نہیں ہوا: '+result.error.message);return;}loadFeed();
+   });
+   const commentInput=node('input');commentInput.type='text';commentInput.maxLength=500;commentInput.placeholder='Write a helpful comment…';commentInput.setAttribute('aria-label','Write a comment');
+   const commentButton=node('button','','Comment');commentButton.type='button';commentButton.addEventListener('click',async()=>{
+    const user=signedUser();if(!user){setStatus('Comment کے لیے Member Login کریں۔');return;}
+    const text=commentInput.value.trim();if(!text)return;
+    const result=await supabaseClient.from('sk_post_comments').insert({post_id:post.id,user_id:user.id,body:text});
+    if(result.error){setStatus('Comment محفوظ نہیں ہوا: '+result.error.message);return;}loadFeed();
+   });
+   const report=node('button','','Report');report.type='button';report.addEventListener('click',async()=>{
+    const user=signedUser();if(!user){setStatus('Report کرنے کے لیے Member Login کریں۔');return;}
+    const reason=prompt('Report reason (3–300 characters):');if(!reason||reason.trim().length<3)return;
+    const result=await supabaseClient.from('sk_post_reports').insert({post_id:post.id,reporter_id:user.id,reason:reason.trim().slice(0,300)});
+    setStatus(result.error?'Report submit نہیں ہوئی: '+result.error.message:'Report موصول ہوگئی۔ شکریہ۔');
+   });
+   actions.append(like,commentInput,commentButton,report);card.append(meta,body,actions);
+   if(comments.length){const list=node('div','sk-post-comments');comments.slice(-4).forEach(c=>list.appendChild(node('p','sk-post-meta','Member: '+c.body)));card.appendChild(list);}
+   feed.appendChild(card);
+  });
+  setStatus(data.length+' تازہ کمیونٹی پوسٹس دکھائی جا رہی ہیں۔');
+ }
+ publish?.addEventListener('click',async()=>{
+  const user=signedUser();if(!user){setStatus('پوسٹ شائع کرنے کے لیے پہلے مفت Member Login کریں۔');if(typeof openMemberAuthModal==='function')openMemberAuthModal('login');return;}
+  if(typeof supabaseClient==='undefined'||!supabaseClient){setStatus('پہلے Supabase connect کریں۔');return;}
+  const body=postText.value.trim();if(!body||body.length>800){setStatus('پوسٹ 1 سے 800 حروف کے درمیان لکھیں۔');return;}
+  publish.disabled=true;setStatus('پوسٹ محفوظ ہو رہی ہے…');
+  const {error}=await supabaseClient.from('sk_posts').insert({user_id:user.id,body,visibility:'public'});
+  publish.disabled=false;
+  if(error){setStatus('پوسٹ محفوظ نہیں ہوئی: '+error.message);return;}
+  postText.value='';counter.textContent='0 / 800';setStatus('آپ کی پوسٹ شائع ہوگئی۔');loadFeed();
+ });
+ refresh?.addEventListener('click',loadFeed);
+ window.addEventListener('load',()=>{if(feed)loadFeed();});
+})();
+</script>
 </body></html>
