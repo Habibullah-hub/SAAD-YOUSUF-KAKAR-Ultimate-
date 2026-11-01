@@ -1457,7 +1457,14 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
     <div id="supabaseModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-[#01120d] border border-emerald-900/80 rounded-3xl p-6 max-w-sm w-full space-y-4 relative">
             <button onclick="closeSupabaseModal()" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-lg font-bold text-white text-center">SK Cyber Hub Database</h3><p class="text-xs text-slate-300">Use the Project URL and anon / publishable public key only. Never enter a service_role or secret key.</p><a class="text-xs text-emerald-300 underline" href="https://github.com/Habibullah-hub/SAAD-YOUSUF-KAKAR-Ultimate-/blob/main/supabase/README-URDU.md" target="_blank" rel="noopener noreferrer">اردو میں Database Setup کی ہدایات کھولیں</a>
+            <h3 class="text-lg font-bold text-white text-center">SK Cyber Hub Database</h3>
+            <div class="rounded-xl border border-amber-500/40 bg-amber-950/30 p-3 text-xs text-amber-100">
+              <strong>پہلا قدم — الگ ٹیبلز بنائیں</strong>
+              <p class="mt-1">Project URL اور Key ڈالنے سے پہلے SK Cyber Hub کا SQL ایک مرتبہ Supabase کے SQL Editor میں Run کریں۔ اس سے صرف sk_apps اور sk_profiles بنیں گے؛ پرانی ویب سائٹ کے apps/profiles ٹیبلز تبدیل نہیں ہوں گے۔</p>
+              <a class="mt-2 inline-block font-bold text-emerald-300 underline" href="https://github.com/Habibullah-hub/SAAD-YOUSUF-KAKAR-Ultimate-/blob/main/supabase/SK-CYBER-HUB-SETUP.sql" target="_blank" rel="noopener noreferrer">① الگ Database SQL کھولیں</a>
+              <br><a class="mt-2 inline-block text-emerald-300 underline" href="https://github.com/Habibullah-hub/SAAD-YOUSUF-KAKAR-Ultimate-/blob/main/supabase/README-URDU.md" target="_blank" rel="noopener noreferrer">② مکمل اردو ہدایات</a>
+            </div>
+            <p class="text-xs text-slate-300">SQL چلانے کے بعد Project URL اور anon / publishable public key درج کریں۔ Save کرنے سے پہلے ویب سائٹ خود sk_apps ٹیبل کی جانچ کرے گی۔ service_role یا secret key ہرگز نہ ڈالیں۔</p>
             <form onsubmit="saveSupabaseConfig(event)" class="space-y-3">
                 <input type="url" id="sbUrl" required placeholder="Project URL" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-xs text-white">
                 <input type="password" id="sbKey" required placeholder="Anon Key" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-xs text-white">
@@ -2033,12 +2040,33 @@ document.getElementById('clearResource').addEventListener('click',()=>{
 
         let appsList = [...sampleApps];
 
-        if (supabaseUrl && supabaseKey) {
-            document.getElementById('configAlert').classList.add('hidden');
-            supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-            checkSession();
-            fetchApps();
+        async function initializeSKDatabase() {
+            const alertBox = document.getElementById('configAlert');
+            const alertText = alertBox?.querySelector('span');
+            if (!supabaseUrl || !supabaseKey) {
+                alertBox?.classList.remove('hidden');
+                return;
+            }
+            if (!window.supabase?.createClient) {
+                if (alertText) alertText.textContent = 'Database library could not load. Check your internet connection, then try Configure again.';
+                alertBox?.classList.remove('hidden');
+                return;
+            }
+            try {
+                supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+                const { error } = await supabaseClient.from('sk_apps').select('id').limit(1);
+                if (error) throw error;
+                alertBox?.classList.add('hidden');
+                await checkSession();
+                await fetchApps();
+            } catch (error) {
+                supabaseClient = null;
+                if (alertText) alertText.textContent = 'SK Cyber Hub database is not ready: ' + (error?.message || 'Connection failed') + '. Run the separate SK setup SQL, then Configure again.';
+                alertBox?.classList.remove('hidden');
+                console.error('SK Cyber Hub database check failed:', error);
+            }
         }
+        initializeSKDatabase();
 
         async function checkSession() {
             if (!supabaseClient) return;
@@ -2336,24 +2364,44 @@ document.getElementById('clearResource').addEventListener('click',()=>{
         }
         function closeAppModal() { document.getElementById('appModal').classList.add('hidden'); }
 
-        function saveSupabaseConfig(e) {
+        async function saveSupabaseConfig(e) {
             e.preventDefault();
-            const urlValue = document.getElementById('sbUrl').value.trim();
+            const urlValue = document.getElementById('sbUrl').value.trim().replace(/\/$/, '');
             const keyValue = document.getElementById('sbKey').value.trim();
+            const submitButton = e.submitter || e.target.querySelector('button[type="submit"]');
+            const originalLabel = submitButton?.textContent || 'Save & Connect';
             try {
                 const parsed = new URL(urlValue);
                 if (parsed.protocol !== 'https:') throw new Error('HTTPS required');
             } catch (_) {
-                alert('Enter a valid HTTPS Supabase Project URL.');
+                alert('درست HTTPS Supabase Project URL درج کریں۔');
                 return;
             }
             if (!keyValue) {
-                alert('Enter the anon / publishable public key. Never use the service_role secret key.');
+                alert('صرف anon / publishable public key درج کریں۔ service_role یا secret key ہرگز استعمال نہ کریں۔');
                 return;
             }
-            localStorage.setItem('skcyberhub_supabase_url', urlValue.endsWith('/') ? urlValue.slice(0, -1) : urlValue);
-            localStorage.setItem('skcyberhub_supabase_anon_key', keyValue);
-            location.reload();
+            if (!window.supabase?.createClient) {
+                alert('Database library load نہیں ہوئی۔ انٹرنیٹ چیک کرکے دوبارہ کوشش کریں۔');
+                return;
+            }
+            if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Checking database…'; }
+            try {
+                const testClient = window.supabase.createClient(urlValue, keyValue);
+                const { error } = await testClient.from('sk_apps').select('id').limit(1);
+                if (error) {
+                    const detail = error.message || 'Unknown database error';
+                    alert('SK Cyber Hub کے الگ database tables ابھی تیار نہیں ہیں یا key/URL درست نہیں۔ پہلے اردو Setup Guide میں دیا گیا SK-CYBER-HUB-SETUP.sql چلائیں۔\n\nتفصیل: ' + detail);
+                    if (submitButton) { submitButton.disabled = false; submitButton.textContent = originalLabel; }
+                    return;
+                }
+                localStorage.setItem('skcyberhub_supabase_url', urlValue);
+                localStorage.setItem('skcyberhub_supabase_anon_key', keyValue);
+                location.reload();
+            } catch (error) {
+                alert('Database connection test ناکام ہوا: ' + (error?.message || 'Unknown error'));
+                if (submitButton) { submitButton.disabled = false; submitButton.textContent = originalLabel; }
+            }
         }
 
         async function handleAdminLogin(e) {
