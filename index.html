@@ -1536,7 +1536,6 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
  <label for="skCommunityPostText">Your public post</label>
  <textarea id="skCommunityPostText" maxlength="800" rows="3" placeholder="Write something helpful… (maximum 800 characters)"></textarea>
  <div class="sk-community-actions"><small id="skCommunityCharCount">0 / 800</small><button class="primary" id="skCommunityPublish" type="button">Publish post</button><button class="secondary" id="skCommunityRefresh" type="button">Refresh feed</button></div>
- <p class="sk-post-meta">🌐 پوسٹ اور تبصرے کے ساتھ صرف ملک کا اندازاً پرچم دکھایا جائے گا، شہر یا درست مقام نہیں۔ ملک انٹرنیٹ IP سے معلوم ہوگا؛ VPN یا نیٹ ورک کی وجہ سے مختلف ہو سکتا ہے۔ IP معلوم کرنے کے لیے ipwho.is نامی مفت بیرونی سروس سے رابطہ ہوگا۔</p>
  <p id="skCommunityStatus" class="creator-status" role="status" aria-live="polite">Public community posts require the SK Community database extension. Sign in with a free member account to publish.</p>
  <div id="skCommunityFeed" class="sk-community-feed" aria-live="polite"></div>
 </div></section>
@@ -3820,6 +3819,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
  postText?.addEventListener('input',()=>{counter.textContent=postText.value.length+' / 800';});
  const signedUser=()=>((typeof currentMember!=='undefined'&&currentMember)?currentMember:((typeof currentUser!=='undefined'&&currentUser)?currentUser:null));
  const escDate=value=>{try{return new Date(value).toLocaleString();}catch(e){return 'Recently';}};
+ const firstNameOf=user=>String(user?.user_metadata?.first_name||'').trim().split(/\\s+/)[0].slice(0,40);
  let countryPromise=null;
  async function getApproxCountry(){
   if(countryPromise)return countryPromise;
@@ -3834,7 +3834,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   if(!feed)return;
   if(typeof supabaseClient==='undefined'||!supabaseClient){setStatus('پہلے SK Cyber Hub کو Supabase سے Connect کریں، پھر Community feed کھلے گی۔');return;}
   setStatus('Community feed لوڈ ہو رہی ہے…');
-  let {data,error}=await supabaseClient.from('sk_posts').select('id,user_id,body,author_name,country_code,country_name,created_at,sk_post_likes(user_id),sk_post_comments(id,body,user_id,country_code,country_name,created_at)').eq('visibility','public').order('created_at',{ascending:false}).limit(25);
+  let {data,error}=await supabaseClient.from('sk_posts').select('id,user_id,body,author_name,country_code,country_name,created_at,sk_post_likes(user_id),sk_post_comments(id,body,user_id,author_name,country_code,country_name,created_at)').eq('visibility','public').order('created_at',{ascending:false}).limit(25);
   if(error&&/country_code|country_name|column .* does not exist/i.test(error.message||'')){
    const fallback=await supabaseClient.from('sk_posts').select('id,user_id,body,created_at,sk_post_likes(user_id),sk_post_comments(id,body,user_id,created_at)').eq('visibility','public').order('created_at',{ascending:false}).limit(25);
    data=fallback.data;error=fallback.error;
@@ -3844,7 +3844,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   feed.replaceChildren();
   if(!data?.length){feed.appendChild(node('p','sk-post-meta','ابھی کوئی پوسٹ نہیں۔ پہلی مفید پوسٹ آپ شیئر کر سکتے ہیں۔'));setStatus('Community تیار ہے · کوئی نئی پوسٹ نہیں۔');return;}
   data.forEach(post=>{
-   const card=node('article','sk-post-card'),meta=node('div','sk-post-meta'),body=node('p','',post.body),actions=node('div','sk-post-actions');meta.appendChild(node('span','',post.author_name||'Community Member'));meta.appendChild(countryLabel(post.country_code,post.country_name));if(post.country_name)meta.appendChild(node('span','sk-country-name',post.country_name));meta.appendChild(node('span','',' · '+escDate(post.created_at)));
+   const card=node('article','sk-post-card'),meta=node('div','sk-post-meta'),body=node('p','',post.body),actions=node('div','sk-post-actions');const postAuthor=post.author_name||(signedUser()?.id===post.user_id?firstNameOf(signedUser()):'');if(postAuthor)meta.appendChild(node('span','',postAuthor));meta.appendChild(countryLabel(post.country_code,post.country_name));if(post.country_name)meta.appendChild(node('span','sk-country-name',post.country_name));meta.appendChild(node('span','',' · '+escDate(post.created_at)));
    const likes=post.sk_post_likes||[],comments=post.sk_post_comments||[];
    const like=node('button','',((likes.some(x=>x.user_id===signedUser()?.id))?'♥':'♡')+' Like · '+likes.length);
    like.type='button';like.addEventListener('click',async()=>{
@@ -3857,7 +3857,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
    const commentButton=node('button','','Comment');commentButton.type='button';commentButton.addEventListener('click',async()=>{
     const user=signedUser();if(!user){setStatus('Comment کے لیے Member Login کریں۔');return;}
     const text=commentInput.value.trim();if(!text)return;
-    const country=await getApproxCountry();let result=await supabaseClient.from('sk_post_comments').insert({post_id:post.id,user_id:user.id,body:text,country_code:country.country_code,country_name:country.country_name});if(result.error&&/country_code|country_name|column .* does not exist/i.test(result.error.message||'')){result=await supabaseClient.from('sk_post_comments').insert({post_id:post.id,user_id:user.id,body:text});}
+    const country=await getApproxCountry();let result=await supabaseClient.from('sk_post_comments').insert({post_id:post.id,user_id:user.id,body:text,author_name:firstNameOf(user),country_code:country.country_code,country_name:country.country_name});if(result.error&&/country_code|country_name|column .* does not exist/i.test(result.error.message||'')){result=await supabaseClient.from('sk_post_comments').insert({post_id:post.id,user_id:user.id,body:text});}
     if(result.error){setStatus('Comment محفوظ نہیں ہوا: '+result.error.message);return;}loadFeed();
    });
    const report=node('button','','Report');report.type='button';report.addEventListener('click',async()=>{
@@ -3868,18 +3868,18 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
    });
    if(signedUser()?.id===post.user_id){const edit=node('button','','Edit my post');edit.type='button';edit.addEventListener('click',async()=>{const revised=prompt('اپنی پوسٹ میں تبدیلی کریں:',post.body);if(revised===null)return;const clean=revised.trim();if(!clean||clean.length>800){setStatus('پوسٹ 1 سے 800 حروف کے درمیان ہونی چاہیے۔');return;}const result=await supabaseClient.from('sk_posts').update({body:clean}).eq('id',post.id).eq('user_id',signedUser().id);if(result.error){setStatus('پوسٹ تبدیل نہیں ہوئی: '+result.error.message);return;}setStatus('آپ کی پوسٹ تبدیل ہوگئی۔');loadFeed();});const del=node('button','','Delete my post');del.type='button';del.addEventListener('click',async()=>{if(!confirm('کیا آپ اپنی یہ پوسٹ مستقل حذف کرنا چاہتے ہیں؟'))return;const result=await supabaseClient.from('sk_posts').delete().eq('id',post.id).eq('user_id',signedUser().id);if(result.error){setStatus('پوسٹ حذف نہیں ہوئی: '+result.error.message);return;}setStatus('آپ کی پوسٹ حذف ہوگئی۔');loadFeed();});actions.append(edit,del);}
     actions.append(like,commentInput,commentButton,report);card.append(meta,body,actions);
-   if(comments.length){const list=node('div','sk-post-comments');comments.slice(-4).forEach(c=>{const row=node('p','sk-post-meta');row.appendChild(node('span','','Member'));row.appendChild(countryLabel(c.country_code,c.country_name));if(c.country_name)row.appendChild(node('span','sk-country-name',c.country_name));row.appendChild(node('span','',' · '+c.body));list.appendChild(row);});card.appendChild(list);}
+   if(comments.length){const list=node('div','sk-post-comments');comments.slice(-4).forEach(c=>{const row=node('p','sk-post-meta');if(c.author_name)row.appendChild(node('span','',c.author_name));else if(signedUser()?.id===c.user_id&&firstNameOf(signedUser()))row.appendChild(node('span','',firstNameOf(signedUser())));row.appendChild(countryLabel(c.country_code,c.country_name));if(c.country_name)row.appendChild(node('span','sk-country-name',c.country_name));row.appendChild(node('span','',' · '+c.body));list.appendChild(row);});card.appendChild(list);}
    feed.appendChild(card);
   });
   setStatus(data.length+' تازہ کمیونٹی پوسٹس دکھائی جا رہی ہیں۔');
  }
- document.getElementById('skSaveMemberName')?.addEventListener('click',async()=>{const user=signedUser();if(!user||!currentMember){setStatus('نام محفوظ کرنے کے لیے Member Login کریں۔');return;}const firstName=document.getElementById('skMemberFirstName').value.trim();if(!firstName||firstName.length>40){setStatus('براہ کرم 1 سے 40 حروف کا پہلا نام لکھیں۔');return;}const {data,error}=await supabaseClient.auth.updateUser({data:{first_name:firstName}});if(error){setStatus('نام محفوظ نہیں ہوا: '+error.message);return;}currentMember=data.user;const oldPosts=await supabaseClient.from('sk_posts').update({author_name:firstName}).eq('user_id',user.id).is('author_name',null);if(oldPosts.error){setStatus('نام محفوظ ہوگیا، مگر پرانی پوسٹوں کا نام اپڈیٹ نہیں ہوا: '+oldPosts.error.message);updateMemberUI();return;}updateMemberUI();setStatus('آپ کا نام اور پرانی پوسٹوں پر نام محفوظ ہوگیا۔');loadFeed();});
+ document.getElementById('skSaveMemberName')?.addEventListener('click',async()=>{const user=signedUser();if(!user||!currentMember){setStatus('نام محفوظ کرنے کے لیے Member Login کریں۔');return;}const firstName=document.getElementById('skMemberFirstName').value.trim();if(!firstName||firstName.length>40){setStatus('براہ کرم 1 سے 40 حروف کا پہلا نام لکھیں۔');return;}const {data,error}=await supabaseClient.auth.updateUser({data:{first_name:firstName}});if(error){setStatus('نام محفوظ نہیں ہوا: '+error.message);return;}currentMember=data.user;const oldPosts=await supabaseClient.from('sk_posts').update({author_name:firstName}).eq('user_id',user.id).is('author_name',null);const oldComments=await supabaseClient.from('sk_post_comments').update({author_name:firstName}).eq('user_id',user.id).is('author_name',null);if(oldPosts.error||oldComments.error){setStatus('نام محفوظ ہوگیا، مگر کچھ پرانی پوسٹس یا تبصروں کا نام اپڈیٹ نہیں ہوا۔');updateMemberUI();return;}updateMemberUI();setStatus('آپ کا نام اور پرانی پوسٹوں پر نام محفوظ ہوگیا۔');loadFeed();});
   publish?.addEventListener('click',async()=>{
   const user=signedUser();if(!user){setStatus('پوسٹ شائع کرنے کے لیے پہلے مفت Member Login کریں۔');if(typeof openMemberAuthModal==='function')openMemberAuthModal('login');return;}
   if(typeof supabaseClient==='undefined'||!supabaseClient){setStatus('پہلے Supabase connect کریں۔');return;}
   const body=postText.value.trim();if(!body||body.length>800){setStatus('پوسٹ 1 سے 800 حروف کے درمیان لکھیں۔');return;}
   publish.disabled=true;setStatus('پوسٹ محفوظ ہو رہی ہے…');
-  const firstName=(user.user_metadata?.first_name||user.email?.split('@')[0]||'Member').trim().slice(0,40);
+  const firstName=firstNameOf(user);if(!firstName){publish.disabled=false;setStatus('اپنے اکاؤنٹ میں پہلا نام محفوظ کریں، پھر پوسٹ شائع کریں۔');return;}
    const country=await getApproxCountry();let {error}=await supabaseClient.from('sk_posts').insert({user_id:user.id,body,author_name:firstName,country_code:country.country_code,country_name:country.country_name,visibility:'public'});if(error&&/country_code|country_name|author_name|column .* does not exist/i.test(error.message||'')){const retry=await supabaseClient.from('sk_posts').insert({user_id:user.id,body,visibility:'public'});error=retry.error;}
   publish.disabled=false;
   if(error){setStatus('پوسٹ محفوظ نہیں ہوئی: '+error.message);return;}
