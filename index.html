@@ -884,9 +884,10 @@ main#tab-home{padding-bottom:94px}
 #tab-home input::placeholder,#tab-home textarea::placeholder{color:#aebed3!important;opacity:1}
 #tab-home label{color:#e0eafa!important}
 .sk-bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:80;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;padding:7px max(8px,env(safe-area-inset-left)) calc(7px + env(safe-area-inset-bottom));border-top:1px solid #38516d;background:#0b1729f5;backdrop-filter:blur(18px);box-shadow:0 -8px 30px #0005}
-.sk-bottom-nav a{display:flex;min-height:53px;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:1px solid transparent;border-radius:11px;color:#b6c7dc;font-size:9px;font-weight:750}
-.sk-bottom-nav a span{font-size:19px;line-height:1.1}
+.sk-bottom-nav a,.sk-bottom-nav button{display:flex;min-height:53px;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:1px solid transparent;border-radius:11px;background:transparent;color:#b6c7dc;font:inherit;font-size:9px;font-weight:750;cursor:pointer}
+.sk-bottom-nav a span,.sk-bottom-nav button span{font-size:19px;line-height:1.1}
 .sk-bottom-nav a[aria-current="page"]{border-color:#326d75;background:#143646;color:#a4f6e8}
+.sk-bottom-nav button:hover,.sk-bottom-nav button:focus-visible{border-color:#326d75;background:#143646;color:#a4f6e8}
 .sk-back-top{position:fixed;right:14px;bottom:83px;z-index:75;width:42px;height:42px;border:1px solid #4a8391;border-radius:50%;background:#123548;color:#b4fff1;font-size:19px;box-shadow:0 8px 24px #0006}
 @media(max-width:900px){.sk-category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.sk-earn-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sk-owner-revenue{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){
@@ -1135,7 +1136,6 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
   <a href="#quick-tools" data-search="instant online tools word counter password generator unit converter image compressor">⚙ Instant Online Tools</a>
   <a href="#earnings-model" data-search="earning model adsense affiliate sponsored listings premium digital services">¤ Earning Model</a>
   <a href="#global-growth" data-search="global growth seo traffic tiktok youtube social media strategy">↗ Global Growth</a>
-  <a href="#news" data-search="world news latest headlines international">◎ World News</a>
  </div>
 </div><div class="searchbox"><input id="search" type="search" placeholder="Search apps, AI, online tools, software and news..." aria-label="Search the SK Cyber Hub directory"><button id="searchBtn" class="search-icon-button" type="button" aria-label="Search" title="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg></button></div></div></div>
 </header>
@@ -1539,7 +1539,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
  <a href="#apps" data-sk-view="apps" data-sk-bottom="apps"><span>▦</span>Apps</a>
  <a href="#tools" data-sk-view="tools" data-sk-bottom="ai"><span>✦</span>AI Tools</a>
  <a href="#earnings-model" data-sk-view="earnings-model" data-sk-bottom="earn"><span>◈</span>Earn</a>
- <a href="#news" data-sk-view="news" data-sk-bottom="news"><span>◎</span>News</a>
+ <button type="button" data-sk-more aria-label="Open all categories"><span>☰</span>More</button>
 </nav>
 <button class="sk-back-top" id="skBackTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
 
@@ -2881,6 +2881,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
   }
   document.querySelectorAll('[data-sk-view]').forEach(a=>a.addEventListener('click',e=>{const id=a.dataset.skView;if(!document.getElementById(id))return;e.preventDefault();setView(id);}));
   document.querySelectorAll('[data-sk-bottom="home"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();setView('home');}));
+  document.querySelectorAll('[data-sk-more]').forEach(btn=>btn.addEventListener('click',()=>{const toggle=document.getElementById('categoryToggle');if(toggle)toggle.click();}));
   document.querySelectorAll('header a[href="#news"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();setView('news');},true));
   document.querySelectorAll('#categoryMenu a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href').slice(1);if(document.getElementById(id)){e.preventDefault();setView(id);}}));
   document.querySelectorAll('.hero-actions a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href').slice(1);if(document.getElementById(id)){e.preventDefault();setView(id);}}));
