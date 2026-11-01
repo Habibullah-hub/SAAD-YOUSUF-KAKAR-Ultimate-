@@ -2356,4 +2356,66 @@ document.getElementById('clearResource').addEventListener('click',()=>{
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
 </script>
+
+<script>
+/* SKCYBERHUB_LOCAL_IMAGE_TOOLS_V1 */
+(function(){
+ function init(){
+  const input=document.getElementById('skUnitValue');
+  const kind=document.getElementById('skUnitType');
+  const result=document.getElementById('skLengthResult');
+  function convert(){
+   if(!input||!kind||!result)return;
+   if(input.value.trim()===''){result.textContent='Enter a value to convert.';return;}
+   const n=Number(input.value);
+   if(!Number.isFinite(n)){result.textContent='Enter a valid number.';return;}
+   const factor={'m-ft':3.280839895,'km-mi':0.621371192,'kg-lb':2.20462262,'l-gal':0.264172052};
+   const labels={'m-ft':'feet','km-mi':'miles','kg-lb':'pounds','l-gal':'US gallons'};
+   const out=kind.value==='c-f'?(n*9/5+32):n*factor[kind.value];
+   result.textContent=out.toLocaleString(undefined,{maximumFractionDigits:5})+' '+(kind.value==='c-f'?'°F':labels[kind.value]);
+  }
+  input&&input.addEventListener('input',convert);
+  kind&&kind.addEventListener('change',convert);
+  const file=document.getElementById('skImageFile');
+  const width=document.getElementById('skImageWidth');
+  const quality=document.getElementById('skImageQuality');
+  const button=document.getElementById('skCompressImage');
+  const status=document.getElementById('skImageStatus');
+  const download=document.getElementById('skImageDownload');
+  let savedUrl='';
+  if(button)button.addEventListener('click',function(){
+   const selected=file&&file.files&&file.files[0];
+   if(!selected){status.textContent='Choose an image first.';return;}
+   if(!selected.type.startsWith('image/')){status.textContent='Please choose an image file.';return;}
+   if(selected.size>26214400){status.textContent='Please choose an image smaller than 25 MB.';return;}
+   button.disabled=true;status.textContent='Processing on this device…';
+   const source=URL.createObjectURL(selected),img=new Image();
+   img.onload=function(){
+    try{
+     const max=Math.max(100,Math.min(6000,parseInt(width.value,10)||1600));
+     const scale=Math.min(1,max/img.naturalWidth);
+     const w=Math.max(1,Math.round(img.naturalWidth*scale));
+     const h=Math.max(1,Math.round(img.naturalHeight*scale));
+     const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+     canvas.getContext('2d').drawImage(img,0,0,w,h);
+     const q=Math.max(10,Math.min(100,parseInt(quality.value,10)||80))/100;
+     canvas.toBlob(function(blob){
+      URL.revokeObjectURL(source);button.disabled=false;
+      if(!blob){status.textContent='This browser could not process the image format.';return;}
+      if(savedUrl)URL.revokeObjectURL(savedUrl);
+      savedUrl=URL.createObjectURL(blob);download.href=savedUrl;
+      download.download='sk-cyber-hub-compressed.webp';download.classList.remove('hidden');
+      const before=(selected.size/1024).toFixed(1),after=(blob.size/1024).toFixed(1);
+      const percent=Math.round((1-blob.size/selected.size)*100);
+      status.textContent=w+' × '+h+' px · '+before+' KB → '+after+' KB · '+(percent>0?percent+'% smaller':'file size may be larger');
+     },'image/webp',q);
+    }catch(error){URL.revokeObjectURL(source);button.disabled=false;status.textContent='Image processing failed. Try another image.';}
+   };
+   img.onerror=function(){URL.revokeObjectURL(source);button.disabled=false;status.textContent='Could not open this image.';};
+   img.src=source;
+  });
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
 </body></html>
