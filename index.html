@@ -2791,7 +2791,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
    if(first)window.scrollTo({top:0,behavior:'smooth'});
    else if(home)home.classList.remove('hidden');
   }
-  searchBtn?.addEventListener('click',searchAll);search?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchAll();}});
+  searchBtn?.addEventListener('click',searchAll);search?.addEventListener('input',searchAll);search?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchAll();}});
   const backTop=document.getElementById('skBackTop');if(backTop)backTop.style.display='none';
   window.addEventListener('popstate',()=>{
    const raw=decodeURIComponent((location.hash||'').replace(/^#/,''));
