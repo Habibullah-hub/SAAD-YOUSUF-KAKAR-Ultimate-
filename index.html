@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#070b16"><meta name="description" content="Saad Yousuf Kakar Ultimate — SK Cyber Hub: a global digital super-platform for apps, AI tools, online tools, software, documents, learning, games, creator resources and world news."><meta name="keywords" content="SK Cyber Hub, Saad Yousuf Kakar Ultimate, AI tools, free online tools, apps, software, documents, learning, games, creator tools, world news, Pakistan, Saudi Arabia, Urdu"><meta name="author" content="SK Cyber Hub"><meta property="og:title" content="Saad Yousuf Kakar Ultimate | SK Cyber Hub"><meta property="og:description" content="Explore apps, AI tools, free online tools, software, documents, learning, games, creator resources and world news on SK Cyber Hub."><meta property="og:type" content="website"><meta property="og:site_name" content="SK Cyber Hub"><meta name="twitter:title" content="Saad Yousuf Kakar Ultimate | SK Cyber Hub"><meta name="twitter:description" content="Apps, AI tools, online tools, software, learning, games and world news."><meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#070b16"><link id="sk-cyber-hub-final-identity" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cdefs%3E%3ClinearGradient id=%27g%27 x1=%270%27 y1=%270%27 x2=%271%27 y2=%271%27%3E%3Cstop stop-color=%27%2353e0c1%27/%3E%3Cstop offset=%271%27 stop-color=%27%2378baff%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2764%27 height=%2764%27 rx=%2716%27 fill=%27%230b1425%27/%3E%3Cpath d=%27M15 16h34v7H23v8h21v7H23v9h27v7H15z%27 fill=%27url(%23g)%27/%3E%3C/svg%3E"><meta name="apple-mobile-web-app-title" content="SK Cyber Hub"><meta name="description" content="Saad Yousuf Kakar Ultimate — SK Cyber Hub: a global digital super-platform for apps, AI tools, online tools, software, documents, learning, games, creator resources and world news."><meta name="keywords" content="SK Cyber Hub, Saad Yousuf Kakar Ultimate, AI tools, free online tools, apps, software, documents, learning, games, creator tools, world news, Pakistan, Saudi Arabia, Urdu"><meta name="author" content="SK Cyber Hub"><meta property="og:title" content="Saad Yousuf Kakar Ultimate | SK Cyber Hub"><meta property="og:description" content="Explore apps, AI tools, free online tools, software, documents, learning, games, creator resources and world news on SK Cyber Hub."><meta property="og:type" content="website"><meta property="og:site_name" content="SK Cyber Hub"><meta name="twitter:title" content="Saad Yousuf Kakar Ultimate | SK Cyber Hub"><meta name="twitter:description" content="Apps, AI tools, online tools, software, learning, games and world news."><meta name="color-scheme" content="dark">
 <title>Saad Yousuf Kakar Ultimate | SK Cyber Hub</title>
 <style>
 :root{
@@ -730,6 +730,93 @@ img,iframe,video{max-width:100%}
 .news-article-help{width:min(900px,calc(100% - 36px));margin:0 auto 18px;color:#52677d;font-size:12px;line-height:1.65}
 .news-article-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;width:min(900px,calc(100% - 36px));margin:18px auto 0}
 @media(max-width:600px){.news-article-preview,.news-article-help,.news-article-panel-head{width:calc(100% - 24px)}.news-article-preview{padding:13px;font-size:14px}}
+
+/* SK CYBER HUB — final identity, icon visibility and responsive polish */
+:root{
+ --bg:#080f1d;--surface:#101b2e;--surface-2:#14233a;--line:#293c58;
+ --text:#eef5ff;--muted:#a8b8d0;--accent:#61e5d0;--accent-soft:#143a43;
+ color-scheme:dark
+}
+html,body{background:var(--bg)!important;color:var(--text)!important}
+body{font-family:Inter,"Segoe UI",system-ui,Arial,sans-serif}
+.top{background:#0a1425f5!important;border-bottom:1px solid #263b58!important;backdrop-filter:blur(18px)!important}
+.brand{gap:12px;color:#f1f7ff}
+.brand .mark{width:44px;height:44px;border:1px solid #4c9da7!important;border-radius:13px!important;background:linear-gradient(145deg,#163c50,#202d52)!important;color:#a4fff0!important;box-shadow:0 8px 26px #2b9eaa30;font-weight:900}
+.brand small{color:#9fb2cd!important}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.news-nav-link,.language-toggle{min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 13px;border:1px solid #344c6c!important;border-radius:10px!important;background:#12233b!important;color:#e6f2ff!important;font-weight:650}
+.news-nav-link:hover,.language-toggle:hover{border-color:#62dccc!important;background:#18334b!important;color:#8ef4e1!important}
+.category-dock{background:#0d192bfa!important;border-bottom:1px solid #293d59!important;backdrop-filter:blur(16px)!important}
+.category-toggle{min-height:46px;border:1px solid #385474!important;border-radius:11px!important;background:#14243b!important;color:#f0f6ff!important}
+.category-toggle span{color:#75ead5!important}
+.category-menu{border:1px solid #38516f!important;border-radius:14px!important;background:#101a2d!important;box-shadow:0 24px 55px #0009!important}
+.category-menu a{border-color:#263954!important;color:#e5edff!important}
+.category-menu a:hover{background:#172c43!important;color:#75ead5!important}
+.dock-inner>.searchbox{min-height:46px;border:1px solid #38516f!important;border-radius:11px!important;background:#111f34!important}
+.dock-inner>.searchbox:focus-within{border-color:#62e5d0!important;box-shadow:0 0 0 3px #53e0c122!important}
+.dock-inner>.searchbox input{color:#f2f7ff!important}
+.dock-inner>.searchbox input::placeholder{color:#91a4bf!important}
+.searchbox #searchBtn.search-icon-button{width:42px;min-width:42px;height:38px;border-radius:9px!important;background:linear-gradient(120deg,#53e0c1,#73d7ff)!important;color:#071522!important}
+.searchbox #searchBtn.search-icon-button svg{display:block;width:21px;height:21px;fill:none!important;stroke:#071522!important;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.quick-nav a{border-radius:9px!important;color:#bdcce0!important}
+.quick-nav a:hover,.quick-nav a[aria-current="location"]{border-color:#365c70!important;background:#142e42!important;color:#8af1df!important}
+.quick-nav a[aria-current="location"]:after{background:#61e5d0!important}
+.store-hero{border:1px solid #365477!important;border-radius:24px!important;background:radial-gradient(circle at 80% 30%,#3b9ab844,transparent 34%),radial-gradient(circle at 10% 90%,#6343a52c,transparent 38%),linear-gradient(115deg,#101f35,#142541 60%,#182541)!important;box-shadow:0 22px 60px #02081766}
+.eyebrow{border-color:#3d777e!important;border-radius:99px!important;background:#102e3b!important;color:#a9fff0!important}
+.dot{background:#61e5d0!important;box-shadow:0 0 10px #61e5d0!important}
+.store-hero h1{color:#f4f8ff!important}
+.store-hero h1 span{background:linear-gradient(90deg,#61e5d0,#8fc8ff,#c6a6ff)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
+.store-hero .intro{color:#c1cde0!important}
+.hero-secondary{border:1px solid #54708e!important;border-radius:11px!important;background:#142b45!important;color:#eaf5ff!important}
+.hero-secondary:hover{background:#1b3b5b!important;border-color:#8db5db!important}
+.art-orbit{border-color:#70dcd14a!important}
+.art-tile{border:1px solid #68c8d5!important;background:linear-gradient(145deg,#1c5970,#172b50 70%,#33265d)!important;box-shadow:0 24px 50px #020611aa!important}
+.tile-main span{color:#82f4df!important}
+.section-head{border-color:#293d59!important}
+.section h2{color:#f1f6ff!important}
+.section-head h2:before{background:linear-gradient(180deg,#53e0c1,#78baff)!important}
+.section-head p{color:#a9b7cf!important}
+.section-count{border-color:#326c70!important;background:#10343b!important;color:#9af6e4!important}
+.resource.tile{border:1px solid #293e5c!important;border-radius:15px!important;background:linear-gradient(145deg,#111f34,#0e1a2d)!important;box-shadow:0 7px 22px #02081735!important}
+.resource.tile:hover{transform:translateY(-3px)!important;border-color:#4c9a9b!important;background:linear-gradient(145deg,#152a43,#12243a)!important;box-shadow:0 16px 34px #02081770!important}
+.resource .app-icon{border:1px solid #365c79!important;border-radius:13px!important;background:linear-gradient(145deg,#173e54,#1d3154)!important;color:#a4f7e9!important}
+.resource .tag{border:1px solid #334d6b!important;border-radius:99px!important;background:#142842!important;color:#a9c7e7!important}
+.resource h3{color:#f1f6ff!important}
+.resource p{color:#a8b8d0!important}
+.resource .arrow{border:1px solid #3e697e!important;border-radius:9px!important;background:#153449!important;color:#9af4e6!important}
+.resource .arrow:hover{background:#1c4a5a!important}
+.primary,.searchbox button{border:1px solid #53e0c1!important;border-radius:11px!important;background:linear-gradient(120deg,#53e0c1,#73d7ff)!important;color:#071522!important;font-weight:800!important;box-shadow:0 8px 24px #53e0c120}
+.primary:hover,.searchbox button:hover{background:linear-gradient(120deg,#80f1d8,#a1e7ff)!important;transform:translateY(-1px)}
+.footer{border-color:#293d59!important;color:#a8b8d0!important}
+.footer a{color:#8fe8df!important;text-decoration:none!important}
+.footer a:hover{text-decoration:underline!important;text-underline-offset:4px}
+.back-top{border:1px solid #4b9b9d!important;border-radius:12px!important;background:#143447!important;color:#9af4e6!important;box-shadow:0 10px 28px #0006}
+button,a,input,select,textarea{accent-color:#61e5d0}
+:focus-visible{outline:3px solid #79f0dc!important;outline-offset:3px!important}
+@media(max-width:760px){
+ .brand .mark{width:39px;height:39px}
+ .nav-actions{gap:6px}
+ .news-nav-link,.language-toggle{min-height:36px;padding:0 9px;font-size:11px}
+ .dock-inner{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)!important}
+ .category-toggle{height:43px;font-size:11px}
+ .store-hero{grid-template-columns:1fr!important;gap:8px!important;min-height:0!important;margin-top:16px!important;padding:25px 20px!important;border-radius:18px!important}
+ .store-hero-art{height:145px!important;margin-top:5px}
+ .resource-grid{grid-template-columns:1fr!important;gap:10px!important}
+ .resource.tile{border-radius:13px!important}
+ .section{scroll-margin-top:170px!important}
+}
+@media(max-width:390px){
+ .brand{gap:7px;font-size:11px}
+ .brand small{font-size:8px;letter-spacing:1px}
+ .brand .mark{width:35px;height:35px}
+ .news-nav-link{font-size:0;gap:0;width:36px;padding:0}
+ .news-nav-link span{font-size:10px}
+ .language-toggle{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
+
 </style>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
