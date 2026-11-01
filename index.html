@@ -3032,6 +3032,27 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
  .global-finder-controls{grid-template-columns:minmax(0,1fr)}
 }
 </style>
+
+<style id="SKCYBERHUB_HEADER_SINGLE_ROW_FIX">
+/* Keep brand, World News and language control together on one header row */
+.top .nav{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;min-width:0}
+.top .brand{display:flex!important;flex:1 1 auto!important;min-width:0!important;max-width:none!important;align-items:center!important;gap:7px!important;white-space:nowrap}
+.top .brand>span{min-width:0!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap!important;font-size:clamp(11px,3.4vw,15px)!important;line-height:1.15!important}
+.top .brand small{display:block!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap!important;font-size:clamp(7px,2.25vw,10px)!important;letter-spacing:.65px!important}
+.top #skAdminButton{flex:0 0 36px!important;width:36px!important;height:36px!important}
+.top .nav-actions{display:flex!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-end!important;gap:5px!important;padding:0!important}
+.top .news-nav-link,.top .language-toggle{display:inline-flex!important;flex:0 0 auto!important;min-width:0!important;min-height:36px!important;padding:0 8px!important;white-space:nowrap!important;font-size:clamp(9px,2.8vw,11px)!important}
+@media(max-width:390px){
+ .top .nav{gap:5px!important}
+ .top .brand{gap:5px!important}
+ .top #skAdminButton{flex-basis:32px!important;width:32px!important;height:32px!important}
+ .top .brand>span{font-size:11px!important}
+ .top .brand small{font-size:7px!important;letter-spacing:.35px!important}
+ .top .nav-actions{gap:4px!important}
+ .top .news-nav-link,.top .language-toggle{min-height:33px!important;padding:0 6px!important;font-size:9px!important}
+}
+</style>
+
 <script id="SKCYBERHUB_FINAL_NAV_SEARCH_AUDIT_V1_SCRIPT">
 (function(){
  function init(){
