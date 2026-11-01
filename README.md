@@ -32,7 +32,7 @@ Every news result provides **Read full article** and **Open publisher website** 
 ## Admin and database security
 The site uses the isolated `public.sk_apps` and `public.sk_profiles` tables. It accepts only a public Supabase Publishable key (`sb_publishable_`) or legacy anon JWT key in the browser; never enter a `sb_secret_` / `service_role` key, database password or private secret. The connection test checks `sk_apps`; Admin login separately checks that the signed-in user's `sk_profiles.role` is `admin`.
 
-The SQL setup creates the SK-specific Row Level Security policies and a trigger that creates new profiles as `member`. Ordinary users cannot change their own role. The owner must manually promote only their own Auth user UUID to `admin` using the final SQL statement in `supabase/SK-CYBER-HUB-SETUP.sql`. Verify that exactly one owner row is updated. Do not promote other accounts.
+The SQL setup creates the SK-specific Row Level Security policies and a trigger that creates new profiles as `member`. Browser clients have read-only access to `sk_profiles`; neither members nor an Admin session can change account roles through the website. The owner must manually promote only their own Auth user UUID to `admin` using the final SQL statement in `supabase/SK-CYBER-HUB-SETUP.sql`. Verify that exactly one owner row is updated. Do not promote other accounts. Role changes after setup must also be performed by the owner in the Supabase SQL Editor.
 
 Public account registration/community features remain disabled until the owner-only Admin setup and live security checks are complete. No Storage bucket is required for the current external-icon listing design.
 
