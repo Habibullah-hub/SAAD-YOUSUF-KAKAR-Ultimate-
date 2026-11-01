@@ -12,6 +12,8 @@ create table if not exists public.sk_posts (
 );
 
 alter table public.sk_posts add column if not exists author_name text;
+alter table public.sk_posts add column if not exists country_code text;
+alter table public.sk_posts add column if not exists country_name text;
 
 create table if not exists public.sk_post_likes (
   post_id uuid not null references public.sk_posts(id) on delete cascade,
@@ -27,6 +29,9 @@ create table if not exists public.sk_post_comments (
   body text not null check (char_length(body) between 1 and 500),
   created_at timestamptz not null default now()
 );
+
+alter table public.sk_post_comments add column if not exists country_code text;
+alter table public.sk_post_comments add column if not exists country_name text;
 
 create table if not exists public.sk_post_reports (
   id uuid primary key default gen_random_uuid(),
