@@ -3173,6 +3173,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
 /* Header search: anchored live results, no page-jump */
 .top .category-dock .dock-inner{position:relative}
 .top .category-dock .searchbox{position:relative;z-index:42}
+.top .category-dock .searchbox{overflow:visible!important;z-index:42}
 #skHeaderLiveResults{position:absolute;left:0;right:0;top:calc(100% + 9px);z-index:90;max-height:min(58vh,430px);overflow:auto;padding:10px;border:1px solid #42627e;border-radius:16px;background:rgba(8,20,37,.98);box-shadow:0 22px 58px #000b;backdrop-filter:blur(20px);opacity:0;transform:translateY(-8px) scale(.985);transform-origin:top center;pointer-events:none;transition:opacity .2s ease,transform .24s cubic-bezier(.2,.8,.2,1)}
 #skHeaderLiveResults.is-open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
 #skHeaderLiveResults[hidden]{display:none!important}
