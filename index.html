@@ -1207,11 +1207,11 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&categoryToggle.getA
 document.addEventListener('click',e=>{if(!e.target.closest('.category-dropdown')&&categoryToggle.getAttribute('aria-expanded')==='true')closeCategoryMenu();});
 categoryDropdown.addEventListener('pointerdown',()=>{if(categoryToggle.getAttribute('aria-expanded')==='true')startCategoryCloseTimer();});
 categoryToggle.addEventListener('click',()=>{const opening=categoryToggle.getAttribute('aria-expanded')!=='true';if(opening){categoryMenu.classList.add('is-open');categoryToggle.classList.add('is-open');categoryToggle.setAttribute('aria-expanded','true');startCategoryCloseTimer();}else closeCategoryMenu();});
-categoryMenu.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeCategoryMenu));
+categoryMenu.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{closeCategoryMenu();if(input.value.trim()){input.value='';runSearch();filterApps();}}));
 /* Instant search: results update on every keystroke */
 const searchFeedback=document.createElement('div');searchFeedback.className='search-feedback hidden';searchFeedback.setAttribute('aria-live','polite');document.querySelector('.category-dock .dock-inner').appendChild(searchFeedback);
 const clearSearch=document.createElement('button');clearSearch.type='button';clearSearch.className='search-clear search-clear-icon';clearSearch.innerHTML='<span aria-hidden="true">×</span>';clearSearch.title='Clear search';clearSearch.setAttribute('aria-label','Clear search');document.querySelector('.category-dock .searchbox').appendChild(clearSearch);
-clearSearch.addEventListener('click',()=>{input.value='';runSearch();input.focus();});
+clearSearch.addEventListener('click',()=>{input.value='';runSearch();filterApps();input.focus();});
 /* Live section counters show how many listings remain visible */
 document.querySelectorAll('section.section').forEach(section=>{
  const heading=section.querySelector('.section-head h2');
