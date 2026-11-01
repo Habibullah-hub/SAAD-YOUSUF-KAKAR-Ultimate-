@@ -3800,6 +3800,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
  const analyticsStatus=$('skAnalyticsStatus'),analyticsRows=$('skAnalyticsRows'),analyticsSummary=$('skAnalyticsSummary'),analyticsRefresh=$('skAnalyticsRefresh');
  async function recordSiteVisit(){
   if(typeof supabaseClient==='undefined'||!supabaseClient)return;
+  if(typeof currentUser!=='undefined'&&currentUser){const ownerCheck=await supabaseClient.rpc('sk_is_admin');if(!ownerCheck.error&&ownerCheck.data===true)return;}
   const page=(location.pathname||'/').slice(0,120);
   const visitKey='skcyberhub_visit_'+page;
   try{if(sessionStorage.getItem(visitKey))return;}catch(e){}
