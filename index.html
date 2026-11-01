@@ -1637,7 +1637,12 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
  <div id="bulkStatus" class="bulk-status" role="status" aria-live="polite">Ready. Download the template or paste app links to begin.</div>
  <div id="bulkPreview" class="bulk-preview hidden"></div>
  <p class="bulk-hint">Required: App Name and a valid http/https download or official listing URL. Only add apps you are authorized to distribute. Import requires an active Admin login and a working Supabase connection.</p>
-</div><div class="section-head"><div><h2>Admin Dashboard</h2><p>Manage listings saved in your connected database.</p></div><div><button class="primary" type="button" onclick="openAppModal()">+ Add App</button> <button class="secondary" type="button" onclick="logoutAdmin()">Log out</button></div></div><div class="manager"><div class="table-wrap"><table class="admin-table"><thead><tr><th>App</th><th>Category</th><th>Platform</th><th>Actions</th></tr></thead><tbody id="adminTableBody"></tbody></table></div></div>
+</div><div class="bulk-panel" id="skCommunityModeration">
+ <div class="section-head"><div><h3>SK Community · Safety & Reports</h3><p>Review reports submitted by members. Only the owner Admin can access this queue.</p></div><button class="secondary" id="skLoadReports" type="button">Load reports</button></div>
+ <p id="skModerationStatus" class="creator-status" role="status" aria-live="polite">Admin access required. Community reports appear here after the Community SQL extension is installed.</p>
+ <div id="skModerationList" class="grid resource-grid"></div>
+</div>
+<div class="section-head"><div><h2>Admin Dashboard</h2><p>Manage listings saved in your connected database.</p></div><div><button class="primary" type="button" onclick="openAppModal()">+ Add App</button> <button class="secondary" type="button" onclick="logoutAdmin()">Log out</button></div></div><div class="manager"><div class="table-wrap"><table class="admin-table"><thead><tr><th>App</th><th>Category</th><th>Platform</th><th>Actions</th></tr></thead><tbody id="adminTableBody"></tbody></table></div></div>
 <section class="section wrap" id="admin-resource-tools">
  <div class="section-head"><div><h2>Add & Test a Resource</h2><p>Apna app name aur download URL daal kar apne phone par test karein.</p></div></div>
  <div class="manager">
@@ -3774,6 +3779,33 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   player.replaceChildren(frame);videoStatus.textContent='YouTube preview loaded. Playback is provided by YouTube.';
  });
  const postText=$('skCommunityPostText'),counter=$('skCommunityCharCount'),publish=$('skCommunityPublish'),refresh=$('skCommunityRefresh'),feed=$('skCommunityFeed'),status=$('skCommunityStatus');
+ const reportButton=$('skLoadReports'),reportList=$('skModerationList'),reportStatus=$('skModerationStatus');
+ async function loadReports(){
+  if(!reportList)return;
+  const admin=typeof currentUser!=='undefined'&&currentUser;
+  if(!admin){if(reportStatus)reportStatus.textContent='یہ حصہ صرف مالک Admin کے لیے ہے۔ پہلے Admin Login کریں۔';return;}
+  if(typeof supabaseClient==='undefined'||!supabaseClient){reportStatus.textContent='Supabase connection دستیاب نہیں۔';return;}
+  reportStatus.textContent='Reports لوڈ ہو رہی ہیں…';
+  const {data,error}=await supabaseClient.from('sk_post_reports').select('id,post_id,reporter_id,reason,created_at,status,sk_posts(body)').eq('status','open').order('created_at',{ascending:false}).limit(50);
+  if(error){reportStatus.textContent='Reports نہیں کھل سکیں: '+error.message;return;}
+  reportList.replaceChildren();
+  if(!data?.length){reportStatus.textContent='کوئی نئی رپورٹ موجود نہیں۔';return;}
+  data.forEach(report=>{
+   const card=node('article','sk-post-card'),title=node('b','','Community report'),body=node('p','',report.sk_posts?.body||'Post no longer available'),reason=node('p','', 'Reason: '+report.reason),meta=node('small','sk-post-meta',escDate(report.created_at)),actions=node('div','sk-post-actions');
+   const reviewed=node('button','','Mark reviewed');reviewed.type='button';reviewed.addEventListener('click',async()=>{
+    const result=await supabaseClient.from('sk_post_reports').update({status:'reviewed'}).eq('id',report.id);
+    if(result.error){reportStatus.textContent='Update ناکام: '+result.error.message;return;}loadReports();
+   });
+   const remove=node('button','','Remove reported post');remove.type='button';remove.addEventListener('click',async()=>{
+    if(!confirm('کیا آپ واقعی اس پوسٹ کو ہٹانا چاہتے ہیں؟'))return;
+    const result=await supabaseClient.from('sk_posts').delete().eq('id',report.post_id);
+    if(result.error){reportStatus.textContent='Post remove نہیں ہوئی: '+result.error.message;return;}loadReports();loadFeed();
+   });
+   actions.append(reviewed,remove);card.append(title,meta,body,reason,actions);reportList.appendChild(card);
+  });
+  reportStatus.textContent=data.length+' open reports۔ فیصلہ کرنے سے پہلے پوسٹ اور وجہ پڑھیں۔';
+ }
+ reportButton?.addEventListener('click',loadReports);
  postText?.addEventListener('input',()=>{counter.textContent=postText.value.length+' / 800';});
  const signedUser=()=>((typeof currentMember!=='undefined'&&currentMember)?currentMember:((typeof currentUser!=='undefined'&&currentUser)?currentUser:null));
  const escDate=value=>{try{return new Date(value).toLocaleString();}catch(e){return 'Recently';}};
