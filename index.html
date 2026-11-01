@@ -1855,9 +1855,9 @@ input.addEventListener('input',filterApps);
    }).filter(item=>item.title&&item.link);
   };
   const attempts=[
+   {name:'RSS2JSON',url:'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rss),type:'json'},
    {name:'AllOrigins',url:'https://api.allorigins.win/raw?url='+encodeURIComponent(rss),type:'xml'},
-   {name:'CORSProxy',url:'https://corsproxy.io/?url='+encodeURIComponent(rss),type:'xml'},
-   {name:'RSS2JSON',url:'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rss),type:'json'}
+   {name:'CORSProxy',url:'https://corsproxy.io/?url='+encodeURIComponent(rss),type:'xml'}
   ];
   let lastError=null,items=null;
   for(const attempt of attempts){
