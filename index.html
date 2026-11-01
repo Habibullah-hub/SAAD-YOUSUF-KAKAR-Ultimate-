@@ -1947,7 +1947,7 @@ input.addEventListener('input',filterApps);
   let recognition=null,listening=false;
   micButton.addEventListener('click',()=>{
    if(listening){recognition?.stop();return;}
-   recognition=new SpeechRecognition();recognition.lang=navigator.language||'en-US';recognition.interimResults=true;recognition.continuous=false;recognition.maxAlternatives=5;
+   recognition=new SpeechRecognition();recognition.lang='ur-PK';recognition.interimResults=true;recognition.continuous=false;recognition.maxAlternatives=5;
    recognition.onstart=()=>{listening=true;micButton.classList.add('is-listening');micButton.setAttribute('aria-label','Stop voice search');status.textContent='Listening… speak your news topic now.';};
    recognition.onresult=event=>{let transcript='';for(let i=event.resultIndex;i<event.results.length;i++){const result=event.results[i];const choices=[...result].map(x=>x.transcript);transcript+=result.isFinal?correctVoiceNames(choices):(choices[0]||'');}if(transcript){queryInput.value=transcript;if(event.results[event.results.length-1].isFinal)searchNews();}};
    recognition.onerror=event=>{status.textContent=event.error==='not-allowed'?'Microphone permission is blocked. Allow microphone access in your browser.':'Voice search could not start. Please type your search instead.';};
@@ -3072,11 +3072,11 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
    const closePanel=()=>{panel.hidden=true;moreButton.setAttribute('aria-expanded','false');};
    close.addEventListener('click',closePanel);
    moreButton.setAttribute('aria-expanded','false');
-   moreButton.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();panel.hidden=!panel.hidden;moreButton.setAttribute('aria-expanded',String(!panel.hidden));});
+   /* Replaced by the unified animated More controller below. */
    document.addEventListener('click',e=>{if(!panel.hidden&&!panel.contains(e.target)&&!moreButton.contains(e.target))closePanel();});
    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){closePanel();moreButton.focus();}});
    // Capture this control before the legacy click handler, which opened the now-hidden header menu.
-   document.addEventListener('click',e=>{if(e.target.closest('[data-sk-more]')){e.preventDefault();e.stopImmediatePropagation();panel.hidden=!panel.hidden;moreButton.setAttribute('aria-expanded',String(!panel.hidden));}},true);
+   /* Legacy capture toggle removed to prevent double-toggle. */
   }
   const headerSearch=$('search'),headerButton=$('searchBtn');
   function runHeaderSearch(){
@@ -3112,8 +3112,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
    document.querySelectorAll('[data-sk-bottom]').forEach(a=>a.removeAttribute('aria-current'));
    const feedback=document.querySelector('.search-feedback');
    if(feedback){feedback.classList.remove('hidden');feedback.textContent=total+' matching items found across SK Cyber Hub.';}
-   if(first)window.scrollTo({top:0,behavior:'smooth'});
-   else window.scrollTo({top:0,behavior:'smooth'});
+   /* Keep live-search results anchored beside the search field; do not jump the page. */
    if(typeof window.filterApps==='function')window.filterApps();
   }
   if(headerSearch){
@@ -3164,6 +3163,137 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   [cat,price,device].forEach(el=>el?.addEventListener('change',runGlobalSearch,true));
   reset?.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();if(q)q.value='';if(cat)cat.value='all';if(price)price.value='all';if(device)device.value='all';runGlobalSearch();},true);
   if(q&&searchButton){if(q.value.trim())runGlobalSearch();else if(status)status.textContent='Enter a keyword or choose filters to search the full directory.';}
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
+
+<style id="SKCYBERHUB_SEARCH_NEWS_MORE_POLISH_V3">
+/* Header search: anchored live results, no page-jump */
+.top .category-dock .dock-inner{position:relative}
+.top .category-dock .searchbox{position:relative;z-index:42}
+#skHeaderLiveResults{position:absolute;left:0;right:0;top:calc(100% + 9px);z-index:90;max-height:min(58vh,430px);overflow:auto;padding:10px;border:1px solid #42627e;border-radius:16px;background:rgba(8,20,37,.98);box-shadow:0 22px 58px #000b;backdrop-filter:blur(20px);opacity:0;transform:translateY(-8px) scale(.985);transform-origin:top center;pointer-events:none;transition:opacity .2s ease,transform .24s cubic-bezier(.2,.8,.2,1)}
+#skHeaderLiveResults.is-open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+#skHeaderLiveResults[hidden]{display:none!important}
+.sk-live-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 5px 9px;color:#9bb5d0;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.sk-live-head strong{color:#6ce8d2;font-size:11px}
+.sk-live-item{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:48px;margin:4px 0;padding:9px 11px;border:1px solid #263f5d;border-radius:11px;background:linear-gradient(110deg,#122840,#101d31);color:#edf7ff;text-align:left;text-decoration:none;transition:transform .18s,border-color .18s,background .18s}
+.sk-live-item:hover,.sk-live-item:focus-visible{transform:translateX(3px);border-color:#65e5d1;background:#17364a}
+.sk-live-item span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:700}
+.sk-live-item small{flex:none;color:#75dcca;font-size:10px}
+.sk-live-empty{padding:12px;color:#b4c5d8;font-size:12px}
+.search-feedback{display:none!important}
+.top .news-nav-link,.top .language-toggle{position:relative;isolation:isolate;overflow:hidden;border:1px solid #397b91!important;border-radius:12px!important;background:linear-gradient(135deg,#12324b,#182a49)!important;color:#eaffff!important;box-shadow:0 5px 18px #06162980,inset 0 1px #ffffff18;transition:transform .2s,border-color .2s,box-shadow .2s,background .2s}
+.top .news-nav-link:before,.top .language-toggle:before{content:"";position:absolute;inset:-80% auto -80% -35%;width:30%;transform:rotate(24deg);background:linear-gradient(90deg,transparent,#8ffff055,transparent);transition:left .55s ease;z-index:-1}
+.top .news-nav-link:hover,.top .language-toggle:hover{transform:translateY(-2px);border-color:#73f1dd!important;box-shadow:0 8px 24px #20cdb533}
+.top .news-nav-link:hover:before,.top .language-toggle:hover:before{left:125%}
+.top .news-nav-link{gap:7px}
+.top .news-nav-link:after{content:"↗";font-size:11px;color:#74e8d7}
+.top .language-toggle{gap:6px}
+.news-section .news-search-panel{border-radius:18px!important;padding:18px!important;background:linear-gradient(145deg,#f7fbff,#eaf4ff)!important;box-shadow:0 15px 35px #06172c35!important}
+.news-section .news-query-control{min-height:54px!important;border-radius:14px!important;border:1px solid #8cb5d5!important;box-shadow:0 5px 18px #0d3b6012;transition:border-color .2s,box-shadow .2s,transform .2s}
+.news-section .news-query-control:focus-within{border-color:#18a9c5!important;box-shadow:0 0 0 4px #22bfd022,0 9px 24px #0d3b6020!important;transform:translateY(-1px)}
+.news-section .news-query-control input{height:52px!important;font-size:15px!important}
+.news-section .news-query-control #newsMicButton,.news-section .news-query-control #newsSearchButton{width:48px!important;height:48px!important;margin:2px!important;border-radius:11px!important;border:1px solid #d3e3f0!important;background:#edf6fd!important;color:#075b98!important;transition:transform .18s,background .18s,box-shadow .18s}
+.news-section .news-query-control #newsSearchButton{width:auto!important;min-width:88px!important;display:flex!important;grid-auto-flow:column;grid-template-columns:auto auto;gap:6px;padding:0 12px!important;background:linear-gradient(135deg,#0879c9,#075b98)!important;color:#fff!important;border-color:#0879c9!important;font-size:12px;font-weight:800}
+.news-section .news-query-control #newsSearchButton span{display:inline!important}
+.news-section .news-query-control #newsMicButton:hover,.news-section .news-query-control #newsSearchButton:hover{transform:translateY(-2px);box-shadow:0 5px 14px #075b9828}
+.news-section .news-query-control #newsMicButton.is-listening{background:#fff0f0!important;color:#c62828!important;border-color:#e88b8b!important;box-shadow:0 0 0 4px #d84a4a20!important}
+.news-section .news-status{margin-top:12px;padding:12px 14px;border-radius:12px;line-height:1.5;overflow-wrap:anywhere}
+.news-section .news-status a{display:inline-flex;margin:8px 0 0;color:#075b98;font-weight:800;text-decoration:underline}
+@media(max-width:600px){
+ #skHeaderLiveResults{max-height:55vh}
+ .news-section .news-search-panel{padding:13px!important}
+ .news-section .news-query-control{min-height:48px!important}
+ .news-section .news-query-control input{height:46px!important;font-size:13px!important}
+ .news-section .news-query-control #newsMicButton{width:40px!important;height:42px!important}
+ .news-section .news-query-control #newsSearchButton{min-width:72px!important;height:42px!important;padding:0 8px!important;font-size:11px!important}
+ .top .news-nav-link,.top .language-toggle{min-height:34px!important;padding:0 7px!important;font-size:clamp(8px,2.5vw,10px)!important}
+}
+@media(prefers-reduced-motion:reduce){#skHeaderLiveResults,.top .news-nav-link,.top .language-toggle,.news-section .news-query-control,.news-section .news-query-control button{transition:none!important}}
+/* More: floating glass panel with a spring-like open/close transition */
+.sk-more-panel{visibility:hidden!important;display:block!important;opacity:0!important;transform:translateY(18px) scale(.96)!important;transform-origin:bottom center!important;pointer-events:none!important;transition:opacity .22s ease,transform .28s cubic-bezier(.18,.8,.22,1),visibility .22s!important}
+.sk-more-panel[hidden]{display:block!important}
+.sk-more-panel.is-open{visibility:visible!important;opacity:1!important;transform:translateY(0) scale(1)!important;pointer-events:auto!important}
+.sk-more-panel-head{padding:3px 2px 10px;border-bottom:1px solid #294763}
+.sk-more-panel-head span:before{content:"✦";margin-right:8px;color:#70e8d6}
+.sk-more-grid a{position:relative;overflow:hidden;min-height:48px;border-radius:12px;background:linear-gradient(125deg,#122942,#17243e);transition:transform .18s,border-color .18s,box-shadow .18s}
+.sk-more-grid a:hover{transform:translateY(-2px);box-shadow:0 8px 18px #0005}
+.sk-bottom-nav [data-sk-more]{border:1px solid #3c7180!important;border-radius:13px!important;background:linear-gradient(145deg,#163c50,#202d52)!important;color:#a8fff0!important;box-shadow:0 5px 18px #0005;transition:transform .2s,box-shadow .2s}
+.sk-bottom-nav [data-sk-more][aria-expanded="true"]{transform:translateY(-3px);box-shadow:0 0 0 3px #62e5d044,0 8px 24px #0007}
+.sk-bottom-nav [data-sk-more] span{display:block;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.sk-bottom-nav [data-sk-more][aria-expanded="true"] span{transform:rotate(45deg) scale(1.12)}
+</style>
+<script id="SKCYBERHUB_SEARCH_NEWS_MORE_POLISH_V3_SCRIPT">
+(function(){
+ const $=id=>document.getElementById(id);
+ function init(){
+  /* Build a live result layer directly under the top search field. */
+  const input=$('search'),box=document.querySelector('.top .searchbox');
+  if(input&&box&&!$('skHeaderLiveResults')){
+   const panel=document.createElement('div');panel.id='skHeaderLiveResults';panel.hidden=true;panel.setAttribute('role','region');panel.setAttribute('aria-label','Live search results');
+   box.appendChild(panel);
+   const close=()=>{panel.classList.remove('is-open');panel.hidden=true;};
+   const render=()=>{
+    const q=input.value.trim().toLocaleLowerCase();
+    panel.replaceChildren();
+    if(q.length<1){close();return;}
+    const head=document.createElement('div');head.className='sk-live-head';const label=document.createElement('span');label.textContent='LIVE DISCOVERY';const count=document.createElement('strong');head.append(label,count);panel.append(head);
+    const words=q.split(/\s+/).filter(Boolean);
+    const cards=[...document.querySelectorAll('#tab-home .resource')].filter(el=>!el.closest('#skHeaderLiveResults'));
+    const hits=cards.map(card=>{const title=card.querySelector('h3,h4,strong')?.textContent||card.textContent.trim().slice(0,90);const hay=(card.textContent+' '+(card.dataset.search||'')).toLocaleLowerCase();const score=words.reduce((n,w)=>n+(hay.includes(w)?1:0),0);return {card,title,score};}).filter(x=>x.score===words.length).sort((a,b)=>b.score-a.score).slice(0,8);
+    count.textContent=hits.length+' MATCHES';
+    if(!hits.length){const empty=document.createElement('div');empty.className='sk-live-empty';empty.textContent='No exact match yet. Try a shorter keyword or browse all sections.';panel.append(empty);}
+    hits.forEach(({card,title})=>{const link=document.createElement('a');link.className='sk-live-item';const section=card.closest('section');const href=card.matches('a[href]')?card.getAttribute('href'):(section&&section.id?'#'+section.id:'#news');link.href=href||'#';const name=document.createElement('span');name.textContent=title;const meta=document.createElement('small');meta.textContent=section?.querySelector('.section-head h2')?.textContent||'Explore';link.append(name,meta);panel.append(link);});
+    panel.hidden=false;requestAnimationFrame(()=>panel.classList.add('is-open'));
+   };
+   input.addEventListener('input',render);
+   input.addEventListener('focus',()=>{if(input.value.trim())render();});
+   document.addEventListener('click',e=>{if(!box.contains(e.target))close();});
+   input.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+  }
+  /* Remove the old More button listeners by replacing the button node; keep one toggle only. */
+  const oldButton=document.querySelector('.sk-bottom-nav [data-sk-more]'),oldPanel=$('skMorePanel');
+  if(oldButton){
+   const button=oldButton.cloneNode(true);oldButton.replaceWith(button);
+   const panel=oldPanel;
+   if(panel){
+    panel.hidden=true;panel.classList.remove('is-open');
+    const close=()=>{panel.classList.remove('is-open');button.setAttribute('aria-expanded','false');window.setTimeout(()=>{if(!panel.classList.contains('is-open'))panel.hidden=true;},260);};
+    button.setAttribute('aria-expanded','false');
+    button.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(panel.classList.contains('is-open')){close();return;}panel.hidden=false;requestAnimationFrame(()=>panel.classList.add('is-open'));button.setAttribute('aria-expanded','true');});
+    panel.querySelector('.sk-more-panel-close')?.addEventListener('click',close);
+    panel.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',close));
+    document.addEventListener('click',e=>{if(panel.classList.contains('is-open')&&!panel.contains(e.target)&&!button.contains(e.target))close();});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel.classList.contains('is-open')){close();button.focus();}});
+   }
+  }
+  /* Real-time news: debounce typing to avoid flooding public RSS services. */
+  const newsInput=$('newsQuery'),newsButton=$('newsSearchButton'),mic=$('newsMicButton'),status=$('newsStatus');
+  if(newsInput&&newsButton&&!newsInput.dataset.skLiveBound){
+   newsInput.dataset.skLiveBound='1';let timer=0,last='';
+   newsInput.addEventListener('input',()=>{
+    const q=newsInput.value.trim();if(q.length<3){if(timer)clearTimeout(timer);return;}
+    if(timer)clearTimeout(timer);
+    timer=window.setTimeout(()=>{if(q!==last){last=q;newsButton.click();}},850);
+   });
+   newsInput.addEventListener('keydown',e=>{if(e.key==='Escape'&&timer)clearTimeout(timer);});
+  }
+  if(mic){
+   mic.title='اردو میں بول کر نیوز تلاش کریں';
+   mic.setAttribute('aria-label','اردو میں بول کر نیوز تلاش کریں');
+  }
+  /* When a feed provider is unavailable, keep a working direct search route visible. */
+  if(status&&!status.dataset.skFallbackBound){
+   status.dataset.skFallbackBound='1';
+   const observer=new MutationObserver(()=>{
+    if(!/temporarily slow or unavailable/i.test(status.textContent))return;
+    const q=$('newsQuery')?.value.trim();if(!q||status.querySelector('a'))return;
+    const a=document.createElement('a');a.href='https://news.google.com/search?q='+encodeURIComponent(q);a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open this search directly in Google News ↗';status.append(document.createElement('br'),a);
+   });
+   observer.observe(status,{childList:true,subtree:true,characterData:true});
+  }
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
