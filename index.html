@@ -3819,7 +3819,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
  postText?.addEventListener('input',()=>{counter.textContent=postText.value.length+' / 800';});
  const signedUser=()=>((typeof currentMember!=='undefined'&&currentMember)?currentMember:((typeof currentUser!=='undefined'&&currentUser)?currentUser:null));
  const escDate=value=>{try{return new Date(value).toLocaleString();}catch(e){return 'Recently';}};
- const firstNameOf=user=>String(user?.user_metadata?.first_name||'').trim().split(/\\s+/)[0].slice(0,40);
+ const firstNameOf=user=>String(user?.user_metadata?.first_name||'').trim().split(/\s+/)[0].slice(0,40);
  let countryPromise=null;
  async function getApproxCountry(){
   if(countryPromise)return countryPromise;
