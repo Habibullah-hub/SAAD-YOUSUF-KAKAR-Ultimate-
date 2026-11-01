@@ -2268,101 +2268,53 @@ document.getElementById('clearResource').addEventListener('click',()=>{
 </script>
 
 <script>
-/* SKCYBERHUB_CREATOR_GLOBAL_V1 */
-(function(){
- function boot(){
-  const byId=id=>document.getElementById(id);
-  const topic=byId('skCreatorTopic'),platform=byId('skCreatorPlatform'),tone=byId('skCreatorTone'),status=byId('skCreatorStatus');
-  const outputs=['skCreatorCaption','skCreatorHashtags','skCreatorTitle','skCreatorScript','skCreatorPrompt','skCreatorBio'];
-  const set=(id,value)=>{const el=byId(id);if(el)el.value=value;};
-  const get=id=>byId(id)?.value||'';
-  const copy=async id=>{const el=byId(id);if(!el||!el.value)return;try{await navigator.clipboard.writeText(el.value);if(status)status.textContent='Copied to clipboard.';}catch(e){el.focus();el.select();if(status)status.textContent='Text selected. Use your phone’s Copy option.';}};
-  byId('skCreatorGenerate')?.addEventListener('click',()=>{
-   const t=(topic?.value||'').trim();if(!t){if(status)status.textContent='Please enter a topic first.';topic?.focus();return;}
-   const p=get('skCreatorPlatform'),m=get('skCreatorTone');
-   const opening=m==='educational'?'Learn something useful about':m==='professional'?'A practical guide to':m==='friendly'?'Let’s talk about':'A powerful reminder about';
-   const cap=opening+' '+t+'. Save this post, share it with someone who may need it, and follow for more useful content.';
-   const words=t.toLowerCase().normalize('NFKD').match(/[\p{L}\p{N}]+/gu)||[];
-   const tags=[...new Set(['#'+p.replace(/[^a-z0-9]/gi,''),'#'+(words[0]||'creator'),'#'+(words[1]||'inspiration'),'#LearnAndGrow','#DigitalCreator','#SKCyberHub'])].join(' ');
-   const title=t+' | A message worth sharing';
-   const script='HOOK (0–3 sec): “Have you ever thought about '+t+'?”\n\nMAIN (3–20 sec): Explain the key idea in one or two clear sentences. Give one practical example connected to '+t+'.\n\nTAKEAWAY (20–27 sec): Share one action the viewer can take today.\n\nCTA (last 3 sec): “Follow for more useful videos and share this with a friend.”';
-   const prompt='Create a vertical 9:16 cinematic realistic visual about '+t+'. Natural human expressions, authentic environment, detailed textures, balanced lighting, clear subject, tasteful composition, no text, no logos, no watermark. Suitable for a short '+p+' video. Tone: '+m+'.';
-   const bio='Sharing useful content about '+t+' | Learning • Creativity • Positive ideas | Follow for new posts.';
-   set('skCreatorCaption',cap);set('skCreatorHashtags',tags);set('skCreatorTitle',title);set('skCreatorScript',script);set('skCreatorPrompt',prompt);set('skCreatorBio',bio);
-   if(status)status.textContent='Content pack generated. Review accuracy and personalize it before posting.';
-  });
-  byId('skCreatorClear')?.addEventListener('click',()=>{if(topic)topic.value='';outputs.forEach(id=>set(id,''));if(status)status.textContent='Cleared. Enter a new topic to begin.';});
-  document.querySelectorAll('[data-copy^="skCreator"]').forEach(btn=>btn.addEventListener('click',()=>copy(btn.dataset.copy)));
-  const q=byId('skGlobalQuery'),cat=byId('skGlobalCategory'),price=byId('skGlobalPrice'),device=byId('skGlobalDevice'),results=byId('skGlobalResults'),globalStatus=byId('skGlobalStatus');
-  function classify(card){
-   const section=card.closest('section[id]'),id=section?.id||'';
-   const tag=card.querySelector('.tag')?.textContent.toLowerCase()||'';
-   let cost='unknown';
-   if(tag.includes('paid')&&!tag.includes('free'))cost='paid';
-   else if(tag.includes('free')&&(tag.includes('limit')||tag.includes('plan')||tag.includes('access')))cost='limited';
-   else if(tag.includes('free')||tag.includes('open source'))cost='free';
-   const text=((card.innerText||'')+' '+(card.dataset.search||'')).toLowerCase();
-   let platform='browser';
-   if(/iphone|ipad|ios|app store/.test(text))platform='iphone';
-   else if(/android|google play|apk/.test(text))platform='android';
-   else if(/windows|pc game|desktop software/.test(text))platform='windows';
-   return {id,cost,platform,text};
-  }
-  function runGlobal(){
-   if(!results)return;
-   const query=(q?.value||'').trim().toLowerCase(),category=cat?.value||'all',pricing=price?.value||'all',deviceValue=device?.value||'all';
-   results.replaceChildren();
-   const cards=[...document.querySelectorAll('#tab-home .resource')].filter(card=>card.querySelector('h3')||card.querySelector('.app-name'));
-   let count=0;
-   cards.forEach(card=>{
-    const meta=classify(card),title=card.querySelector('h3')?.textContent?.trim()||card.querySelector('.app-name')?.textContent?.trim()||'Resource';
-    const desc=card.querySelector('p')?.textContent?.trim()||'Open this resource for details.';
-    const hay=(title+' '+desc+' '+meta.text+' '+meta.id).toLowerCase();
-    const link=card.matches('a[href]')?card:card.querySelector('a[href]');
-    const href=link?.getAttribute('href')||'';
-    let safe='';try{const u=new URL(href,location.href);if(u.protocol==='https:'||u.protocol==='http:')safe=u.href;}catch(e){}
-    const matches=(!query||hay.includes(query))&&(category==='all'||meta.id===category)&&(pricing==='all'||meta.cost===pricing)&&(deviceValue==='all'||meta.platform===deviceValue);
-    if(!matches||!safe)return;
-    const item=document.createElement('article');item.className='global-result-card';
-    const name=document.createElement('h4');name.textContent=title;
-    const description=document.createElement('p');description.textContent=desc;
-    const metadata=document.createElement('span');metadata.className='global-result-meta';metadata.textContent=(meta.id.replace(/-/g,' ')||'directory')+' · '+meta.cost+' · '+meta.platform;
-    const a=document.createElement('a');a.href=safe;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open resource ↗';
-    item.append(name,description,metadata,a);results.appendChild(item);count++;
-   });
-   if(globalStatus)globalStatus.textContent=count+' matching resources found. Pricing and device labels are estimated from each listing; verify details on the provider website.';
-   if(!count){const empty=document.createElement('p');empty.className='empty';empty.textContent='No matching resource found. Try changing the filters or search words.';results.appendChild(empty);}
-  }
-  byId('skGlobalSearchButton')?.addEventListener('click',runGlobal);
-  q?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runGlobal();}});
-  [cat,price,device].forEach(el=>el?.addEventListener('change',runGlobal));
-  byId('skGlobalResetButton')?.addEventListener('click',()=>{if(q)q.value='';if(cat)cat.value='all';if(price)price.value='all';if(device)device.value='all';results?.replaceChildren();if(globalStatus)globalStatus.textContent='Filters reset. Search across listed resources.';});
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
-})();
+/* SKCYBERHUB_CREATOR_GLOBAL_V2_FIXED */
+(function(){function init(){
+ const byId=id=>document.getElementById(id),topic=byId('skContentPackTopicV2V2'),platform=byId('skCreatorPlatform'),tone=byId('skContentPackToneV2V2'),status=byId('skCreatorStatus');
+ const ids=['skCreatorCaption','skCreatorHashtags','skCreatorTitle','skCreatorScript','skCreatorPrompt','skCreatorBio'];
+ const set=(id,v)=>{const el=byId(id);if(el)el.value=v;};
+ const copy=async id=>{const el=byId(id);if(!el||!el.value)return;try{await navigator.clipboard.writeText(el.value);if(status)status.textContent='Copied to clipboard.';}catch(e){el.focus();el.select();if(status)status.textContent='Text selected. Use your phone’s Copy option.';}};
+ byId('skContentPackGenerateV2V2')?.addEventListener('click',()=>{
+  const t=(topic?.value||'').trim();if(!t){if(status)status.textContent='Please enter a topic first.';topic?.focus();return;}
+  const p=platform?.value||'TikTok',m=tone?.value||'motivational',ur=/[\u0600-\u06FF]/.test(t),words=t.toLowerCase().normalize('NFKD').match(/[\p{L}\p{N}]+/gu)||[];
+  const caption=(ur?'آج کا موضوع: ':'Today’s topic: ')+t+' — '+(ur?'سیکھیں، غور کریں اور آج ایک مثبت عملی قدم اٹھائیں۔':'Learn, reflect and take one positive practical step today.');
+  const tags=[...new Set(['#'+p.replace(/[^a-z0-9]/gi,''),'#'+(words[0]||'creator'),'#'+(words[1]||'ideas'),'#LearnAndGrow','#DigitalCreator','#SKCyberHub'])].join(' ');
+  const title=t+' | '+(ur?'ایک اہم پیغام':'A message worth sharing');
+  const script=(ur?'ابتدا: کیا آپ نے کبھی ':'HOOK: Have you ever thought about ')+t+'؟\n\n'+(ur?'اہم بات: اس موضوع کی بنیادی بات آسان الفاظ میں سمجھائیں اور ایک حقیقی مثال دیں۔\nعمل: ناظرین کو ایک چھوٹا عملی قدم بتائیں۔\nاختتام: مزید مفید ویڈیوز کے لیے فالو کریں۔':'MAIN: Explain the key idea in clear language and give one real example.\nACTION: Give viewers one small practical step.\nCTA: Follow for more useful videos and share with a friend.');
+  const prompt='Create a vertical 9:16 cinematic realistic visual about '+t+'. Natural expressions, authentic environment, detailed textures, balanced lighting, no text, logos or watermark. Platform: '+p+'. Tone: '+m+'.';
+  const bio=(ur?'موضوعات: ':'Topics: ')+t+' | '+(ur?'مفید معلومات، سیکھنا اور تخلیق':'Useful ideas, learning and creativity')+' | SK Cyber Hub';
+  set('skCreatorCaption',caption);set('skCreatorHashtags',tags);set('skCreatorTitle',title);set('skCreatorScript',script);set('skCreatorPrompt',prompt);set('skCreatorBio',bio);
+  if(status)status.textContent='Content pack generated. Check facts and personalize before publishing.';
+ });
+ byId('skContentPackClearV2V2')?.addEventListener('click',()=>{if(topic)topic.value='';ids.forEach(id=>set(id,''));if(status)status.textContent='Cleared. Enter a new topic to begin.';});
+ document.querySelectorAll('[data-copy^="skCreator"]').forEach(btn=>btn.addEventListener('click',()=>copy(btn.dataset.copy)));
+}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();})();
 </script>
 
 
 <script>
-/* SKCYBERHUB_CREATOR_TOOLS_V1_SCRIPT */
-(function(){
- function start(){
-  const type=document.getElementById('skCreatorType'),lang=document.getElementById('skCreatorLang'),topic=document.getElementById('skCreatorTopic'),out=document.getElementById('skCreatorOutput'),go=document.getElementById('skCreatorGenerate'),copy=document.getElementById('skCreatorCopy'),clear=document.getElementById('skCreatorClear');
-  if(!type||!lang||!topic||!out||!go)return;
-  const make=(t,k,l)=>{
-   const data={
-    ur:{caption:'✨ '+t+' — کامیابی کا سفر صبر، محنت اور مستقل مزاجی سے بنتا ہے۔ آج ایک مثبت قدم اٹھائیں۔\nاپنی رائے کمنٹس میں لکھیں۔',hashtags:'#'+t.replace(/\s+/g,'')+' #اردو #پاکستان #سعودی_عرب #مثبت_سوچ #کامیابی',title:'یہ '+t+' آپ کی سوچ بدل سکتا ہے! | اہم بات ضرور سنیں',script:'السلام علیکم!\nآج ہم بات کریں گے: '+t+'۔\nچھوٹے قدم بھی بڑی تبدیلی لا سکتے ہیں۔ آج ہی ایک عملی قدم اٹھائیں۔\nاگر یہ بات مفید لگی تو ویڈیو شیئر کریں۔',prompt:'ایک حقیقت پسندانہ، سینیمیٹک 9:16 ویڈیو بنائیں۔ موضوع: '+t+'۔ قدرتی روشنی، حقیقی ماحول، واضح کردار، مستحکم کیمرہ اور باریک تفصیلات۔ کوئی تحریر، لوگو یا واٹرمارک شامل نہ کریں۔',bio:'روزانہ '+t+' اور مفید معلومات ✨\nسیکھیں، آگے بڑھیں، دوسروں کے کام آئیں۔'},
-    en:{caption:'✨ '+t+' — progress is built through patience, consistency and focused effort. Take one positive step today.\nShare your thoughts below.',hashtags:'#'+t.replace(/\s+/g,'')+' #Learn #Growth #Motivation #Technology #DailyTips',title:'The truth about '+t+' that everyone should know',script:'Hello everyone!\nToday we are looking at '+t+'. Start with one simple step, stay consistent and learn from the results.\nTry it today and share this video with someone who may benefit.',prompt:'Create a photorealistic cinematic vertical 9:16 video about '+t+'. Natural lighting, believable environment, authentic expressions and smooth camera movement. No text, logos or watermark.',bio:'Sharing useful ideas about '+t+' ✨\nLearn something new. Grow every day.'},
-    roman:{caption:'✨ '+t+' — kamyabi ka safar sabr, mehnat aur istiqamat se banta hai. Aaj aik acha qadam uthayein.\nApni rai comments mein likhein.',hashtags:'#'+t.replace(/\s+/g,'')+' #Urdu #Pakistan #SaudiArabia #Motivation #Kamyabi',title:t+' ke bare mein aik zaroori baat jo aap ko maloom honi chahiye',script:'Assalam-o-alaikum!\nAaj hum baat karenge: '+t+'۔ Chhote qadam bhi bari tabdeeli la sakte hain. Aaj aik amli qadam uthayein.\nVideo mufeed lage to share karein.',prompt:'Realistic cinematic vertical 9:16 video about '+t+'. Natural light, authentic environment, realistic details, smooth camera movement, no text, logo or watermark.',bio:'Rozana '+t+' aur mufeed maloomat ✨\nSeekhein, aage barhein, behtari laayein.'}
-   };
-   return data[l][k];
+/* SKCYBERHUB_CREATOR_TOOLS_V2_FIXED */
+(function(){function init(){
+ const type=document.getElementById('skCreatorType'),lang=document.getElementById('skCreatorLang'),topic=document.getElementById('skContentPackTopicV2'),tone=document.getElementById('skContentPackToneV2'),output=document.getElementById('skCreatorOutput'),go=document.getElementById('skContentPackGenerateV2'),copy=document.getElementById('skCreatorCopy'),clear=document.getElementById('skContentPackClearV2');
+ if(!type||!lang||!topic||!tone||!output||!go)return;
+ go.addEventListener('click',()=>{
+  const t=topic.value.trim(),l=lang.value,k=type.value,st=tone.value;
+  if(!t){output.value=l==='en'?'Please enter a topic first.':'براہِ کرم پہلے موضوع لکھیں۔';topic.focus();return;}
+  const packs={
+   ur:{caption:'✨ '+t+' — کامیابی صبر، محنت اور مستقل مزاجی سے حاصل ہوتی ہے۔ آج ایک مثبت قدم اٹھائیں۔ اپنی رائے کمنٹس میں لکھیں۔',hashtags:'#'+t.replace(/\s+/g,'')+' #اردو #پاکستان #سعودی_عرب #مثبت_سوچ #کامیابی',title:'یہ '+t+' آپ کی سوچ بدل سکتا ہے! | اہم بات ضرور سنیں',script:'السلام علیکم!\nآج ہم بات کریں گے: '+t+'۔\nاس موضوع کی اہم بات سمجھیں، ایک عملی قدم منتخب کریں اور آج ہی اس پر عمل کریں۔\nاگر ویڈیو مفید لگے تو شیئر کریں۔',prompt:'حقیقت پسندانہ، سینیمیٹک عمودی 9:16 ویڈیو بنائیں۔ موضوع: '+t+'۔ قدرتی روشنی، حقیقی ماحول، واضح کردار، مستحکم کیمرہ اور باریک تفصیلات۔ کوئی تحریر، لوگو یا واٹرمارک نہیں۔',bio:'روزانہ '+t+' اور مفید معلومات ✨\nسیکھیں، آگے بڑھیں، دوسروں کے کام آئیں۔'},
+   en:{caption:'✨ '+t+' — progress comes from patience, consistent effort and learning. Take one practical step today.',hashtags:'#'+t.replace(/\s+/g,'')+' #Learn #Growth #Motivation #Technology #DailyTips',title:'The truth about '+t+' that everyone should know',script:'Hello! Today we are looking at '+t+'. Understand one useful idea, choose one practical action and try it today. Share this video with someone who may benefit.',prompt:'Create a photorealistic cinematic vertical 9:16 video about '+t+'. Natural lighting, believable environment, authentic expressions and smooth camera movement. No text, logos or watermark.',bio:'Sharing useful ideas about '+t+' ✨\nLearn something new. Grow every day.'},
+   roman:{caption:'✨ '+t+' — kamyabi sabr, mehnat aur istiqamat se milti hai. Aaj aik acha qadam uthayein.',hashtags:'#'+t.replace(/\s+/g,'')+' #Urdu #Pakistan #SaudiArabia #Motivation #Kamyabi',title:t+' ke bare mein aik zaroori baat',script:'Assalam-o-alaikum! Aaj hum baat karenge: '+t+'. Aik amli qadam chunein aur aaj hi us par amal karein. Video mufeed lage to share karein.',prompt:'Realistic cinematic vertical 9:16 video about '+t+'. Natural light, authentic environment, realistic details, no text, logo or watermark.',bio:'Rozana '+t+' aur mufeed maloomat ✨\nSeekhein, aage barhein.'}
   };
-  go.addEventListener('click',()=>{const t=topic.value.trim();if(!t){out.value=lang.value==='en'?'Please enter a topic first.':'براہِ کرم پہلے موضوع لکھیں۔';return;}out.value=make(t,type.value,lang.value);});
-  if(copy)copy.addEventListener('click',async()=>{if(!out.value)return;try{await navigator.clipboard.writeText(out.value);copy.textContent='Copied';setTimeout(()=>copy.textContent='Copy result',1400);}catch(e){out.focus();out.select();copy.textContent='Select and copy';}});
-  if(clear)clear.addEventListener('click',()=>{topic.value='';out.value='';});
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
-})();
+  let result=(packs[l]||packs.en)[k]||packs[l].caption;
+  if(st==='informative')result=(l==='ur'?'معلوماتی انداز: ':'Informative style: ')+result;
+  if(st==='friendly')result=(l==='ur'?'دوستانہ انداز: ':'Friendly tone: ')+result;
+  if(st==='professional')result=(l==='ur'?'پیشہ ورانہ انداز: ':'Professional tone: ')+result;
+  output.value=result;
+ });
+ topic.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go.click();}});
+ copy?.addEventListener('click',async()=>{if(!output.value)return;try{await navigator.clipboard.writeText(output.value);copy.textContent='Copied';setTimeout(()=>copy.textContent='Copy result',1300);}catch(e){output.focus();output.select();copy.textContent='Select and copy';}});
+ clear?.addEventListener('click',()=>{topic.value='';output.value='';topic.focus();});
+}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();})();
 </script>
 
 <script>
