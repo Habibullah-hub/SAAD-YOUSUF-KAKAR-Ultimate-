@@ -30,9 +30,11 @@ Every news result provides **Read full article** and **Open publisher website** 
 - Crawler instructions, XML sitemap, About, Privacy and advertising/affiliate disclosure pages.
 
 ## Admin and database security
-The site uses the configured Supabase project URL and public anon/publishable key in the browser. Never enter a service-role key, database password or private secret in the website. The front end checks that the signed-in user's `profiles.role` is `admin`, but this is not a substitute for database security. The current SK Cyber Hub Supabase project's Row Level Security policies, profile-role protections and Storage policies must be independently verified. Public users must never be able to grant themselves admin access or write/delete listings.
+The site uses the isolated `public.sk_apps` and `public.sk_profiles` tables. It accepts only a public Supabase Publishable key (`sb_publishable_`) or legacy anon JWT key in the browser; never enter a `sb_secret_` / `service_role` key, database password or private secret. The connection test checks `sk_apps`; Admin login separately checks that the signed-in user's `sk_profiles.role` is `admin`.
 
-The owner remains the only administrator. Community/member registration will not be enabled until database-side role protection, RLS, spam controls and privacy requirements are verified.
+The SQL setup creates the SK-specific Row Level Security policies and a trigger that creates new profiles as `member`. Ordinary users cannot change their own role. The owner must manually promote only their own Auth user UUID to `admin` using the final SQL statement in `supabase/SK-CYBER-HUB-SETUP.sql`. Verify that exactly one owner row is updated. Do not promote other accounts.
+
+Public account registration/community features remain disabled until the owner-only Admin setup and live security checks are complete. No Storage bucket is required for the current external-icon listing design.
 
 Browser configuration is local to the device and browser. Setting it on one phone does not automatically configure another. Do not reuse credentials from the separate Yousuf Kakar Free Apps project.
 
