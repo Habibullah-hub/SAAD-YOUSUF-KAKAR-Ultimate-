@@ -2265,8 +2265,6 @@ document.getElementById('clearResource').addEventListener('click',()=>{
   const make=document.getElementById('skMakePass'),length=document.getElementById('skPassLength'),pass=document.getElementById('skPassResult'),copy=document.getElementById('skCopyPass');
   if(make&&length&&pass){make.addEventListener('click',()=>{const n=Math.max(8,Math.min(64,Number.parseInt(length.value,10)||16));length.value=n;const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*_-+=';const bytes=new Uint32Array(n);if(window.crypto&&crypto.getRandomValues)crypto.getRandomValues(bytes);else{pass.textContent='Secure random generation is not available in this browser.';return;}let out='';for(let i=0;i<n;i++)out+=chars[bytes[i]%chars.length];pass.textContent=out;});}
   if(copy&&pass){copy.addEventListener('click',async()=>{const value=pass.textContent;if(!value||value.includes('appear here')||value.includes('not available'))return;try{await navigator.clipboard.writeText(value);copy.textContent='Copied';setTimeout(()=>copy.textContent='Copy password',1500);}catch(e){copy.textContent='Select and copy manually';}});}
-  const meters=document.getElementById('skMeters'),result=document.getElementById('skLengthResult');
-  if(meters&&result){meters.addEventListener('input',()=>{const v=Number(meters.value);result.textContent=meters.value.trim()===''?'Enter a value to convert to feet.':Number.isFinite(v)?(v*3.280839895).toFixed(4)+' feet':'Enter a valid number.';});}
  });
 })();
 </script>
