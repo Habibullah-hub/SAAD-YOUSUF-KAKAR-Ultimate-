@@ -1156,8 +1156,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
   <a class="sk-category-card" href="#documents" data-sk-view="documents"><span class="sk-category-icon">📚</span><b>Learning & Documents</b><small>Books, courses and study material</small><span class="sk-card-arrow">Start learning ↗</span></a>
   <a class="sk-category-card" href="#creator-studio" data-sk-view="creator-studio"><span class="sk-category-icon">🎥</span><b>Creator Studio</b><small>Ideas, scripts, captions and prompts</small><span class="sk-card-arrow">Create ↗</span></a>
   <a class="sk-category-card sk-earn-card" href="#earnings-model" data-sk-view="earnings-model"><span class="sk-category-icon">💰</span><b>Earn & Rewards</b><small>Surveys and legitimate opportunities</small><span class="sk-card-arrow">Discover ↗</span></a>
-  <a class="sk-category-card" href="#news" data-sk-view="news"><span class="sk-category-icon">🌍</span><b>World News</b><small>Explore news by topic and language</small><span class="sk-card-arrow">Read news ↗</span></a>
-  <a class="sk-category-card" href="#jobs" data-sk-view="jobs"><span class="sk-category-icon">💼</span><b>Jobs & Skills</b><small>Work, remote jobs and opportunities</small><span class="sk-card-arrow">Find opportunities ↗</span></a>
+    <a class="sk-category-card" href="#jobs" data-sk-view="jobs"><span class="sk-category-icon">💼</span><b>Jobs & Skills</b><small>Work, remote jobs and opportunities</small><span class="sk-card-arrow">Find opportunities ↗</span></a>
   <a class="sk-category-card" href="#security-privacy" data-sk-view="security-privacy"><span class="sk-category-icon">🛡️</span><b>Security & Privacy</b><small>Protect accounts and devices</small><span class="sk-card-arrow">Explore ↗</span></a>
   <a class="sk-category-card" href="#languages" data-sk-view="languages"><span class="sk-category-icon">🌐</span><b>Languages</b><small>Urdu, Arabic, Pashto and more</small><span class="sk-card-arrow">Explore ↗</span></a>
  </div>
@@ -1871,21 +1870,6 @@ input.addEventListener('input',filterApps);
  }
  async function shareNews(item=null){const title=item?(item.translatedTitle||cleanText(item.title)||'World News'):(document.getElementById('newsReaderTitle').textContent||'World News');const summary=item?(item.translatedDescription||cleanText(item.description||item.content||'')):(document.getElementById('newsReaderBody').textContent||'');const pageUrl=window.location.href.split('#')[0]+'#news';const shareText=title+'\n\n'+summary.slice(0,420)+'\n\nSK CYBER HUB · SAAD YOUSUF KAKAR\n'+pageUrl;try{const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;const ctx=canvas.getContext('2d');ctx.fillStyle='#f4f8fb';ctx.fillRect(0,0,1080,1350);ctx.fillStyle='#0067b8';ctx.fillRect(0,0,1080,250);ctx.fillStyle='#ffffff';ctx.fillRect(70,65,112,112);ctx.fillStyle='#0067b8';ctx.font='bold 50px Arial';ctx.textAlign='center';ctx.fillText('SK',126,137);ctx.textAlign='left';ctx.fillStyle='#fff';ctx.font='bold 43px Arial';ctx.fillText('SK CYBER HUB',220,112);ctx.font='26px Arial';ctx.fillText('SAAD YOUSUF KAKAR',220,160);ctx.fillStyle='#075b98';ctx.font='bold 29px Arial';ctx.fillText('WORLD NEWS',75,330);ctx.fillStyle='#172b3a';ctx.font='bold 48px Arial';let y=420;const drawWrapped=(value,font,lineHeight,maxLines)=>{ctx.font=font;const words=String(value||'').split(/\s+/);let line='',count=0;for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width>920&&line){ctx.fillText(line,75,y);y+=lineHeight;line=word;if(++count>=maxLines)return;}else line=test;}if(line&&count<maxLines){ctx.fillText(line,75,y);y+=lineHeight;}};drawWrapped(title,'bold 48px Arial',62,5);y+=24;ctx.fillStyle='#455866';drawWrapped(summary.slice(0,500),'30px Arial',46,8);ctx.fillStyle='#0067b8';ctx.fillRect(75,1190,930,3);ctx.fillStyle='#075b98';ctx.font='bold 28px Arial';ctx.fillText('Read more on SK CYBER HUB',75,1250);ctx.font='24px Arial';ctx.fillText(pageUrl,75,1300);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(blob&&navigator.share&&typeof File!=='undefined'){const file=new File([blob],'SK-Cyber-Hub-News.png',{type:'image/png'});if(!navigator.canShare||navigator.canShare({files:[file]})){await navigator.share({files:[file],title,text:shareText});return;}}if(navigator.share){await navigator.share({title,text:shareText,url:pageUrl});return;}if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(shareText);status.textContent='Branded news details and website link copied. Paste into WhatsApp, Facebook or your status.';return;}status.textContent='Sharing is unavailable. Website link: '+pageUrl;}catch(error){if(error?.name!=='AbortError')status.textContent='Sharing failed. Website link: '+pageUrl;}}
  document.getElementById('closeNewsReader').addEventListener('click',closeReader);
- const newsNavigationLink=document.querySelector('.news-nav-link');
- if(newsNavigationLink)newsNavigationLink.addEventListener('click',event=>{
-  const newsSection=document.getElementById('news');
-  if(!newsSection)return;
-  event.preventDefault();
-  history.replaceState(null,'','#news');
-  const openNewsLanguages=document.getElementById('newsLanguageChoices');
-  const newsLanguageArrow=document.getElementById('newsLanguageDropdownButton');
-  const siteLanguagePanel=document.getElementById('siteLanguagePanel');
-  if(openNewsLanguages)openNewsLanguages.classList.add('hidden');
-  if(newsLanguageArrow)newsLanguageArrow.setAttribute('aria-expanded','false');
-  if(siteLanguagePanel)siteLanguagePanel.classList.add('hidden');
-  newsSection.scrollIntoView({behavior:'smooth',block:'start'});
- });
-
 
  document.getElementById('shareNewsButton').addEventListener('click',shareNews);
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!reader.classList.contains('hidden'))closeReader();});
