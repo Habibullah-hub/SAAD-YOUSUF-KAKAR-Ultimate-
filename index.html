@@ -884,6 +884,18 @@ img,iframe,video{max-width:100%}
 .global-result-meta{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:.04em}
 .global-result-card a{color:#0067b8;font-size:12px;font-weight:700;text-decoration:none}
 @media(max-width:700px){.creator-input-grid,.creator-output-grid,.global-finder-controls{grid-template-columns:1fr}.creator-workshop,.global-finder{padding:14px}.global-finder-controls label,.global-finder-controls input,.global-finder-controls select{grid-column:1}}
+
+/* SKCYBERHUB_CREATOR_TOOLS_V1 */
+.creator-generator{grid-column:1/-1;margin:16px 0 20px;padding:20px}
+.creator-generator>p{margin:0 0 14px;color:#626262;font-size:13px;line-height:1.6}
+.creator-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.creator-controls label{align-self:end;font-size:12px;font-weight:700;color:#424242}
+.creator-controls input,.creator-controls select,.creator-controls textarea{width:100%;min-width:0;padding:10px;border:1px solid #d1d1d1;border-radius:4px;background:#fff;color:#242424}
+.creator-controls textarea{grid-column:1/-1;resize:vertical}
+.creator-controls button{justify-self:start}
+.creator-controls small{grid-column:1/-1;color:#626262;font-size:11px}
+.creator-actions{display:flex;gap:8px;flex-wrap:wrap}
+@media(max-width:600px){.creator-controls{grid-template-columns:1fr}.creator-controls textarea,.creator-controls small{grid-column:1}}
 </style>
 </head>
 <body>
@@ -1011,7 +1023,7 @@ img,iframe,video{max-width:100%}
 <a class="tile resource" data-search="have i been pwned email breach check" href="https://haveibeenpwned.com/" target="_blank" rel="noopener noreferrer"><span class="tag">ACCOUNT CHECK</span><h3>Have I Been Pwned</h3><p>Check whether an email address appears in known data breaches.</p><span class="arrow">Check account ↗</span></a>
 </div></section>
 
-<section class="section wrap" id="creator-studio"><div class="section-head"><div><h2>Creator Studio</h2><p>Official creator tools for making, editing and publishing content. Check each service's current free limits.</p></div></div><div class="grid resource-grid">
+<section class="section wrap" id="creator-studio"><div class="section-head"><div><h2>Creator Studio</h2><p>Official creator tools for making, editing and publishing content. Check each service's current free limits.</p></div></div><div class="creator-generator platform-card" id="skCreatorGenerator"><h3>Free Creator Content Generator</h3><p>Captions, hashtags, video titles, scripts, AI prompts and social bios. Runs locally without AI credits.</p><div class="creator-controls"><label for="skCreatorType">Content type</label><select id="skCreatorType"><option value="caption">Caption</option><option value="hashtags">Hashtags</option><option value="title">Video title</option><option value="script">Short video script</option><option value="prompt">AI image / video prompt</option><option value="bio">Social bio</option></select><label for="skCreatorLang">Language</label><select id="skCreatorLang"><option value="ur">اردو</option><option value="en">English</option><option value="roman">Roman Urdu</option></select><label for="skCreatorTopic">Topic or keywords</label><input id="skCreatorTopic" type="text" maxlength="220" placeholder="مثلاً صبر، کامیابی، AI ویڈیو"><label for="skCreatorTone">Style</label><select id="skCreatorTone"><option value="inspiring">Motivational</option><option value="informative">Informative</option><option value="friendly">Friendly</option><option value="professional">Professional</option></select><button class="primary" type="button" id="skCreatorGenerate">Generate content</button><label for="skCreatorOutput">Your result</label><textarea id="skCreatorOutput" rows="7" readonly placeholder="Your generated content will appear here."></textarea><div class="creator-actions"><button class="secondary" type="button" id="skCreatorCopy">Copy result</button><button class="secondary" type="button" id="skCreatorClear">Clear</button></div><small>Free template-based generator. It does not call an AI service or upload your topic.</small></div></div><div class="grid resource-grid">
 <a class="tile resource" data-search="youtube studio creator video analytics publishing" href="https://studio.youtube.com/" target="_blank" rel="noopener noreferrer"><span class="tag">OFFICIAL CREATOR TOOL</span><h3>YouTube Studio</h3><p>Manage your channel, upload videos, review analytics and moderate comments.</p><span class="arrow">Open Studio ↗</span></a>
 <a class="tile resource" data-search="tiktok studio creator publish manage videos analytics" href="https://www.tiktok.com/tiktokstudio" target="_blank" rel="noopener noreferrer"><span class="tag">OFFICIAL CREATOR TOOL</span><h3>TikTok Studio</h3><p>Manage TikTok content and creator tools where available for your account and region.</p><span class="arrow">Open TikTok Studio ↗</span></a>
 <a class="tile resource" data-search="capcut video editor mobile desktop browser" href="https://www.capcut.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE ACCESS · LIMITS MAY APPLY</span><h3>CapCut</h3><p>Edit short videos and social content; features and availability vary by region and plan.</p><span class="arrow">Open CapCut ↗</span></a>
@@ -1060,14 +1072,22 @@ img,iframe,video{max-width:100%}
 <a class="tile resource" data-search="indeed saudi arabia jobs" href="https://sa.indeed.com/" target="_blank" rel="noopener noreferrer"><span class="tag">SAUDI ARABIA</span><h3>Indeed Saudi Arabia</h3><p>Search vacancies and compare job descriptions and employer information.</p><span class="arrow">Search vacancies ↗</span></a>
 <a class="tile resource" data-search="bayt jobs middle east pakistan" href="https://www.bayt.com/" target="_blank" rel="noopener noreferrer"><span class="tag">MIDDLE EAST</span><h3>Bayt</h3><p>Explore regional job listings and career resources.</p><span class="arrow">Explore jobs ↗</span></a>
 <a class="tile resource" data-search="mustakbil pakistan jobs" href="https://www.mustakbil.com/" target="_blank" rel="noopener noreferrer"><span class="tag">PAKISTAN</span><h3>Mustakbil</h3><p>Browse job listings and career opportunities in Pakistan.</p><span class="arrow">Find opportunities ↗</span></a>
-</div></section>
+<a class="tile resource" data-search="remote jobs work from home worldwide" href="https://remoteok.com/" target="_blank" rel="noopener noreferrer"><span class="tag">REMOTE JOBS</span><h3>Remote OK</h3><p>Browse remote vacancies and verify employer and location details.</p><span class="arrow">Browse remote jobs ↗</span></a>
+<a class="tile resource" data-search="freelance projects jobs" href="https://www.upwork.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREELANCING</span><h3>Upwork</h3><p>Explore freelance projects; fees and competition may apply.</p><span class="arrow">Explore projects ↗</span></a>
+<a class="tile resource" data-search="internships student internships" href="https://www.internships.com/" target="_blank" rel="noopener noreferrer"><span class="tag">INTERNSHIPS</span><h3>Internships.com</h3><p>Search internships and confirm eligibility with each employer.</p><span class="arrow">Search internships ↗</span></a>
+<a class="tile resource" data-search="scholarships international students" href="https://www.scholars4dev.com/" target="_blank" rel="noopener noreferrer"><span class="tag">SCHOLARSHIPS</span><h3>Scholars4Dev</h3><p>Discover scholarship announcements; verify details with the official university or sponsor.</p><span class="arrow">Explore scholarships ↗</span></a>
+<a class="tile resource" data-search="Pakistan national jobs portal government jobs" href="https://njp.gov.pk/" target="_blank" rel="noopener noreferrer"><span class="tag">PAKISTAN · OFFICIAL PORTAL</span><h3>National Jobs Portal</h3><p>Explore public-sector vacancies listed through Pakistan's government portal.</p><span class="arrow">Visit official portal ↗</span></a>
+<a class="tile resource" data-search="Saudi Arabia Jadarat employment platform jobs" href="https://jadarat.sa/" target="_blank" rel="noopener noreferrer"><span class="tag">SAUDI ARABIA</span><h3>Jadarat</h3><p>Explore Saudi employment opportunities and eligibility through the official platform.</p><span class="arrow">Visit platform ↗</span></a></div></section>
 
 <section class="section wrap" id="deals"><div class="section-head"><div><h2>Deals & Freebies Center</h2><p>Find legitimate free games and open resources. Offers can expire or change without notice.</p></div></div><div class="grid resource-grid">
 <a class="tile resource" data-search="epic games free games weekly giveaways" href="https://store.epicgames.com/en-US/free-games" target="_blank" rel="noopener noreferrer"><span class="tag">ROTATING FREE GAMES</span><h3>Epic Games Free Games</h3><p>Check the current official free-game offers and claim terms.</p><span class="arrow">View current offers ↗</span></a>
 <a class="tile resource" data-search="steam free to play free games" href="https://store.steampowered.com/genre/Free%20to%20Play/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE-TO-PLAY</span><h3>Steam Free to Play</h3><p>Browse PC games listed in Steam's free-to-play category.</p><span class="arrow">Browse games ↗</span></a>
 <a class="tile resource" data-search="itch io free indie games" href="https://itch.io/games/free" target="_blank" rel="noopener noreferrer"><span class="tag">FREE INDIE GAMES</span><h3>itch.io Free Games</h3><p>Discover indie games listed in the free category.</p><span class="arrow">Browse free games ↗</span></a>
 <a class="tile resource" data-search="openverse openly licensed images audio" href="https://openverse.org/" target="_blank" rel="noopener noreferrer"><span class="tag">OPENLY LICENSED MEDIA</span><h3>Openverse</h3><p>Search openly licensed images and audio; verify the individual asset's licence.</p><span class="arrow">Find free media ↗</span></a>
-</div></section>
+<a class="tile resource" data-search="github student developer pack free developer tools" href="https://education.github.com/pack" target="_blank" rel="noopener noreferrer"><span class="tag">STUDENT BENEFITS · ELIGIBILITY</span><h3>GitHub Student Developer Pack</h3><p>Student developer offers; eligibility and partner terms apply.</p><span class="arrow">Check student offers ↗</span></a>
+<a class="tile resource" data-search="Microsoft education student software benefits" href="https://www.microsoft.com/en-us/education" target="_blank" rel="noopener noreferrer"><span class="tag">EDUCATION OFFERS</span><h3>Microsoft Education</h3><p>Explore education software and student offers; institution and region rules apply.</p><span class="arrow">Explore education ↗</span></a>
+<a class="tile resource" data-search="Google for Education learning tools" href="https://edu.google.com/" target="_blank" rel="noopener noreferrer"><span class="tag">LEARNING RESOURCES</span><h3>Google for Education</h3><p>Explore education tools and learning resources; account requirements may apply.</p><span class="arrow">Explore resources ↗</span></a>
+<a class="tile resource" data-search="OpenLearn free courses learning" href="https://www.open.edu/openlearn/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE LEARNING</span><h3>OpenLearn Free Courses</h3><p>Free learning materials; check course pages for certificates and completion details.</p><span class="arrow">Browse courses ↗</span></a></div></section>
 
 <section class="section wrap" id="community"><div class="section-head"><div><h2>Community & User Accounts</h2><p>A safe community space is planned; public registration is not enabled in this release.</p></div></div><div class="notice"><b>Coming in a later security phase:</b> member profiles, community posts and user accounts will be enabled only after the separate SK Cyber Hub database has verified Row Level Security, role protection, spam controls and privacy settings. The website owner remains the only administrator. Creating an account will never automatically grant admin privileges.</div></section>
 
@@ -2314,4 +2334,26 @@ document.getElementById('clearResource').addEventListener('click',()=>{
 })();
 </script>
 
+
+<script>
+/* SKCYBERHUB_CREATOR_TOOLS_V1_SCRIPT */
+(function(){
+ function start(){
+  const type=document.getElementById('skCreatorType'),lang=document.getElementById('skCreatorLang'),topic=document.getElementById('skCreatorTopic'),out=document.getElementById('skCreatorOutput'),go=document.getElementById('skCreatorGenerate'),copy=document.getElementById('skCreatorCopy'),clear=document.getElementById('skCreatorClear');
+  if(!type||!lang||!topic||!out||!go)return;
+  const make=(t,k,l)=>{
+   const data={
+    ur:{caption:'✨ '+t+' — کامیابی کا سفر صبر، محنت اور مستقل مزاجی سے بنتا ہے۔ آج ایک مثبت قدم اٹھائیں۔\nاپنی رائے کمنٹس میں لکھیں۔',hashtags:'#'+t.replace(/\s+/g,'')+' #اردو #پاکستان #سعودی_عرب #مثبت_سوچ #کامیابی',title:'یہ '+t+' آپ کی سوچ بدل سکتا ہے! | اہم بات ضرور سنیں',script:'السلام علیکم!\nآج ہم بات کریں گے: '+t+'۔\nچھوٹے قدم بھی بڑی تبدیلی لا سکتے ہیں۔ آج ہی ایک عملی قدم اٹھائیں۔\nاگر یہ بات مفید لگی تو ویڈیو شیئر کریں۔',prompt:'ایک حقیقت پسندانہ، سینیمیٹک 9:16 ویڈیو بنائیں۔ موضوع: '+t+'۔ قدرتی روشنی، حقیقی ماحول، واضح کردار، مستحکم کیمرہ اور باریک تفصیلات۔ کوئی تحریر، لوگو یا واٹرمارک شامل نہ کریں۔',bio:'روزانہ '+t+' اور مفید معلومات ✨\nسیکھیں، آگے بڑھیں، دوسروں کے کام آئیں۔'},
+    en:{caption:'✨ '+t+' — progress is built through patience, consistency and focused effort. Take one positive step today.\nShare your thoughts below.',hashtags:'#'+t.replace(/\s+/g,'')+' #Learn #Growth #Motivation #Technology #DailyTips',title:'The truth about '+t+' that everyone should know',script:'Hello everyone!\nToday we are looking at '+t+'. Start with one simple step, stay consistent and learn from the results.\nTry it today and share this video with someone who may benefit.',prompt:'Create a photorealistic cinematic vertical 9:16 video about '+t+'. Natural lighting, believable environment, authentic expressions and smooth camera movement. No text, logos or watermark.',bio:'Sharing useful ideas about '+t+' ✨\nLearn something new. Grow every day.'},
+    roman:{caption:'✨ '+t+' — kamyabi ka safar sabr, mehnat aur istiqamat se banta hai. Aaj aik acha qadam uthayein.\nApni rai comments mein likhein.',hashtags:'#'+t.replace(/\s+/g,'')+' #Urdu #Pakistan #SaudiArabia #Motivation #Kamyabi',title:t+' ke bare mein aik zaroori baat jo aap ko maloom honi chahiye',script:'Assalam-o-alaikum!\nAaj hum baat karenge: '+t+'۔ Chhote qadam bhi bari tabdeeli la sakte hain. Aaj aik amli qadam uthayein.\nVideo mufeed lage to share karein.',prompt:'Realistic cinematic vertical 9:16 video about '+t+'. Natural light, authentic environment, realistic details, smooth camera movement, no text, logo or watermark.',bio:'Rozana '+t+' aur mufeed maloomat ✨\nSeekhein, aage barhein, behtari laayein.'}
+   };
+   return data[l][k];
+  };
+  go.addEventListener('click',()=>{const t=topic.value.trim();if(!t){out.value=lang.value==='en'?'Please enter a topic first.':'براہِ کرم پہلے موضوع لکھیں۔';return;}out.value=make(t,type.value,lang.value);});
+  if(copy)copy.addEventListener('click',async()=>{if(!out.value)return;try{await navigator.clipboard.writeText(out.value);copy.textContent='Copied';setTimeout(()=>copy.textContent='Copy result',1400);}catch(e){out.focus();out.select();copy.textContent='Select and copy';}});
+  if(clear)clear.addEventListener('click',()=>{topic.value='';out.value='';});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();
+</script>
 </body></html>
