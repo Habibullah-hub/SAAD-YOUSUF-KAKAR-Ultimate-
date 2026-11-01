@@ -1529,7 +1529,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 <a class="tile resource" data-search="Google for Education learning tools" href="https://edu.google.com/" target="_blank" rel="noopener noreferrer"><span class="tag">LEARNING RESOURCES</span><h3>Google for Education</h3><p>Explore education tools and learning resources; account requirements may apply.</p><span class="arrow">Explore resources ↗</span></a>
 <a class="tile resource" data-search="OpenLearn free courses learning" href="https://www.open.edu/openlearn/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE LEARNING</span><h3>OpenLearn Free Courses</h3><p>Free learning materials; check course pages for certificates and completion details.</p><span class="arrow">Browse courses ↗</span></a></div></section>
 
-<section class="section wrap" id="community"><div class="section-head"><div><h2>Community & User Accounts</h2><p>Create a free member account to access future community features.</p></div></div><div class="notice"><b>Member registration is available.</b> Every new account is automatically assigned the member role. Only the website owner can grant administrator access through the Supabase SQL Editor. Registration is free; email confirmation may be required.</div><div class="hero-actions" style="margin-top:16px"><button class="primary" type="button" onclick="openMemberAuthModal('signup')">Create free account</button><button class="hero-secondary" type="button" onclick="openMemberAuthModal('login')">Member login</button></div><p id="memberSessionNote" class="notice" aria-live="polite" style="margin-top:12px">You are browsing as a guest.</p>
+<section class="section wrap" id="community"><div class="section-head"><div><h2>Community & User Accounts</h2><p>Create a free member account to access future community features.</p></div></div><div class="notice"><b>Member registration is available.</b> Every new account is automatically assigned the member role. Only the website owner can grant administrator access through the Supabase SQL Editor. Registration is free; email confirmation may be required.</div><div class="hero-actions" style="margin-top:16px"><button class="primary" type="button" onclick="openMemberAuthModal('signup')">Create free account</button><button class="hero-secondary" type="button" onclick="openMemberAuthModal('login')">Member login</button></div><p id="memberSessionNote" class="notice" aria-live="polite" style="margin-top:12px">You are browsing as a guest.</p><div class="sk-community-actions" style="margin:10px 0 16px"><input id="skMemberFirstName" type="text" maxlength="40" placeholder="Your first name" aria-label="Your first name" style="flex:1;min-width:160px;padding:10px;border-radius:10px;background:#061b29;border:1px solid #315365;color:#fff"><button class="secondary" id="skSaveMemberName" type="button">Save my name</button></div>
 <div class="sk-community-panel" id="skCommunityPanel">
  <div class="sk-community-head"><div><h3>SK Pulse · Global Community Feed</h3><p>Share a useful idea, learning milestone or creator tip with the community.</p></div><span class="sk-live-dot">COMMUNITY</span></div>
  <label for="skCommunityPostText">Your public post</label>
@@ -1686,7 +1686,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
         <p class="text-xs text-slate-300">Free member account. Registration never grants Admin access.</p>
         <div class="grid grid-cols-2 gap-2"><button type="button" class="secondary" onclick="setMemberAuthMode('signup')">Create account</button><button type="button" class="secondary" onclick="setMemberAuthMode('login')">Member login</button></div>
         <form id="memberSignupForm" onsubmit="handleMemberSignup(event)" class="space-y-3">
-          <label class="block text-xs text-emerald-200" for="memberSignupEmail">Email address</label><input id="memberSignupEmail" type="email" autocomplete="email" required placeholder="Your email" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-xs text-white">
+          <label class="block text-xs text-emerald-200" for="memberSignupFirstName">First name</label><input id="memberSignupFirstName" type="text" maxlength="40" autocomplete="given-name" required placeholder="Your first name" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-xs text-white"><label class="block text-xs text-emerald-200" for="memberSignupEmail">Email address</label><input id="memberSignupEmail" type="email" autocomplete="email" required placeholder="Your email" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-xs text-white">
           <label class="block text-xs text-emerald-200" for="memberSignupPassword">Create password (at least 8 characters)</label><input id="memberSignupPassword" type="password" autocomplete="new-password" minlength="8" required placeholder="Create password" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-xs text-white">
           <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs">Create free member account</button>
         </form>
@@ -2705,7 +2705,8 @@ document.getElementById('clearResource').addEventListener('click',()=>{
         function updateMemberUI() {
             const note=document.getElementById('memberSessionNote');
             const logout=document.getElementById('memberLogoutButton');
-            if(note) note.textContent=currentMember ? 'Signed in as member: '+(currentMember.email||'') : 'You are browsing as a guest.';
+            if(note) note.textContent=currentMember ? 'Signed in as: '+(currentMember.user_metadata?.first_name||currentMember.email?.split('@')[0]||'Member') : 'You are browsing as a guest.';
+            const nameInput=document.getElementById('skMemberFirstName');if(nameInput&&currentMember&&!nameInput.value)nameInput.value=currentMember.user_metadata?.first_name||'';
             if(logout) logout.classList.toggle('hidden',!currentMember);
         }
         function openMemberAuthModal(mode='signup') {
@@ -2728,7 +2729,9 @@ document.getElementById('clearResource').addEventListener('click',()=>{
             const password=document.getElementById('memberSignupPassword').value;
             const status=document.getElementById('memberAuthStatus');
             status.textContent='Creating your free member account…';
-            const {data,error}=await supabaseClient.auth.signUp({email,password});
+            const firstName=document.getElementById('memberSignupFirstName').value.trim();
+            if(!firstName){status.textContent='Please enter your first name.';return;}
+            const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{first_name:firstName}}});
             if(error){status.textContent=error.message;return;}
             if(data?.session?.user){
                 const {data:profile,error:profileError}=await supabaseClient.from('sk_profiles').select('role').eq('id',data.session.user.id).maybeSingle();
@@ -3815,12 +3818,12 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   if(!feed)return;
   if(typeof supabaseClient==='undefined'||!supabaseClient){setStatus('پہلے SK Cyber Hub کو Supabase سے Connect کریں، پھر Community feed کھلے گی۔');return;}
   setStatus('Community feed لوڈ ہو رہی ہے…');
-  const {data,error}=await supabaseClient.from('sk_posts').select('id,user_id,body,created_at,sk_post_likes(user_id),sk_post_comments(id,body,user_id,created_at)').eq('visibility','public').order('created_at',{ascending:false}).limit(25);
+  const {data,error}=await supabaseClient.from('sk_posts').select('id,user_id,body,author_name,created_at,sk_post_likes(user_id),sk_post_comments(id,body,user_id,created_at)').eq('visibility','public').order('created_at',{ascending:false}).limit(25);
   if(error){setStatus(error.code==='42P01'||/relation .* does not exist/i.test(error.message)?'Community database ابھی تیار نہیں۔ Admin کو SK-CYBER-HUB-COMMUNITY.sql ایک بار Supabase SQL Editor میں چلانا ہوگا.':('Feed load نہیں ہوئی: '+error.message));return;}
   feed.replaceChildren();
   if(!data?.length){feed.appendChild(node('p','sk-post-meta','ابھی کوئی پوسٹ نہیں۔ پہلی مفید پوسٹ آپ شیئر کر سکتے ہیں۔'));setStatus('Community تیار ہے · کوئی نئی پوسٹ نہیں۔');return;}
   data.forEach(post=>{
-   const card=node('article','sk-post-card'),meta=node('div','sk-post-meta','SK Community Member · '+escDate(post.created_at)),body=node('p','',post.body),actions=node('div','sk-post-actions');
+   const card=node('article','sk-post-card'),meta=node('div','sk-post-meta',(post.author_name||'Community Member')+' · '+escDate(post.created_at)),body=node('p','',post.body),actions=node('div','sk-post-actions');
    const likes=post.sk_post_likes||[],comments=post.sk_post_comments||[];
    const like=node('button','',((likes.some(x=>x.user_id===signedUser()?.id))?'♥':'♡')+' Like · '+likes.length);
    like.type='button';like.addEventListener('click',async()=>{
@@ -3842,18 +3845,21 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
     const result=await supabaseClient.from('sk_post_reports').insert({post_id:post.id,reporter_id:user.id,reason:reason.trim().slice(0,300)});
     setStatus(result.error?'Report submit نہیں ہوئی: '+result.error.message:'Report موصول ہوگئی۔ شکریہ۔');
    });
-   actions.append(like,commentInput,commentButton,report);card.append(meta,body,actions);
+   if(signedUser()?.id===post.user_id){const edit=node('button','','Edit my post');edit.type='button';edit.addEventListener('click',async()=>{const revised=prompt('اپنی پوسٹ میں تبدیلی کریں:',post.body);if(revised===null)return;const clean=revised.trim();if(!clean||clean.length>800){setStatus('پوسٹ 1 سے 800 حروف کے درمیان ہونی چاہیے۔');return;}const result=await supabaseClient.from('sk_posts').update({body:clean}).eq('id',post.id).eq('user_id',signedUser().id);if(result.error){setStatus('پوسٹ تبدیل نہیں ہوئی: '+result.error.message);return;}setStatus('آپ کی پوسٹ تبدیل ہوگئی۔');loadFeed();});const del=node('button','','Delete my post');del.type='button';del.addEventListener('click',async()=>{if(!confirm('کیا آپ اپنی یہ پوسٹ مستقل حذف کرنا چاہتے ہیں؟'))return;const result=await supabaseClient.from('sk_posts').delete().eq('id',post.id).eq('user_id',signedUser().id);if(result.error){setStatus('پوسٹ حذف نہیں ہوئی: '+result.error.message);return;}setStatus('آپ کی پوسٹ حذف ہوگئی۔');loadFeed();});actions.append(edit,del);}
+    actions.append(like,commentInput,commentButton,report);card.append(meta,body,actions);
    if(comments.length){const list=node('div','sk-post-comments');comments.slice(-4).forEach(c=>list.appendChild(node('p','sk-post-meta','Member: '+c.body)));card.appendChild(list);}
    feed.appendChild(card);
   });
   setStatus(data.length+' تازہ کمیونٹی پوسٹس دکھائی جا رہی ہیں۔');
  }
- publish?.addEventListener('click',async()=>{
+ document.getElementById('skSaveMemberName')?.addEventListener('click',async()=>{const user=signedUser();if(!user||!currentMember){setStatus('نام محفوظ کرنے کے لیے Member Login کریں۔');return;}const firstName=document.getElementById('skMemberFirstName').value.trim();if(!firstName||firstName.length>40){setStatus('براہ کرم 1 سے 40 حروف کا پہلا نام لکھیں۔');return;}const {data,error}=await supabaseClient.auth.updateUser({data:{first_name:firstName}});if(error){setStatus('نام محفوظ نہیں ہوا: '+error.message);return;}currentMember=data.user;updateMemberUI();setStatus('آپ کا نام محفوظ ہوگیا۔');loadFeed();});
+  publish?.addEventListener('click',async()=>{
   const user=signedUser();if(!user){setStatus('پوسٹ شائع کرنے کے لیے پہلے مفت Member Login کریں۔');if(typeof openMemberAuthModal==='function')openMemberAuthModal('login');return;}
   if(typeof supabaseClient==='undefined'||!supabaseClient){setStatus('پہلے Supabase connect کریں۔');return;}
   const body=postText.value.trim();if(!body||body.length>800){setStatus('پوسٹ 1 سے 800 حروف کے درمیان لکھیں۔');return;}
   publish.disabled=true;setStatus('پوسٹ محفوظ ہو رہی ہے…');
-  const {error}=await supabaseClient.from('sk_posts').insert({user_id:user.id,body,visibility:'public'});
+  const firstName=(user.user_metadata?.first_name||user.email?.split('@')[0]||'Member').trim().slice(0,40);
+   const {error}=await supabaseClient.from('sk_posts').insert({user_id:user.id,body,author_name:firstName,visibility:'public'});
   publish.disabled=false;
   if(error){setStatus('پوسٹ محفوظ نہیں ہوئی: '+error.message);return;}
   postText.value='';counter.textContent='0 / 800';setStatus('آپ کی پوسٹ شائع ہوگئی۔');loadFeed();
