@@ -2341,7 +2341,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 return;
             }
             try {
-                supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+                supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storage: window.localStorage } });
                 const { error } = await supabaseClient.from('sk_apps').select('id').limit(1);
                 if (error) throw error;
                 alertBox?.classList.add('hidden');
@@ -2358,12 +2358,15 @@ document.getElementById('clearResource').addEventListener('click',()=>{
 
         async function checkSession() {
             if (!supabaseClient) return;
-            const { data: { session } } = await supabaseClient.auth.getSession();
+            const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+            if (sessionError) { console.warn('Could not read saved SK session:', sessionError); updateAuthUI(); updateMemberUI(); return; }
             currentUser = null; currentMember = null;
             if (!session?.user) { updateAuthUI(); updateMemberUI(); return; }
-            const { data: profile, error } = await supabaseClient.from('sk_profiles').select('role').eq('id', session.user.id).maybeSingle();
-            if (error || !profile) { await supabaseClient.auth.signOut(); updateAuthUI(); updateMemberUI(); return; }
-            if (profile.role === 'admin') currentUser = session.user;
+            const { data: profile, error: profileError } = await supabaseClient.from('sk_profiles').select('role').eq('id', session.user.id).maybeSingle();
+            // A temporary profile-read failure must never destroy a valid saved login.
+            // Only the database role grants admin access; everyone else stays a normal member.
+            if (profileError) console.warn('SK profile lookup failed; keeping saved member session:', profileError);
+            if (!profileError && profile?.role === 'admin') currentUser = session.user;
             else currentMember = session.user;
             updateAuthUI(); updateMemberUI();
         }
@@ -2737,7 +2740,8 @@ document.getElementById('clearResource').addEventListener('click',()=>{
             if(error){status.textContent=error.message;return;}
             if(data?.session?.user){
                 const {data:profile,error:profileError}=await supabaseClient.from('sk_profiles').select('role').eq('id',data.session.user.id).maybeSingle();
-                if(profileError||!profile||profile.role!=='member'){await supabaseClient.auth.signOut();status.textContent='Account created, but member access could not be verified. Contact the site owner.';return;}
+                if(!profileError&&profile?.role==='admin'){await supabaseClient.auth.signOut();status.textContent='Admin account cannot register as a member.';return;}
+                if(profileError)console.warn('New member profile lookup failed; retaining authenticated session:',profileError);
                 currentMember=data.session.user;updateMemberUI();status.textContent='Your member account is ready. Welcome!';closeMemberAuthModal();document.querySelector('[data-sk-bottom="home"]')?.click();
             }else{
                 status.textContent='Registration request received. Check your email and confirm your address, then use Member login.';
@@ -2752,9 +2756,11 @@ document.getElementById('clearResource').addEventListener('click',()=>{
             if(error){status.textContent=error.message;return;}
             const user=data?.user;
             const {data:profile,error:profileError}=await supabaseClient.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();
-            if(profileError||!profile||profile.role!=='member'){
-                await supabaseClient.auth.signOut();currentMember=null;status.textContent='This login is not a member account. Admins must use Admin Login.';updateMemberUI();return;
+            if(!profileError&&profile?.role==='admin'){
+                await supabaseClient.auth.signOut();currentMember=null;status.textContent='یہ Admin اکاؤنٹ ہے۔ براہِ کرم Admin Login استعمال کریں۔';updateMemberUI();return;
             }
+            // Do not sign out on a temporary profile lookup error; retain the valid auth session.
+            if(profileError)console.warn('Member profile lookup failed; retaining authenticated session:',profileError);
             currentMember=user;status.textContent='You are signed in as a member.';updateMemberUI();closeMemberAuthModal();document.querySelector('[data-sk-bottom="home"]')?.click();
         }
         async function logoutMember(){
