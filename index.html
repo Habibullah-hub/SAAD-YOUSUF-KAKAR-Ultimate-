@@ -2834,6 +2834,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
   const ids=['apps','mod-apk','software','tools','smart-free-finder','documents','games','free-tools','video-audio','images-design','developer-tools','security-privacy','creator-studio','global-search','jobs','deals','community','languages','news','earnings-model','global-growth','quick-tools','about'];
   const sections=ids.map(id=>document.getElementById(id)).filter(Boolean);
   const home=document.getElementById('skDiscoveryHome'),featured=document.getElementById('skFeaturedFeed');
+  const homeIntro=[...main.querySelectorAll(':scope > .hero, :scope > .trust-strip')];
   const icons={'apps':'📱','mod-apk':'⚡','software':'💻','tools':'✦','smart-free-finder':'🎬','documents':'📚','games':'🎮','free-tools':'🧰','video-audio':'▶️','images-design':'🎨','developer-tools':'⌨️','security-privacy':'🛡️','creator-studio':'🎥','global-search':'🔎','jobs':'💼','deals':'🎁','community':'👥','languages':'🌐','news':'🌍','earnings-model':'💰','global-growth':'🚀','quick-tools':'⚙️','about':'ℹ️'};
   function addIcons(){
    document.querySelectorAll('#tab-home a.resource.tile').forEach(card=>{
@@ -2863,6 +2864,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
     if(typeof runSearch==='function')runSearch();
    }
    sections.forEach(sec=>sec.classList.remove('hidden'));
+   homeIntro.forEach(el=>el.classList.toggle('hidden',!isHome));
    if(home)home.classList.toggle('hidden',!isHome);
    if(featured)featured.classList.toggle('hidden',!isHome);
    sections.forEach(sec=>{const active=!isHome&&sec.id===id;sec.classList.toggle('sk-view-hidden',!active);sec.classList.toggle('sk-view-active',active);});
