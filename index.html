@@ -1645,7 +1645,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
             const safeHttpUrl = value => {
                 try {
                     const raw = String(value || '').trim();
-                    if (!/^https?:\\/\\//i.test(raw)) return '';
+                    if (!(raw.toLowerCase().startsWith('https://') || raw.toLowerCase().startsWith('http://'))) return '';
                     const parsed = new URL(raw);
                     return (parsed.protocol === 'https:' || parsed.protocol === 'http:') ? parsed.href : '';
                 } catch (_) {
