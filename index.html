@@ -2102,7 +2102,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 alert('Enter the anon / publishable public key. Never use the service_role secret key.');
                 return;
             }
-            localStorage.setItem('skcyberhub_supabase_url', urlValue.replace(/\\/$/, ''));
+            localStorage.setItem('skcyberhub_supabase_url', urlValue.endsWith('/') ? urlValue.slice(0, -1) : urlValue);
             localStorage.setItem('skcyberhub_supabase_anon_key', keyValue);
             location.reload();
         }
