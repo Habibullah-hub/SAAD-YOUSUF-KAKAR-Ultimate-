@@ -1644,7 +1644,13 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 .select('role')
                 .eq('id', session.user.id)
                 .maybeSingle();
-            currentUser = !error && profile?.role === 'admin' ? session.user : null;
+            if (error || profile?.role !== 'admin') {
+                currentUser = null;
+                await supabaseClient.auth.signOut();
+                updateAuthUI();
+                return;
+            }
+            currentUser = session.user;
             updateAuthUI();
         }
 
@@ -1804,6 +1810,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 const validDownloadUrl = safeHttpUrl(app.download_url);
                 getLink.href = validDownloadUrl || '#';
                 getLink.rel = 'noopener noreferrer';
+                if (validDownloadUrl) getLink.target = '_blank';
                 const getLabel = document.createElement('span');
                 getLabel.textContent = validDownloadUrl ? 'Get ↗' : 'Link unavailable';
                 if (!validDownloadUrl) {
@@ -1892,6 +1899,10 @@ document.getElementById('clearResource').addEventListener('click',()=>{
         function filterApps() { renderApps(); }
 
         function switchTab(t) {
+            if (t === 'admin' && !currentUser) {
+                openAuthModal();
+                return;
+            }
             ['home', 'admin'].forEach(tab => document.getElementById(`tab-${tab}`)?.classList.add('hidden'));
             document.getElementById(`tab-${t}`)?.classList.remove('hidden');
         }
@@ -1966,16 +1977,31 @@ document.getElementById('clearResource').addEventListener('click',()=>{
 
         async function handleAppSubmit(e) {
             e.preventDefault();
-            if (!supabaseClient) return alert('Config Supabase first');
+            if (!supabaseClient) return alert('Configure the SK Cyber Hub Supabase project first.');
+            if (!currentUser) return alert('Administrator login is required.');
+            const name = document.getElementById('appName').value.trim();
+            const iconUrl = document.getElementById('appIcon').value.trim();
+            const downloadUrl = document.getElementById('appLink').value.trim();
+            const isHttpUrl = value => {
+                try {
+                    const parsed = new URL(value);
+                    return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+                } catch (_) {
+                    return false;
+                }
+            };
+            if (!name) return alert('Please enter the app or resource name.');
+            if (!isHttpUrl(downloadUrl)) return alert('Enter a valid full http:// or https:// download or official listing URL.');
+            if (iconUrl && !isHttpUrl(iconUrl)) return alert('The icon must use a valid http:// or https:// image URL.');
             const id = document.getElementById('appId').value;
             const data = {
-                name: document.getElementById('appName').value,
+                name,
                 category: document.getElementById('appCat').value,
                 platform: document.getElementById('appPlatform').value,
-                version: document.getElementById('appVer').value,
-                icon_url: document.getElementById('appIcon').value,
-                download_url: document.getElementById('appLink').value,
-                description: document.getElementById('appDesc').value,
+                version: document.getElementById('appVer').value.trim(),
+                icon_url: iconUrl,
+                download_url: downloadUrl,
+                description: document.getElementById('appDesc').value.trim(),
                 featured: document.getElementById('appFeatured').checked,
                 published: true
             };
