@@ -1215,7 +1215,7 @@ clearSearch.addEventListener('click',()=>{input.value='';runSearch();filterApps(
 /* Live section counters show how many listings remain visible */
 document.querySelectorAll('section.section').forEach(section=>{
  const heading=section.querySelector('.section-head h2');
- if(heading&&!section.querySelector('.section-count')){
+ if(heading&&section.querySelector('.resource-grid')&&!section.querySelector('.section-count')){
   const count=document.createElement('span');count.className='section-count';count.setAttribute('aria-live','polite');heading.appendChild(count);
  }
 });
