@@ -3484,4 +3484,134 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
 })();
 </script>
 
+
+<style id="sk-news-engine-v7">
+.news-section .news-search-row{display:flex!important;gap:8px!important;align-items:stretch!important}
+.news-section .news-query-control{flex:1 1 auto!important;min-width:0!important;display:flex!important;align-items:center!important;overflow:hidden!important;border:1px solid #397c9f!important;border-radius:14px!important;background:#f8fcff!important;box-shadow:0 5px 20px #102c4620!important}
+.news-section .news-query-control input{flex:1 1 auto!important;min-width:0!important;width:100%!important;grid-column:auto!important;grid-row:auto!important}
+.news-section #newsSearchButton{flex:0 0 auto!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:7px!important;width:auto!important;min-width:92px!important;height:auto!important;min-height:46px!important;margin:0!important;padding:0 14px!important;border:1px solid #08a4b5!important;border-radius:12px!important;background:linear-gradient(135deg,#0879c9,#073b69)!important;color:#fff!important;font-size:12px!important;font-weight:900!important;box-shadow:0 6px 18px #0879c944!important;cursor:pointer!important;transition:transform .2s,filter .2s,box-shadow .2s!important}
+.news-section #newsSearchButton svg{width:18px!important;height:18px!important;stroke:#fff!important}
+.news-section #newsSearchButton span{display:inline!important;white-space:nowrap!important}
+.news-section #newsSearchButton:active{transform:scale(.96)!important}
+.news-section #newsMicButton{flex:0 0 44px!important;width:44px!important;height:44px!important;min-height:44px!important;border:1px solid #5b8aa8!important;border-radius:12px!important;background:linear-gradient(145deg,#eaf7ff,#d7eaf7)!important;color:#075b8b!important;cursor:pointer!important;transition:all .2s!important}
+.news-section #newsMicButton.is-listening{background:#fff0f0!important;color:#c62828!important;box-shadow:0 0 0 5px #d84a4a20!important;animation:skMicPulse .9s infinite}
+#skNewsLiveSuggestions{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0;padding:11px 13px;border:1px solid #28647e;border-radius:14px;background:linear-gradient(115deg,#071b31,#123d53);box-shadow:0 9px 24px #06172c20}
+#skNewsLiveSuggestions[hidden]{display:none!important}
+#skNewsLiveSuggestions .sk-news-suggest-label{width:100%;color:#7cd5e2;font-size:9px;font-weight:900;letter-spacing:1.6px}
+#skNewsLiveSuggestions button{padding:7px 12px;border:1px solid #377b91;border-radius:99px;background:#143c52;color:#e9fbff;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s}
+#skNewsLiveSuggestions button:hover{transform:translateY(-2px);border-color:#63e4d1;background:#0e5964}
+#skNewsLiveState{display:flex;align-items:center;gap:9px;margin:10px 0;padding:11px 13px;border:1px solid #c3d9e9;border-radius:12px;background:#f1f8fd;color:#194a68;font-size:12px}
+#skNewsLiveState[hidden]{display:none!important}
+#skNewsLiveState .pulse{width:8px;height:8px;flex:none;border-radius:50%;background:#1bb58b;box-shadow:0 0 0 4px #1bb58b20}
+#skNewsLiveState.loading .pulse{background:#1598d1;animation:skMicPulse .8s infinite}
+#skNewsLiveResults{display:grid;gap:10px;margin:12px 0 20px}
+#skNewsLiveResults .sk-news-live-card{display:grid;grid-template-columns:1fr auto;gap:8px 12px;padding:14px;border:1px solid #d6e4ef;border-radius:14px;background:linear-gradient(120deg,#fff,#f4f9fd);box-shadow:0 6px 18px #0b294012;animation:skNewsCardRise .32s ease both}
+#skNewsLiveResults .sk-news-live-card h3{grid-column:1/-1;margin:0;color:#14334d;font-size:15px;line-height:1.55}
+#skNewsLiveResults .sk-news-live-card p{grid-column:1/-1;margin:0;color:#50677b;font-size:12px;line-height:1.65}
+#skNewsLiveResults .sk-news-live-card small{color:#688196;font-size:10px}
+#skNewsLiveResults .sk-news-live-card a{justify-self:start;padding:7px 11px;border:1px solid #0879c9;border-radius:8px;color:#075b98;font-size:11px;font-weight:900;text-decoration:none}
+#skNewsLiveResults .sk-news-live-card a:hover{background:#e7f4fd}
+@keyframes skNewsCardRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes skMicPulse{50%{box-shadow:0 0 0 7px #169bd122}}
+@media(max-width:600px){.news-section .news-search-row{display:flex!important;flex-direction:row!important;gap:5px!important}.news-section .news-query-control{min-width:0!important}.news-section .news-query-control input{font-size:12px!important;padding:0 7px!important}.news-section #newsMicButton{flex-basis:38px!important;width:38px!important;min-width:38px!important}.news-section #newsSearchButton{min-width:68px!important;padding:0 8px!important;font-size:10px!important}.news-section #newsSearchButton svg{width:15px!important;height:15px!important}}
+@media(prefers-reduced-motion:reduce){#skNewsLiveResults .sk-news-live-card,#skNewsLiveSuggestions button,.news-section #newsSearchButton{animation:none!important;transition:none!important}}
+</style>
+<script id="sk-news-independent-engine-v7">
+(()=>{
+ const boot=()=>{
+  const oldInput=document.getElementById('newsQuery'),oldSearch=document.getElementById('newsSearchButton'),oldMic=document.getElementById('newsMicButton'),row=document.querySelector('.news-section .news-search-row');
+  if(!oldInput||!oldSearch||!oldMic||!row||document.getElementById('skNewsLiveResults'))return;
+  const input=oldInput.cloneNode(true),search=oldSearch.cloneNode(true),mic=oldMic.cloneNode(true);
+  oldInput.replaceWith(input);oldSearch.replaceWith(search);oldMic.replaceWith(mic);
+  const oldSuggestions=document.getElementById('skNewsLiveSuggestions');if(oldSuggestions)oldSuggestions.remove();
+  const suggestions=document.createElement('div');suggestions.id='skNewsLiveSuggestions';suggestions.hidden=true;row.insertAdjacentElement('afterend',suggestions);
+  const state=document.createElement('div');state.id='skNewsLiveState';state.setAttribute('role','status');state.setAttribute('aria-live','polite');state.hidden=true;state.innerHTML='<span class="pulse"></span><span class="message"></span>';
+  suggestions.insertAdjacentElement('afterend',state);
+  const results=document.createElement('div');results.id='skNewsLiveResults';results.setAttribute('aria-live','polite');state.insertAdjacentElement('afterend',results);
+  const message=state.querySelector('.message');
+  const topics=['Pakistan','Pakistan politics','Saudi Arabia','Middle East','Gaza','World news','Breaking news','Technology','Artificial intelligence','Cricket','Football','Business','Economy','Afghanistan','United Kingdom','United States','Science','Space','Health','Education','Climate change'];
+  let request=0,timer=null,recognition=null,listening=false;
+  const showState=(text,loading=false)=>{state.hidden=false;state.classList.toggle('loading',loading);message.textContent=text;};
+  const hideSuggestions=()=>{suggestions.hidden=true;};
+  const drawSuggestions=()=>{
+   const q=input.value.trim().toLocaleLowerCase();suggestions.replaceChildren();
+   if(q.length<2){hideSuggestions();return;}
+   const matches=topics.filter(t=>t.toLocaleLowerCase().includes(q)||q.split(/\s+/).some(w=>w.length>2&&t.toLocaleLowerCase().includes(w))).slice(0,7);
+   if(!matches.length){hideSuggestions();return;}
+   const label=document.createElement('span');label.className='sk-news-suggest-label';label.textContent='✦ LIVE RELATED TOPICS';suggestions.appendChild(label);
+   matches.forEach(topic=>{const b=document.createElement('button');b.type='button';b.textContent=topic;b.addEventListener('click',()=>{input.value=topic;hideSuggestions();runSearch();});suggestions.appendChild(b);});
+   suggestions.hidden=false;
+  };
+  const makeCard=item=>{
+   const card=document.createElement('article');card.className='sk-news-live-card';
+   const title=document.createElement('h3');title.textContent=item.title||'News story';card.appendChild(title);
+   const desc=document.createElement('p');desc.textContent=String(item.description||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().slice(0,280);if(desc.textContent)card.appendChild(desc);
+   const meta=document.createElement('small');meta.textContent=(item.author||item.source||'News source')+' · '+(item.pubDate||'Latest available');card.appendChild(meta);
+   const a=document.createElement('a');a.href=item.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Read publisher ↗';card.appendChild(a);
+   return card;
+  };
+  async function runSearch(){
+   const q=input.value.trim();if(!q){showState('پہلے خبر کا موضوع لکھیں یا مائیکروفون دبائیں۔');input.focus();return;}
+   const id=++request;search.disabled=true;search.querySelector('span').textContent='Searching…';results.replaceChildren();hideSuggestions();showState('تازہ دستیاب خبریں تلاش ہو رہی ہیں…',true);
+   const rss='https://news.google.com/rss/search?q='+encodeURIComponent(q)+'&hl=en&gl=US&ceid=US:en';
+   const routes=[
+    {url:'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rss),kind:'json'},
+    {url:'https://api.allorigins.win/raw?url='+encodeURIComponent(rss),kind:'xml'},
+    {url:'https://corsproxy.io/?url='+encodeURIComponent(rss),kind:'xml'}
+   ];
+   let items=[],lastError=null;
+   for(const route of routes){
+    try{
+     const controller=new AbortController(),timeoutId=setTimeout(()=>controller.abort(),8500);
+     const response=await fetch(route.url,{signal:controller.signal,cache:'no-store'});clearTimeout(timeoutId);
+     if(!response.ok)throw new Error('HTTP '+response.status);
+     if(route.kind==='json'){
+      const data=await response.json();if(data.status!=='ok'||!Array.isArray(data.items))throw new Error(data.message||'Feed unavailable');
+      items=data.items;
+     }else{
+      const xml=await response.text(),doc=new DOMParser().parseFromString(xml,'text/xml');
+      if(doc.querySelector('parsererror'))throw new Error('Invalid RSS');
+      items=[...doc.querySelectorAll('item')].map(n=>({title:n.querySelector('title')?.textContent||'',description:n.querySelector('description')?.textContent||'',link:n.querySelector('link')?.textContent||'',author:n.querySelector('source')?.textContent||'News source',pubDate:n.querySelector('pubDate')?.textContent||''}));
+     }
+     items=items.filter(x=>x.title&&x.link);
+     if(items.length)break;
+     throw new Error('No articles returned');
+    }catch(e){lastError=e;items=[];}
+   }
+   if(id!==request)return;
+   search.disabled=false;search.querySelector('span').textContent='Search';
+   if(!items.length){
+    showState('براہِ راست نیوز فیڈ اس وقت دستیاب نہیں۔ نیچے Google News میں یہی تلاش کھول سکتے ہیں۔');
+    const a=document.createElement('a');a.href='https://news.google.com/search?q='+encodeURIComponent(q);a.target='_blank';a.rel='noopener noreferrer';a.textContent='Google News میں نتائج کھولیں ↗';a.style.cssText='display:inline-flex;margin:8px 0;padding:10px 14px;border:1px solid #0879c9;border-radius:10px;color:#075b98;font-weight:800;text-decoration:none';results.appendChild(a);
+    return;
+   }
+   showState(items.length+' خبریں مل گئیں · تازہ دستیاب نتائج');
+   items.slice(0,12).forEach((item,index)=>{const card=makeCard(item);card.style.animationDelay=(index*45)+'ms';results.appendChild(card);});
+  }
+  input.addEventListener('input',()=>{drawSuggestions();if(timer)clearTimeout(timer);});
+  input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runSearch();}if(e.key==='Escape')hideSuggestions();});
+  search.addEventListener('click',e=>{e.preventDefault();runSearch();});
+  document.querySelector('.news-topic-chips')?.addEventListener('click',e=>{const b=e.target.closest('[data-news-topic]');if(b){input.value=b.dataset.newsTopic||'';runSearch();}});
+  document.addEventListener('click',e=>{if(!row.contains(e.target)&&!suggestions.contains(e.target))hideSuggestions();});
+  const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(SpeechRecognition){
+   mic.title='بول کر نیوز تلاش کریں';mic.setAttribute('aria-label','بول کر نیوز تلاش کریں');
+   mic.addEventListener('click',()=>{
+    if(listening){recognition?.stop();return;}
+    recognition=new SpeechRecognition();recognition.lang='ur-PK';recognition.interimResults=true;recognition.continuous=false;
+    recognition.onstart=()=>{listening=true;mic.classList.add('is-listening');showState('سن رہا ہوں… اب خبر کا موضوع بولیں۔',true);};
+    recognition.onresult=e=>{let text='';for(let i=e.resultIndex;i<e.results.length;i++)text+=e.results[i][0].transcript;if(text){input.value=text;drawSuggestions();if(e.results[e.results.length-1].isFinal)runSearch();}};
+    recognition.onerror=e=>showState(e.error==='not-allowed'?'مائیکروفون کی اجازت دیں، یا سرچ لکھ کر کریں۔':'آواز کی سہولت اس براؤزر میں دستیاب نہیں؛ لکھ کر تلاش کریں۔');
+    recognition.onend=()=>{listening=false;mic.classList.remove('is-listening');};
+    try{recognition.start();}catch(e){showState('مائیکروفون شروع نہیں ہو سکا؛ لکھ کر تلاش کریں۔');}
+   });
+  }else{
+   mic.addEventListener('click',()=>showState('اس براؤزر میں آواز سے سرچ دستیاب نہیں؛ لکھ کر تلاش کریں۔'));
+  }
+  search.addEventListener('click',()=>{search.classList.add('is-pressed');setTimeout(()=>search.classList.remove('is-pressed'),180);});
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
+
 </body></html>
