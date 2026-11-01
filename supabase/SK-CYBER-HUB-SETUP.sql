@@ -83,13 +83,9 @@ for select
 to authenticated
 using (id = (select auth.uid()) or public.sk_is_admin());
 
+-- Roles are changed only by the owner in the Supabase SQL Editor.
+-- Even an authenticated admin cannot promote another account through the browser.
 drop policy if exists sk_profiles_admin_manage on public.sk_profiles;
-create policy sk_profiles_admin_manage
-on public.sk_profiles
-for all
-to authenticated
-using (public.sk_is_admin())
-with check (public.sk_is_admin());
 
 drop policy if exists sk_apps_public_read_published on public.sk_apps;
 create policy sk_apps_public_read_published
@@ -121,7 +117,8 @@ to authenticated
 using (public.sk_is_admin());
 
 revoke all on public.sk_profiles from anon;
-grant select, insert, update, delete on public.sk_profiles to authenticated;
+grant select on public.sk_profiles to authenticated;
+revoke insert, update, delete on public.sk_profiles from authenticated;
 revoke all on public.sk_apps from anon;
 grant select on public.sk_apps to anon, authenticated;
 grant insert, update, delete on public.sk_apps to authenticated;
