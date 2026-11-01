@@ -31,6 +31,7 @@ create table if not exists public.sk_post_reports (
   post_id uuid not null references public.sk_posts(id) on delete cascade,
   reporter_id uuid not null references auth.users(id) on delete cascade,
   reason text not null check (char_length(reason) between 3 and 300),
+  status text not null default 'open' check (status in ('open','reviewed','dismissed')),
   created_at timestamptz not null default now(),
   unique (post_id,reporter_id)
 );
@@ -43,6 +44,7 @@ create index if not exists sk_post_reports_created_idx on public.sk_post_reports
 alter table public.sk_posts enable row level security;
 alter table public.sk_post_likes enable row level security;
 alter table public.sk_post_comments enable row level security;
+alter table public.sk_post_reports add column if not exists status text not null default 'open';
 alter table public.sk_post_reports enable row level security;
 
 drop policy if exists sk_posts_read_public_or_owner on public.sk_posts;
@@ -116,11 +118,15 @@ drop policy if exists sk_post_reports_admin_read on public.sk_post_reports;
 create policy sk_post_reports_admin_read on public.sk_post_reports
 for select to authenticated using (public.sk_is_admin());
 
+drop policy if exists sk_post_reports_admin_update on public.sk_post_reports;
+create policy sk_post_reports_admin_update on public.sk_post_reports
+for update to authenticated using (public.sk_is_admin()) with check (public.sk_is_admin());
+
 revoke all on public.sk_posts, public.sk_post_likes, public.sk_post_comments, public.sk_post_reports from anon, authenticated;
 grant select on public.sk_posts, public.sk_post_likes, public.sk_post_comments to anon, authenticated;
 grant insert, update, delete on public.sk_posts to authenticated;
 grant insert, delete on public.sk_post_likes to authenticated;
 grant insert, delete on public.sk_post_comments to authenticated;
-grant insert, select on public.sk_post_reports to authenticated;
+grant insert, select, update on public.sk_post_reports to authenticated;
 
 commit;
