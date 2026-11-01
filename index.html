@@ -1648,7 +1648,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
  <p id="skAnalyticsStatus" class="creator-status" role="status" aria-live="polite">Analytics setup is waiting for the database migration.</p>
  <div id="skAnalyticsSummary" class="grid resource-grid"></div>
  <div class="table-wrap"><table class="admin-table"><thead><tr><th>Country</th><th>Visits</th><th>Top page</th></tr></thead><tbody id="skAnalyticsRows"><tr><td colspan="3">No analytics data loaded.</td></tr></tbody></table></div>
- <p class="bulk-hint">Counts are approximate session visits, not verified unique people. VPNs and proxies may show their server country. Country lookup uses ipwho.is; the provider receives the visitor IP for country estimation, but SK Cyber Hub does not store that IP.</p>
+
 </div>
 <div class="section-head"><div><h2>Admin Dashboard</h2><p>Manage listings saved in your connected database.</p></div><div><button class="primary" type="button" onclick="openAppModal()">+ Add App</button> <button class="secondary" type="button" onclick="logoutAdmin()">Log out</button></div></div><div class="manager"><div class="table-wrap"><table class="admin-table"><thead><tr><th>App</th><th>Category</th><th>Platform</th><th>Actions</th></tr></thead><tbody id="adminTableBody"></tbody></table></div></div>
 <section class="section wrap" id="admin-resource-tools">
@@ -2628,6 +2628,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
             }
             ['home', 'admin'].forEach(tab => document.getElementById(`tab-${tab}`)?.classList.add('hidden'));
             document.getElementById(`tab-${t}`)?.classList.remove('hidden');
+            if (t === 'admin') setTimeout(() => document.getElementById('skAnalyticsRefresh')?.click(), 250);
         }
 
         
