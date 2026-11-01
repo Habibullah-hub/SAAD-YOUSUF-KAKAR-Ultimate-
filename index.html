@@ -1978,7 +1978,7 @@ document.querySelectorAll('.resource').forEach(card=>{
   img.addEventListener('error',()=>{icon.textContent=fallback;},{once:true});
   icon.appendChild(img);
  }else icon.textContent=fallback;
- const info=document.createElement('span');info.className='app-info';
+ const info=document.createElement('div');info.className='app-info';
  const tag=card.querySelector('.tag'),heading=card.querySelector('h3'),desc=card.querySelector('p');
  if(tag)info.appendChild(tag);if(heading)info.appendChild(heading);if(desc)info.appendChild(desc);
  card.prepend(icon);card.insertBefore(info,card.querySelector('.arrow'));
