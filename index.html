@@ -2748,6 +2748,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
   }
   document.querySelectorAll('[data-sk-view]').forEach(a=>a.addEventListener('click',e=>{const id=a.dataset.skView;if(!document.getElementById(id))return;e.preventDefault();setView(id);}));
   document.querySelectorAll('[data-sk-bottom="home"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();setView('home');}));
+  document.querySelectorAll('header a[href="#news"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();setView('news');},true));
   document.querySelectorAll('#categoryMenu a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href').slice(1);if(document.getElementById(id)){e.preventDefault();setView(id);}}));
   document.querySelectorAll('.hero-actions a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href').slice(1);if(document.getElementById(id)){e.preventDefault();setView(id);}}));
   document.querySelectorAll('[data-sk-home-search]').forEach(btn=>btn.addEventListener('click',()=>{const q=document.getElementById('search');if(q){q.value=btn.dataset.skHomeSearch;q.dispatchEvent(new Event('input',{bubbles:true}));q.focus();}}));
