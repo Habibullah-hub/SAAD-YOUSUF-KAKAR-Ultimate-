@@ -2070,7 +2070,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
         
         function openAuthModal() { if (!supabaseClient) { openSupabaseModal(); return; } document.getElementById('authModal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
-        function openSupabaseModal() { document.getElementById('supabaseModal').classList.remove('hidden'); }
+        function openSupabaseModal() { document.getElementById('sbUrl').value = localStorage.getItem('skcyberhub_supabase_url') || ''; document.getElementById('sbKey').value = localStorage.getItem('skcyberhub_supabase_anon_key') || ''; document.getElementById('supabaseModal').classList.remove('hidden'); }
         function closeSupabaseModal() { document.getElementById('supabaseModal').classList.add('hidden'); }
         function openAppModal(app=null) {
             document.getElementById('appModalTitle').innerText = app ? 'Edit App' : 'Add App';
@@ -2089,8 +2089,21 @@ document.getElementById('clearResource').addEventListener('click',()=>{
 
         function saveSupabaseConfig(e) {
             e.preventDefault();
-            localStorage.setItem('skcyberhub_supabase_url', document.getElementById('sbUrl').value.trim());
-            localStorage.setItem('skcyberhub_supabase_anon_key', document.getElementById('sbKey').value.trim());
+            const urlValue = document.getElementById('sbUrl').value.trim();
+            const keyValue = document.getElementById('sbKey').value.trim();
+            try {
+                const parsed = new URL(urlValue);
+                if (parsed.protocol !== 'https:') throw new Error('HTTPS required');
+            } catch (_) {
+                alert('Enter a valid HTTPS Supabase Project URL.');
+                return;
+            }
+            if (!keyValue) {
+                alert('Enter the anon / publishable public key. Never use the service_role secret key.');
+                return;
+            }
+            localStorage.setItem('skcyberhub_supabase_url', urlValue.replace(/\\/$/, ''));
+            localStorage.setItem('skcyberhub_supabase_anon_key', keyValue);
             location.reload();
         }
 
