@@ -1343,7 +1343,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 <a class="tile resource" data-search="Google for Education learning tools" href="https://edu.google.com/" target="_blank" rel="noopener noreferrer"><span class="tag">LEARNING RESOURCES</span><h3>Google for Education</h3><p>Explore education tools and learning resources; account requirements may apply.</p><span class="arrow">Explore resources ↗</span></a>
 <a class="tile resource" data-search="OpenLearn free courses learning" href="https://www.open.edu/openlearn/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE LEARNING</span><h3>OpenLearn Free Courses</h3><p>Free learning materials; check course pages for certificates and completion details.</p><span class="arrow">Browse courses ↗</span></a></div></section>
 
-<section class="section wrap" id="community"><div class="section-head"><div><h2>Community & User Accounts</h2><p>A safe community space is planned; public registration is not enabled in this release.</p></div></div><div class="notice"><b>Coming in a later security phase:</b> member profiles, community posts and user accounts will be enabled only after the separate SK Cyber Hub database has verified Row Level Security, role protection, spam controls and privacy settings. The website owner remains the only administrator. Creating an account will never automatically grant admin privileges.</div></section>
+<section class="section wrap" id="community"><div class="section-head"><div><h2>Community & User Accounts</h2><p>Create a free member account to access future community features.</p></div></div><div class="notice"><b>Member registration is available.</b> Every new account is automatically assigned the member role. Only the website owner can grant administrator access through the Supabase SQL Editor. Registration is free; email confirmation may be required.</div><div class="hero-actions" style="margin-top:16px"><button class="primary" type="button" onclick="openMemberAuthModal('signup')">Create free account</button><button class="hero-secondary" type="button" onclick="openMemberAuthModal('login')">Member login</button></div><p id="memberSessionNote" class="notice" aria-live="polite" style="margin-top:12px">You are browsing as a guest.</p></section>
 
 <section class="section wrap" id="languages"><div class="section-head"><div><h2>Languages & Global Access</h2><p>Use the language button at the top of the website to choose a supported page language. World News has its own display-language selector.</p></div></div><div class="grid resource-grid">
 <a class="tile resource" data-search="google translate languages translation" href="https://translate.google.com/" target="_blank" rel="noopener noreferrer"><span class="tag">LANGUAGE SUPPORT</span><h3>Google Translate</h3><p>Translate text and web pages across supported languages.</p><span class="arrow">Open translator ↗</span></a>
@@ -1451,6 +1451,28 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
                 <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs">Sign In</button>
             </form>
         </div>
+    </div>
+
+    <!-- MODAL: MEMBER AUTH -->
+    <div id="memberAuthModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+      <div class="bg-[#01120d] border border-emerald-900/80 rounded-3xl p-6 max-w-sm w-full space-y-4 relative max-h-[90vh] overflow-y-auto">
+        <button type="button" onclick="closeMemberAuthModal()" aria-label="Close member account" class="absolute top-3 right-3 w-9 h-9 rounded-full border border-emerald-800 bg-[#10251a] text-white text-2xl">×</button>
+        <h3 class="text-lg font-bold text-white text-center">SK Cyber Hub Member</h3>
+        <p class="text-xs text-slate-300">Free member account. Registration never grants Admin access.</p>
+        <div class="grid grid-cols-2 gap-2"><button type="button" class="secondary" onclick="setMemberAuthMode('signup')">Create account</button><button type="button" class="secondary" onclick="setMemberAuthMode('login')">Member login</button></div>
+        <form id="memberSignupForm" onsubmit="handleMemberSignup(event)" class="space-y-3">
+          <label class="block text-xs text-emerald-200" for="memberSignupEmail">Email address</label><input id="memberSignupEmail" type="email" autocomplete="email" required placeholder="Your email" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-xs text-white">
+          <label class="block text-xs text-emerald-200" for="memberSignupPassword">Create password (at least 8 characters)</label><input id="memberSignupPassword" type="password" autocomplete="new-password" minlength="8" required placeholder="Create password" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-xs text-white">
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs">Create free member account</button>
+        </form>
+        <form id="memberLoginForm" onsubmit="handleMemberLogin(event)" class="space-y-3 hidden">
+          <label class="block text-xs text-emerald-200" for="memberLoginEmail">Email address</label><input id="memberLoginEmail" type="email" autocomplete="email" required placeholder="Your email" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-xs text-white">
+          <label class="block text-xs text-emerald-200" for="memberLoginPassword">Password</label><input id="memberLoginPassword" type="password" autocomplete="current-password" required placeholder="Your password" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-xs text-white">
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs">Sign in as member</button>
+        </form>
+        <p id="memberAuthStatus" class="text-xs text-emerald-200" role="status" aria-live="polite"></p>
+        <button id="memberLogoutButton" type="button" onclick="logoutMember()" class="secondary hidden">Log out</button>
+      </div>
     </div>
 
     <!-- MODAL: SUPABASE CONFIG -->
@@ -2034,6 +2056,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
         let supabaseClient = null;
         let currentCat = 'All';
         let currentUser = null;
+        let currentMember = null;
 
         // Never show invented/demo downloads to visitors; live listings come from the connected database.
         let sampleApps = [];
@@ -2071,24 +2094,13 @@ document.getElementById('clearResource').addEventListener('click',()=>{
         async function checkSession() {
             if (!supabaseClient) return;
             const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session?.user) {
-                currentUser = null;
-                updateAuthUI();
-                return;
-            }
-            const { data: profile, error } = await supabaseClient
-                .from('sk_profiles')
-                .select('role')
-                .eq('id', session.user.id)
-                .maybeSingle();
-            if (error || profile?.role !== 'admin') {
-                currentUser = null;
-                await supabaseClient.auth.signOut();
-                updateAuthUI();
-                return;
-            }
-            currentUser = session.user;
-            updateAuthUI();
+            currentUser = null; currentMember = null;
+            if (!session?.user) { updateAuthUI(); updateMemberUI(); return; }
+            const { data: profile, error } = await supabaseClient.from('sk_profiles').select('role').eq('id', session.user.id).maybeSingle();
+            if (error || !profile) { await supabaseClient.auth.signOut(); updateAuthUI(); updateMemberUI(); return; }
+            if (profile.role === 'admin') currentUser = session.user;
+            else currentMember = session.user;
+            updateAuthUI(); updateMemberUI();
         }
 
         function updateAuthUI() {
@@ -2425,6 +2437,62 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 alert('Database connection test ناکام ہوا: ' + (error?.message || 'Unknown error'));
                 if (submitButton) { submitButton.disabled = false; submitButton.textContent = originalLabel; }
             }
+        }
+
+        function updateMemberUI() {
+            const note=document.getElementById('memberSessionNote');
+            const logout=document.getElementById('memberLogoutButton');
+            if(note) note.textContent=currentMember ? 'Signed in as member: '+(currentMember.email||'') : 'You are browsing as a guest.';
+            if(logout) logout.classList.toggle('hidden',!currentMember);
+        }
+        function openMemberAuthModal(mode='signup') {
+            if(!supabaseClient){openSupabaseModal();return;}
+            document.getElementById('memberAuthModal').classList.remove('hidden');
+            setMemberAuthMode(mode);
+            updateMemberUI();
+        }
+        function closeMemberAuthModal(){document.getElementById('memberAuthModal').classList.add('hidden');}
+        function setMemberAuthMode(mode){
+            const signup=mode!=='login';
+            document.getElementById('memberSignupForm').classList.toggle('hidden',!signup);
+            document.getElementById('memberLoginForm').classList.toggle('hidden',signup);
+            document.getElementById('memberAuthStatus').textContent='';
+        }
+        async function handleMemberSignup(e){
+            e.preventDefault();
+            if(!supabaseClient)return;
+            const email=document.getElementById('memberSignupEmail').value.trim();
+            const password=document.getElementById('memberSignupPassword').value;
+            const status=document.getElementById('memberAuthStatus');
+            status.textContent='Creating your free member account…';
+            const {data,error}=await supabaseClient.auth.signUp({email,password});
+            if(error){status.textContent=error.message;return;}
+            if(data?.session?.user){
+                const {data:profile,error:profileError}=await supabaseClient.from('sk_profiles').select('role').eq('id',data.session.user.id).maybeSingle();
+                if(profileError||!profile||profile.role!=='member'){await supabaseClient.auth.signOut();status.textContent='Account created, but member access could not be verified. Contact the site owner.';return;}
+                currentMember=data.session.user;updateMemberUI();status.textContent='Your member account is ready. Welcome!';
+            }else{
+                status.textContent='Registration request received. Check your email and confirm your address, then use Member login.';
+            }
+        }
+        async function handleMemberLogin(e){
+            e.preventDefault();
+            if(!supabaseClient)return;
+            const status=document.getElementById('memberAuthStatus');
+            status.textContent='Signing in…';
+            const {data,error}=await supabaseClient.auth.signInWithPassword({email:document.getElementById('memberLoginEmail').value.trim(),password:document.getElementById('memberLoginPassword').value});
+            if(error){status.textContent=error.message;return;}
+            const user=data?.user;
+            const {data:profile,error:profileError}=await supabaseClient.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();
+            if(profileError||!profile||profile.role!=='member'){
+                await supabaseClient.auth.signOut();currentMember=null;status.textContent='This login is not a member account. Admins must use Admin Login.';updateMemberUI();return;
+            }
+            currentMember=user;status.textContent='You are signed in as a member.';updateMemberUI();
+        }
+        async function logoutMember(){
+            if(!supabaseClient)return;
+            await supabaseClient.auth.signOut();currentMember=null;currentUser=null;updateAuthUI();updateMemberUI();
+            document.getElementById('memberAuthStatus').textContent='You have signed out.';
         }
 
         async function handleAdminLogin(e) {
