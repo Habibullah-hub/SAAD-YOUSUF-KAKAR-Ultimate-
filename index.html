@@ -2711,7 +2711,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
  function runGlobal(){
   if(!results)return;
   const rawQuery=(q?.value||'').trim(),query=rawQuery.toLocaleLowerCase();
-  const terms=query.split(/\\s+/).filter(Boolean),category=cat?.value||'all',pricing=price?.value||'all',deviceValue=device?.value||'all';
+  const terms=query.split(/\s+/).filter(Boolean),category=cat?.value||'all',pricing=price?.value||'all',deviceValue=device?.value||'all';
   const engines={google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q=',duckduckgo:'https://duckduckgo.com/?q=',brave:'https://search.brave.com/search?q='};
   document.querySelectorAll('[data-global-engine]').forEach(link=>{const engine=link.dataset.globalEngine;if(engines[engine])link.href=engines[engine]+encodeURIComponent(rawQuery);});
   results.replaceChildren();let count=0;
@@ -2719,8 +2719,8 @@ document.getElementById('clearResource').addEventListener('click',()=>{
   cards.forEach(card=>{
    const meta=classify(card),title=card.querySelector('h3')?.textContent?.trim()||card.querySelector('.app-name')?.textContent?.trim()||'Resource';
    const desc=card.querySelector('p')?.textContent?.trim()||'Open this resource for details.';
-   const hay=(title+' '+desc+' '+meta.text+' '+meta.id).toLocaleLowerCase().normalize('NFKD').replace(/[\\u0300-\\u036f]/g,'');
-   const normalizedTerms=terms.map(term=>term.normalize('NFKD').replace(/[\\u0300-\\u036f]/g,''));
+   const hay=(title+' '+desc+' '+meta.text+' '+meta.id).toLocaleLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'');
+   const normalizedTerms=terms.map(term=>term.normalize('NFKD').replace(/[\u0300-\u036f]/g,''));
    const link=card.matches('a[href]')?card:card.querySelector('a[href]');
    const href=link?.getAttribute('href')||'';let safe='';
    try{const u=new URL(href,location.href);if(u.protocol==='https:'||u.protocol==='http:')safe=u.href;}catch(e){}
