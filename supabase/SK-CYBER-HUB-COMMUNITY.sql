@@ -78,7 +78,10 @@ for select to anon, authenticated using (true);
 drop policy if exists sk_post_likes_insert_own on public.sk_post_likes;
 create policy sk_post_likes_insert_own on public.sk_post_likes
 for insert to authenticated
-with check (user_id = (select auth.uid()));
+with check (
+  user_id = (select auth.uid())
+  and exists (select 1 from public.sk_posts p where p.id = post_id and p.visibility = 'public')
+);
 
 drop policy if exists sk_post_likes_delete_own on public.sk_post_likes;
 create policy sk_post_likes_delete_own on public.sk_post_likes
