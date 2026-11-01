@@ -3126,7 +3126,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
     const link=card.matches('a[href]')?card:card.querySelector('a[href]');
     const href=link?.getAttribute('href')||'';
     let safe='';try{const u=new URL(href,location.href);if(u.protocol==='https:'||u.protocol==='http:')safe=u.href;}catch(e){}
-    if(safe&&/^https?:\\/\\//i.test(href)){
+    if(safe&&(href.startsWith('https://')||href.startsWith('http://'))){
      const a=document.createElement('a');a.href=safe;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open resource ↗';article.appendChild(a);
     }else{
      const b=document.createElement('button');b.type='button';b.textContent='Open section →';b.addEventListener('click',()=>{if(typeof window.skSetView==='function')window.skSetView(id);else location.hash=id;});article.appendChild(b);
