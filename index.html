@@ -1643,6 +1643,13 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
  <p id="skModerationStatus" class="creator-status" role="status" aria-live="polite">Admin access required. Community reports appear here after the Community SQL extension is installed.</p>
  <div id="skModerationList" class="grid resource-grid"></div>
 </div>
+<div class="bulk-panel" id="skGlobalAnalytics">
+ <div class="section-head"><div><h3>SK Global Analytics · Visitor Countries</h3><p>Last 30 days · country-level estimates only · no IP or exact location stored</p></div><button class="secondary" id="skAnalyticsRefresh" type="button">Refresh analytics</button></div>
+ <p id="skAnalyticsStatus" class="creator-status" role="status" aria-live="polite">Analytics setup is waiting for the database migration.</p>
+ <div id="skAnalyticsSummary" class="grid resource-grid"></div>
+ <div class="table-wrap"><table class="admin-table"><thead><tr><th>Country</th><th>Visits</th><th>Top page</th></tr></thead><tbody id="skAnalyticsRows"><tr><td colspan="3">No analytics data loaded.</td></tr></tbody></table></div>
+ <p class="bulk-hint">Counts are approximate session visits, not verified unique people. VPNs and proxies may show their server country. Country lookup uses ipwho.is; the provider receives the visitor IP for country estimation, but SK Cyber Hub does not store that IP.</p>
+</div>
 <div class="section-head"><div><h2>Admin Dashboard</h2><p>Manage listings saved in your connected database.</p></div><div><button class="primary" type="button" onclick="openAppModal()">+ Add App</button> <button class="secondary" type="button" onclick="logoutAdmin()">Log out</button></div></div><div class="manager"><div class="table-wrap"><table class="admin-table"><thead><tr><th>App</th><th>Category</th><th>Platform</th><th>Actions</th></tr></thead><tbody id="adminTableBody"></tbody></table></div></div>
 <section class="section wrap" id="admin-resource-tools">
  <div class="section-head"><div><h2>Add & Test a Resource</h2><p>Apna app name aur download URL daal kar apne phone par test karein.</p></div></div>
@@ -3790,6 +3797,44 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
  });
  const postText=$('skCommunityPostText'),counter=$('skCommunityCharCount'),publish=$('skCommunityPublish'),refresh=$('skCommunityRefresh'),feed=$('skCommunityFeed'),status=$('skCommunityStatus');
  const reportButton=$('skLoadReports'),reportList=$('skModerationList'),reportStatus=$('skModerationStatus');
+ const analyticsStatus=$('skAnalyticsStatus'),analyticsRows=$('skAnalyticsRows'),analyticsSummary=$('skAnalyticsSummary'),analyticsRefresh=$('skAnalyticsRefresh');
+ async function recordSiteVisit(){
+  if(typeof supabaseClient==='undefined'||!supabaseClient)return;
+  const page=(location.pathname||'/').slice(0,120);
+  const visitKey='skcyberhub_visit_'+page;
+  try{if(sessionStorage.getItem(visitKey))return;}catch(e){}
+  try{
+   const response=await fetch('https://ipwho.is/',{cache:'no-store'});
+   if(!response.ok)return;
+   const geo=await response.json();
+   if(!geo.success||!/^[A-Za-z]{2}$/.test(geo.country_code||''))return;
+   const result=await supabaseClient.rpc('sk_record_site_visit',{p_country_code:String(geo.country_code).toUpperCase(),p_country_name:String(geo.country||'').slice(0,80),p_page_path:page});
+   if(result.error){console.warn('SK analytics visit was not recorded:',result.error.message);return;}
+   try{sessionStorage.setItem(visitKey,'1');}catch(e){}
+  }catch(e){console.warn('SK analytics country estimate unavailable:',e);}
+ }
+ async function loadSiteAnalytics(){
+  if(!analyticsRows)return;
+  if(typeof currentUser==='undefined'||!currentUser){analyticsStatus.textContent='یہ رپورٹ صرف ویب سائٹ کے مالک Admin کے لیے ہے۔';return;}
+  if(typeof supabaseClient==='undefined'||!supabaseClient){analyticsStatus.textContent='Supabase connection دستیاب نہیں۔';return;}
+  analyticsStatus.textContent='گزشتہ 30 دن کی رپورٹس لوڈ ہو رہی ہیں…';
+  const since=new Date(Date.now()-30*86400000).toISOString().slice(0,10);
+  const {data,error}=await supabaseClient.from('sk_site_analytics').select('country_code,country_name,page_path,views,visit_date').gte('visit_date',since).order('views',{ascending:false}).limit(1000);
+  if(error){analyticsStatus.textContent='Analytics ابھی تیار نہیں: '+error.message+' · پہلے SK-GLOBAL-ANALYTICS.sql چلائیں۔';return;}
+  const countries=new Map();
+  (data||[]).forEach(row=>{const key=row.country_code||'XX';const item=countries.get(key)||{code:key,name:row.country_name||'Unknown',views:0,pages:new Map()};item.views+=Number(row.views)||0;item.pages.set(row.page_path,(item.pages.get(row.page_path)||0)+(Number(row.views)||0));countries.set(key,item);});
+  const ranked=[...countries.values()].sort((a,b)=>b.views-a.views),total=ranked.reduce((n,x)=>n+x.views,0);
+  analyticsSummary.replaceChildren();
+  const stats=[['Total visits',String(total)],['Countries',String(ranked.length)],['Period','30 days']];
+  stats.forEach(([label,value])=>{const card=node('div','platform-card');card.append(node('b','',value),node('p','',label));analyticsSummary.append(card);});
+  analyticsRows.replaceChildren();
+  ranked.forEach(item=>{const top=[...item.pages.entries()].sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';const tr=node('tr');tr.append(node('td','',flagFromCode(item.code)+' '+item.name),node('td','',String(item.views)),node('td','',top));analyticsRows.append(tr);});
+  if(!ranked.length)analyticsRows.append(node('tr','',''));
+  if(!ranked.length){const tr=analyticsRows.firstChild;const td=node('td','','ابھی کوئی وزٹ ریکارڈ نہیں ہوا۔');td.colSpan=3;tr.append(td);}
+  analyticsStatus.textContent='گزشتہ 30 دن میں '+total+' سیشن وزٹس · '+ranked.length+' ممالک۔';
+ }
+ analyticsRefresh?.addEventListener('click',loadSiteAnalytics);
+
  async function loadReports(){
   if(!reportList)return;
   const admin=typeof currentUser!=='undefined'&&currentUser;
@@ -3886,7 +3931,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   postText.value='';counter.textContent='0 / 800';setStatus('آپ کی پوسٹ شائع ہوگئی۔');loadFeed();
  });
  refresh?.addEventListener('click',loadFeed);
- window.addEventListener('load',()=>{if(feed){loadFeed();window.setTimeout(loadFeed,1400);}});
+ window.addEventListener('load',()=>{if(feed){loadFeed();window.setTimeout(loadFeed,1400);}recordSiteVisit();});
 })();
 </script>
 </body></html>
