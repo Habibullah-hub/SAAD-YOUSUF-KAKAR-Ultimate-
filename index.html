@@ -25,7 +25,7 @@ button,input,select{font:inherit}
 .links a:hover{color:#83e9a6}
 .primary,.searchbox button{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--accent);border-radius:7px;background:var(--accent);color:#07140b;font-weight:750;padding:10px 17px;cursor:pointer}
 .primary:hover,.searchbox button:hover{background:#67e69a}
-.category-dock{position:sticky;top:70px;z-index:25;background:#0d130ff5;border-bottom:1px solid var(--line);padding:10px 0;backdrop-filter:blur(18px)}
+.category-dock{position:static;top:auto;z-index:auto;background:#0d130ff5;border-bottom:1px solid var(--line);padding:10px 0;backdrop-filter:blur(18px)}
 .dock-inner{display:grid;grid-template-columns:230px minmax(280px,1fr);gap:9px 16px;align-items:center}
 .category-dropdown{position:relative;z-index:5;min-width:0;width:100%;margin:0}
 .category-toggle{width:100%;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border:1px solid #35463a;border-radius:7px;background:#151e18;color:var(--text);font-size:13px;font-weight:650;cursor:pointer}
@@ -119,7 +119,7 @@ body.searching .section-head{margin-bottom:9px}
  .nav{min-height:62px}
  .links{display:none}
  .top .primary{padding:8px 11px;font-size:11px}
- .category-dock{top:62px;padding:8px 0}
+ .category-dock{top:auto;padding:8px 0}
  .dock-inner{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:7px}
  .category-toggle{height:43px;padding:0 9px;font-size:11px;justify-content:center;gap:5px}
  .dock-inner>.searchbox{min-height:43px;height:43px;padding:3px}
@@ -183,7 +183,7 @@ a{color:inherit}
 .links a:hover{color:#0067b8}
 .primary,.searchbox button{border:1px solid #0067b8;border-radius:4px;background:#0067b8;color:#fff}
 .primary:hover,.searchbox button:hover{background:#005a9e}
-.category-dock{top:64px;background:#fff;border-bottom:1px solid #e5e5e5;backdrop-filter:none;padding:9px 0}
+.category-dock{top:auto;background:#fff;border-bottom:1px solid #e5e5e5;backdrop-filter:none;padding:9px 0}
 .dock-inner{grid-template-columns:220px minmax(280px,1fr);gap:10px 18px}
 .category-toggle{height:42px;border:1px solid #d1d1d1;border-radius:4px;background:#fff;color:#242424}
 .category-toggle span{color:#0067b8}
@@ -255,7 +255,7 @@ a{color:inherit}
  .nav{min-height:58px}
  .brand{font-size:13px}
  .brand .mark{width:34px;height:34px}
- .category-dock{top:58px;padding:7px 0}
+ .category-dock{top:auto;padding:7px 0}
  .dock-inner{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:6px}
  .category-toggle{height:40px;font-size:11px}
  .dock-inner>.searchbox{min-height:40px;height:40px}
@@ -289,6 +289,13 @@ a{color:inherit}
 }
 
 
+/* Unified Microsoft Store-inspired navigation and reliable section offsets */
+html{scroll-padding-top:170px}
+.section{scroll-margin-top:170px}
+.top{position:sticky;top:0;z-index:40}
+.category-dock{position:static;top:auto;z-index:auto}
+@media(max-width:760px){html{scroll-padding-top:165px}.section{scroll-margin-top:165px}}
+
 /* SK Cyber Hub: final light-store consistency and sticky-header alignment */
 :root{--bg:#f7f7f7;--surface:#fff;--surface-2:#f3f3f3;--line:#e1e1e1;--text:#242424;--muted:#616161;--accent:#0067b8;--accent-soft:#eff6fc;color-scheme:light}
 html,body{background:#f7f7f7;color:#242424}
@@ -297,15 +304,15 @@ html,body{background:#f7f7f7;color:#242424}
 .brand small{color:#616161}
 .links{color:#424242}
 .links a:hover{color:#0067b8}
-.category-dock{top:70px}
+.category-dock{top:auto}
 .store-hero{border-radius:6px}
 .section-head{border-color:#e1e1e1}
-@media(max-width:760px){.category-dock{top:58px}}
+@media(max-width:760px){.category-dock{top:auto}}
 
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap nav"><a class="brand" href="#"><span class="mark">SK</span><span>SK CYBER HUB<small>SAAD YOUSUF KAKAR</small></span></a><nav class="links"><a href="#apps">Android Apps</a><a href="#software">Software</a><a href="#tools">AI Tools</a><a href="#about">About</a><a href="#add-resource">Add Resource</a></nav><a class="primary" href="#apps">Explore Apps ↗</a></div></header>
+<header class="top"><div class="wrap nav"><a class="brand" href="#"><span class="mark">SK</span><span>SK CYBER HUB<small>SAAD YOUSUF KAKAR</small></span></a><a class="primary" href="#apps">Explore Apps ↗</a></div>
 <div class="category-dock"><div class="wrap dock-inner"><div class="category-dropdown">
  <button class="category-toggle" id="categoryToggle" type="button" aria-expanded="false" aria-controls="categoryMenu">☰ Browse All Categories <span>▾</span></button>
  <div class="category-menu hidden" id="categoryMenu">
@@ -317,7 +324,7 @@ html,body{background:#f7f7f7;color:#242424}
   <a href="#games" data-search="games android pc entertainment">◈ Games</a>
   <a href="#news" data-search="news technology updates">⌁ Technology News</a>
  </div>
-</div><div class="searchbox"><input id="search" type="search" placeholder="Search tools, apps, software..." aria-label="Search directory"><button id="searchBtn">Search ↗</button></div><nav class="quick-nav" aria-label="Quick category navigation"><a href="#apps">Android Apps</a><a href="#software">Software</a><a href="#tools">AI Tools</a><a href="#games">Games</a></nav></div></div>
+</div><div class="searchbox"><input id="search" type="search" placeholder="Search tools, apps, software..." aria-label="Search directory"><button id="searchBtn">Search ↗</button></div><nav class="quick-nav" aria-label="Quick category navigation"><a href="#apps">Android Apps</a><a href="#software">Software</a><a href="#tools">AI Tools</a><a href="#games">Games</a></nav></div></div></header>
 <p id="empty" class="empty hidden">No matching category found. Try another search.</p>
 <main>
 <section class="hero wrap store-hero"><div class="store-hero-copy"><span class="eyebrow"><span class="dot"></span> SK CYBER HUB STORE</span><h1>Discover your next <span>favorite.</span></h1><p class="intro">Explore apps, AI tools, software, games and useful digital resources — all in one place.</p><div class="hero-actions"><a class="primary" href="#apps">Explore apps ↗</a><a class="hero-secondary" href="#tools">Discover AI tools</a></div></div><div class="store-hero-art" aria-hidden="true"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-tile tile-main">SK<span>✦</span></div><div class="art-tile tile-small tile-a">AI</div><div class="art-tile tile-small tile-b">APP</div><div class="art-tile tile-small tile-c">⌘</div></div></section>
@@ -429,6 +436,25 @@ document.getElementById('searchBtn').addEventListener('click',runSearch);
 input.addEventListener('input',runSearch);
 input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runSearch()}});
 document.getElementById('year').textContent=new Date().getFullYear();
+
+/* Reliable section navigation: clear search filters and scroll below the combined sticky header. */
+document.addEventListener('click',e=>{
+ const link=e.target.closest('a[href^="#"]');
+ if(!link)return;
+ const hash=link.getAttribute('href');
+ if(!hash||hash==='#')return;
+ const target=document.getElementById(decodeURIComponent(hash.slice(1)));
+ if(!target)return;
+ e.preventDefault();
+ if(input.value){input.value='';runSearch();}
+ closeCategoryMenu();
+ const header=document.querySelector('.top');
+ const offset=(header?header.getBoundingClientRect().height:0)+14;
+ const top=window.scrollY+target.getBoundingClientRect().top-offset;
+ history.replaceState(null,'',hash);
+ window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+});
+
 /* Section counts and scroll-aware navigation */
 runSearch();
 const quickLinks=[...document.querySelectorAll('.quick-nav a')];
