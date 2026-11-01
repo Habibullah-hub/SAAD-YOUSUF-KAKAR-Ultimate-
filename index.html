@@ -2323,6 +2323,8 @@ document.getElementById('clearResource').addEventListener('click',()=>{
   if(globalStatus)globalStatus.textContent=count+' matching resources found. Price and device labels are based on listing details; verify them with the provider.';
   if(!count){const empty=document.createElement('p');empty.className='empty';empty.textContent='No matching resource found. Try changing the filters or search words.';results.appendChild(empty);}
  }
+ const updateWebEngineLinks=()=>{const term=(q?.value||'').trim();const engines={google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q=',duckduckgo:'https://duckduckgo.com/?q=',brave:'https://search.brave.com/search?q='};document.querySelectorAll('[data-global-engine]').forEach(link=>{const engine=link.dataset.globalEngine;if(engines[engine])link.href=engines[engine]+encodeURIComponent(term);});};
+ updateWebEngineLinks();q?.addEventListener('input',updateWebEngineLinks);
  byId('skGlobalSearchButton')?.addEventListener('click',runGlobal);
  q?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runGlobal();}});
  [cat,price,device].forEach(el=>el?.addEventListener('change',runGlobal));
