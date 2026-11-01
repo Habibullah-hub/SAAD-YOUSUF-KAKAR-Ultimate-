@@ -1197,6 +1197,30 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 @media(max-width:600px){.news-section .news-search-panel{padding:13px!important;border-radius:13px!important}.news-section .news-topic-chips{gap:6px}.news-section .news-topic-chips button{min-height:29px;padding:5px 9px;font-size:10px}.news-section .news-result-group{padding:10px;border-radius:12px}.news-section .news-results{grid-template-columns:minmax(0,1fr)}.news-section .news-card-visual{min-height:145px}.news-section .news-card-image,.news-section .news-card-image-fallback{height:165px!important}}
 @media(prefers-reduced-motion:reduce){.news-section .news-result-card,.news-section .news-topic-chips button{transition:none!important}}
 </style>
+<style id="sk-header-instant-discovery-v5">
+.top .category-dock .searchbox{position:relative;z-index:120!important;isolation:isolate}
+#skHeaderLiveResults{position:absolute;left:0;right:0;top:calc(100% + 12px);z-index:9999;max-height:min(68vh,560px);overflow:auto;padding:13px;border:1px solid #4d8298;border-radius:18px;background:linear-gradient(145deg,rgba(5,18,34,.985),rgba(10,34,53,.985) 58%,rgba(10,43,52,.985));box-shadow:0 24px 70px #000b,0 0 0 1px #7debd51a inset;backdrop-filter:blur(24px);opacity:0;transform:translateY(-9px) scale(.985);transform-origin:top center;pointer-events:none;transition:opacity .2s ease,transform .24s cubic-bezier(.2,.8,.2,1)}
+#skHeaderLiveResults.is-open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+#skHeaderLiveResults[hidden]{display:none!important}
+.sk-live-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:3px 3px 10px;color:#a8d4e4;font-size:10px;font-weight:900;letter-spacing:1.2px}
+.sk-live-head>span:before{content:"";display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:#52f0c8;box-shadow:0 0 0 4px #52f0c822}
+.sk-live-close{border:1px solid #42647a;border-radius:999px;background:#142c40;color:#c8e2ed;padding:5px 10px;font-size:10px}
+.sk-live-summary{display:flex;align-items:center;gap:7px;padding:9px 10px;margin-bottom:7px;border-radius:10px;background:linear-gradient(90deg,#0e3a4c,#10283e);color:#91b7c9;font-size:10px}
+.sk-live-count{color:#63f0d0;font-size:11px;letter-spacing:.6px}
+.sk-live-item{display:flex;align-items:center;gap:10px;width:100%;min-height:57px;margin:5px 0;padding:9px 11px;border:1px solid #28475e;border-radius:12px;background:linear-gradient(110deg,#112b42,#102238);color:#effaff;text-align:left;text-decoration:none;transition:transform .18s,border-color .18s,background .18s,box-shadow .18s}
+.sk-live-item:hover,.sk-live-item:focus-visible{transform:translateX(3px);border-color:#55e6cf;background:linear-gradient(110deg,#153d50,#142c45);box-shadow:0 7px 20px #0004}
+.sk-live-index{display:grid;place-items:center;flex:none;width:30px;height:30px;border:1px solid #3a667a;border-radius:9px;background:#173b50;color:#70e8d2;font-size:10px;font-weight:900}
+.sk-live-detail{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+.sk-live-detail b{overflow:hidden;color:#f0f8ff;font-size:12px;font-weight:750;text-overflow:ellipsis;white-space:nowrap}
+.sk-live-detail small{color:#8eafc4;font-size:10px;text-transform:capitalize}
+.sk-live-arrow{flex:none;color:#70e8d2;font-size:9px;font-weight:900;letter-spacing:.5px}
+.sk-live-empty{padding:18px 12px;border:1px dashed #3d6074;border-radius:11px;color:#c2d5e1;font-size:12px;line-height:1.6}
+.sk-live-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px;padding:10px 3px 2px;border-top:1px solid #29475a}
+.sk-live-footer a{color:#69e8d2;font-size:11px;font-weight:800;text-decoration:none}
+.sk-live-footer span{color:#819caf;font-size:9px}
+@media(max-width:600px){#skHeaderLiveResults{left:-3px;right:-3px;max-height:62vh;padding:10px;border-radius:14px}.sk-live-item{min-height:53px;padding:8px}.sk-live-detail b{font-size:11px}.sk-live-footer{align-items:flex-start;flex-direction:column;gap:5px}}
+@media(prefers-reduced-motion:reduce){#skHeaderLiveResults,.sk-live-item{transition:none!important}}
+</style>
 </head>
 <body>
 <div id="google_translate_element" aria-hidden="true"></div><div id="configAlert" class="config-alert"><span>SK Cyber Hub database is not connected. Set up its separate database tables to manage listings.</span><button type="button" onclick="openSupabaseModal()">Configure</button></div>
@@ -3323,29 +3347,49 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
 (function(){
  const $=id=>document.getElementById(id);
  function init(){
-  /* Build a live result layer directly under the top search field. */
-  const input=$('search'),box=document.querySelector('.top .searchbox');
+  /* SK live discovery: show useful results beside the field, never at page bottom. */
+  const input=$('search'),box=document.querySelector('.top .searchbox'),searchButton=$('searchBtn');
   if(input&&box&&!$('skHeaderLiveResults')){
-   const panel=document.createElement('div');panel.id='skHeaderLiveResults';panel.hidden=true;panel.setAttribute('role','region');panel.setAttribute('aria-label','Live search results');
-   box.appendChild(panel);
+   const panel=document.createElement('div');panel.id='skHeaderLiveResults';panel.hidden=true;panel.setAttribute('role','region');panel.setAttribute('aria-label','Instant search results');panel.setAttribute('aria-live','polite');box.appendChild(panel);
    const close=()=>{panel.classList.remove('is-open');panel.hidden=true;};
+   const addText=(tag,cls,value,parent)=>{const el=document.createElement(tag);el.className=cls;el.textContent=value;parent.appendChild(el);return el;};
    const render=()=>{
-    const q=input.value.trim().toLocaleLowerCase();
+    const raw=input.value.trim(),q=raw.toLocaleLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'');
     panel.replaceChildren();
-    if(q.length<1){close();return;}
-    const head=document.createElement('div');head.className='sk-live-head';const label=document.createElement('span');label.textContent='LIVE DISCOVERY';const count=document.createElement('strong');head.append(label,count);panel.append(head);
+    if(!raw){close();return;}
+    const head=document.createElement('div');head.className='sk-live-head';
+    addText('span','', '✦ SK INSTANT DISCOVERY',head);
+    const closeBtn=document.createElement('button');closeBtn.type='button';closeBtn.className='sk-live-close';closeBtn.textContent='Close ×';closeBtn.addEventListener('click',close);head.appendChild(closeBtn);panel.appendChild(head);
     const words=q.split(/\s+/).filter(Boolean);
     const cards=[...document.querySelectorAll('#tab-home .resource')].filter(el=>!el.closest('#skHeaderLiveResults'));
-    const hits=cards.map(card=>{const title=card.querySelector('h3,h4,strong')?.textContent||card.textContent.trim().slice(0,90);const hay=(card.textContent+' '+(card.dataset.search||'')).toLocaleLowerCase();const score=words.reduce((n,w)=>n+(hay.includes(w)?1:0),0);return {card,title,score};}).filter(x=>x.score===words.length).sort((a,b)=>b.score-a.score).slice(0,8);
-    count.textContent=hits.length+' MATCHES';
-    if(!hits.length){const empty=document.createElement('div');empty.className='sk-live-empty';empty.textContent='No exact match yet. Try a shorter keyword or browse all sections.';panel.append(empty);}
-    hits.forEach(({card,title})=>{const link=document.createElement('a');link.className='sk-live-item';const section=card.closest('section');const href=card.matches('a[href]')?card.getAttribute('href'):(section&&section.id?'#'+section.id:'#news');link.href=href||'#';const name=document.createElement('span');name.textContent=title;const meta=document.createElement('small');meta.textContent=section?.querySelector('.section-head h2')?.textContent||'Explore';link.append(name,meta);panel.append(link);});
+    const hits=cards.map(card=>{
+     const title=card.querySelector('h3,h4,.app-name,strong')?.textContent?.trim()||card.textContent.trim().slice(0,90);
+     const section=card.closest('section'),sectionName=section?.querySelector('.section-head h2')?.textContent?.trim()||section?.id||'Explore';
+     const hay=(title+' '+card.textContent+' '+(card.dataset.search||'')+' '+sectionName).toLocaleLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'');
+     const score=words.reduce((n,w)=>n+(hay.includes(w)?1:0),0);
+     const anchor=card.matches('a[href]')?card:card.querySelector('a[href]');
+     const href=anchor?.getAttribute('href')||'';
+     return {card,title,sectionName,score,href};
+    }).filter(x=>x.score===words.length&&x.href).sort((a,b)=>b.score-a.score).slice(0,10);
+    const count=document.createElement('strong');count.className='sk-live-count';count.textContent=hits.length+' RESULT'+(hits.length===1?'':'S');
+    const summary=document.createElement('div');summary.className='sk-live-summary';summary.append(count,document.createTextNode(' · Updates as you type'));panel.appendChild(summary);
+    if(!hits.length){addText('div','sk-live-empty','No match found in the directory. Try a shorter word, or open a web search below.',panel);}
+    hits.forEach(({title,sectionName,href},index)=>{
+     const link=document.createElement('a');link.className='sk-live-item';link.href=href;link.setAttribute('aria-label','Open '+title);
+     addText('span','sk-live-index',String(index+1).padStart(2,'0'),link);
+     const detail=document.createElement('span');detail.className='sk-live-detail';addText('b','',title,detail);addText('small','',sectionName,detail);link.appendChild(detail);
+     addText('small','sk-live-arrow','OPEN ↗',link);panel.appendChild(link);
+    });
+    const footer=document.createElement('div');footer.className='sk-live-footer';
+    const web=document.createElement('a');web.href='https://www.google.com/search?q='+encodeURIComponent(raw);web.target='_blank';web.rel='noopener noreferrer';web.textContent='Search the wider web ↗';footer.appendChild(web);
+    const hint=document.createElement('span');hint.textContent='Enter to search · Esc to close';footer.appendChild(hint);panel.appendChild(footer);
     panel.hidden=false;requestAnimationFrame(()=>panel.classList.add('is-open'));
    };
-   input.addEventListener('input',render);
+   input.addEventListener('input',e=>{e.stopImmediatePropagation();render();},true);
    input.addEventListener('focus',()=>{if(input.value.trim())render();});
+   input.addEventListener('keydown',e=>{if(e.key==='Escape'){close();}else if(e.key==='Enter'){e.preventDefault();e.stopImmediatePropagation();render();}},true);
+   if(searchButton){const fresh=searchButton.cloneNode(true);searchButton.replaceWith(fresh);fresh.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(input.value.trim()){render();input.focus();}else input.focus();});}
    document.addEventListener('click',e=>{if(!box.contains(e.target))close();});
-   input.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
   }
   /* Remove the old More button listeners by replacing the button node; keep one toggle only. */
   const oldButton=document.querySelector('.sk-bottom-nav [data-sk-more]'),oldPanel=$('skMorePanel');
