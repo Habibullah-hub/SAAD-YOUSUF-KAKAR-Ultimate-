@@ -10,6 +10,17 @@
 4. SQL فائل کا مکمل متن Copy کریں، Supabase کے SQL Editor میں Paste کریں اور **Run** دبائیں۔
 5. یہ اسکرپٹ صرف SK Cyber Hub کے الگ ٹیبلز، policies اور trigger بناتا ہے۔ پرانے `apps` اور `profiles` ٹیبلز کو نہیں چھیڑتا۔
 
+## 2) Community / Social Feed تیار کریں
+
+World Network کے Community حصے میں پوسٹ، Like، Comment اور Report کے لیے یہ الگ SQL ایک مرتبہ چلائیں:
+
+1. [SK-CYBER-HUB-COMMUNITY.sql](./SK-CYBER-HUB-COMMUNITY.sql) کھولیں۔
+2. مکمل SQL کاپی کریں اور اسی SK Cyber Hub Supabase پروجیکٹ کے SQL Editor میں Run کریں۔
+3. یہ صرف `sk_posts`, `sk_post_likes`, `sk_post_comments`, `sk_post_reports` بناتا ہے۔ پرانے `apps` یا `profiles` ٹیبلز تبدیل نہیں ہوتے۔
+4. پوسٹ کرنے کے لیے Member Login ضروری ہے۔ عام ممبر کو Admin اختیارات نہیں ملتے۔ Report صرف Admin پڑھ سکتا ہے۔
+
+**نوٹ:** اس SQL کو چلائے بغیر Community feed کا ڈیزائن نظر آئے گا، لیکن پوسٹ/Like/Comment ڈیٹا محفوظ نہیں ہوگا۔
+
 ## 2) صرف اپنے اکاؤنٹ کو Admin بنائیں
 
 1. Supabase میں **Authentication → Users** کھولیں۔
