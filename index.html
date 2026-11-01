@@ -1192,7 +1192,7 @@ function runSearch(){
 }
 document.getElementById('searchBtn').addEventListener('click',runSearch);
 input.addEventListener('input',runSearch);
-input.addEventListener('input',()=>{const s=document.getElementById('searchInput');if(s){s.value=input.value;filterApps();}});
+input.addEventListener('input',filterApps);
 input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runSearch()}});
 
 /* World News: quick RSS search, in-memory caching, speech input and language translation. */
@@ -1627,7 +1627,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
         function renderApps() {
             const grid = document.getElementById('appsGrid');
             const modGrid = document.getElementById('modApkResources');
-            const search = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            const search = document.getElementById('search')?.value.toLowerCase().trim() || '';
             const visibleApps = appsList.filter(app => currentUser || !supabaseClient || app.published === true);
             // Keep Mod APK listings in their own section so they never appear twice.
             const filtered = visibleApps.filter(app => {
@@ -1655,7 +1655,8 @@ document.getElementById('clearResource').addEventListener('click',()=>{
 
             const makeAppCard = app => {
                 const card = document.createElement('div');
-                card.className = 'bg-[#01120d] border border-emerald-950 rounded-2xl p-4 space-y-3 hover:border-emerald-800/60 transition';
+                card.className = 'resource app-resource bg-[#01120d] border border-emerald-950 rounded-2xl p-4 space-y-3 hover:border-emerald-800/60 transition';
+                card.dataset.search = [app.name, app.category, app.platform, app.version, app.description].filter(Boolean).join(' ').toLowerCase();
 
                 const top = document.createElement('div');
                 top.className = 'flex items-start justify-between';
