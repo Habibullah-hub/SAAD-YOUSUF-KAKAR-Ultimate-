@@ -15,7 +15,7 @@ This is the separate **Saad Yousuf Kakar Ultimate / SK Cyber Hub** project. It i
 - Documents & Learning and Games
 - Video & Audio, Images & Design, Developer Tools, Security & Privacy
 - Creator Studio, Global Search, Jobs & Opportunities, Deals & Freebies
-- Community & User Accounts (planned; public registration is not enabled yet)
+- Community & User Accounts (free member registration and login; community posting remains planned)
 - Languages & Global Access
 - World News search, language selection, speech input where supported, translated summaries, sharing and publisher links
 
@@ -34,7 +34,7 @@ The site uses the isolated `public.sk_apps` and `public.sk_profiles` tables. It 
 
 The SQL setup creates the SK-specific Row Level Security policies and a trigger that creates new profiles as `member`. Browser clients have read-only access to `sk_profiles`; neither members nor an Admin session can change account roles through the website. The owner must manually promote only their own Auth user UUID to `admin` using the final SQL statement in `supabase/SK-CYBER-HUB-SETUP.sql`. Verify that exactly one owner row is updated. Do not promote other accounts. Role changes after setup must also be performed by the owner in the Supabase SQL Editor.
 
-Public account registration/community features remain disabled until the owner-only Admin setup and live security checks are complete. No Storage bucket is required for the current external-icon listing design.
+Public member registration and login are enabled in the website. New accounts are assigned `member` by the database trigger. Community posting remains disabled until moderation, spam controls and privacy settings are implemented. No Storage bucket is required for the current external-icon listing design.
 
 Browser configuration is local to the device and browser. Setting it on one phone does not automatically configure another. Do not reuse credentials from the separate Yousuf Kakar Free Apps project.
 
@@ -53,4 +53,4 @@ The AI video finder records free-use limits, account/card requirements, resoluti
 Development and launch should use free tools and free tiers wherever possible. Do not enable a paid plan, service, domain, ad spend or purchase without the owner's explicit approval. Free services have limits and may change.
 
 ## Development status
-The website is being improved incrementally. A successful GitHub commit does not by itself confirm that GitHub Pages has finished deploying or that every third-party service is available. Test the live site on both mobile and desktop after deployment.
+Member signup uses Supabase Auth and the existing profile trigger; if email confirmation is enabled in Supabase, new users must confirm their email before logging in. The browser verifies that member accounts have the `member` role and never offers role promotion.\n\nThe website is being improved incrementally. A successful GitHub commit does not by itself confirm that GitHub Pages has finished deploying or that every third-party service is available. Test the live site on both mobile and desktop after deployment.
