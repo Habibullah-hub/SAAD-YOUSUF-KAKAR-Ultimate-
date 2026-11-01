@@ -1134,6 +1134,34 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 @media(max-width:600px){.wrap{width:calc(100% - 24px)}.nav{min-height:64px}.brand .mark{width:40px;height:40px}.hero.store-hero{grid-template-columns:1fr;min-height:0;margin:18px auto 14px;padding:25px 20px;border-radius:20px}.store-hero h1{font-size:clamp(36px,10vw,48px);letter-spacing:-1.7px}.store-hero .intro{font-size:14px}.store-hero-art{height:155px;transform:scale(.76);transform-origin:center top;margin:0 auto -28px;width:100%}.section{padding:24px 0;scroll-margin-top:135px}.section-head{align-items:flex-start}.section h2{font-size:21px}.resource-grid{grid-template-columns:1fr;gap:11px}.resource.tile,.tile{min-height:122px;padding:15px;border-radius:14px}.trust-strip{grid-template-columns:1fr 1fr;gap:8px}.trust-item{padding:10px 9px;font-size:11px}.trust-item span:first-child{width:30px;height:30px;flex-basis:30px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
+
+<style id="sk-world-news-header-alignment-final">
+/* Keep World News aligned on the same header row as the SK brand, including phones */
+.top .nav{display:flex!important;align-items:center!important;justify-content:space-between!important;flex-wrap:nowrap!important;gap:8px!important}
+.top .nav>.brand{flex:0 1 auto!important;width:auto!important;min-width:0!important;max-width:none!important}
+.top .nav>.nav-actions{flex:0 0 auto!important;width:auto!important;min-width:0!important;margin:0!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;flex-wrap:nowrap!important;gap:7px!important}
+.top .nav .news-nav-link,.top .nav .language-toggle{display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;min-height:38px!important;height:38px!important;padding:0 10px!important;border-radius:8px!important;font-size:11px!important;line-height:1!important;white-space:nowrap!important}
+.top .nav .news-nav-link{width:auto!important;gap:5px!important}
+.top .nav .news-nav-link span{display:inline!important;font-size:11px!important;line-height:1!important}
+@media(max-width:600px){
+ .top .nav{min-height:58px!important}
+ .top .nav>.brand{gap:6px!important;font-size:11px!important}
+ .top .nav>.brand .mark{flex:0 0 34px!important;width:34px!important;height:34px!important}
+ .top .nav>.brand small{font-size:7px!important;letter-spacing:.6px!important}
+ .top .nav>.nav-actions{gap:5px!important}
+ .top .nav .news-nav-link,.top .nav .language-toggle{min-height:34px!important;height:34px!important;padding:0 7px!important;font-size:10px!important}
+ .top .nav .news-nav-link span{font-size:10px!important}
+}
+@media(max-width:350px){
+ .top .nav{gap:4px!important}
+ .top .nav>.brand{gap:4px!important;font-size:10px!important}
+ .top .nav>.brand .mark{flex-basis:30px!important;width:30px!important;height:30px!important}
+ .top .nav>.brand small{font-size:6px!important}
+ .top .nav .news-nav-link,.top .nav .language-toggle{padding:0 5px!important;font-size:9px!important}
+ .top .nav .news-nav-link span{font-size:9px!important}
+}
+</style>
+
 </head>
 <body>
 <div id="google_translate_element" aria-hidden="true"></div><div id="configAlert" class="config-alert"><span>SK Cyber Hub database is not connected. Set up its separate database tables to manage listings.</span><button type="button" onclick="openSupabaseModal()">Configure</button></div>
