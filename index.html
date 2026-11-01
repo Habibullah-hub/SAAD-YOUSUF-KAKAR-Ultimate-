@@ -1069,10 +1069,10 @@ img,iframe,video{max-width:100%}
  <p id="skGlobalStatus" class="creator-status" role="status" aria-live="polite">Search across listed resources. Price labels reflect the information shown on each listing; unknown pricing is not guessed.</p>
  <div id="skGlobalResults" class="grid resource-grid" aria-live="polite"></div>
 </div><div class="grid resource-grid">
-<a class="tile resource" data-search="google web search engine" href="https://www.google.com/" target="_blank" rel="noopener noreferrer"><span class="tag">WEB SEARCH</span><h3>Google Search</h3><p>Search websites, images, videos, maps and more.</p><span class="arrow">Search with Google ↗</span></a>
-<a class="tile resource" data-search="bing microsoft search engine" href="https://www.bing.com/" target="_blank" rel="noopener noreferrer"><span class="tag">WEB SEARCH</span><h3>Microsoft Bing</h3><p>Search the web and explore image and video results.</p><span class="arrow">Search with Bing ↗</span></a>
-<a class="tile resource" data-search="duckduckgo private search engine" href="https://duckduckgo.com/" target="_blank" rel="noopener noreferrer"><span class="tag">PRIVACY-FOCUSED OPTION</span><h3>DuckDuckGo</h3><p>Explore a search engine that emphasizes privacy.</p><span class="arrow">Search privately ↗</span></a>
-<a class="tile resource" data-search="brave search engine" href="https://search.brave.com/" target="_blank" rel="noopener noreferrer"><span class="tag">INDEPENDENT SEARCH</span><h3>Brave Search</h3><p>Try another independent web search option.</p><span class="arrow">Open Brave Search ↗</span></a>
+<a class="tile resource" data-search="google web search engine" href="https://www.google.com/" data-global-engine="google" target="_blank" rel="noopener noreferrer"><span class="tag">WEB SEARCH</span><h3>Google Search</h3><p>Search websites, images, videos, maps and more.</p><span class="arrow">Search with Google ↗</span></a>
+<a class="tile resource" data-search="bing microsoft search engine" href="https://www.bing.com/" data-global-engine="bing" target="_blank" rel="noopener noreferrer"><span class="tag">WEB SEARCH</span><h3>Microsoft Bing</h3><p>Search the web and explore image and video results.</p><span class="arrow">Search with Bing ↗</span></a>
+<a class="tile resource" data-search="duckduckgo private search engine" href="https://duckduckgo.com/" data-global-engine="duckduckgo" target="_blank" rel="noopener noreferrer"><span class="tag">PRIVACY-FOCUSED OPTION</span><h3>DuckDuckGo</h3><p>Explore a search engine that emphasizes privacy.</p><span class="arrow">Search privately ↗</span></a>
+<a class="tile resource" data-search="brave search engine" href="https://search.brave.com/" data-global-engine="brave" target="_blank" rel="noopener noreferrer"><span class="tag">INDEPENDENT SEARCH</span><h3>Brave Search</h3><p>Try another independent web search option.</p><span class="arrow">Open Brave Search ↗</span></a>
 </div></section>
 
 <section class="section wrap" id="jobs"><div class="section-head"><div><h2>Jobs & Opportunities</h2><p>Search vacancies in Saudi Arabia, Pakistan and international markets. Never pay a recruiter to guarantee a job.</p></div></div><div class="grid resource-grid">
@@ -2264,8 +2264,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
 })();
 </script>
 
-<script>
-/* SKCYBERHUB_CREATOR_GLOBAL_V2_FIXED */
+<script>/* SKCYBERHUB_CREATOR_GLOBAL_V2_FIXED */
 (function(){function init(){
  const byId=id=>document.getElementById(id),topic=byId('skContentPackTopicV2V2'),platform=byId('skCreatorPlatform'),tone=byId('skContentPackToneV2V2'),status=byId('skCreatorStatus');
  const ids=['skCreatorCaption','skCreatorHashtags','skCreatorTitle','skCreatorScript','skCreatorPrompt','skCreatorBio'];
@@ -2285,6 +2284,49 @@ document.getElementById('clearResource').addEventListener('click',()=>{
  });
  byId('skContentPackClearV2V2')?.addEventListener('click',()=>{if(topic)topic.value='';ids.forEach(id=>set(id,''));if(status)status.textContent='Cleared. Enter a new topic to begin.';});
  document.querySelectorAll('[data-copy^="skCreator"]').forEach(btn=>btn.addEventListener('click',()=>copy(btn.dataset.copy)));
+
+ const q=byId('skGlobalQuery'),cat=byId('skGlobalCategory'),price=byId('skGlobalPrice'),device=byId('skGlobalDevice'),results=byId('skGlobalResults'),globalStatus=byId('skGlobalStatus');
+ function classify(card){
+  const section=card.closest('section'),id=section?.id||'directory',txt=((card.innerText||'')+' '+(card.dataset.search||'')).toLowerCase();
+  let cost=card.dataset.cost||'unknown';
+  if(cost==='unknown'&&/\bfree\b/.test(txt))cost='free';
+  let platform='browser';
+  if(/iphone|ipad|ios|app store/.test(txt))platform='iphone';
+  else if(/android|google play|apk/.test(txt))platform='android';
+  else if(/windows|pc game|desktop software/.test(txt))platform='windows';
+  return {id,cost,platform,text:txt};
+ }
+ function runGlobal(){
+  if(!results)return;
+  const query=(q?.value||'').trim().toLowerCase(),category=cat?.value||'all',pricing=price?.value||'all',deviceValue=device?.value||'all';
+  const webQuery=(q?.value||'').trim();
+  const engines={google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q=',duckduckgo:'https://duckduckgo.com/?q=',brave:'https://search.brave.com/search?q='};
+  document.querySelectorAll('[data-global-engine]').forEach(link=>{const engine=link.dataset.globalEngine;if(engines[engine])link.href=engines[engine]+encodeURIComponent(webQuery);});
+  results.replaceChildren();let count=0;
+  const cards=[...document.querySelectorAll('#tab-home .resource')].filter(card=>card.querySelector('h3')||card.querySelector('.app-name'));
+  cards.forEach(card=>{
+   const meta=classify(card),title=card.querySelector('h3')?.textContent?.trim()||card.querySelector('.app-name')?.textContent?.trim()||'Resource';
+   const desc=card.querySelector('p')?.textContent?.trim()||'Open this resource for details.';
+   const hay=(title+' '+desc+' '+meta.text+' '+meta.id).toLowerCase();
+   const link=card.matches('a[href]')?card:card.querySelector('a[href]');
+   const href=link?.getAttribute('href')||'';let safe='';
+   try{const u=new URL(href,location.href);if(u.protocol==='https:'||u.protocol==='http:')safe=u.href;}catch(e){}
+   const matches=(!query||hay.includes(query))&&(category==='all'||meta.id===category)&&(pricing==='all'||meta.cost===pricing)&&(deviceValue==='all'||meta.platform===deviceValue);
+   if(!matches||!safe)return;
+   const item=document.createElement('article');item.className='global-result-card';
+   const name=document.createElement('h4');name.textContent=title;
+   const description=document.createElement('p');description.textContent=desc;
+   const metadata=document.createElement('span');metadata.className='global-result-meta';metadata.textContent=meta.id.replace(/-/g,' ')+' · '+meta.cost+' · '+meta.platform;
+   const a=document.createElement('a');a.href=safe;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open resource ↗';
+   item.append(name,description,metadata,a);results.appendChild(item);count++;
+  });
+  if(globalStatus)globalStatus.textContent=count+' matching resources found. Price and device labels are based on listing details; verify them with the provider.';
+  if(!count){const empty=document.createElement('p');empty.className='empty';empty.textContent='No matching resource found. Try changing the filters or search words.';results.appendChild(empty);}
+ }
+ byId('skGlobalSearchButton')?.addEventListener('click',runGlobal);
+ q?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runGlobal();}});
+ [cat,price,device].forEach(el=>el?.addEventListener('change',runGlobal));
+ byId('skGlobalResetButton')?.addEventListener('click',()=>{if(q)q.value='';if(cat)cat.value='all';if(price)price.value='all';if(device)device.value='all';results?.replaceChildren();if(globalStatus)globalStatus.textContent='Filters reset. Search across listed resources.';});
 }if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();})();
 </script>
 
