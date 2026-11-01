@@ -1120,7 +1120,10 @@ body{background:radial-gradient(ellipse at 50% -20%,#19345b 0%,#0b1427 34%,#070b
 .section{padding:34px 0;scroll-margin-top:145px}.section-head{margin-bottom:20px;padding-bottom:14px;border-color:#273a58}.section h2{color:#f1f6ff;font-size:clamp(21px,2.2vw,27px);font-weight:760;letter-spacing:-.7px}.section-head h2:before{width:5px;height:25px;border-radius:8px;background:linear-gradient(180deg,#53e0c1,#78baff)}.section-head p{color:#a9b7cf;font-size:13px;line-height:1.65}.section-count{border-color:#326c70;background:#10343b;color:#9af6e4}
 .resource-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.resource.tile,.tile{min-height:148px;padding:19px;border:1px solid #2b3f60;border-radius:17px;background:linear-gradient(145deg,#121e33,#0d1729);box-shadow:0 10px 28px #02061155;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease,background .2s ease}.resource.tile:hover,.tile:hover{transform:translateY(-4px);border-color:#4d9ca4;background:linear-gradient(145deg,#172b43,#101d32);box-shadow:0 18px 38px #02061188}
 .resource .app-icon{width:56px;height:56px;border:1px solid #3b7380;border-radius:15px;background:linear-gradient(145deg,#17445a,#1b2b4a);color:#a9fff0}.resource .tag{border:1px solid #356c71;border-radius:999px;background:#10333a;color:#9df4e3;padding:3px 8px;font-size:9px;letter-spacing:.5px}.resource h3,.tile h3{color:#f0f5ff;font-size:16px;font-weight:750}.resource p,.tile p{color:#aab8d0;font-size:12px;line-height:1.65}.resource .arrow{color:#72e6d2;font-weight:750}
-button,input,select,textarea{font-family:inherit}input,select,textarea{border-radius:10px!important;border:1px solid #354b6c!important;background:#0e1a2e!important;color:#f1f6ff!important}input::placeholder,textarea::placeholder{color:#8294b2!important}
+button,input,select,textarea{font-family:inherit}input,select,textarea{border-radius:10px!important;border:1px solid #354b6c!important;background:#0e1a2e!important;color:#f1f6ff!important}input::placeholder,textarea::placeholder{color:#a5b6ce!important}
+input[type="search"]{min-width:0;appearance:none;-webkit-appearance:none}
+input[type="search"]::-webkit-search-cancel-button{cursor:pointer;filter:invert(1);opacity:.65}
+.global-finder-controls input[type="search"]{grid-column:span 1}
 button{transition:transform .18s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #6debd7!important;outline-offset:3px}
 .news-section{border-color:#2a3e5e}.news-result-card,.news-card{border-radius:15px!important;overflow:hidden}.news-card-read-link,.news-card-publisher-link,.news-publisher-button{border-radius:9px}
 .creator-generator,.creator-workshop,.global-finder,.global-finder-controls,.smart-finder-controls{border:1px solid #304765!important;border-radius:18px!important;background:linear-gradient(145deg,#111f35,#0c1729)!important;box-shadow:0 12px 34px #02061166}.creator-generator>p,.creator-controls label,.creator-controls small{color:#aab8d0}
@@ -1328,7 +1331,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
  <h3>Search inside SK Cyber Hub</h3><p>Search our directory, then narrow results by category, price and device.</p>
  <div class="global-finder-controls">
   <label for="skGlobalQuery">What are you looking for?</label><input id="skGlobalQuery" type="search" placeholder="e.g. free AI video generator, Android apps, PDF tools">
-  <label for="skGlobalCategory">Category</label><select id="skGlobalCategory"><option value="all">All categories</option><option value="apps">Apps</option><option value="mod-apk">Modified apps</option><option value="software">Software</option><option value="tools">AI Tools</option><option value="smart-free-finder">AI Video Finder</option><option value="free-tools">Online Tools</option><option value="documents">Learning & Documents</option><option value="games">Games</option><option value="video-audio">Video & Audio</option><option value="images-design">Images & Design</option><option value="developer-tools">Developer Tools</option><option value="security-privacy">Security & Privacy</option><option value="news">Latest News</option><option value="jobs">Jobs</option><option value="deals">Deals & Freebies</option></select>
+  <label for="skGlobalCategory">Category</label><select id="skGlobalCategory"><option value="all">All categories</option><option value="apps">Apps</option><option value="mod-apk">Modified apps</option><option value="software">Software</option><option value="tools">AI Tools</option><option value="smart-free-finder">AI Video Finder</option><option value="free-tools">Online Tools</option><option value="documents">Learning & Documents</option><option value="games">Games</option><option value="video-audio">Video & Audio</option><option value="images-design">Images & Design</option><option value="developer-tools">Developer Tools</option><option value="security-privacy">Security & Privacy</option><option value="video-audio">Video & Audio</option><option value="images-design">Images & Design</option><option value="developer-tools">Developer Tools</option><option value="creator-studio">Creator Studio</option><option value="community">Community</option><option value="languages">Languages</option><option value="quick-tools">Instant Online Tools</option><option value="global-growth">Global Growth</option><option value="earnings-model">Earning Model</option><option value="news">Latest News</option><option value="jobs">Jobs</option><option value="deals">Deals & Freebies</option></select>
   <label for="skGlobalPrice">Price</label><select id="skGlobalPrice"><option value="all">Any price</option><option value="free">Free</option><option value="limited">Limited free</option><option value="paid">Paid</option></select>
   <label for="skGlobalDevice">Device</label><select id="skGlobalDevice"><option value="all">Any device</option><option value="android">Android</option><option value="iphone">iPhone / iPad</option><option value="windows">Windows / PC</option><option value="browser">Browser / Web</option></select>
   <button class="primary" type="button" id="skGlobalSearchButton">Search directory</button><button class="secondary" type="button" id="skGlobalResetButton">Reset</button>
@@ -2701,11 +2704,14 @@ document.getElementById('clearResource').addEventListener('click',()=>{
  function classify(card){
   const section=card.closest('section'),id=section?.id||'directory',txt=((card.innerText||'')+' '+(card.dataset.search||'')).toLowerCase();
   let cost=card.dataset.cost||'unknown';
-  if(cost==='unknown'&&/\bfree\b/.test(txt))cost='free';
-  let platform='browser';
+  if(cost==='unknown'&&/limited free|free tier|free plan|free trial|trial with limits/.test(txt))cost='limited';
+  else if(cost==='unknown'&&/\bfree\b/.test(txt))cost='free';
+  else if(cost==='unknown'&&/paid only|subscription required|paid version only/.test(txt))cost='paid';
+  let platform='unknown';
   if(/iphone|ipad|ios|app store/.test(txt))platform='iphone';
   else if(/android|google play|apk/.test(txt))platform='android';
   else if(/windows|pc game|desktop software/.test(txt))platform='windows';
+  else if(/browser|web app|online tool|website|web-based/.test(txt))platform='browser';
   return {id,cost,platform,text:txt};
  }
  function runGlobal(){
