@@ -11,6 +11,8 @@ create table if not exists public.sk_posts (
   created_at timestamptz not null default now()
 );
 
+alter table public.sk_posts add column if not exists author_name text;
+
 create table if not exists public.sk_post_likes (
   post_id uuid not null references public.sk_posts(id) on delete cascade,
   user_id uuid not null references auth.users(id) on delete cascade,
