@@ -743,6 +743,8 @@ img,iframe,video{max-width:100%}
 .news-full-article-actions{width:min(900px,calc(100% - 36px));margin:22px auto 0}
 .news-full-article-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 18px;border:1px solid #0067b8;border-radius:5px;background:#0067b8;color:#fff;font-weight:750;cursor:pointer;transition:background .18s,transform .18s}
 .news-full-article-button:hover{background:#005a9e;transform:translateY(-1px)}
+.news-publisher-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 18px;border:1px solid #6b8296;border-radius:5px;background:#fff;color:#174b70;font-weight:750;text-decoration:none;transition:background .18s,transform .18s}.news-publisher-button:hover{background:#eaf4fb;transform:translateY(-1px)}
+.news-card-publisher-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.news-card-read-link,.news-card-publisher-link{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 10px;border:1px solid #0879c9;border-radius:5px;background:#0879c9;color:#fff!important;font-size:10px;font-weight:750;text-decoration:none}.news-card-publisher-link{border-color:#9bb3c7;background:#fff;color:#174b70!important}.news-card-read-link:hover{background:#005a9e}.news-card-publisher-link:hover{background:#edf5fb}
 .news-article-panel{width:min(1100px,calc(100% - 36px));margin:18px auto 0;overflow:hidden;border:1px solid #cbddeb;border-radius:8px;background:#fff;box-shadow:0 4px 18px #153b5b12}
 .news-article-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 14px;border-bottom:1px solid #dce7ef;color:#183653}
 .news-article-panel-head a{color:#0067b8;font-size:13px;font-weight:750;text-decoration:underline}
@@ -941,7 +943,7 @@ img,iframe,video{max-width:100%}
  <div id="newsStatus" class="news-status" role="status" aria-live="polite">Enter a topic above to find the latest available headlines.</div>
  <div id="newsExactGroup" class="news-result-group hidden"><h3>Exact matches <span id="newsExactCount"></span></h3><div id="newsExactResults" class="news-results"></div></div>
  <div id="newsRelatedGroup" class="news-result-group hidden"><h3>Related news <span id="newsRelatedCount"></span></h3><div id="newsRelatedResults" class="news-results"></div></div>
- <div id="newsReader" class="news-reader hidden" role="dialog" aria-modal="true" aria-labelledby="newsReaderTitle"><div class="news-reader-top"><span class="news-reader-label">SK CYBER HUB · NEWS READER</span><div class="news-reader-actions"><button id="shareNewsButton" class="news-share-button" type="button">Share news ↗</button><button id="closeNewsReader" type="button" aria-label="Close news reader" title="Close">×</button></div></div><img id="newsReaderImage" class="news-reader-image hidden" alt="News photo"><h3 id="newsReaderTitle"></h3><div id="newsReaderMeta" class="news-reader-meta"></div><div id="newsReaderBody" class="news-reader-body"></div><div class="news-full-article-actions"><button id="openFullNewsArticle" type="button" class="news-full-article-button">Show available article details ↓</button></div><div id="newsArticlePanel" class="news-article-panel hidden"><div class="news-article-panel-head"><strong>More details available from the news feed</strong><a id="newsPublisherFallback" href="#" target="_blank" rel="noopener noreferrer">Open publisher website ↗</a></div><div id="newsArticlePreview" class="news-article-preview" aria-live="polite"></div><p class="news-article-help">This is the additional description supplied by the news feed. Some publishers do not provide their complete article text for display on other websites. The publisher link opens the original report.</p></div><p class="news-reader-note">The headline and summary above are supplied by the news feed. Full article content belongs to the original publisher.</p></div>
+ <div id="newsReader" class="news-reader hidden" role="dialog" aria-modal="true" aria-labelledby="newsReaderTitle"><div class="news-reader-top"><span class="news-reader-label">SK CYBER HUB · NEWS READER</span><div class="news-reader-actions"><button id="shareNewsButton" class="news-share-button" type="button">Share news ↗</button><button id="closeNewsReader" type="button" aria-label="Close news reader" title="Close">×</button></div></div><img id="newsReaderImage" class="news-reader-image hidden" alt="News photo"><h3 id="newsReaderTitle"></h3><div id="newsReaderMeta" class="news-reader-meta"></div><div id="newsReaderBody" class="news-reader-body"></div><div class="news-full-article-actions"><a id="openFullNewsArticle" class="news-full-article-button hidden" href="#" target="_blank" rel="noopener noreferrer">Read full article ↗</a><a id="newsPublisherFallback" class="news-publisher-button hidden" href="#" target="_blank" rel="noopener noreferrer">Open publisher website ↗</a></div><p class="news-reader-note">The headline and summary above are supplied by the news feed. Full article content belongs to the original publisher.</p></div>
 </section><section class="wrap" id="about"><div class="notice"><b>Our promise:</b> We aim to prioritize free and legitimate resources. External download links and advertisements will be clearly labelled. We will respect software licenses and copyright, and will not disguise download destinations. Any future ad-supported waiting step will be disclosed before the user continues. Sponsored placements and affiliate links, if introduced, will be clearly labelled and enabled only after the required provider approvals; no earnings are guaranteed.</div></section>
 </main>
 <section id="tab-admin" class="section wrap hidden">
@@ -1204,9 +1206,7 @@ input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runS
  const exactResults=document.getElementById('newsExactResults');
  const relatedResults=document.getElementById('newsRelatedResults');
  const reader=document.getElementById('newsReader');
- const fullArticleButton=document.getElementById('openFullNewsArticle');
- const articlePanel=document.getElementById('newsArticlePanel');
- const articlePreview=document.getElementById('newsArticlePreview');
+ const fullArticleLink=document.getElementById('openFullNewsArticle');
  const publisherFallback=document.getElementById('newsPublisherFallback');
  function safeNewsArticleUrl(value){try{const url=new URL(String(value||''));return url.protocol==='https:'||url.protocol==='http:'?url.href:'';}catch(e){return '';}}
  const newsLanguageSelect=document.getElementById('newsLanguageSelect'),newsLanguageInput=document.getElementById('newsLanguageSearch');
@@ -1296,7 +1296,9 @@ input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runS
   const description=document.createElement('p');description.textContent=item.translatedDescription||cleanText(item.description||item.content||'News summary is not available in this feed.');
   const meta=document.createElement('small');meta.textContent=(item.translatedAuthor||cleanText(item.author)||'News source')+' · '+(item.pubDate?new Date(item.pubDate).toLocaleString():'Latest update');
   const actions=document.createElement('div');actions.className='news-card-actions';actions.appendChild(meta);const share=document.createElement('button');share.type='button';share.className='news-card-share';share.textContent='Share ↗';share.addEventListener('click',event=>{event.stopPropagation();shareNews(item);});actions.appendChild(share);
-  card.append(title,description,actions);card.addEventListener('click',()=>openReader(item));card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openReader(item);}});return card;
+  const sourceUrl=safeNewsArticleUrl(item.link);const links=document.createElement('div');links.className='news-card-publisher-actions';
+  if(sourceUrl){[['Read full article ↗','news-card-read-link'],['Open publisher website ↗','news-card-publisher-link']].forEach(([label,className])=>{const link=document.createElement('a');link.className=className;link.href=sourceUrl;link.target='_blank';link.rel='noopener noreferrer';link.textContent=label;link.addEventListener('click',event=>event.stopPropagation());links.appendChild(link);});}
+  card.append(title,description,actions);if(links.childElementCount)card.appendChild(links);card.addEventListener('click',()=>openReader(item));card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openReader(item);}});return card;
  }
  async function translateText(value,target,source='auto'){
   const textValue=cleanText(value);if(!textValue)return textValue;
@@ -1370,20 +1372,16 @@ input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runS
   document.getElementById('newsReaderMeta').textContent=(item.translatedAuthor||cleanText(item.author)||'News source')+' · '+(item.pubDate?new Date(item.pubDate).toLocaleString():'');
   document.getElementById('newsReaderBody').textContent=item.translatedDescription||cleanText(item.description||item.content||'The publisher has not supplied a readable summary in this feed.');
   const sourceUrl=safeNewsArticleUrl(item.link);
-  const availableDetails=cleanText(item.content||item.description||item.summary||'');
-  fullArticleButton.textContent=availableDetails?'Show available article details ↓':'Open publisher report ↗';
-  fullArticleButton.classList.toggle('hidden',!sourceUrl);
-  fullArticleButton.disabled=!sourceUrl;
+  fullArticleLink.href=sourceUrl||'#';
   publisherFallback.href=sourceUrl||'#';
+  fullArticleLink.classList.toggle('hidden',!sourceUrl);
   publisherFallback.classList.toggle('hidden',!sourceUrl);
-  articlePanel.classList.add('hidden');
-  articlePreview.textContent='';
   reader.classList.remove('hidden');requestAnimationFrame(()=>reader.classList.add('is-open'));
   document.body.classList.add('news-reader-open');reader.scrollTop=0;
   document.getElementById('closeNewsReader').focus({preventScroll:true});
  }
  function closeReader(){
-  reader.classList.remove('is-open');document.body.classList.remove('news-reader-open');articlePreview.textContent='';articlePanel.classList.add('hidden');
+  reader.classList.remove('is-open');document.body.classList.remove('news-reader-open');
   setTimeout(()=>{if(!reader.classList.contains('is-open'))reader.classList.add('hidden');},320);
  }
  async function shareNews(item=null){const title=item?(item.translatedTitle||cleanText(item.title)||'World News'):(document.getElementById('newsReaderTitle').textContent||'World News');const summary=item?(item.translatedDescription||cleanText(item.description||item.content||'')):(document.getElementById('newsReaderBody').textContent||'');const pageUrl=window.location.href.split('#')[0]+'#news';const shareText=title+'\n\n'+summary.slice(0,420)+'\n\nSK CYBER HUB · SAAD YOUSUF KAKAR\n'+pageUrl;try{const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;const ctx=canvas.getContext('2d');ctx.fillStyle='#f4f8fb';ctx.fillRect(0,0,1080,1350);ctx.fillStyle='#0067b8';ctx.fillRect(0,0,1080,250);ctx.fillStyle='#ffffff';ctx.fillRect(70,65,112,112);ctx.fillStyle='#0067b8';ctx.font='bold 50px Arial';ctx.textAlign='center';ctx.fillText('SK',126,137);ctx.textAlign='left';ctx.fillStyle='#fff';ctx.font='bold 43px Arial';ctx.fillText('SK CYBER HUB',220,112);ctx.font='26px Arial';ctx.fillText('SAAD YOUSUF KAKAR',220,160);ctx.fillStyle='#075b98';ctx.font='bold 29px Arial';ctx.fillText('WORLD NEWS',75,330);ctx.fillStyle='#172b3a';ctx.font='bold 48px Arial';let y=420;const drawWrapped=(value,font,lineHeight,maxLines)=>{ctx.font=font;const words=String(value||'').split(/\s+/);let line='',count=0;for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width>920&&line){ctx.fillText(line,75,y);y+=lineHeight;line=word;if(++count>=maxLines)return;}else line=test;}if(line&&count<maxLines){ctx.fillText(line,75,y);y+=lineHeight;}};drawWrapped(title,'bold 48px Arial',62,5);y+=24;ctx.fillStyle='#455866';drawWrapped(summary.slice(0,500),'30px Arial',46,8);ctx.fillStyle='#0067b8';ctx.fillRect(75,1190,930,3);ctx.fillStyle='#075b98';ctx.font='bold 28px Arial';ctx.fillText('Read more on SK CYBER HUB',75,1250);ctx.font='24px Arial';ctx.fillText(pageUrl,75,1300);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(blob&&navigator.share&&typeof File!=='undefined'){const file=new File([blob],'SK-Cyber-Hub-News.png',{type:'image/png'});if(!navigator.canShare||navigator.canShare({files:[file]})){await navigator.share({files:[file],title,text:shareText});return;}}if(navigator.share){await navigator.share({title,text:shareText,url:pageUrl});return;}if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(shareText);status.textContent='Branded news details and website link copied. Paste into WhatsApp, Facebook or your status.';return;}status.textContent='Sharing is unavailable. Website link: '+pageUrl;}catch(error){if(error?.name!=='AbortError')status.textContent='Sharing failed. Website link: '+pageUrl;}}
@@ -1402,13 +1400,7 @@ input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runS
   if(siteLanguagePanel)siteLanguagePanel.classList.add('hidden');
   newsSection.scrollIntoView({behavior:'smooth',block:'start'});
  });
- fullArticleButton.addEventListener('click',()=>{
-  const sourceUrl=publisherFallback.href;
-  if(!sourceUrl||sourceUrl==='#')return;
-  articlePanel.classList.remove('hidden');
-  const detailText=cleanText(activeReaderItem?.content||activeReaderItem?.description||activeReaderItem?.summary||'');articlePreview.textContent=detailText||'The news feed did not provide additional article details. Open the publisher website to read the original report.';
-  articlePanel.scrollIntoView({behavior:'smooth',block:'start'});
- });
+
 
  document.getElementById('shareNewsButton').addEventListener('click',shareNews);
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!reader.classList.contains('hidden'))closeReader();});
