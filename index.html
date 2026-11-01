@@ -3055,7 +3055,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
    document.addEventListener('click',e=>{if(!panel.hidden&&!panel.contains(e.target)&&!moreButton.contains(e.target))closePanel();});
    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){closePanel();moreButton.focus();}});
    // Capture this control before the legacy click handler, which opened the now-hidden header menu.
-   document.addEventListener('click',e=>{if(e.target.closest('[data-sk-more]')){e.preventDefault();e.stopImmediatePropagation();}},true);
+   document.addEventListener('click',e=>{if(e.target.closest('[data-sk-more]')){e.preventDefault();e.stopImmediatePropagation();panel.hidden=!panel.hidden;moreButton.setAttribute('aria-expanded',String(!panel.hidden));}},true);
   }
   const headerSearch=$('search'),headerButton=$('searchBtn');
   function runHeaderSearch(){
@@ -3096,7 +3096,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
    if(typeof window.filterApps==='function')window.filterApps();
   }
   if(headerSearch){
-   headerSearch.addEventListener('input',runHeaderSearch,true);
+   headerSearch.addEventListener('input',e=>{e.stopImmediatePropagation();runHeaderSearch();},true);
    headerSearch.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.stopImmediatePropagation();runHeaderSearch();}},true);
   }
   if(headerButton)headerButton.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();runHeaderSearch();},true);
