@@ -839,6 +839,26 @@ img,iframe,video{max-width:100%}
  }
 }
 
+
+/* SKCYBERHUB_PLATFORM_EXPANSION_V1 */
+.platform-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.platform-card{min-width:0;padding:18px;border:1px solid #e1e1e1;border-radius:7px;background:#fff;box-shadow:0 1px 2px #0000000a}
+.platform-card h3{margin:8px 0 6px;color:#242424;font-size:16px;font-weight:650}
+.platform-card p{margin:0;color:#616161;font-size:13px;line-height:1.65}
+.platform-card small{display:block;margin-top:12px;color:#626262;font-size:11px}
+.platform-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:6px;background:#edf6fc;color:#0067b8;font-size:20px;font-weight:800}
+.finder-controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 14px;padding:12px;border:1px solid #e1e1e1;border-radius:6px;background:#fff}
+.finder-controls label{font-size:12px;font-weight:700;color:#424242}
+.finder-controls select,.quick-tool input,.quick-tool textarea{min-width:0;padding:9px 10px;border:1px solid #d1d1d1;border-radius:4px;background:#fff;color:#242424}
+.finder-count{margin-left:auto;color:#616161;font-size:11px}
+.quick-tool{display:flex;flex-direction:column;align-items:stretch;gap:9px}
+.quick-tool label{font-size:12px;font-weight:700;color:#424242}
+.quick-tool textarea{width:100%;resize:vertical}
+.quick-tool .primary,.quick-tool .secondary{width:max-content;max-width:100%}
+.tool-result{min-height:38px;padding:9px 10px;border:1px solid #c8dff0;border-radius:4px;background:#f2f8fc;color:#244b66!important;overflow-wrap:anywhere}
+.quick-tool small{font-size:11px}
+@media(max-width:850px){.platform-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.platform-grid{grid-template-columns:1fr}.finder-controls{align-items:stretch}.finder-controls label{width:100%}.finder-controls select{width:100%}.finder-count{width:100%;margin-left:0}}
 </style>
 </head>
 <body>
@@ -886,10 +906,14 @@ img,iframe,video{max-width:100%}
 <a class="tile resource" data-search="libreoffice office documents writer spreadsheet presentation" href="https://www.libreoffice.org/download/download-libreoffice/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE · OPEN SOURCE</span><h3>LibreOffice</h3><p>Office suite for documents, spreadsheets and presentations.</p><span class="arrow">Official download page ↗</span></a>
 <a class="tile resource" data-search="gimp image editor photo editing open source" href="https://www.gimp.org/downloads/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE · OPEN SOURCE</span><h3>GIMP</h3><p>Image editor for photo retouching and graphic work.</p><span class="arrow">Official download page ↗</span></a>
 </div></section>
-<section class="section wrap" id="tools"><div class="section-head"><div><h2>AI Tools Directory</h2><p>Official websites. Some services offer free access with limits; check each provider's terms.</p></div></div><div class="grid resource-grid">
-<a class="tile resource" data-search="chatgpt openai ai assistant writing research chatbot" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE ACCESS · LIMITS MAY APPLY</span><h3>ChatGPT</h3><p>AI assistant for writing, learning, brainstorming and more.</p><span class="arrow">Official website ↗</span></a>
-<a class="tile resource" data-search="google gemini ai assistant multimodal" href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE ACCESS · LIMITS MAY APPLY</span><h3>Google Gemini</h3><p>Google's AI assistant for questions, ideas and creative tasks.</p><span class="arrow">Official website ↗</span></a>
-<a class="tile resource" data-search="canva design ai image presentations social media" href="https://www.canva.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE PLAN AVAILABLE</span><h3>Canva</h3><p>Create designs, presentations and social media graphics.</p><span class="arrow">Official website ↗</span></a>
+<section class="section wrap" id="tools"><div class="section-head"><div><h2>AI Tools Directory</h2><p>Official websites. Some services offer free access with limits; check each provider's terms.</p></div></div><div class="finder-controls" id="skAiFilters" aria-label="Filter AI tools"><label for="skAiCost">Pricing</label><select id="skAiCost"><option value="all">All pricing types</option><option value="free">Free access</option><option value="limited">Limited free</option><option value="paid">Paid</option></select><label for="skAiType">Tool type</label><select id="skAiType"><option value="all">All AI categories</option><option value="writing">Writing & chat</option><option value="image">Image generation & editing</option><option value="video">Video generation & editing</option><option value="voice">Voice & speech</option><option value="translation">Translation</option></select><span id="skAiCount" class="finder-count" aria-live="polite">Showing all AI tools</span></div><div class="grid resource-grid">
+<a class="tile resource" data-cost="limited" data-type="writing" data-search="chatgpt openai ai assistant writing research chatbot" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE ACCESS · LIMITS MAY APPLY</span><h3>ChatGPT</h3><p>AI assistant for writing, learning, brainstorming and more.</p><span class="arrow">Official website ↗</span></a>
+<a class="tile resource" data-cost="limited" data-type="writing" data-search="google gemini ai assistant multimodal" href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE ACCESS · LIMITS MAY APPLY</span><h3>Google Gemini</h3><p>Google's AI assistant for questions, ideas and creative tasks.</p><span class="arrow">Official website ↗</span></a>
+<a class="tile resource" data-cost="limited" data-type="image" data-search="canva design ai image presentations social media" href="https://www.canva.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE PLAN AVAILABLE</span><h3>Canva</h3><p>Create designs, presentations and social media graphics.</p><span class="arrow">Official website ↗</span></a>
+<a class="tile resource" data-cost="limited" data-type="image" data-search="microsoft designer ai image generation" href="https://designer.microsoft.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE ACCESS · LIMITS APPLY</span><h3>Microsoft Designer</h3><p>Create and edit designs and images with AI features; availability and limits vary by account.</p><span class="arrow">Official website ↗</span></a>
+<a class="tile resource" data-cost="limited" data-type="video" data-search="google vids ai video generation editing" href="https://vids.new/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE ACCESS · CHECK LIMITS</span><h3>Google Vids</h3><p>AI-assisted video creation and editing; account and device workflows have limits.</p><span class="arrow">Official website ↗</span></a>
+<a class="tile resource" data-cost="limited" data-type="voice" data-search="elevenlabs ai voice text to speech" href="https://elevenlabs.io/" target="_blank" rel="noopener noreferrer"><span class="tag">LIMITED FREE PLAN</span><h3>ElevenLabs</h3><p>AI voice and text-to-speech tools with plan limits and usage terms.</p><span class="arrow">Official website ↗</span></a>
+<a class="tile resource" data-cost="limited" data-type="translation" data-search="deepl translator ai translation" href="https://www.deepl.com/translator" target="_blank" rel="noopener noreferrer"><span class="tag">FREE ACCESS · LIMITS APPLY</span><h3>DeepL Translator</h3><p>Translate text between supported languages; free usage and features vary.</p><span class="arrow">Open translator ↗</span></a>
 </div></section>
 
 <section class="section wrap" id="smart-free-finder"><div class="section-head"><div><h2>Smart Free Finder · AI Video</h2><p>Free access is checked against official provider information. Limits can change; confirm the terms on the provider page before creating.</p></div></div><div class="grid resource-grid">
@@ -994,7 +1018,38 @@ img,iframe,video{max-width:100%}
  <div id="newsExactGroup" class="news-result-group hidden"><h3>Exact matches <span id="newsExactCount"></span></h3><div id="newsExactResults" class="news-results"></div></div>
  <div id="newsRelatedGroup" class="news-result-group hidden"><h3>Related news <span id="newsRelatedCount"></span></h3><div id="newsRelatedResults" class="news-results"></div></div>
  <div id="newsReader" class="news-reader hidden" role="dialog" aria-modal="true" aria-labelledby="newsReaderTitle"><div class="news-reader-top"><span class="news-reader-label">SK CYBER HUB · NEWS READER</span><div class="news-reader-actions"><button id="shareNewsButton" class="news-share-button" type="button">Share news ↗</button><button id="closeNewsReader" type="button" aria-label="Close news reader" title="Close">×</button></div></div><img id="newsReaderImage" class="news-reader-image hidden" alt="News photo"><h3 id="newsReaderTitle"></h3><div id="newsReaderMeta" class="news-reader-meta"></div><div id="newsReaderBody" class="news-reader-body"></div><div class="news-full-article-actions"><a id="openFullNewsArticle" class="news-full-article-button hidden" href="#" target="_blank" rel="noopener noreferrer">Read full article ↗</a><a id="newsPublisherFallback" class="news-publisher-button hidden" href="#" target="_blank" rel="noopener noreferrer">Open publisher website ↗</a></div><p class="news-reader-note">The headline and summary above are supplied by the news feed. Full article content belongs to the original publisher.</p></div>
-</section><section class="wrap" id="about"><div class="notice"><b>Our promise:</b> We aim to prioritize free and legitimate resources. External download links and advertisements will be clearly labelled. We will respect software licenses and copyright, and will not disguise download destinations. Any future ad-supported waiting step will be disclosed before the user continues. Sponsored placements and affiliate links, if introduced, will be clearly labelled and enabled only after the required provider approvals; no earnings are guaranteed.</div></section>
+</section>
+<section class="section wrap" id="earnings-model">
+ <div class="section-head"><div><h2>SK Cyber Hub · Sustainable Earning Model</h2><p>Free-first for visitors. Revenue features are a roadmap and activate only after approval, eligibility and clear disclosure.</p></div><span class="section-count">5 LEGAL CHANNELS</span></div>
+ <div class="platform-grid">
+  <article class="platform-card"><span class="platform-icon">▤</span><h3>Google AdSense</h3><p>Clearly labelled ads after approval and policy requirements. No forced clicks or misleading download gates.</p><small>Future · approval required</small></article>
+  <article class="platform-card"><span class="platform-icon">↗</span><h3>Affiliate Marketing</h3><p>Disclosed commissions from relevant software, courses and digital products through approved referral links.</p><small>Future · partner approval required</small></article>
+  <article class="platform-card"><span class="platform-icon">✦</span><h3>Sponsored Listings</h3><p>Verified companies may pay for clearly marked sponsored placements, never disguised as independent reviews.</p><small>Future · sponsor verification</small></article>
+  <article class="platform-card"><span class="platform-icon">♛</span><h3>Premium Membership</h3><p>Optional advanced features and an ad-free experience, while useful core directories and essential tools remain free.</p><small>Future · optional only</small></article>
+  <article class="platform-card"><span class="platform-icon">⌘</span><h3>Digital Services</h3><p>Web design, logo and thumbnail creation, video editing and other clearly scoped digital services.</p><small>Future · service catalogue</small></article>
+ </div>
+ <p class="notice"><b>Trust promise:</b> No paid membership, paid tool, subscription, ad network or payment integration is activated now. No earnings are guaranteed. Any future cost or paid feature requires the owner's explicit approval.</p>
+</section>
+<section class="section wrap" id="global-growth">
+ <div class="section-head"><div><h2>Global Growth & Discovery Plan</h2><p>Build usefulness and trust first, then grow through original content and search visibility.</p></div><span class="section-count">GLOBAL ROADMAP</span></div>
+ <div class="platform-grid">
+  <article class="platform-card"><span class="platform-icon">⌕</span><h3>Search Engine Optimization</h3><p>Give every tool, app, guide and course a clear title, original explanation, update date and shareable URL as dedicated pages are added.</p></article>
+  <article class="platform-card"><span class="platform-icon">↗</span><h3>Trending Technology</h3><p>Publish timely explainers on AI, apps, software and technology, with links to original providers.</p></article>
+  <article class="platform-card"><span class="platform-icon">▶</span><h3>TikTok & Short Video</h3><p>Demonstrate one useful tool or tip in each short video and link viewers to the relevant resource.</p></article>
+  <article class="platform-card"><span class="platform-icon">▣</span><h3>YouTube Tutorials</h3><p>Create practical walkthroughs, honest comparisons and how-to videos for Urdu, Arabic and international audiences.</p></article>
+  <article class="platform-card"><span class="platform-icon">◎</span><h3>Social Sharing & Updates</h3><p>Make resource pages easy to share. Add opt-in email updates only when a privacy-respecting free service is available.</p></article>
+  <article class="platform-card"><span class="platform-icon">⚡</span><h3>Speed & Original Content</h3><p>Keep pages responsive, lightweight and accessible, with verified links and transparent free-plan limits.</p></article>
+ </div>
+</section>
+<section class="section wrap" id="quick-tools">
+ <div class="section-head"><div><h2>Instant Online Tools</h2><p>These utilities run in your browser on this device. Text and passwords are not uploaded to SK Cyber Hub.</p></div><span class="section-count">FREE · ON-DEVICE</span></div>
+ <div class="platform-grid quick-tool-grid">
+  <article class="platform-card quick-tool"><h3>Word & Character Counter</h3><label for="skWordInput">Paste or type text</label><textarea id="skWordInput" rows="4" placeholder="Write or paste your text here..."></textarea><p class="tool-result" id="skWordResult" aria-live="polite">0 words · 0 characters</p></article>
+  <article class="platform-card quick-tool"><h3>Password Generator</h3><label for="skPassLength">Password length</label><input id="skPassLength" type="number" min="8" max="64" value="16"><button class="primary" type="button" id="skMakePass">Generate password</button><div class="tool-result" id="skPassResult" aria-live="polite">Your password will appear here.</div><button class="secondary" type="button" id="skCopyPass">Copy password</button><small>Generated locally. Never share your password.</small></article>
+  <article class="platform-card quick-tool"><h3>Length Converter</h3><label for="skMeters">Meters</label><input id="skMeters" type="number" min="0" step="any" placeholder="Enter meters"><p class="tool-result" id="skLengthResult" aria-live="polite">Enter a value to convert to feet.</p></article>
+ </div>
+</section>
+<section class="wrap" id="about"><div class="notice"><b>Our promise:</b> We aim to prioritize free and legitimate resources. External download links and advertisements will be clearly labelled. We will respect software licenses and copyright, and will not disguise download destinations. Any future ad-supported waiting step will be disclosed before the user continues. Sponsored placements and affiliate links, if introduced, will be clearly labelled and enabled only after the required provider approvals; no earnings are guaranteed.</div></section>
 </main>
 <section id="tab-admin" class="section wrap hidden">
 <div class="bulk-panel" id="bulkAppImporter">
@@ -2095,4 +2150,22 @@ document.getElementById('clearResource').addEventListener('click',()=>{
 })();
 </script>
 
+
+<script>
+/* SKCYBERHUB_PLATFORM_EXPANSION_V1_SCRIPT */
+(function(){
+ function ready(fn){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fn,{once:true});else fn();}
+ ready(function(){
+  const ai=document.getElementById('tools'),cost=document.getElementById('skAiCost'),type=document.getElementById('skAiType'),count=document.getElementById('skAiCount');
+  if(ai&&cost&&type){const cards=[...ai.querySelectorAll('a.resource[data-cost]')];function filterAi(){let shown=0;cards.forEach(card=>{const ok=(cost.value==='all'||card.dataset.cost===cost.value)&&(type.value==='all'||card.dataset.type===type.value);card.classList.toggle('hidden',!ok);if(ok)shown++;});if(count)count.textContent='Showing '+shown+' of '+cards.length+' AI tools';}cost.addEventListener('change',filterAi);type.addEventListener('change',filterAi);filterAi();}
+  const word=document.getElementById('skWordInput'),wordResult=document.getElementById('skWordResult');
+  if(word&&wordResult){const update=()=>{const t=word.value;const words=t.trim()?t.trim().split(/\s+/u).length:0;wordResult.textContent=words+' words · '+t.length+' characters · '+t.replace(/\s/g,'').length+' characters (without spaces)';};word.addEventListener('input',update);update();}
+  const make=document.getElementById('skMakePass'),length=document.getElementById('skPassLength'),pass=document.getElementById('skPassResult'),copy=document.getElementById('skCopyPass');
+  if(make&&length&&pass){make.addEventListener('click',()=>{const n=Math.max(8,Math.min(64,Number.parseInt(length.value,10)||16));length.value=n;const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*_-+=';const bytes=new Uint32Array(n);if(window.crypto&&crypto.getRandomValues)crypto.getRandomValues(bytes);else{pass.textContent='Secure random generation is not available in this browser.';return;}let out='';for(let i=0;i<n;i++)out+=chars[bytes[i]%chars.length];pass.textContent=out;});}
+  if(copy&&pass){copy.addEventListener('click',async()=>{const value=pass.textContent;if(!value||value.includes('appear here')||value.includes('not available'))return;try{await navigator.clipboard.writeText(value);copy.textContent='Copied';setTimeout(()=>copy.textContent='Copy password',1500);}catch(e){copy.textContent='Select and copy manually';}});}
+  const meters=document.getElementById('skMeters'),result=document.getElementById('skLengthResult');
+  if(meters&&result){meters.addEventListener('input',()=>{const v=Number(meters.value);result.textContent=meters.value.trim()===''?'Enter a value to convert to feet.':Number.isFinite(v)?(v*3.280839895).toFixed(4)+' feet':'Enter a valid number.';});}
+ });
+})();
+</script>
 </body></html>
