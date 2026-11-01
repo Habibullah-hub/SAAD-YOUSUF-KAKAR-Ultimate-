@@ -2366,16 +2366,39 @@ document.getElementById('clearResource').addEventListener('click',()=>{
 
         async function saveSupabaseConfig(e) {
             e.preventDefault();
-            const urlValue = document.getElementById('sbUrl').value.trim().replace(/\/$/, '');
+            let urlValue = document.getElementById('sbUrl').value.trim();
             const keyValue = document.getElementById('sbKey').value.trim();
             const submitButton = e.submitter || e.target.querySelector('button[type="submit"]');
             const originalLabel = submitButton?.textContent || 'Save & Connect';
             try {
                 const parsed = new URL(urlValue);
-                if (parsed.protocol !== 'https:') throw new Error('HTTPS required');
+                if (parsed.protocol !== 'https:' || parsed.search || parsed.hash) throw new Error('Use the HTTPS project root URL');
+                const path = parsed.pathname.replace(/\/+$/, '');
+                if (path === '/rest/v1') parsed.pathname = '';
+                else if (path && path !== '/') throw new Error('Paste the Project URL, not a REST/API endpoint');
+                urlValue = parsed.origin;
             } catch (_) {
-                alert('درست HTTPS Supabase Project URL درج کریں۔');
+                alert('درست HTTPS Supabase Project URL درج کریں۔ /rest/v1 والا حصہ بھی ہٹا دیں؛ ویب سائٹ اب اسے خود بھی درست کر سکتی ہے۔');
                 return;
+            }
+            let keyRole = '';
+            if (keyValue.startsWith('sb_publishable_')) {
+                keyRole = 'publishable';
+            } else if (keyValue.startsWith('sb_secret_')) {
+                alert('یہ Secret Key ہے۔ ویب سائٹ میں صرف Publishable یا anon public key استعمال کریں۔');
+                return;
+            } else {
+                try {
+                    const parts = keyValue.split('.');
+                    if (parts.length === 3) {
+                        const payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+                        keyRole = JSON.parse(atob(payload.padEnd(Math.ceil(payload.length / 4) * 4, '='))).role || '';
+                    }
+                } catch (_) {}
+                if (keyRole !== 'anon') {
+                    alert('یہ قابلِ قبول public key نہیں۔ صرف sb_publishable_ یا پرانی anon public key استعمال کریں؛ service_role / secret key ہرگز نہیں۔');
+                    return;
+                }
             }
             if (!keyValue) {
                 alert('صرف anon / publishable public key درج کریں۔ service_role یا secret key ہرگز استعمال نہ کریں۔');
