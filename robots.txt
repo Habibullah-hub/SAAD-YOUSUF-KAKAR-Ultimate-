@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/sitemap.xml
