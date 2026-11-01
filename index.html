@@ -1338,10 +1338,10 @@ img,iframe,video{max-width:100%}
   try{
    for(let i=0;i<valid.length;i+=20){
     const batch=valid.slice(i,i+20);
-    let result=await supabaseClient.from('apps').insert(batch);
+    let result=await supabaseClient.from('sk_apps').insert(batch);
     if(result.error&&/platform.*column|column.*platform/i.test(result.error.message)){
      const withoutPlatform=batch.map(({platform,...rest})=>rest);
-     result=await supabaseClient.from('apps').insert(withoutPlatform);
+     result=await supabaseClient.from('sk_apps').insert(withoutPlatform);
     }
     if(result.error){failed+=batch.length;errors.push(result.error.message);}
     else done+=batch.length;
@@ -1773,8 +1773,8 @@ document.getElementById('clearResource').addEventListener('click',()=>{
 
 </script>
 <script>
-        let supabaseUrl = localStorage.getItem('yk_url') || '';
-        let supabaseKey = localStorage.getItem('yk_key') || '';
+        let supabaseUrl = localStorage.getItem('skcyberhub_supabase_url') || '';
+        let supabaseKey = localStorage.getItem('skcyberhub_supabase_anon_key') || '';
         let supabaseClient = null;
         let currentCat = 'All';
         let currentUser = null;
@@ -1800,7 +1800,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 return;
             }
             const { data: profile, error } = await supabaseClient
-                .from('profiles')
+                .from('sk_profiles')
                 .select('role')
                 .eq('id', session.user.id)
                 .maybeSingle();
@@ -1827,7 +1827,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
 
         async function fetchApps() {
             if (!supabaseClient) return;
-            const { data, error } = await supabaseClient.from('apps').select('*').order('created_at', { ascending: false });
+            const { data, error } = await supabaseClient.from('sk_apps').select('*').order('created_at', { ascending: false });
             if (error) {
                 console.error('Could not load apps from Supabase:', error);
                 renderApps();
@@ -2089,8 +2089,8 @@ document.getElementById('clearResource').addEventListener('click',()=>{
 
         function saveSupabaseConfig(e) {
             e.preventDefault();
-            localStorage.setItem('yk_url', document.getElementById('sbUrl').value.trim());
-            localStorage.setItem('yk_key', document.getElementById('sbKey').value.trim());
+            localStorage.setItem('skcyberhub_supabase_url', document.getElementById('sbUrl').value.trim());
+            localStorage.setItem('skcyberhub_supabase_anon_key', document.getElementById('sbKey').value.trim());
             location.reload();
         }
 
@@ -2111,7 +2111,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 return;
             }
             const { data: profile, error: profileError } = await supabaseClient
-                .from('profiles')
+                .from('sk_profiles')
                 .select('role')
                 .eq('id', user.id)
                 .maybeSingle();
@@ -2165,7 +2165,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 featured: document.getElementById('appFeatured').checked,
                 published: true
             };
-            const res = id ? await supabaseClient.from('apps').update(data).eq('id', id) : await supabaseClient.from('apps').insert([data]);
+            const res = id ? await supabaseClient.from('sk_apps').update(data).eq('id', id) : await supabaseClient.from('sk_apps').insert([data]);
             if (res.error) alert(res.error.message);
             else { closeAppModal(); fetchApps(); }
         }
@@ -2174,7 +2174,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
         async function deleteApp(id) {
             if (!confirm('Delete app?')) return;
             if (supabaseClient) {
-                await supabaseClient.from('apps').delete().eq('id', id);
+                await supabaseClient.from('sk_apps').delete().eq('id', id);
                 fetchApps();
             }
         }
