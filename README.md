@@ -1,6 +1,6 @@
 # Saad Yousuf Kakar Ultimate — SK Cyber Hub
 
-A zero-budget digital discovery platform for Pakistan, Saudi Arabia, Urdu-speaking communities and a wider global audience.
+A zero-budget digital super-platform for Pakistan, Saudi Arabia, Urdu-speaking communities and a wider global audience.
 
 ## Live website
 https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/
@@ -8,19 +8,36 @@ https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/
 ## Project identity
 This is the separate **Saad Yousuf Kakar Ultimate / SK Cyber Hub** project. It is not the older Yousuf Kakar Free Apps website or its Supabase project. Keep repositories, databases, credentials and storage separate.
 
-## Current platform
-- Responsive directory for apps, AI tools, free online tools, software, documents and learning, games, video/audio, images/design, developer tools, security/privacy and world news.
-- One combined category browser and global search control; avoid duplicate navigation rows.
-- World News search with language selection, speech input where supported, translated summaries, share options and publisher links.
-- Each news result provides **Read full article** and **Open publisher website** links that open the original source in a new tab. Feed summaries are shown in the site; complete publisher text is only shown when a feed supplies it and display is permitted.
-- Admin dashboard with Supabase Auth role verification, app listing management and bulk CSV/Excel import.
-- The temporary “Add & Test a Resource” utility is inside the admin-only dashboard, not the public directory.
-- About, privacy and advertising/affiliate disclosure pages, crawler instructions and XML sitemap.
+## Current platform sections
+- Apps and All Apps Mod APK
+- AI Tools Directory and Smart Free Finder for free AI video tools
+- Software and Free Online Tools
+- Documents & Learning and Games
+- Video & Audio, Images & Design, Developer Tools, Security & Privacy
+- Creator Studio, Global Search, Jobs & Opportunities, Deals & Freebies
+- Community & User Accounts (planned; public registration is not enabled yet)
+- Languages & Global Access
+- World News search, language selection, speech input where supported, translated summaries, sharing and publisher links
+
+## News experience
+Every news result provides **Read full article** and **Open publisher website** links that open the original source in a new tab. News feed summaries are shown inside SK Cyber Hub; full publisher text is shown only when a feed supplies it and display is permitted. Publisher sites may restrict embedding or full-text reuse.
+
+## Search, mobile and design
+- Responsive mobile and desktop layout with a combined category browser and global search control.
+- Search filters static directory cards and database-backed app listings.
+- World News navigation accounts for the sticky header.
+- Light, Microsoft Store-inspired visual style and global-platform SEO metadata.
+- Crawler instructions, XML sitemap, About, Privacy and advertising/affiliate disclosure pages.
 
 ## Admin and database security
 The site uses the configured Supabase project URL and public anon/publishable key in the browser. Never enter a service-role key, database password or private secret in the website. The front end checks that the signed-in user's `profiles.role` is `admin`, but this is not a substitute for database security. The current SK Cyber Hub Supabase project's Row Level Security policies, profile-role protections and Storage policies must be independently verified. Public users must never be able to grant themselves admin access or write/delete listings.
 
+The owner remains the only administrator. Community/member registration will not be enabled until database-side role protection, RLS, spam controls and privacy requirements are verified.
+
 Browser configuration is local to the device and browser. Setting it on one phone does not automatically configure another. Do not reuse credentials from the separate Yousuf Kakar Free Apps project.
+
+## Smart Free Finder policy
+The AI video finder records free-use limits, account/card requirements, resolution, duration and watermark information from official provider pages. Free allowances change, may be shared or restricted, and are not unlimited. Users should re-check provider terms before generating. Never pay for credits or subscriptions unless you independently choose to do so.
 
 ## Responsible publishing and monetization
 - Prefer official publishers and authorized download sources; validate every external URL.
