@@ -1221,6 +1221,28 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 @media(max-width:600px){#skHeaderLiveResults{left:-3px;right:-3px;max-height:62vh;padding:10px;border-radius:14px}.sk-live-item{min-height:53px;padding:8px}.sk-live-detail b{font-size:11px}.sk-live-footer{align-items:flex-start;flex-direction:column;gap:5px}}
 @media(prefers-reduced-motion:reduce){#skHeaderLiveResults,.sk-live-item{transition:none!important}}
 </style>
+
+<style id="sk-world-news-live-fix-v6">
+.news-section .news-query-control{flex:1 1 auto;min-width:0;overflow:visible;border:1px solid #4384a8;border-radius:13px;background:linear-gradient(110deg,#fff,#f1f8ff);box-shadow:0 5px 18px #061a3020}
+.news-section .news-query-control input{min-width:0;font-size:14px}
+.news-section #newsSearchButton{width:auto;min-width:88px;height:44px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:7px;margin:2px 3px;padding:0 12px;border:1px solid #0879c9!important;border-radius:10px!important;background:linear-gradient(135deg,#0879c9,#07528d)!important;color:#fff!important;font-size:11px;font-weight:900;box-shadow:0 5px 13px #0879c933;transition:transform .18s,box-shadow .18s,filter .18s}
+.news-section #newsSearchButton svg{width:17px;height:17px;stroke:#fff}
+.news-section #newsSearchButton span{display:inline!important;white-space:nowrap}
+.news-section #newsSearchButton:hover{transform:translateY(-2px);filter:brightness(1.1);box-shadow:0 9px 20px #0879c955}
+.news-section #newsSearchButton:active{transform:scale(.97)}
+.news-section #newsSearchButton:disabled{opacity:.75;cursor:wait}
+.sk-news-live-suggestions{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin:9px 0 12px;padding:10px 12px;border:1px solid #3b6d86;border-radius:12px;background:linear-gradient(110deg,#0b2036,#12334a);box-shadow:0 8px 20px #06172c24}
+.sk-news-live-suggestions[hidden]{display:none!important}
+.sk-news-suggest-label{width:100%;color:#8dbbd1;font-size:9px;font-weight:900;letter-spacing:1.4px}
+.sk-news-suggest-chip{padding:7px 11px;border:1px solid #36728b;border-radius:999px;background:#153c53;color:#e4f8ff;font-size:11px;font-weight:750;cursor:pointer;transition:all .18s}
+.sk-news-suggest-chip:hover,.sk-news-suggest-chip:focus-visible{border-color:#59e5d0;background:#0e5964;color:#fff;transform:translateY(-2px)}
+.news-section .news-status.is-loading{position:relative;overflow:hidden}
+.news-section .news-status.is-loading:after{content:"";position:absolute;left:0;right:100%;bottom:0;height:3px;background:linear-gradient(90deg,#0879c9,#5ce5d0);animation:skNewsProgress 1.1s ease-in-out infinite}
+@keyframes skNewsProgress{to{right:0}}
+@media(max-width:600px){.news-section .news-query-control{min-height:46px}.news-section .news-query-control input{height:42px;font-size:12px}.news-section #newsSearchButton{min-width:74px;height:40px;padding:0 8px;font-size:10px}.news-section #newsSearchButton svg{width:15px;height:15px}.sk-news-live-suggestions{gap:6px;padding:9px}.sk-news-suggest-chip{font-size:10px;padding:7px 9px}}
+@media(prefers-reduced-motion:reduce){.sk-news-suggest-chip,.news-section #newsSearchButton{transition:none!important}.news-section .news-status.is-loading:after{animation:none}}
+</style>
+
 </head>
 <body>
 <div id="google_translate_element" aria-hidden="true"></div><div id="configAlert" class="config-alert"><span>SK Cyber Hub database is not connected. Set up its separate database tables to manage listings.</span><button type="button" onclick="openSupabaseModal()">Configure</button></div>
@@ -2054,6 +2076,7 @@ input.addEventListener('input',filterApps);
    if(requestId===searchSequence){searchButton.disabled=false;searchButton.classList.remove('is-loading');searchButton.removeAttribute('aria-busy');searchButton.setAttribute('aria-label','Search news');searchButton.querySelector('span').textContent='Search';status.classList.remove('is-loading');}
   }
  }
+ window.__skCyberHubRunNewsSearch=searchNews;
  document.querySelector('.news-topic-chips')?.addEventListener('click',event=>{const button=event.target.closest('[data-news-topic]');if(!button)return;queryInput.value=button.dataset.newsTopic||'';searchNews();});
   queryInput.addEventListener('input',()=>{document.getElementById('newsExternalFallback')?.classList.add('hidden');});
   searchButton.addEventListener('click',searchNews);
@@ -2074,6 +2097,30 @@ input.addEventListener('input',filterApps);
  }else{
   micButton.addEventListener('click',()=>{status.textContent='Voice search is not supported in this browser. Please use Chrome or type your search.';});
  }
+})();
+
+
+/* SK NEWS CONTROL FIX: keep the visible search button wired to the live search function. */
+(()=>{
+ const input=document.getElementById('newsQuery'),button=document.getElementById('newsSearchButton'),row=document.querySelector('.news-section .news-search-row');
+ if(!input||!button||!row||!window.__skCyberHubRunNewsSearch)return;
+ button.addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();window.__skCyberHubRunNewsSearch();},true);
+ button.setAttribute('aria-label','Search news now');button.title='Search news now';
+ const suggestions=document.createElement('div');suggestions.id='skNewsLiveSuggestions';suggestions.className='sk-news-live-suggestions';suggestions.setAttribute('aria-label','Related live search suggestions');suggestions.hidden=true;
+ row.insertAdjacentElement('afterend',suggestions);
+ const topics=['Pakistan politics','Saudi Arabia','Middle East','World breaking news','Technology','Artificial intelligence','Cricket','Football','Business','Economy','Weather','Science','Space','Health','Education','Afghanistan','United Kingdom','United States','Gaza','Climate change'];
+ const draw=()=>{
+  const q=input.value.trim().toLocaleLowerCase();suggestions.replaceChildren();
+  if(q.length<2){suggestions.hidden=true;return;}
+  const matches=topics.filter(t=>t.toLocaleLowerCase().includes(q)||q.split(/\s+/).some(w=>w.length>2&&t.toLocaleLowerCase().includes(w))).slice(0,6);
+  if(!matches.length){suggestions.hidden=true;return;}
+  const label=document.createElement('span');label.className='sk-news-suggest-label';label.textContent='RELATED TOPICS';suggestions.appendChild(label);
+  matches.forEach(topic=>{const b=document.createElement('button');b.type='button';b.className='sk-news-suggest-chip';b.textContent=topic;b.addEventListener('click',()=>{input.value=topic;suggestions.hidden=true;window.__skCyberHubRunNewsSearch();});suggestions.appendChild(b);});
+  suggestions.hidden=false;
+ };
+ input.addEventListener('input',draw);
+ input.addEventListener('keydown',event=>{if(event.key==='Escape')suggestions.hidden=true;});
+ document.addEventListener('click',event=>{if(!row.contains(event.target)&&!suggestions.contains(event.target))suggestions.hidden=true;});
 })();
 
 document.getElementById('year').textContent=new Date().getFullYear();
