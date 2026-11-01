@@ -859,6 +859,31 @@ img,iframe,video{max-width:100%}
 .quick-tool small{font-size:11px}
 @media(max-width:850px){.platform-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.platform-grid{grid-template-columns:1fr}.finder-controls{align-items:stretch}.finder-controls label{width:100%}.finder-controls select{width:100%}.finder-count{width:100%;margin-left:0}}
+
+/* SKCYBERHUB_CREATOR_GLOBAL_V1 */
+.creator-workshop,.global-finder{margin-top:20px;padding:20px;border:1px solid #d8d8d8;border-radius:8px;background:#fff}
+.creator-workshop h3,.global-finder h3{color:#242424;font-size:18px;font-weight:700;margin:0 0 6px}
+.creator-workshop p,.global-finder p{color:#626262;font-size:13px;line-height:1.6}
+.creator-input-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin:14px 0}
+.creator-input-grid>div,.global-finder-controls{min-width:0}
+.creator-input-grid label,.global-finder-controls label{display:block;margin-bottom:6px;color:#444;font-size:12px;font-weight:700}
+.creator-input-grid input,.creator-input-grid select,.creator-output-grid textarea,.global-finder-controls input,.global-finder-controls select{width:100%;min-width:0;padding:10px;border:1px solid #d1d1d1;border-radius:5px;background:#fff;color:#242424}
+.creator-actions{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}
+.creator-output-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.creator-output-grid article{display:flex;flex-direction:column;align-items:stretch;gap:8px}
+.creator-output-grid textarea{resize:vertical;font-size:13px;line-height:1.55}
+.creator-output-grid button{align-self:flex-start}
+.creator-status{margin-top:12px;padding:10px;border-radius:5px;background:#f2f8fc;color:#34566d;font-size:12px}
+.global-finder-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+.global-finder-controls label{grid-column:span 1;align-self:end}
+.global-finder-controls input,.global-finder-controls select{grid-column:span 1}
+.global-finder-controls button{justify-self:start}
+.global-result-card{display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-width:0;padding:15px;border:1px solid #ddd;border-radius:6px;background:#fff}
+.global-result-card h4{margin:0;color:#222;font-size:15px;font-weight:700}
+.global-result-card p{margin:0;color:#666;font-size:12px;line-height:1.5}
+.global-result-meta{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:.04em}
+.global-result-card a{color:#0067b8;font-size:12px;font-weight:700;text-decoration:none}
+@media(max-width:700px){.creator-input-grid,.creator-output-grid,.global-finder-controls{grid-template-columns:1fr}.creator-workshop,.global-finder{padding:14px}.global-finder-controls label,.global-finder-controls input,.global-finder-controls select{grid-column:1}}
 </style>
 </head>
 <body>
@@ -991,9 +1016,39 @@ img,iframe,video{max-width:100%}
 <a class="tile resource" data-search="tiktok studio creator publish manage videos analytics" href="https://www.tiktok.com/tiktokstudio" target="_blank" rel="noopener noreferrer"><span class="tag">OFFICIAL CREATOR TOOL</span><h3>TikTok Studio</h3><p>Manage TikTok content and creator tools where available for your account and region.</p><span class="arrow">Open TikTok Studio ↗</span></a>
 <a class="tile resource" data-search="capcut video editor mobile desktop browser" href="https://www.capcut.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE ACCESS · LIMITS MAY APPLY</span><h3>CapCut</h3><p>Edit short videos and social content; features and availability vary by region and plan.</p><span class="arrow">Open CapCut ↗</span></a>
 <a class="tile resource" data-search="google vids ai video creator studio" href="https://vids.new/" target="_blank" rel="noopener noreferrer"><span class="tag">GOOGLE ACCOUNT REQUIRED</span><h3>Google Vids</h3><p>Create and edit AI-assisted videos in the browser; Google's current AI-video workflow is desktop-led.</p><span class="arrow">Open Google Vids ↗</span></a>
+</div>
+<div class="creator-workshop" id="skCreatorWorkshop">
+ <div class="section-head"><div><h3>Creator Studio · Free Content Helpers</h3><p>Generate reusable drafts in your browser. These are template-based helpers, not a connected paid AI service.</p></div><span class="section-count">FREE · ON-DEVICE</span></div>
+ <div class="creator-input-grid">
+  <div><label for="skCreatorTopic">Video or post topic</label><input id="skCreatorTopic" type="text" maxlength="180" placeholder="مثلاً: صبر، محنت اور کامیابی"></div>
+  <div><label for="skCreatorPlatform">Platform</label><select id="skCreatorPlatform"><option value="TikTok">TikTok</option><option value="YouTube">YouTube</option><option value="Instagram">Instagram</option><option value="Facebook">Facebook</option></select></div>
+  <div><label for="skCreatorTone">Tone</label><select id="skCreatorTone"><option value="motivational">Motivational</option><option value="educational">Educational</option><option value="professional">Professional</option><option value="friendly">Friendly</option></select></div>
+ </div>
+ <div class="creator-actions"><button class="primary" type="button" id="skCreatorGenerate">Generate content pack</button><button class="secondary" type="button" id="skCreatorClear">Clear</button></div>
+ <div class="creator-output-grid">
+  <article class="platform-card"><h3>Caption & Description</h3><textarea id="skCreatorCaption" rows="4" readonly placeholder="Your caption will appear here."></textarea><button class="secondary" type="button" data-copy="skCreatorCaption">Copy caption</button></article>
+  <article class="platform-card"><h3>Hashtags</h3><textarea id="skCreatorHashtags" rows="4" readonly placeholder="Your hashtags will appear here."></textarea><button class="secondary" type="button" data-copy="skCreatorHashtags">Copy hashtags</button></article>
+  <article class="platform-card"><h3>Video Title & Hook</h3><textarea id="skCreatorTitle" rows="4" readonly placeholder="Your title will appear here."></textarea><button class="secondary" type="button" data-copy="skCreatorTitle">Copy title</button></article>
+  <article class="platform-card"><h3>Short Video Script</h3><textarea id="skCreatorScript" rows="5" readonly placeholder="Your script will appear here."></textarea><button class="secondary" type="button" data-copy="skCreatorScript">Copy script</button></article>
+  <article class="platform-card"><h3>AI Image Prompt</h3><textarea id="skCreatorPrompt" rows="5" readonly placeholder="Your image prompt will appear here."></textarea><button class="secondary" type="button" data-copy="skCreatorPrompt">Copy prompt</button></article>
+  <article class="platform-card"><h3>Social Bio</h3><textarea id="skCreatorBio" rows="4" readonly placeholder="Your bio idea will appear here."></textarea><button class="secondary" type="button" data-copy="skCreatorBio">Copy bio</button></article>
+ </div>
+ <p class="creator-status" id="skCreatorStatus" role="status" aria-live="polite">Enter a topic and generate a content pack. Review drafts before publishing.</p>
 </div></section>
 
-<section class="section wrap" id="global-search"><div class="section-head"><div><h2>Global Search</h2><p>Choose a search engine and compare results. External search providers have their own privacy policies.</p></div></div><div class="grid resource-grid">
+<section class="section wrap" id="global-search"><div class="section-head"><div><h2>Global Search</h2><p>Choose a search engine and compare results. External search providers have their own privacy policies.</p></div></div>
+<div class="global-finder" id="skGlobalFinder">
+ <h3>Search inside SK Cyber Hub</h3><p>Search our directory, then narrow results by category, price and device.</p>
+ <div class="global-finder-controls">
+  <label for="skGlobalQuery">What are you looking for?</label><input id="skGlobalQuery" type="search" placeholder="e.g. free AI video generator, Android apps, PDF tools">
+  <label for="skGlobalCategory">Category</label><select id="skGlobalCategory"><option value="all">All categories</option><option value="apps">Apps</option><option value="mod-apk">Modified apps</option><option value="software">Software</option><option value="tools">AI Tools</option><option value="smart-free-finder">AI Video Finder</option><option value="free-tools">Online Tools</option><option value="documents">Learning & Documents</option><option value="games">Games</option><option value="video-audio">Video & Audio</option><option value="images-design">Images & Design</option><option value="developer-tools">Developer Tools</option><option value="security-privacy">Security & Privacy</option><option value="news">Latest News</option><option value="jobs">Jobs</option><option value="deals">Deals & Freebies</option></select>
+  <label for="skGlobalPrice">Price</label><select id="skGlobalPrice"><option value="all">Any price</option><option value="free">Free</option><option value="limited">Limited free</option><option value="paid">Paid</option></select>
+  <label for="skGlobalDevice">Device</label><select id="skGlobalDevice"><option value="all">Any device</option><option value="android">Android</option><option value="iphone">iPhone / iPad</option><option value="windows">Windows / PC</option><option value="browser">Browser / Web</option></select>
+  <button class="primary" type="button" id="skGlobalSearchButton">Search directory</button><button class="secondary" type="button" id="skGlobalResetButton">Reset</button>
+ </div>
+ <p id="skGlobalStatus" class="creator-status" role="status" aria-live="polite">Search across listed resources. Price labels reflect the information shown on each listing; unknown pricing is not guessed.</p>
+ <div id="skGlobalResults" class="grid resource-grid" aria-live="polite"></div>
+</div><div class="grid resource-grid">
 <a class="tile resource" data-search="google web search engine" href="https://www.google.com/" target="_blank" rel="noopener noreferrer"><span class="tag">WEB SEARCH</span><h3>Google Search</h3><p>Search websites, images, videos, maps and more.</p><span class="arrow">Search with Google ↗</span></a>
 <a class="tile resource" data-search="bing microsoft search engine" href="https://www.bing.com/" target="_blank" rel="noopener noreferrer"><span class="tag">WEB SEARCH</span><h3>Microsoft Bing</h3><p>Search the web and explore image and video results.</p><span class="arrow">Search with Bing ↗</span></a>
 <a class="tile resource" data-search="duckduckgo private search engine" href="https://duckduckgo.com/" target="_blank" rel="noopener noreferrer"><span class="tag">PRIVACY-FOCUSED OPTION</span><h3>DuckDuckGo</h3><p>Explore a search engine that emphasizes privacy.</p><span class="arrow">Search privately ↗</span></a>
@@ -2183,4 +2238,80 @@ document.getElementById('clearResource').addEventListener('click',()=>{
  });
 })();
 </script>
+
+<script>
+/* SKCYBERHUB_CREATOR_GLOBAL_V1 */
+(function(){
+ function boot(){
+  const byId=id=>document.getElementById(id);
+  const topic=byId('skCreatorTopic'),platform=byId('skCreatorPlatform'),tone=byId('skCreatorTone'),status=byId('skCreatorStatus');
+  const outputs=['skCreatorCaption','skCreatorHashtags','skCreatorTitle','skCreatorScript','skCreatorPrompt','skCreatorBio'];
+  const set=(id,value)=>{const el=byId(id);if(el)el.value=value;};
+  const get=id=>byId(id)?.value||'';
+  const copy=async id=>{const el=byId(id);if(!el||!el.value)return;try{await navigator.clipboard.writeText(el.value);if(status)status.textContent='Copied to clipboard.';}catch(e){el.focus();el.select();if(status)status.textContent='Text selected. Use your phone’s Copy option.';}};
+  byId('skCreatorGenerate')?.addEventListener('click',()=>{
+   const t=(topic?.value||'').trim();if(!t){if(status)status.textContent='Please enter a topic first.';topic?.focus();return;}
+   const p=get('skCreatorPlatform'),m=get('skCreatorTone');
+   const opening=m==='educational'?'Learn something useful about':m==='professional'?'A practical guide to':m==='friendly'?'Let’s talk about':'A powerful reminder about';
+   const cap=opening+' '+t+'. Save this post, share it with someone who may need it, and follow for more useful content.';
+   const words=t.toLowerCase().normalize('NFKD').match(/[\p{L}\p{N}]+/gu)||[];
+   const tags=[...new Set(['#'+p.replace(/[^a-z0-9]/gi,''),'#'+(words[0]||'creator'),'#'+(words[1]||'inspiration'),'#LearnAndGrow','#DigitalCreator','#SKCyberHub'])].join(' ');
+   const title=t+' | A message worth sharing';
+   const script='HOOK (0–3 sec): “Have you ever thought about '+t+'?”\n\nMAIN (3–20 sec): Explain the key idea in one or two clear sentences. Give one practical example connected to '+t+'.\n\nTAKEAWAY (20–27 sec): Share one action the viewer can take today.\n\nCTA (last 3 sec): “Follow for more useful videos and share this with a friend.”';
+   const prompt='Create a vertical 9:16 cinematic realistic visual about '+t+'. Natural human expressions, authentic environment, detailed textures, balanced lighting, clear subject, tasteful composition, no text, no logos, no watermark. Suitable for a short '+p+' video. Tone: '+m+'.';
+   const bio='Sharing useful content about '+t+' | Learning • Creativity • Positive ideas | Follow for new posts.';
+   set('skCreatorCaption',cap);set('skCreatorHashtags',tags);set('skCreatorTitle',title);set('skCreatorScript',script);set('skCreatorPrompt',prompt);set('skCreatorBio',bio);
+   if(status)status.textContent='Content pack generated. Review accuracy and personalize it before posting.';
+  });
+  byId('skCreatorClear')?.addEventListener('click',()=>{if(topic)topic.value='';outputs.forEach(id=>set(id,''));if(status)status.textContent='Cleared. Enter a new topic to begin.';});
+  document.querySelectorAll('[data-copy^="skCreator"]').forEach(btn=>btn.addEventListener('click',()=>copy(btn.dataset.copy)));
+  const q=byId('skGlobalQuery'),cat=byId('skGlobalCategory'),price=byId('skGlobalPrice'),device=byId('skGlobalDevice'),results=byId('skGlobalResults'),globalStatus=byId('skGlobalStatus');
+  function classify(card){
+   const section=card.closest('section[id]'),id=section?.id||'';
+   const tag=card.querySelector('.tag')?.textContent.toLowerCase()||'';
+   let cost='unknown';
+   if(tag.includes('paid')&&!tag.includes('free'))cost='paid';
+   else if(tag.includes('free')&&(tag.includes('limit')||tag.includes('plan')||tag.includes('access')))cost='limited';
+   else if(tag.includes('free')||tag.includes('open source'))cost='free';
+   const text=((card.innerText||'')+' '+(card.dataset.search||'')).toLowerCase();
+   let platform='browser';
+   if(/iphone|ipad|ios|app store/.test(text))platform='iphone';
+   else if(/android|google play|apk/.test(text))platform='android';
+   else if(/windows|pc game|desktop software/.test(text))platform='windows';
+   return {id,cost,platform,text};
+  }
+  function runGlobal(){
+   if(!results)return;
+   const query=(q?.value||'').trim().toLowerCase(),category=cat?.value||'all',pricing=price?.value||'all',deviceValue=device?.value||'all';
+   results.replaceChildren();
+   const cards=[...document.querySelectorAll('#tab-home .resource')].filter(card=>card.querySelector('h3')||card.querySelector('.app-name'));
+   let count=0;
+   cards.forEach(card=>{
+    const meta=classify(card),title=card.querySelector('h3')?.textContent?.trim()||card.querySelector('.app-name')?.textContent?.trim()||'Resource';
+    const desc=card.querySelector('p')?.textContent?.trim()||'Open this resource for details.';
+    const hay=(title+' '+desc+' '+meta.text+' '+meta.id).toLowerCase();
+    const link=card.matches('a[href]')?card:card.querySelector('a[href]');
+    const href=link?.getAttribute('href')||'';
+    let safe='';try{const u=new URL(href,location.href);if(u.protocol==='https:'||u.protocol==='http:')safe=u.href;}catch(e){}
+    const matches=(!query||hay.includes(query))&&(category==='all'||meta.id===category)&&(pricing==='all'||meta.cost===pricing)&&(deviceValue==='all'||meta.platform===deviceValue);
+    if(!matches||!safe)return;
+    const item=document.createElement('article');item.className='global-result-card';
+    const name=document.createElement('h4');name.textContent=title;
+    const description=document.createElement('p');description.textContent=desc;
+    const metadata=document.createElement('span');metadata.className='global-result-meta';metadata.textContent=(meta.id.replace(/-/g,' ')||'directory')+' · '+meta.cost+' · '+meta.platform;
+    const a=document.createElement('a');a.href=safe;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open resource ↗';
+    item.append(name,description,metadata,a);results.appendChild(item);count++;
+   });
+   if(globalStatus)globalStatus.textContent=count+' matching resources found. Pricing and device labels are estimated from each listing; verify details on the provider website.';
+   if(!count){const empty=document.createElement('p');empty.className='empty';empty.textContent='No matching resource found. Try changing the filters or search words.';results.appendChild(empty);}
+  }
+  byId('skGlobalSearchButton')?.addEventListener('click',runGlobal);
+  q?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runGlobal();}});
+  [cat,price,device].forEach(el=>el?.addEventListener('change',runGlobal));
+  byId('skGlobalResetButton')?.addEventListener('click',()=>{if(q)q.value='';if(cat)cat.value='all';if(price)price.value='all';if(device)device.value='all';results?.replaceChildren();if(globalStatus)globalStatus.textContent='Filters reset. Search across listed resources.';});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
+
 </body></html>
