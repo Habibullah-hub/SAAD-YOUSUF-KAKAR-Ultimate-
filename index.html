@@ -1352,14 +1352,11 @@ img,iframe,video{max-width:100%}
 const input=document.getElementById('search'), categoryLinks=[...document.querySelectorAll('#categoryMenu a')], empty=document.getElementById('empty');
 const categoryToggle=document.getElementById('categoryToggle'), categoryMenu=document.getElementById('categoryMenu');
 const categoryDropdown=document.querySelector('.category-dropdown');
-let categoryCloseTimer=null;
-function closeCategoryMenu(){categoryMenu.classList.remove('is-open');categoryToggle.classList.remove('is-open');categoryToggle.setAttribute('aria-expanded','false');if(categoryCloseTimer!==null){clearTimeout(categoryCloseTimer);categoryCloseTimer=null;}}
-function startCategoryCloseTimer(){if(categoryCloseTimer!==null)clearTimeout(categoryCloseTimer);categoryCloseTimer=setTimeout(closeCategoryMenu,3000);}
-/* Close after 3 seconds without interaction; outside taps close it immediately. */
+function closeCategoryMenu(){categoryMenu.classList.remove('is-open');categoryToggle.classList.remove('is-open');categoryToggle.setAttribute('aria-expanded','false');}
+/* Keep the category menu open until a category is chosen, the user taps outside, or presses Escape. */
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&categoryToggle.getAttribute('aria-expanded')==='true'){closeCategoryMenu();categoryToggle.focus();}});
 document.addEventListener('click',e=>{if(!e.target.closest('.category-dropdown')&&categoryToggle.getAttribute('aria-expanded')==='true')closeCategoryMenu();});
-categoryDropdown.addEventListener('pointerdown',()=>{if(categoryToggle.getAttribute('aria-expanded')==='true')startCategoryCloseTimer();});
-categoryToggle.addEventListener('click',()=>{const opening=categoryToggle.getAttribute('aria-expanded')!=='true';if(opening){categoryMenu.classList.add('is-open');categoryToggle.classList.add('is-open');categoryToggle.setAttribute('aria-expanded','true');startCategoryCloseTimer();}else closeCategoryMenu();});
+categoryToggle.addEventListener('click',()=>{const opening=categoryToggle.getAttribute('aria-expanded')!=='true';if(opening){categoryMenu.classList.add('is-open');categoryToggle.classList.add('is-open');categoryToggle.setAttribute('aria-expanded','true');}else closeCategoryMenu();});
 categoryMenu.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{closeCategoryMenu();if(input.value.trim()){input.value='';runSearch();filterApps();}}));
 /* Instant search: results update on every keystroke */
 const searchFeedback=document.createElement('div');searchFeedback.className='search-feedback hidden';searchFeedback.setAttribute('aria-live','polite');document.querySelector('.category-dock .dock-inner').appendChild(searchFeedback);
@@ -2063,7 +2060,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
             document.getElementById(`tab-${t}`)?.classList.remove('hidden');
         }
 
-        function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+        
         function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
         function openSupabaseModal() { document.getElementById('supabaseModal').classList.remove('hidden'); }
