@@ -909,6 +909,28 @@ main#tab-home{padding-bottom:94px}
 }
 @media(prefers-reduced-motion:reduce){.sk-category-card,#tab-home .section.sk-view-active{animation:none!important;transition:none!important}}
 
+
+/* SK CYBER HUB: unified, accessible search controls */
+.searchbox{min-width:0;box-shadow:0 8px 24px #02081755}
+.dock-inner>.searchbox{min-height:50px;padding:4px 5px 4px 13px;border:1px solid #3a5877;border-radius:13px;background:linear-gradient(145deg,#142944,#0c1b30);transition:border-color .2s,box-shadow .2s}
+.dock-inner>.searchbox:focus-within{border-color:#67e5d0;box-shadow:0 0 0 3px #67e5d022,0 10px 28px #02081766}
+.searchbox input{height:40px;color:#f2f7ff;font-size:14px}
+.searchbox input::placeholder{color:#a4b5cb}
+.dock-inner>.searchbox button{width:42px;height:40px;padding:0;border:1px solid #4c9a9c;border-radius:10px;background:linear-gradient(135deg,#6debd7,#8acbff);color:#082033}
+.dock-inner>.searchbox button svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.global-finder{padding:clamp(16px,3vw,26px);border-radius:20px!important}
+.global-finder-controls{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 12px;padding:16px;border:1px solid #304765!important;border-radius:15px!important;background:#0b172a!important}
+.global-finder-controls label{align-self:end;margin:0 0 -5px;color:#b9c9df!important;font-size:11px;letter-spacing:.2px}
+.global-finder-controls input,.global-finder-controls select{min-height:46px;padding:10px 12px!important;border:1px solid #385574!important;border-radius:11px!important;background:#101f35!important;color:#f2f7ff!important;font-size:13px}
+.global-finder-controls input:focus,.global-finder-controls select:focus{border-color:#67e5d0!important;box-shadow:0 0 0 3px #67e5d022!important}
+.global-finder-controls button{min-height:43px;padding:10px 16px;border-radius:11px;justify-self:start}
+.global-finder-controls #skGlobalSearchButton{background:linear-gradient(135deg,#67e5d0,#8acbff);border:1px solid #79e9df;color:#07182a;font-weight:800}
+.global-finder-controls #skGlobalResetButton{border:1px solid #49627f;background:#172943;color:#e5eefb}
+.global-result-card{min-height:160px;padding:17px;border-radius:15px;gap:9px}
+.global-result-card a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;margin-top:auto;padding:8px 13px;border:1px solid #3d8e8c;border-radius:10px;background:#123a49;color:#9af4e6;font-weight:750}
+.global-result-card a:hover{background:#1b5360}
+@media(max-width:760px){.global-finder-controls{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.global-finder-controls button{width:100%;justify-content:center}.dock-inner>.searchbox{min-height:44px;padding-left:8px}.searchbox input{font-size:12px}}
+@media(max-width:390px){.global-finder-controls{grid-template-columns:minmax(0,1fr)}.global-finder-controls label{margin-top:4px}.global-finder-controls button{grid-column:1}}
 </style>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2454,7 +2476,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
             if(data?.session?.user){
                 const {data:profile,error:profileError}=await supabaseClient.from('sk_profiles').select('role').eq('id',data.session.user.id).maybeSingle();
                 if(profileError||!profile||profile.role!=='member'){await supabaseClient.auth.signOut();status.textContent='Account created, but member access could not be verified. Contact the site owner.';return;}
-                currentMember=data.session.user;updateMemberUI();status.textContent='Your member account is ready. Welcome!';
+                currentMember=data.session.user;updateMemberUI();status.textContent='Your member account is ready. Welcome!';closeMemberAuthModal();document.querySelector('[data-sk-bottom="home"]')?.click();
             }else{
                 status.textContent='Registration request received. Check your email and confirm your address, then use Member login.';
             }
@@ -2471,7 +2493,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
             if(profileError||!profile||profile.role!=='member'){
                 await supabaseClient.auth.signOut();currentMember=null;status.textContent='This login is not a member account. Admins must use Admin Login.';updateMemberUI();return;
             }
-            currentMember=user;status.textContent='You are signed in as a member.';updateMemberUI();
+            currentMember=user;status.textContent='You are signed in as a member.';updateMemberUI();closeMemberAuthModal();document.querySelector('[data-sk-bottom="home"]')?.click();
         }
         async function logoutMember(){
             if(!supabaseClient)return;
@@ -2688,20 +2710,23 @@ document.getElementById('clearResource').addEventListener('click',()=>{
  }
  function runGlobal(){
   if(!results)return;
-  const query=(q?.value||'').trim().toLowerCase(),category=cat?.value||'all',pricing=price?.value||'all',deviceValue=device?.value||'all';
-  const webQuery=(q?.value||'').trim();
+  const rawQuery=(q?.value||'').trim(),query=rawQuery.toLocaleLowerCase();
+  const terms=query.split(/\\s+/).filter(Boolean),category=cat?.value||'all',pricing=price?.value||'all',deviceValue=device?.value||'all';
   const engines={google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q=',duckduckgo:'https://duckduckgo.com/?q=',brave:'https://search.brave.com/search?q='};
-  document.querySelectorAll('[data-global-engine]').forEach(link=>{const engine=link.dataset.globalEngine;if(engines[engine])link.href=engines[engine]+encodeURIComponent(webQuery);});
+  document.querySelectorAll('[data-global-engine]').forEach(link=>{const engine=link.dataset.globalEngine;if(engines[engine])link.href=engines[engine]+encodeURIComponent(rawQuery);});
   results.replaceChildren();let count=0;
   const cards=[...document.querySelectorAll('#tab-home .resource')].filter(card=>card.querySelector('h3')||card.querySelector('.app-name'));
   cards.forEach(card=>{
    const meta=classify(card),title=card.querySelector('h3')?.textContent?.trim()||card.querySelector('.app-name')?.textContent?.trim()||'Resource';
    const desc=card.querySelector('p')?.textContent?.trim()||'Open this resource for details.';
-   const hay=(title+' '+desc+' '+meta.text+' '+meta.id).toLowerCase();
+   const hay=(title+' '+desc+' '+meta.text+' '+meta.id).toLocaleLowerCase().normalize('NFKD').replace(/[\\u0300-\\u036f]/g,'');
+   const normalizedTerms=terms.map(term=>term.normalize('NFKD').replace(/[\\u0300-\\u036f]/g,''));
    const link=card.matches('a[href]')?card:card.querySelector('a[href]');
    const href=link?.getAttribute('href')||'';let safe='';
    try{const u=new URL(href,location.href);if(u.protocol==='https:'||u.protocol==='http:')safe=u.href;}catch(e){}
-   const matches=(!query||hay.includes(query))&&(category==='all'||meta.id===category)&&(pricing==='all'||meta.cost===pricing)&&(deviceValue==='all'||meta.platform===deviceValue);
+   const categoryMatch=category==='all'||meta.id===category||(category==='tools'&&meta.id==='smart-free-finder')||(category==='documents'&&meta.id==='languages');
+   const queryMatch=!terms.length||normalizedTerms.every(term=>hay.includes(term));
+   const matches=queryMatch&&categoryMatch&&(pricing==='all'||meta.cost===pricing)&&(deviceValue==='all'||meta.platform===deviceValue);
    if(!matches||!safe)return;
    const item=document.createElement('article');item.className='global-result-card';
    const name=document.createElement('h4');name.textContent=title;
@@ -2710,11 +2735,12 @@ document.getElementById('clearResource').addEventListener('click',()=>{
    const a=document.createElement('a');a.href=safe;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open resource ↗';
    item.append(name,description,metadata,a);results.appendChild(item);count++;
   });
-  if(globalStatus)globalStatus.textContent=count+' matching resources found. Price and device labels are based on listing details; verify them with the provider.';
-  if(!count){const empty=document.createElement('p');empty.className='empty';empty.textContent='No matching resource found. Try changing the filters or search words.';results.appendChild(empty);}
+  if(globalStatus)globalStatus.textContent=count+' matching resources found'+(rawQuery?' for “'+rawQuery+'”':'')+'. Search matches all entered words; verify price and device details with the provider.';
+  if(!count){const empty=document.createElement('p');empty.className='empty';empty.textContent='No matching resource found. Try fewer words, choose “All categories”, or use Google/Bing below for a wider web search.';results.appendChild(empty);}
  }
  const updateWebEngineLinks=()=>{const term=(q?.value||'').trim();const engines={google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q=',duckduckgo:'https://duckduckgo.com/?q=',brave:'https://search.brave.com/search?q='};document.querySelectorAll('[data-global-engine]').forEach(link=>{const engine=link.dataset.globalEngine;if(engines[engine])link.href=engines[engine]+encodeURIComponent(term);});};
- updateWebEngineLinks();q?.addEventListener('input',updateWebEngineLinks);
+ updateWebEngineLinks();
+ q?.addEventListener('input',()=>{updateWebEngineLinks();runGlobal();});
  byId('skGlobalSearchButton')?.addEventListener('click',runGlobal);
  q?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runGlobal();}});
  [cat,price,device].forEach(el=>el?.addEventListener('change',runGlobal));
@@ -2924,9 +2950,9 @@ document.getElementById('clearResource').addEventListener('click',()=>{
    const target=raw==='home'||raw==='skDiscoveryHome'?'home':raw;
    setView(target&&document.getElementById(target)?target:'home',true);
   });
-  const initial=(location.hash||'').replace(/^#/,'');
-  const initialView=initial==='skDiscoveryHome'?'home':initial;
-  setView(initialView&&document.getElementById(initialView)?initialView:'home',true);
+  // Public visitors and members always land on Home after a full page load.
+  // Admin authentication remains session-based and the Admin Dashboard is opened explicitly.
+  setView('home',true);
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
