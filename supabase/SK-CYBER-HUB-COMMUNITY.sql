@@ -31,6 +31,7 @@ create table if not exists public.sk_post_comments (
 );
 
 alter table public.sk_post_comments add column if not exists country_code text;
+alter table public.sk_post_comments add column if not exists author_name text;
 alter table public.sk_post_comments add column if not exists country_name text;
 
 create table if not exists public.sk_post_reports (
