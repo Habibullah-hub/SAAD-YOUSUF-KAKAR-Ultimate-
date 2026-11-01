@@ -3817,6 +3817,9 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   if(!analyticsRows)return;
   if(typeof currentUser==='undefined'||!currentUser){analyticsStatus.textContent='یہ رپورٹ صرف ویب سائٹ کے مالک Admin کے لیے ہے۔';return;}
   if(typeof supabaseClient==='undefined'||!supabaseClient){analyticsStatus.textContent='Supabase connection دستیاب نہیں۔';return;}
+  analyticsStatus.textContent='Admin اجازت کی تصدیق ہو رہی ہے…';
+  const permission=await supabaseClient.rpc('sk_is_admin');
+  if(permission.error||permission.data!==true){analyticsStatus.textContent='رسائی صرف ویب سائٹ کے مالک Admin کو حاصل ہے۔';return;}
   analyticsStatus.textContent='گزشتہ 30 دن کی رپورٹس لوڈ ہو رہی ہیں…';
   const since=new Date(Date.now()-30*86400000).toISOString().slice(0,10);
   const {data,error}=await supabaseClient.from('sk_site_analytics').select('country_code,country_name,page_path,views,visit_date').gte('visit_date',since).order('views',{ascending:false}).limit(1000);
