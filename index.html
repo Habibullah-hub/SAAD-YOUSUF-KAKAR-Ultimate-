@@ -2439,7 +2439,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 iconImage.alt = '';
                 const fallbackIcon = () => {
                     icon.replaceChildren();
-                    icon.textContent = (String(app.name || 'APP').trim().split(/\\s+/).slice(0,2).map(part => part[0] || '').join('').toUpperCase() || 'APP');
+                    icon.textContent = (String(app.name || 'APP').trim().split(/\s+/).slice(0,2).map(part => part[0] || '').join('').toUpperCase() || 'APP');
                     icon.style.background = '#eaf4fb';
                     icon.style.color = '#0067b8';
                 };
