@@ -3106,6 +3106,8 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   function runGlobalSearch(){
    if(!results)return;
    const raw=(q?.value||'').trim(),terms=raw.toLocaleLowerCase().split(/\s+/).filter(Boolean),category=cat?.value||'all',cost=price?.value||'all',platform=device?.value||'all';
+   const engines={google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q=',duckduckgo:'https://duckduckgo.com/?q=',brave:'https://search.brave.com/search?q='};
+   document.querySelectorAll('[data-global-engine]').forEach(link=>{const engine=link.dataset.globalEngine;if(engines[engine])link.href=engines[engine]+encodeURIComponent(raw);});
    results.replaceChildren();let count=0;
    const cards=[...document.querySelectorAll('#tab-home .resource')].filter(card=>card.querySelector('h3')||card.querySelector('.app-name'));
    cards.forEach(card=>{
@@ -3140,7 +3142,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   if(searchButton)searchButton.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();runGlobalSearch();},true);
   [cat,price,device].forEach(el=>el?.addEventListener('change',runGlobalSearch,true));
   reset?.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();if(q)q.value='';if(cat)cat.value='all';if(price)price.value='all';if(device)device.value='all';runGlobalSearch();},true);
-  if(q&&searchButton)runGlobalSearch();
+  if(q&&searchButton){if(q.value.trim())runGlobalSearch();else if(status)status.textContent='Enter a keyword or choose filters to search the full directory.';}
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
