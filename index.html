@@ -2068,7 +2068,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
         }
 
         
-        function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
+        function openAuthModal() { if (!supabaseClient) { openSupabaseModal(); return; } document.getElementById('authModal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
         function openSupabaseModal() { document.getElementById('supabaseModal').classList.remove('hidden'); }
         function closeSupabaseModal() { document.getElementById('supabaseModal').classList.add('hidden'); }
