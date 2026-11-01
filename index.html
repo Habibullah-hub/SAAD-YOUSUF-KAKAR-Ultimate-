@@ -3774,7 +3774,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
  });
  const postText=$('skCommunityPostText'),counter=$('skCommunityCharCount'),publish=$('skCommunityPublish'),refresh=$('skCommunityRefresh'),feed=$('skCommunityFeed'),status=$('skCommunityStatus');
  postText?.addEventListener('input',()=>{counter.textContent=postText.value.length+' / 800';});
- const signedUser=()=>window.currentMember||window.currentUser||null;
+ const signedUser=()=>((typeof currentMember!=='undefined'&&currentMember)?currentMember:((typeof currentUser!=='undefined'&&currentUser)?currentUser:null));
  const escDate=value=>{try{return new Date(value).toLocaleString();}catch(e){return 'Recently';}};
  function setStatus(message){if(status)status.textContent=message;}
  function node(tag,cls,txt){const el=document.createElement(tag);if(cls)el.className=cls;if(txt!==undefined)el.textContent=txt;return el;}
