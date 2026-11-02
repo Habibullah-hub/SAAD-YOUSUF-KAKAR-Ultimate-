@@ -1912,6 +1912,10 @@ function runSearch(){
 }
 input.addEventListener('input',runSearch);
 input.addEventListener('input',filterApps);
+// Make the visible header search button and Enter key run the same live directory search.
+const headerSearchButton=document.getElementById('searchBtn');
+headerSearchButton?.addEventListener('click',()=>{runSearch();filterApps();input.focus();});
+input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();runSearch();filterApps();}});
 
 /* World News: quick RSS search, in-memory caching, speech input and language translation. */
 (()=>{
