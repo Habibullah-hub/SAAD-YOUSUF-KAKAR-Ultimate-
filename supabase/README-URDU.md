@@ -1,32 +1,33 @@
-# SK Cyber Hub — Supabase setup (Urdu)
+# SK Cyber Hub — Supabase setup (اردو)
 
-یہ فائل صرف **SK Cyber Hub** کے ڈیٹا بیس کو جوڑنے کے لیے ہے۔ یہ پرانی ویب سائٹ کے `public.apps` اور `public.profiles` ٹیبلز کو تبدیل نہیں کرتی۔ نئے ٹیبلز کے نام `public.sk_apps` اور `public.sk_profiles` ہیں۔
+یہ ہدایات صرف **Saad Yousuf Kakar Ultimate / SK Cyber Hub** کے الگ Supabase پروجیکٹ کے لیے ہیں۔ پرانے **Yousuf Kakar Free Apps** پروجیکٹ یا اس کے `public.apps` / `public.profiles` ٹیبلز میں یہ SQL ہرگز نہ چلائیں۔
 
-## 1) SQL چلائیں
+## شروع کرنے سے پہلے
 
-1. اپنے موجودہ Supabase فری پروجیکٹ کو کھولیں۔ نیا paid project بنانے کی ضرورت نہیں۔
-2. بائیں طرف **SQL Editor** کھولیں اور **New query** دبائیں۔
-3. [SK-CYBER-HUB-SETUP.sql](./SK-CYBER-HUB-SETUP.sql) فائل کھولیں۔
-4. SQL فائل کا مکمل متن Copy کریں، Supabase کے SQL Editor میں Paste کریں اور **Run** دبائیں۔
-5. یہ اسکرپٹ صرف SK Cyber Hub کے الگ ٹیبلز، policies اور trigger بناتا ہے۔ پرانے `apps` اور `profiles` ٹیبلز کو نہیں چھیڑتا۔
+- موجودہ SK Cyber Hub Supabase پروجیکٹ ہی استعمال کریں؛ نیا paid project بنانے کی ضرورت نہیں۔
+- پہلے SQL فائلیں پڑھیں اور صحیح پروجیکٹ/URL کی تصدیق کریں۔
+- کسی بھی migration کو چلانے سے پہلے backup/export رکھیں۔
+- ویب سائٹ میں صرف Project URL اور anon/publishable public key استعمال کریں۔ `service_role` یا secret key کبھی browser، GitHub frontend، PWA یا Android app میں نہ رکھیں۔
+- نیچے دی گئی SQL فائلیں خودکار طور پر نہیں چلیں۔ انہیں چلانے کے لیے مالک کی واضح منظوری ضروری ہے۔
 
-## 2) Community / Social Feed تیار کریں
+## SQL چلانے کی درست ترتیب
 
-World Network کے Community حصے میں پوسٹ، Like، Comment اور Report کے لیے یہ الگ SQL ایک مرتبہ چلائیں:
+Supabase کے SQL Editor میں ہر فائل الگ کھولیں، مکمل متن Paste کریں اور Run کریں۔ اگلی فائل سے پہلے کامیابی کی تصدیق کریں۔
 
-1. [SK-CYBER-HUB-COMMUNITY.sql](./SK-CYBER-HUB-COMMUNITY.sql) کھولیں۔
-2. مکمل SQL کاپی کریں اور اسی SK Cyber Hub Supabase پروجیکٹ کے SQL Editor میں Run کریں۔
-3. یہ صرف `sk_posts`, `sk_post_likes`, `sk_post_comments`, `sk_post_reports` بناتا ہے۔ پرانے `apps` یا `profiles` ٹیبلز تبدیل نہیں ہوتے۔
-4. پوسٹ کرنے کے لیے Member Login ضروری ہے۔ عام ممبر کو Admin اختیارات نہیں ملتے۔ Report صرف Admin پڑھ سکتا ہے۔
+1. **`SK-CYBER-HUB-SETUP.sql`** — بنیادی `sk_profiles`، `sk_apps`، Auth trigger، RLS اور Admin check۔
+2. **`SK-CYBER-HUB-COMMUNITY.sql`** — پوسٹس، لائکس، تبصرے اور رپورٹس۔
+3. **`SK-UNIFIED-RESOURCES.sql`** — نیا unified resource catalog اور admin-only import-source approvals۔
+4. **`SK-MOD-APK-SAFETY-METADATA.sql`** — MOD APK کی معلوماتی safety fields اور الگ private admin notes۔ یہ پرانی draft notes کو محفوظ private table میں منتقل کرکے public column ہٹاتا ہے؛ اسی لیے پہلے backup ضروری ہے۔
+5. **`SK-MEMBER-SUGGESTIONS.sql`** — ممبرز کی تجاویز اور Admin review queue۔
 
-**نوٹ:** اس SQL کو چلائے بغیر Community feed کا ڈیزائن نظر آئے گا، لیکن پوسٹ/Like/Comment ڈیٹا محفوظ نہیں ہوگا۔
+تمام migrations ایک ہی **SK Cyber Hub Supabase project** میں چلائیں۔ انہیں پرانے Yousuf Kakar Free Apps backend میں نہ چلائیں۔
 
-## 2) صرف اپنے اکاؤنٹ کو Admin بنائیں
+## صرف مالک کو Admin بنانا
 
 1. Supabase میں **Authentication → Users** کھولیں۔
-2. اپنا مالک/ایڈمن اکاؤنٹ بنائیں یا پہلے سے موجود اپنا اکاؤنٹ استعمال کریں۔
-3. اپنے اکاؤنٹ کا **User ID / UUID** Copy کریں۔
-4. SQL Editor میں یہ کمانڈ چلائیں، اور placeholder کی جگہ اپنا UUID لکھیں:
+2. مالک کا اپنا اکاؤنٹ بنائیں یا موجودہ اکاؤنٹ منتخب کریں۔
+3. اسی اکاؤنٹ کا **User ID / UUID** کاپی کریں۔
+4. SQL Editor میں نیچے والی کمانڈ میں placeholder کی جگہ UUID رکھ کر چلائیں:
 
 ```sql
 UPDATE public.sk_profiles
@@ -34,32 +35,39 @@ SET role = 'admin'
 WHERE id = 'PASTE-OWNER-USER-UUID-HERE';
 ```
 
-5. نتیجے میں صرف ایک row update ہونی چاہیے۔ کسی دوسرے صارف کو Admin نہ بنائیں۔
+5. نتیجے میں صرف ایک row update ہونی چاہیے۔ پھر تصدیق کریں:
 
-نئے صارفین خودکار طور پر `member` بنتے ہیں۔ عام صارف اپنے آپ کو Admin نہیں بنا سکتا۔
+```sql
+SELECT id, email, role
+FROM public.sk_profiles
+WHERE role = 'admin';
+```
 
-## 3) ویب سائٹ کو Supabase سے جوڑیں
+بنیادی Setup میں ایک unique partial index ہے جو ایک وقت میں صرف **ایک Admin** کی اجازت دیتا ہے۔ نئے اکاؤنٹس خودکار طور پر `member` بنتے ہیں۔ Browser clients کو profiles پر INSERT/UPDATE/DELETE کی اجازت نہیں؛ عام ممبر خود کو Admin نہیں بنا سکتا۔ Admin role صرف ڈیٹابیس کے مالک کے SQL اختیار سے تبدیل کیا جا سکتا ہے۔
+
+## ویب سائٹ کو Supabase سے جوڑنا
 
 1. Supabase میں **Project Settings → API** کھولیں۔
-2. **Project URL** اور **anon / publishable public key** Copy کریں۔
-3. SK Cyber Hub ویب سائٹ کھولیں اور اوپر Admin/Settings والے بٹن سے Supabase settings کھولیں۔
-4. Project URL اور anon/public key درج کرکے Save کریں۔
-5. **service_role / secret key کبھی ویب سائٹ یا چیٹ میں نہ ڈالیں۔**
+2. Project URL اور anon/publishable public key کاپی کریں۔
+3. SK Cyber Hub میں Admin/Settings کے Supabase حصے میں یہ دونوں values درج کریں۔
+4. Save کریں اور Admin login آزمائیں۔
 
-## 3-A) نئے Catalog اور Suggestions / MOD APK اضافی ٹیبلز
+**کبھی بھی یہ چیزیں شیئر نہ کریں:** پاس ورڈ، service_role/secret key، recovery codes یا نجی API tokens۔
 
-بنیادی Setup SQL کامیابی سے چلانے کے بعد یہ الگ migrations ضرورت کے مطابق ایک ایک مرتبہ چلائیں:
+## اہم سکیورٹی حدود
 
-1. `SK-UNIFIED-RESOURCES.sql` — unified resource catalog اور import-source approvals۔
-2. `SK-MOD-APK-SAFETY-METADATA.sql` — موجودہ `sk_apps` میں صرف معلوماتی MOD APK safety fields۔
-3. `SK-MEMBER-SUGGESTIONS.sql` — ممبرز کی تجاویز اور Admin review queue۔
+- RLS ڈیٹابیس کی سطح پر لاگو ہے؛ صرف UI میں بٹن چھپانا سکیورٹی نہیں۔
+- Private community posts کے likes/comments عام عوام کو نظر نہیں آنے چاہییں؛ Admin اور متعلقہ پوسٹ کا مالک ہی private پوسٹ سے متعلق ڈیٹا دیکھ سکتے ہیں۔
+- Admin کی MOD APK review notes الگ private table میں محفوظ ہیں، public app record میں نہیں۔
+- Scan status صرف درج شدہ معلومات ہے؛ اس کا مطلب APK کے محفوظ ہونے کی ضمانت نہیں۔
+- Unified catalog ابھی schema foundation ہے؛ جب تک frontend integration اور حقیقی runtime tests مکمل نہ ہوں، اسے مکمل طور پر منسلک یا live نہ سمجھیں۔
+- ویب سائٹ کا موجودہ importer اگر `sk_apps` استعمال کرتا ہے تو catalog migration اکیلے اسے `sk_resources` پر منتقل نہیں کرتی۔
+- کوئی بھی external APK، software یا earning link شائع کرنے سے پہلے اصل publisher/source، HTTPS، terms، خطرات اور affiliate/sponsored disclosure چیک کریں۔
 
-یہ migrations خودکار طور پر نہیں چلتے۔ ہر فائل کو پہلے پڑھیں، پھر اسی SK Cyber Hub Supabase پروجیکٹ کے SQL Editor میں چلائیں۔ انہیں پرانے Yousuf Kakar Free Apps ڈیٹابیس میں نہ چلائیں۔ ان تبدیلیوں سے کوئی paid سروس یا Storage فعال نہیں ہوتی۔
+## خرچ اور فری سروسز
 
-## 4) Admin لاگ اِن اور جانچ
+یہ migrations خود کوئی paid plan، Storage، اشتہار، payout یا subscription فعال نہیں کرتیں۔ Supabase/GitHub کے free plan کی اپنی limits ہیں؛ حد ختم ہونے پر upgrade یا payment prompt آئے تو ادائیگی سے پہلے رک جائیں۔ کوئی paid upgrade خودکار طور پر منظور نہیں ہے۔
 
-اپنے Authentication والے ای میل اور پاس ورڈ سے Admin Login کریں۔ کامیاب ہونے کے بعد Admin Dashboard میں App شامل، تبدیل یا حذف کر کے دیکھیں۔
+## مسئلہ آئے تو
 
-اگر ٹیبل یا policy سے متعلق error آئے تو اس کا مکمل متن شیئر کریں؛ پاس ورڈ، secret key یا service_role key شیئر نہ کریں۔
-
-**خرچ:** اس طریقے میں نیا Supabase project یا paid plan درکار نہیں۔ موجودہ فری پروجیکٹ کے اندر الگ SK ٹیبلز استعمال ہوتے ہیں؛ Supabase کی فری حدود پھر بھی لاگو رہیں گی۔
+SQL error کا مکمل متن یا screenshot بھیجیں، لیکن password، secret key، service_role key یا UUID جیسی حساس معلومات عوامی طور پر شیئر نہ کریں۔ غلط project میں SQL چلانے کے بجائے فوراً رک جائیں۔
