@@ -46,6 +46,18 @@ Google AdSense prohibits artificially generated ad clicks/impressions and genera
 
 **Product implication:** never reward ad clicks, use forced misleading ad gates, or promise cash for installs/views. Keep ads clearly labelled and only integrate a network after approval and a policy review. Affiliate links must be disclosed. Member commissions should be credited only after a real partner commission is confirmed and settled.
 
+
+
+### What public community feedback says people dislike
+A sample of public Reddit discussions from 2025–2026 repeatedly complains about intrusive sign-up/newsletter popups, forced prompts before users can explore, excessive scrolling, icon-only controls without labels, slow or broken mobile experiences, and sites that prioritize ads over basic usability. These are individual community discussions, not a representative global survey, so treat them as qualitative signals rather than universal statistics.
+
+- https://www.reddit.com/r/webdev/comments/1s0l9x8/is_there_some_unwritten_law_now_that_every_single/
+- https://www.reddit.com/r/webdev/comments/1p908gw/why_is_the_web_essentially_shit_now/
+- https://www.reddit.com/r/webdev/comments/1nzljp5/whats_a_single_feature_on_a_modern_websites_that/
+- https://www.reddit.com/r/webdev/comments/1k6jpe9/is_it_just_me_or_do_so_many_sites_seem_outright/
+
+**Product implication:** let guests explore without a forced login; avoid full-screen popups and autoplay; use clear text labels with icons; keep pages short and scannable; make the first search box obvious; test all flows on a real Android phone; never hide core content behind an ad gate.
+
 ## 2. Proposed SK Cyber Hub experience
 
 1. **Home / Discover:** a compact hero, one obvious global search, popular categories, new and featured resources, and a small “Trending topics” strip.
