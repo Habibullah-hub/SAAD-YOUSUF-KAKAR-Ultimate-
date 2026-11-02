@@ -2715,6 +2715,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 detailsPanel.id = 'app-details-' + String(app.id || Math.random().toString(36).slice(2));
                 const detailsInner = document.createElement('div');
                 detailsInner.className = 'app-details-inner';
+                const isModApk = String(app.category || '').toLowerCase().includes('mod apk');
                 const detailTitle = document.createElement('strong');
                 detailTitle.textContent = 'About this resource';
                 const detailText = document.createElement('p');
@@ -2724,6 +2725,38 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 detailMeta.textContent = 'Category: ' + (app.category || 'App') + ' · Platform: ' + (app.platform || 'Android') + ' · Version: ' + (app.version || 'Not specified');
                 detailMeta.style.margin = '0';
                 detailsInner.append(detailTitle, detailText, detailMeta);
+                let modRiskAck = null;
+                if (isModApk) {
+                    const safety = document.createElement('section');
+                    safety.setAttribute('aria-label', 'MOD APK safety information');
+                    safety.style.cssText = 'margin-top:12px;padding:13px;border:1px solid #b7791f;border-radius:12px;background:#2b2113;color:#fff3d6';
+                    const safetyTitle = document.createElement('h4');
+                    safetyTitle.textContent = '⚠ MOD APK — read before installing';
+                    safetyTitle.style.cssText = 'margin:0 0 8px;color:#ffd27a;font-size:14px;font-weight:800';
+                    const definition = document.createElement('p');
+                    definition.textContent = 'A MOD APK is an Android app package changed by someone other than the original developer. It may add, remove or unlock features, but those changes are not automatically authorised or safe.';
+                    definition.style.cssText = 'margin:0 0 8px;font-size:12px;line-height:1.6';
+                    const purpose = document.createElement('p');
+                    purpose.textContent = 'What this app does: ' + (app.description || 'The listing does not yet contain enough verified information to explain its exact purpose. Check the original developer’s description before installing.');
+                    purpose.style.cssText = 'margin:0 0 8px;font-size:12px;line-height:1.6';
+                    const protect = document.createElement('p');
+                    protect.textContent = 'Google Play Protect warning: If Android shows a warning, it may have detected a known threat or that the app is unfamiliar/unverified. Do not ignore the warning or turn Play Protect off. Cancel installation if the warning says the app may be harmful, unless the developer and file have been independently verified.';
+                    protect.style.cssText = 'margin:0 0 8px;font-size:12px;line-height:1.6';
+                    const checks = document.createElement('ul');
+                    checks.style.cssText = 'margin:0 0 10px;padding-left:18px;font-size:12px;line-height:1.65';
+                    ['Prefer the original app from Google Play or the developer’s official site.','Check the publisher, file source, version and requested permissions.','Scan the APK with a reputable mobile security product; a clean scan is not a guarantee.','Avoid APKs asking for unrelated access such as SMS, Accessibility, contacts or device administration.','Never enter banking passwords, card details or one-time codes into an untrusted modified app.'].forEach(text => { const li=document.createElement('li'); li.textContent=text; checks.appendChild(li); });
+                    const status = document.createElement('p');
+                    status.textContent = 'SK Cyber Hub status: Third-party modified app. Unless a separate scan and source review are shown, this file is NOT independently verified by SK Cyber Hub. No “100% safe” guarantee is made.';
+                    status.style.cssText = 'margin:0 0 10px;padding:9px;border-radius:8px;background:#44251e;color:#ffd8c9;font-size:11px;line-height:1.55;font-weight:700';
+                    modRiskAck = document.createElement('label');
+                    modRiskAck.style.cssText = 'display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.5;color:#fff';
+                    const ack = document.createElement('input');
+                    ack.type = 'checkbox';
+                    ack.style.cssText = 'width:18px;height:18px;flex:none;margin-top:1px;accent-color:#fbbf24';
+                    modRiskAck.append(ack, document.createTextNode('I have read this warning and understand that installing a modified APK carries risk. This acknowledgement does not mean the file is safe.'));
+                    safety.append(safetyTitle, definition, purpose, protect, checks, status, modRiskAck);
+                    detailsInner.appendChild(safety);
+                }
                 detailsPanel.appendChild(detailsInner);
 
                 const actions = document.createElement('div');
@@ -2747,7 +2780,21 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 getLink.rel = 'noopener noreferrer';
                 if (validDownloadUrl) getLink.target = '_blank';
                 const getLabel = document.createElement('span');
-                getLabel.textContent = validDownloadUrl ? 'Get ↗' : 'Link unavailable';
+                getLabel.textContent = validDownloadUrl ? (isModApk ? 'Read warning first' : 'Get ↗') : 'Link unavailable';
+                if (isModApk) {
+                    getLink.addEventListener('click', event => {
+                        const checkbox = modRiskAck?.querySelector('input[type="checkbox"]');
+                        if (!checkbox?.checked) {
+                            event.preventDefault();
+                            detailsPanel.classList.add('is-open');
+                            details.setAttribute('aria-expanded','true');
+                            details.textContent = 'Hide details';
+                            modRiskAck?.scrollIntoView({behavior:'smooth',block:'center'});
+                            checkbox?.focus({preventScroll:true});
+                        }
+                    });
+                    getLink.title = 'Read and acknowledge the MOD APK safety warning before opening the third-party source.';
+                }
                 if (!validDownloadUrl) {
                     getLink.setAttribute('aria-disabled', 'true');
                     getLink.tabIndex = -1;
