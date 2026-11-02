@@ -9,7 +9,7 @@
 - Normal apps and MOD APK listings use the same direct external-link behavior.
 
 ## Admin metadata
-The optional metadata columns in `SK-MOD-APK-SAFETY-METADATA.sql` can record the original app URL, publisher, claimed modifications, permissions summary, scan provider, scan URL, scan date and admin notes. These fields are informational; they must not silently rewrite, hide or block the supplied link.
+The optional metadata columns in `SK-MOD-APK-SAFETY-METADATA.sql` can record the original app URL, publisher, claimed modifications, permissions summary, scan provider, scan URL and scan date. Private admin review notes are stored separately in an admin-only RLS-protected table, never in the public-readable app listing. These fields are informational; they must not silently rewrite, hide or block the supplied link.
 
 ## Limits
 - The one-click importer creates a domain-based title, favicon URL and short basic description. It does not scrape or verify the full webpage.
