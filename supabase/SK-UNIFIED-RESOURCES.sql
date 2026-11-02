@@ -103,6 +103,8 @@ begin
 end;
 $$;
 
+revoke all on function public.sk_resources_touch_updated_at() from public, anon, authenticated;
+
 drop trigger if exists sk_resources_updated_at on public.sk_resources;
 create trigger sk_resources_updated_at
 before update on public.sk_resources
