@@ -1002,6 +1002,17 @@ main#tab-home{padding-bottom:94px}
  #tab-admin .bulk-actions button{min-height:44px;white-space:normal}
 }
 
+
+/* Earning page mobile hierarchy: let the headline use the full available width */
+@media(max-width:760px){
+ #earnings-model>.section-head{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:9px!important}
+ #earnings-model>.section-head>div{width:100%!important;min-width:0!important}
+ #earnings-model>.section-head h2{max-width:none!important;width:100%!important}
+ #earnings-model>.section-head .section-count{align-self:flex-start!important;margin:0!important}
+ #earnings-model .sk-earn-intro{margin:12px 0!important;padding:15px!important}
+ #earnings-model .sk-earn-card{padding:15px!important}
+}
+
 </style>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
