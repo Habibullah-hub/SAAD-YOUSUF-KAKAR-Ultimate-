@@ -1074,6 +1074,70 @@ main#tab-home{padding-bottom:94px}
  #tab-admin #skGlobalAnalytics .admin-table{min-width:440px}
 }
 
+
+/* SK ADMIN — enforce consistent dark surfaces and high-contrast action buttons */
+#skCommunityModeration #skLoadReports,
+#skGlobalAnalytics #skAnalyticsRefresh,
+#tab-admin #bulkAppImporter .bulk-actions button,
+#tab-admin .manager button,
+#tab-admin button.secondary{
+ background:linear-gradient(135deg,#54e0d0,#54bfe8)!important;
+ color:#071a2b!important;
+ border:1px solid #73eee0!important;
+ font-weight:800!important;
+ box-shadow:0 5px 16px #02081745!important;
+}
+#skCommunityModeration #skLoadReports:hover,
+#skGlobalAnalytics #skAnalyticsRefresh:hover,
+#tab-admin button.secondary:hover{
+ filter:brightness(1.08);
+}
+#skCommunityModeration #skModerationStatus,
+#skGlobalAnalytics #skAnalyticsStatus{
+ background:#10243a!important;
+ background-image:none!important;
+ color:#f1f7ff!important;
+ border:1px solid #496985!important;
+ opacity:1!important;
+}
+#skCommunityModeration #skModerationStatus *,
+#skGlobalAnalytics #skAnalyticsStatus *{color:#f1f7ff!important}
+#skGlobalAnalytics h3{color:#f4f8ff!important;text-shadow:none!important}
+#skGlobalAnalytics .section-head p{color:#c5d4e7!important}
+#skGlobalAnalytics #skAnalyticsSummary{
+ display:grid!important;
+ grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ gap:10px!important;
+}
+#skGlobalAnalytics #skAnalyticsSummary>*{
+ min-width:0!important;
+ background:#132b45!important;
+ background-image:none!important;
+ color:#f3f8ff!important;
+ border:1px solid #42617f!important;
+ border-radius:13px!important;
+ box-shadow:0 8px 18px #02081735!important;
+}
+#skGlobalAnalytics #skAnalyticsSummary *{color:#f3f8ff!important}
+#skGlobalAnalytics .admin-table th{
+ background:#193b58!important;color:#8ef0df!important;
+}
+#skGlobalAnalytics .admin-table td{
+ background:#10243a!important;color:#e6f0fc!important;
+}
+#skGlobalAnalytics .table-wrap{overflow-x:auto}
+@media(max-width:600px){
+ #skCommunityModeration #skLoadReports,
+ #skGlobalAnalytics #skAnalyticsRefresh{
+  min-height:48px!important;padding:10px 14px!important;
+  white-space:normal!important;max-width:145px!important;
+ }
+ #skGlobalAnalytics #skAnalyticsSummary{
+  grid-template-columns:1fr!important;
+ }
+ #skGlobalAnalytics #skAnalyticsSummary>*{padding:15px!important}
+}
+
 </style>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
