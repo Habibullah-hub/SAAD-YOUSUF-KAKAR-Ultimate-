@@ -56,7 +56,7 @@ create table if not exists public.sk_import_sources (
   allow_metadata_import boolean not null default false,
   allow_direct_download boolean not null default false,
   review_status text not null default 'unverified'
-    check (review_status in ('unverified','approved','blocked')),
+    check (review_status in ('unverified','approved')),
   admin_notes text check (char_length(admin_notes) <= 1000),
   reviewed_at timestamptz,
   created_at timestamptz not null default now(),
@@ -123,7 +123,7 @@ commit;
 -- * Only admins may manage resources and import-source approvals.
 -- * New accounts remain members under the existing auth trigger.
 -- * Public users can read published resources only.
--- * Import-source approvals are off by default; never fetch arbitrary URLs. This does not block owner-entered links.
+-- * Import-source approvals are off by default; never fetch arbitrary URLs. No blocked status is used to disable owner-entered links.
 -- * Direct links supplied by the owner are not automatically disabled by scan/review status; use HTTPS and keep source attribution.
 -- * Never proxy arbitrary URLs or auto-follow redirects without SSRF protections.
 -- * Never put service_role/secret keys in browser code or an APK.
