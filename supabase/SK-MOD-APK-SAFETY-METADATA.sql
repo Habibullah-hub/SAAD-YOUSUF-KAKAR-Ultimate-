@@ -53,4 +53,4 @@ commit;
 
 -- RLS policies from the original SK setup continue to control access.
 -- Do not grant members permission to set safety metadata.
--- A detection_reported listing is hidden from the download action in the website UI.
+-- A scan status is informational metadata only; it must not automatically hide or disable the owner-supplied external link.
