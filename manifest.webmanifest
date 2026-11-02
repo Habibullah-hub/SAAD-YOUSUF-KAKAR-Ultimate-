@@ -1,0 +1,24 @@
+{
+  "id": "./",
+  "name": "Saad Yousuf Kakar Ultimate | SK Cyber Hub",
+  "short_name": "SK Cyber Hub",
+  "description": "A global digital hub for apps, AI tools, learning, software, creator resources and community.",
+  "lang": "en",
+  "dir": "auto",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#0b1425",
+  "theme_color": "#0b1425",
+  "categories": ["productivity", "education", "utilities"],
+  "icons": [
+    {
+      "src": "./icons/sk-cyber-hub.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
