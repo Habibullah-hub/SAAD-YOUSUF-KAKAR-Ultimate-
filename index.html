@@ -1902,7 +1902,8 @@ function runSearch(){
   const section=grid.closest('section');
   const countLabel=section.querySelector('.section-count');
   if(countLabel)countLabel.textContent=gridMatches+' '+(gridMatches===1?'item':'items');
-  section.classList.toggle('hidden',!!q&&gridMatches===0&&(!placeholder||placeholder.classList.contains('hidden')));
+  // Keep the dedicated Global Search workspace available while the header search filters directory sections.
+  if(section.id!=='global-search')section.classList.toggle('hidden',!!q&&gridMatches===0&&(!placeholder||placeholder.classList.contains('hidden')));
  });
  const categoryMatches=categoryLinks.filter(a=>!a.classList.contains('hidden')).length;
  const total=matched+categoryMatches;
