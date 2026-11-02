@@ -1965,7 +1965,22 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
                 <input type="url" id="appIcon" required placeholder="Icon URL" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-white">
                 <input type="url" id="appLink" required placeholder="Download URL" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-white">
                 <textarea id="appDesc" rows="2" required placeholder="Description..." class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-white"></textarea>
-                <label class="flex items-center space-x-2 text-slate-300">
+                <section id="modSafetyAdminFields" class="hidden rounded-xl border border-amber-500/40 bg-amber-950/20 p-3 space-y-2" aria-label="MOD APK safety review fields">
+<strong class="block text-amber-200">MOD APK — معلومات اور حفاظتی جانچ</strong>
+<p class="text-amber-100/80">صرف تصدیق شدہ معلومات درج کریں۔ نامعلوم چیز کے لیے نامعلوم لکھیں۔</p>
+<input type="url" id="appOriginalUrl" placeholder="Original app / developer URL (https://…)" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white">
+<input type="text" id="appPublisher" maxlength="160" placeholder="Original publisher / developer name" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white">
+<textarea id="appModifications" rows="2" maxlength="1200" placeholder="MOD میں کیا تبدیلیاں بتائی گئی ہیں؟" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white"></textarea>
+<textarea id="appPermissions" rows="2" maxlength="1200" placeholder="اہم Android permissions (اگر معلوم ہوں)" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white"></textarea>
+<label class="block text-amber-100" for="appScanStatus">Security scan result</label>
+<select id="appScanStatus" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white"><option value="not_scanned">Not scanned / not checked</option><option value="unknown">Unknown / inconclusive</option><option value="no_detection_reported">No detection reported (not a safety guarantee)</option><option value="detection_reported">Detection reported — do not distribute</option></select>
+<input type="text" id="appScanProvider" maxlength="120" placeholder="Scan provider" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white">
+<input type="url" id="appScanUrl" placeholder="Scan report URL (https://…)" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white">
+<input type="date" id="appScanDate" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white">
+<textarea id="appSafetyNotes" rows="2" maxlength="1200" placeholder="Admin safety review notes" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white"></textarea>
+<p class="text-xs text-amber-100">نقصان دہ چیز detect ہو تو شائع نہ کریں۔ صاف اسکین بھی 100% محفوظ ہونے کی ضمانت نہیں۔</p>
+</section>
+<label class="flex items-center space-x-2 text-slate-300">
                     <input type="checkbox" id="appFeatured">
                     <span>Mark as Featured</span>
                 </label>
@@ -2912,9 +2927,13 @@ document.getElementById('clearResource').addEventListener('click',()=>{
             document.getElementById('appLink').value = app ? app.download_url : '';
             document.getElementById('appDesc').value = app ? app.description : '';
             document.getElementById('appFeatured').checked = app ? app.featured : false;
+            const safetyIds = {appOriginalUrl:'original_app_url',appPublisher:'publisher_name',appModifications:'modifications_summary',appPermissions:'requested_permissions_summary',appScanStatus:'security_scan_status',appScanProvider:'security_scan_provider',appScanUrl:'security_scan_url',appScanDate:'security_scan_checked_at',appSafetyNotes:'safety_review_notes'};
+            Object.entries(safetyIds).forEach(([elementId,field])=>{const el=document.getElementById(elementId);if(el)el.value=app?(app[field]||''):(field==='security_scan_status'?'not_scanned':'');});
+            document.getElementById('modSafetyAdminFields')?.classList.toggle('hidden',document.getElementById('appCat').value!=='All Apps Mod APK');
             document.getElementById('appModal').classList.remove('hidden');
         }
         function closeAppModal() { document.getElementById('appModal').classList.add('hidden'); }
+        document.getElementById('appCat')?.addEventListener('change',event=>document.getElementById('modSafetyAdminFields')?.classList.toggle('hidden',event.target.value!=='All Apps Mod APK'));
 
         async function saveSupabaseConfig(e) {
             e.preventDefault();
@@ -3109,8 +3128,17 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 icon_url: iconUrl,
                 download_url: downloadUrl,
                 description: document.getElementById('appDesc').value.trim(),
+                original_app_url: document.getElementById('appOriginalUrl').value.trim() || null,
+                publisher_name: document.getElementById('appPublisher').value.trim() || null,
+                modifications_summary: document.getElementById('appModifications').value.trim() || null,
+                requested_permissions_summary: document.getElementById('appPermissions').value.trim() || null,
+                security_scan_status: document.getElementById('appScanStatus').value,
+                security_scan_provider: document.getElementById('appScanProvider').value.trim() || null,
+                security_scan_url: document.getElementById('appScanUrl').value.trim() || null,
+                security_scan_checked_at: document.getElementById('appScanDate').value || null,
+                safety_review_notes: document.getElementById('appSafetyNotes').value.trim() || null,
                 featured: document.getElementById('appFeatured').checked,
-                published: true
+                published: document.getElementById('appScanStatus').value !== 'detection_reported'
             };
             const res = id ? await supabaseClient.from('sk_apps').update(data).eq('id', id) : await supabaseClient.from('sk_apps').insert([data]);
             if (res.error) alert(res.error.message);
