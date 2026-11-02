@@ -33,6 +33,30 @@ if (/\beval\s*\(|\bnew\s+Function\s*\(/.test(html)) {
   errors.push("Dynamic code execution (eval / new Function) was found in index.html.");
 }
 
+
+const manifestPath = "manifest.webmanifest";
+const workerPath = "sw.js";
+if (!fs.existsSync(manifestPath)) errors.push("PWA manifest is missing.");
+else {
+  try {
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+    if (!manifest.name || !manifest.start_url || !manifest.scope || manifest.display !== "standalone") {
+      errors.push("PWA manifest is missing required install metadata.");
+    }
+    if (!Array.isArray(manifest.icons) || manifest.icons.length === 0) errors.push("PWA manifest has no app icon.");
+  } catch (error) {
+    errors.push("PWA manifest is not valid JSON.");
+  }
+}
+if (!fs.existsSync(workerPath)) errors.push("PWA service worker is missing.");
+else {
+  const worker = spawnSync(process.execPath, ["--check", workerPath], { encoding: "utf8" });
+  if (worker.status !== 0) errors.push(`Service worker has a JavaScript syntax error:\n${worker.stderr || worker.stdout}`);
+}
+if (!html.includes('rel="manifest"') || !html.includes("serviceWorker.register")) {
+  errors.push("index.html is missing the PWA manifest or service-worker registration.");
+}
+
 if (errors.length) {
   console.error(errors.join("\n\n"));
   process.exit(1);
