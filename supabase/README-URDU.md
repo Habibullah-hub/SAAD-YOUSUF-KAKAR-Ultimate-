@@ -64,6 +64,15 @@ WHERE role = 'admin';
 - ویب سائٹ کا موجودہ importer اگر `sk_apps` استعمال کرتا ہے تو catalog migration اکیلے اسے `sk_resources` پر منتقل نہیں کرتی۔
 - کوئی بھی external APK، software یا earning link شائع کرنے سے پہلے اصل publisher/source، HTTPS، terms، خطرات اور affiliate/sponsored disclosure چیک کریں۔
 
+
+## ویب سائٹ کو موبائل ایپ کی طرح انسٹال کرنا (PWA)
+
+- اس برانچ میں manifest.webmanifest، ایپ آئیکن اور sw.js شامل ہیں۔ HTTPS پر ویب سائٹ کھلنے کے بعد براؤزر دستیاب ہونے پر Service Worker رجسٹر کرے گا۔
+- Android پر Chrome میں ویب سائٹ کھولیں، براؤزر کے مینو میں **Install app** یا **Add to Home screen** آئے تو اسے منتخب کریں۔ یہ آپشن براؤزر/ڈیوائس کے مطابق مختلف ہوسکتا ہے۔
+- Offline cache صرف بنیادی ویب صفحہ محفوظ کرتا ہے۔ Supabase ڈیٹابیس، لاگ اِن، تازہ خبریں، ویڈیوز اور بیرونی لنکس انٹرنیٹ کے بغیر کام کرنے کی ضمانت نہیں رکھتے۔
+- Service Worker بیرونی API، ممبر ڈیٹا یا نجی معلومات کو cache نہیں کرتا۔ اسے Native Android APK نہ سمجھیں؛ یہ انسٹال ہونے والی ویب ایپ ہے۔
+- GitHub Pages پر نئی فائلیں اسی وقت صارفین کو ملیں گی جب یہ برانچ منظور ہوکر main میں شامل ہو اور Pages deployment کامیاب ہو۔
+
 ## خرچ اور فری سروسز
 
 یہ migrations خود کوئی paid plan، Storage، اشتہار، payout یا subscription فعال نہیں کرتیں۔ Supabase/GitHub کے free plan کی اپنی limits ہیں؛ حد ختم ہونے پر upgrade یا payment prompt آئے تو ادائیگی سے پہلے رک جائیں۔ کوئی paid upgrade خودکار طور پر منظور نہیں ہے۔
