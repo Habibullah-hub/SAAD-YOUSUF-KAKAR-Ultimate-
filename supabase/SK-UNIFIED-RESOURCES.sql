@@ -25,7 +25,7 @@ create table if not exists public.sk_resources (
     check (download_mode in ('direct_file','official_page','external_page')),
   source_domain text check (source_domain is null or source_domain ~* '^[a-z0-9.-]+$'),
   source_review_status text not null default 'unverified'
-    check (source_review_status in ('unverified','reviewed','blocked')),
+    check (source_review_status in ('unverified','reviewed')),
   icon_url text check (icon_url is null or icon_url ~* '^https://'),
   country_availability text not null default 'Global' check (char_length(country_availability) <= 120),
   featured boolean not null default false,
@@ -38,10 +38,6 @@ create table if not exists public.sk_resources (
   updated_at timestamptz not null default now(),
   constraint sk_resources_affiliate_disclosure_required
     check (not is_affiliate or char_length(trim(coalesce(affiliate_disclosure,''))) between 8 and 300),
-  constraint sk_resources_direct_download_requires_review
-    check (download_mode <> 'direct_file' or (download_url is not null and source_domain is not null and source_review_status = 'reviewed')),
-  constraint sk_resources_blocked_not_published
-    check (source_review_status <> 'blocked' or published = false)
 );
 
 create index if not exists sk_resources_public_catalog_idx
@@ -127,7 +123,7 @@ commit;
 -- * Only admins may manage resources and import-source approvals.
 -- * New accounts remain members under the existing auth trigger.
 -- * Public users can read published resources only.
--- * Import-source approvals are off by default; never fetch arbitrary URLs.
--- * Direct download is only for a verified direct-file URL from an approved source.
+-- * Import-source approvals are off by default; never fetch arbitrary URLs. This does not block owner-entered links.
+-- * Direct links supplied by the owner are not automatically disabled by scan/review status; use HTTPS and keep source attribution.
 -- * Never proxy arbitrary URLs or auto-follow redirects without SSRF protections.
 -- * Never put service_role/secret keys in browser code or an APK.
