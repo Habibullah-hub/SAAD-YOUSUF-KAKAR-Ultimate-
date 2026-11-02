@@ -2740,8 +2740,14 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                     purpose.textContent = 'What this app does: ' + (app.description || 'The listing does not yet contain enough verified information to explain its exact purpose. Check the original developer’s description before installing.');
                     purpose.style.cssText = 'margin:0 0 8px;font-size:12px;line-height:1.6';
                     const protect = document.createElement('p');
-                    protect.textContent = 'Google Play Protect warning: If Android shows a warning, it may have detected a known threat or that the app is unfamiliar/unverified. Do not ignore the warning or turn Play Protect off. Cancel installation if the warning says the app may be harmful, unless the developer and file have been independently verified.';
+                    protect.textContent = 'Google Play Protect warnings are not all identical: “App scan recommended” or “Play Protect has not seen this app before” means the app is unfamiliar and should be scanned; it is not the same message as a confirmed harmful-app detection. “Harmful app blocked” means Google identified the app as potentially harmful. “App blocked to protect your device” can also relate to sensitive permissions used by apps installed from internet sources. If it says harmful or blocks the app, do not proceed. Never turn Play Protect off or bypass the warning.';
                     protect.style.cssText = 'margin:0 0 8px;font-size:12px;line-height:1.6';
+                    const protectHelp = document.createElement('a');
+                    protectHelp.href = 'https://support.google.com/googleplay/answer/2812853';
+                    protectHelp.target = '_blank';
+                    protectHelp.rel = 'noopener noreferrer';
+                    protectHelp.textContent = 'Read Google’s official Play Protect safety guide ↗';
+                    protectHelp.style.cssText = 'display:inline-block;margin:0 0 10px;color:#8ee7ff;font-size:12px;font-weight:800;text-decoration:underline';
                     const checks = document.createElement('ul');
                     checks.style.cssText = 'margin:0 0 10px;padding-left:18px;font-size:12px;line-height:1.65';
                     ['Prefer the original app from Google Play or the developer’s official site.','Check the publisher, file source, version and requested permissions.','Scan the APK with a reputable mobile security product; a clean scan is not a guarantee.','Avoid APKs asking for unrelated access such as SMS, Accessibility, contacts or device administration.','Never enter banking passwords, card details or one-time codes into an untrusted modified app.'].forEach(text => { const li=document.createElement('li'); li.textContent=text; checks.appendChild(li); });
@@ -2754,7 +2760,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                     ack.type = 'checkbox';
                     ack.style.cssText = 'width:18px;height:18px;flex:none;margin-top:1px;accent-color:#fbbf24';
                     modRiskAck.append(ack, document.createTextNode('I have read this warning and understand that installing a modified APK carries risk. This acknowledgement does not mean the file is safe.'));
-                    safety.append(safetyTitle, definition, purpose, protect, checks, status, modRiskAck);
+                    safety.append(safetyTitle, definition, purpose, protect, protectHelp, checks, status, modRiskAck);
                     detailsInner.appendChild(safety);
                 }
                 detailsPanel.appendChild(detailsInner);
