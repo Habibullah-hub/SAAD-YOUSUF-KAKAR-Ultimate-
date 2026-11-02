@@ -37,7 +37,7 @@ create table if not exists public.sk_resources (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint sk_resources_affiliate_disclosure_required
-    check (not is_affiliate or char_length(trim(coalesce(affiliate_disclosure,''))) between 8 and 300),
+    check (not is_affiliate or char_length(trim(coalesce(affiliate_disclosure,''))) between 8 and 300)
 );
 
 create index if not exists sk_resources_public_catalog_idx
