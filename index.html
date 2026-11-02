@@ -1983,7 +1983,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 <input type="text" id="appScanProvider" maxlength="120" placeholder="Scan provider" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white">
 <input type="url" id="appScanUrl" placeholder="Scan report URL (https://…)" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white">
 <input type="date" id="appScanDate" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white">
-<textarea id="appSafetyNotes" rows="2" maxlength="1200" placeholder="Admin safety review notes" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white"></textarea>
+<textarea id="appSafetyNotes" rows="2" maxlength="1200" placeholder="Private admin safety review notes (admin only)" class="w-full px-3 py-2 bg-[#021812] border border-amber-900 rounded-xl text-white"></textarea>
 <p class="text-xs text-amber-100">نقصان دہ چیز detect ہو تو شائع نہ کریں۔ صاف اسکین بھی 100% محفوظ ہونے کی ضمانت نہیں۔</p>
 </section>
 <label class="flex items-center space-x-2 text-slate-300">
@@ -2871,7 +2871,7 @@ if (!validDownloadUrl) {
         function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
         function openSupabaseModal() { document.getElementById('sbUrl').value = localStorage.getItem('skcyberhub_supabase_url') || ''; document.getElementById('sbKey').value = localStorage.getItem('skcyberhub_supabase_anon_key') || ''; document.getElementById('supabaseModal').classList.remove('hidden'); }
         function closeSupabaseModal() { document.getElementById('supabaseModal').classList.add('hidden'); }
-        function openAppModal(app=null) {
+        async function openAppModal(app=null) {
             document.getElementById('appModalTitle').innerText = app ? 'Edit App' : 'Add App';
             document.getElementById('appId').value = app ? app.id : '';
             document.getElementById('appName').value = app ? app.name : '';
@@ -2882,8 +2882,10 @@ if (!validDownloadUrl) {
             document.getElementById('appLink').value = app ? app.download_url : '';
             document.getElementById('appDesc').value = app ? app.description : '';
             document.getElementById('appFeatured').checked = app ? app.featured : false;
-            const safetyIds = {appOriginalUrl:'original_app_url',appPublisher:'publisher_name',appModifications:'modifications_summary',appPermissions:'requested_permissions_summary',appScanStatus:'security_scan_status',appScanProvider:'security_scan_provider',appScanUrl:'security_scan_url',appScanDate:'security_scan_checked_at',appSafetyNotes:'safety_review_notes'};
+            const safetyIds = {appOriginalUrl:'original_app_url',appPublisher:'publisher_name',appModifications:'modifications_summary',appPermissions:'requested_permissions_summary',appScanStatus:'security_scan_status',appScanProvider:'security_scan_provider',appScanUrl:'security_scan_url',appScanDate:'security_scan_checked_at'};
             Object.entries(safetyIds).forEach(([elementId,field])=>{const el=document.getElementById(elementId);if(el)el.value=app?(app[field]||''):(field==='security_scan_status'?'not_scanned':'');});
+            const privateNotes=document.getElementById('appSafetyNotes');if(privateNotes)privateNotes.value='';
+            if(app&&supabaseClient){const noteResult=await supabaseClient.from('sk_app_safety_admin_notes').select('notes').eq('app_id',app.id).maybeSingle();if(!noteResult.error&&privateNotes)privateNotes.value=noteResult.data?.notes||'';}
             document.getElementById('modSafetyAdminFields')?.classList.toggle('hidden',document.getElementById('appCat').value!=='All Apps Mod APK');
             document.getElementById('appModal').classList.remove('hidden');
         }
@@ -3136,13 +3138,17 @@ if (!validDownloadUrl) {
                 security_scan_provider: document.getElementById('appScanProvider').value.trim() || null,
                 security_scan_url: document.getElementById('appScanUrl').value.trim() || null,
                 security_scan_checked_at: document.getElementById('appScanDate').value || null,
-                safety_review_notes: document.getElementById('appSafetyNotes').value.trim() || null,
                 featured: document.getElementById('appFeatured').checked,
                 published: true
             };
-            const res = id ? await supabaseClient.from('sk_apps').update(data).eq('id', id) : await supabaseClient.from('sk_apps').insert([data]);
-            if (res.error) alert(res.error.message);
-            else { closeAppModal(); fetchApps(); }
+            const res = id ? await supabaseClient.from('sk_apps').update(data).eq('id', id).select('id').single() : await supabaseClient.from('sk_apps').insert([data]).select('id').single();
+            if (res.error) { alert(res.error.message); return; }
+            const savedId=res.data?.id||id, privateNotes=document.getElementById('appSafetyNotes').value.trim();
+            const noteResult=privateNotes
+              ? await supabaseClient.from('sk_app_safety_admin_notes').upsert({app_id:savedId,notes:privateNotes},{onConflict:'app_id'})
+              : await supabaseClient.from('sk_app_safety_admin_notes').delete().eq('app_id',savedId);
+            if (noteResult.error) { alert('App saved, but private admin notes were not saved: '+noteResult.error.message); return; }
+            closeAppModal(); fetchApps();
         }
 
         function editApp(id) { openAppModal(appsList.find(a => a.id === id)); }
