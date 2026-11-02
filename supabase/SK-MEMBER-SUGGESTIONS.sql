@@ -10,7 +10,7 @@ create table if not exists public.sk_user_suggestions (
   kind text not null default 'Other'
     check (kind in ('App / Website','AI Tool','Software / Document','News','Sponsored offer','Other')),
   title text not null check (char_length(title) between 1 and 120),
-  url text,
+  url text check (url is null or url ~* '^https?://'),
   details text check (details is null or char_length(details) <= 1000),
   status text not null default 'pending'
     check (status in ('pending','approved','rejected')),
