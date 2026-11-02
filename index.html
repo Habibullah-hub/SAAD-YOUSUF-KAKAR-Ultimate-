@@ -1942,7 +1942,13 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
             <h3 id="appModalTitle" class="text-lg font-bold text-white">Add App</h3>
             <form onsubmit="handleAppSubmit(event)" class="space-y-3 text-xs">
                 <input type="hidden" id="appId">
-                <input type="text" id="appName" required placeholder="App Name" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-white">
+                <div class="rounded-xl border border-emerald-700/50 bg-emerald-950/20 p-3 space-y-2">
+ <label for="appQuickLink" class="block text-emerald-200 font-bold">⚡ One-click Add — صرف لنک پیسٹ کریں</label>
+ <input type="url" id="appQuickLink" placeholder="https:// website / download link" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-white">
+ <button type="button" onclick="quickAddAppFromLink()" class="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold">Paste Link & Add Now</button>
+ <p id="appQuickStatus" class="text-xs text-emerald-200" aria-live="polite">نام، آئیکن اور بنیادی تفصیل خود تیار ہوگی۔ آپ بعد میں انہیں تبدیل کر سکتے ہیں۔</p>
+</div>
+<input type="text" id="appName" required placeholder="App Name" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-white">
                 <div class="grid grid-cols-2 gap-2">
                     <select id="appCat" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-white">
                         <option value="Apps">Apps</option>
@@ -2820,27 +2826,13 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 });
                 const getLink = document.createElement('a');
                 getLink.className = 'flex-1 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs text-center flex items-center justify-center space-x-1 shadow-md shadow-emerald-500/20';
-                const validDownloadUrl = app.security_scan_status !== 'detection_reported' && safeHttpUrl(app.download_url);
+                const validDownloadUrl = safeHttpUrl(app.download_url);
                 getLink.href = validDownloadUrl || '#';
                 getLink.rel = 'noopener noreferrer';
                 if (validDownloadUrl) getLink.target = '_blank';
                 const getLabel = document.createElement('span');
-                getLabel.textContent = validDownloadUrl ? (isModApk ? 'Read warning first' : 'Get ↗') : 'Link unavailable';
-                if (isModApk) {
-                    getLink.addEventListener('click', event => {
-                        const checkbox = modRiskAck?.querySelector('input[type="checkbox"]');
-                        if (!checkbox?.checked) {
-                            event.preventDefault();
-                            detailsPanel.classList.add('is-open');
-                            details.setAttribute('aria-expanded','true');
-                            details.textContent = 'Hide details';
-                            modRiskAck?.scrollIntoView({behavior:'smooth',block:'center'});
-                            checkbox?.focus({preventScroll:true});
-                        }
-                    });
-                    getLink.title = 'Read and acknowledge the MOD APK safety warning before opening the third-party source.';
-                }
-                if (!validDownloadUrl) {
+                getLabel.textContent = validDownloadUrl ? 'Get ↗' : 'Link unavailable';
+if (!validDownloadUrl) {
                     getLink.setAttribute('aria-disabled', 'true');
                     getLink.tabIndex = -1;
                     getLink.classList.add('opacity-50', 'cursor-not-allowed');
@@ -3125,6 +3117,52 @@ document.getElementById('clearResource').addEventListener('click',()=>{
             location.reload();
         }
 
+        async function quickAddAppFromLink() {
+            const input = document.getElementById('appQuickLink');
+            const status = document.getElementById('appQuickStatus');
+            const button = input?.parentElement?.querySelector('button');
+            const raw = (input?.value || '').trim();
+            let parsed;
+            try { parsed = new URL(raw); } catch (_) {
+                if (status) status.textContent = 'درست مکمل لنک پیسٹ کریں۔';
+                return;
+            }
+            if (!['https:','http:'].includes(parsed.protocol)) {
+                if (status) status.textContent = 'صرف http یا https لنک استعمال کریں۔';
+                return;
+            }
+            if (!supabaseClient || !currentUser) {
+                if (status) status.textContent = 'پہلے ایڈمن لاگ اِن اور ڈیٹابیس کنکشن ضروری ہے۔';
+                return;
+            }
+            const host = parsed.hostname.replace(/^www\./i,'');
+            const words = host.split('.')[0].replace(/[-_]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+            const name = words || host;
+            const icon = 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host) + '&sz=128';
+            const category = document.getElementById('appCat')?.value || 'Apps';
+            const platform = document.getElementById('appPlatform')?.value || 'Android';
+            const payload = {
+                name, category, platform, version: 'Latest', icon_url: icon,
+                download_url: parsed.href,
+                description: 'Open ' + host + ' to view or download this resource.',
+                featured: false, published: true,
+                security_scan_status: 'not_scanned'
+            };
+            if (button) { button.disabled = true; button.textContent = 'Adding…'; }
+            if (status) status.textContent = 'لنک ڈیٹابیس میں شامل کیا جا رہا ہے…';
+            try {
+                const result = await supabaseClient.from('sk_apps').insert([payload]);
+                if (result.error) throw result.error;
+                if (status) status.textContent = 'کامیابی! ' + name + ' شامل ہو گیا۔';
+                input.value = '';
+                await fetchApps();
+            } catch (error) {
+                if (status) status.textContent = 'شامل نہیں ہو سکا: ' + (error.message || 'Database error');
+            } finally {
+                if (button) { button.disabled = false; button.textContent = 'Paste Link & Add Now'; }
+            }
+        }
+
         async function handleAppSubmit(e) {
             e.preventDefault();
             if (!supabaseClient) return alert('Configure the SK Cyber Hub Supabase project first.');
@@ -3162,7 +3200,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 security_scan_checked_at: document.getElementById('appScanDate').value || null,
                 safety_review_notes: document.getElementById('appSafetyNotes').value.trim() || null,
                 featured: document.getElementById('appFeatured').checked,
-                published: document.getElementById('appScanStatus').value !== 'detection_reported'
+                published: true
             };
             const res = id ? await supabaseClient.from('sk_apps').update(data).eq('id', id) : await supabaseClient.from('sk_apps').insert([data]);
             if (res.error) alert(res.error.message);
