@@ -2798,7 +2798,8 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                     ack.type = 'checkbox';
                     ack.style.cssText = 'width:18px;height:18px;flex:none;margin-top:1px;accent-color:#fbbf24';
                     modRiskAck.append(ack, document.createTextNode('I have read this warning and understand that installing a modified APK carries risk. This acknowledgement does not mean the file is safe.'));
-                    safety.prepend(safetyTitle, definition, purpose);\n                    safety.append(protect, protectHelp, checks, status, modRiskAck);
+                    safety.prepend(safetyTitle, definition, purpose);
+                    safety.append(protect, protectHelp, checks, status, modRiskAck);
                     detailsInner.appendChild(safety);
                 }
                 detailsPanel.appendChild(detailsInner);
