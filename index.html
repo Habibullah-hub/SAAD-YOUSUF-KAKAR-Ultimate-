@@ -2746,68 +2746,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 detailMeta.textContent = 'Category: ' + (app.category || 'App') + ' · Platform: ' + (app.platform || 'Android') + ' · Version: ' + (app.version || 'Not specified');
                 detailMeta.style.margin = '0';
                 detailsInner.append(detailTitle, detailText, detailMeta);
-                let modRiskAck = null;
-                if (isModApk) {
-                    const safety = document.createElement('section');
-                    safety.setAttribute('aria-label', 'MOD APK safety information');
-                    safety.style.cssText = 'margin-top:12px;padding:13px;border:1px solid #b7791f;border-radius:12px;background:#2b2113;color:#fff3d6';
-                    const safetyTitle = document.createElement('h4');
-                    safetyTitle.textContent = '⚠ MOD APK — read before installing';
-                    safetyTitle.style.cssText = 'margin:0 0 8px;color:#ffd27a;font-size:14px;font-weight:800';
-                    const definition = document.createElement('p');
-                    definition.textContent = 'A MOD APK is an Android app package changed by someone other than the original developer. It may add, remove or unlock features, but those changes are not automatically authorised or safe.';
-                    definition.style.cssText = 'margin:0 0 8px;font-size:12px;line-height:1.6';
-                    const purpose = document.createElement('p');
-                    purpose.textContent = 'What this app does: ' + (app.description || 'The listing does not yet contain enough verified information to explain its exact purpose. Check the original developer’s description before installing.');
-                    purpose.style.cssText = 'margin:0 0 8px;font-size:12px;line-height:1.6';
-                    const addSafetyFact = (label,value) => {
-                        if (!value) return;
-                        const line = document.createElement('p');
-                        line.style.cssText = 'margin:0 0 7px;font-size:12px;line-height:1.55';
-                        const strong = document.createElement('strong');
-                        strong.textContent = label + ': ';
-                        line.append(strong, document.createTextNode(String(value)));
-                        safety.appendChild(line);
-                    };
-                    addSafetyFact('Original publisher', app.publisher_name || '');
-                    addSafetyFact('Original app / developer page', app.original_app_url || '');
-                    addSafetyFact('Claimed MOD changes', app.modifications_summary || '');
-                    addSafetyFact('Permissions information', app.requested_permissions_summary || '');
-                    const scanLabels = {not_scanned:'Not scanned / not checked',unknown:'Unknown or inconclusive',no_detection_reported:'No detection reported — not a guarantee',detection_reported:'Detection reported — do not install'};
-                    addSafetyFact('Security scan status', scanLabels[app.security_scan_status || 'not_scanned']);
-                    if (app.security_scan_provider) addSafetyFact('Scan provider', app.security_scan_provider);
-                    if (app.security_scan_checked_at) addSafetyFact('Scan checked date', app.security_scan_checked_at);
-                    if (app.security_scan_url && safeHttpUrl(app.security_scan_url)) {
-                        const scanLink=document.createElement('a');scanLink.href=app.security_scan_url;scanLink.target='_blank';scanLink.rel='noopener noreferrer';scanLink.textContent='Open scan report ↗';scanLink.style.cssText='display:inline-block;margin:0 0 8px;color:#8ee7ff;text-decoration:underline;font-size:12px;font-weight:800';safety.appendChild(scanLink);
-                    }
-                    if (app.security_scan_status === 'detection_reported') {
-                        const blocked=document.createElement('p');blocked.textContent='This listing has a reported security detection and must not be installed. SK Cyber Hub is withholding its download link.';blocked.style.cssText='padding:10px;border-radius:8px;background:#641f1f;color:#fff;font-weight:800;font-size:12px';safety.appendChild(blocked);
-                    }
-                    const protect = document.createElement('p');
-                    protect.textContent = 'Google Play Protect warnings are not all identical: “App scan recommended” or “Play Protect has not seen this app before” means the app is unfamiliar and should be scanned; it is not the same message as a confirmed harmful-app detection. “Harmful app blocked” means Google identified the app as potentially harmful. “App blocked to protect your device” can also relate to sensitive permissions used by apps installed from internet sources. If it says harmful or blocks the app, do not proceed. Never turn Play Protect off or bypass the warning.';
-                    protect.style.cssText = 'margin:0 0 8px;font-size:12px;line-height:1.6';
-                    const protectHelp = document.createElement('a');
-                    protectHelp.href = 'https://support.google.com/googleplay/answer/2812853';
-                    protectHelp.target = '_blank';
-                    protectHelp.rel = 'noopener noreferrer';
-                    protectHelp.textContent = 'Read Google’s official Play Protect safety guide ↗';
-                    protectHelp.style.cssText = 'display:inline-block;margin:0 0 10px;color:#8ee7ff;font-size:12px;font-weight:800;text-decoration:underline';
-                    const checks = document.createElement('ul');
-                    checks.style.cssText = 'margin:0 0 10px;padding-left:18px;font-size:12px;line-height:1.65';
-                    ['Prefer the original app from Google Play or the developer’s official site.','Check the publisher, file source, version and requested permissions.','Scan the APK with a reputable mobile security product; a clean scan is not a guarantee.','Avoid APKs asking for unrelated access such as SMS, Accessibility, contacts or device administration.','Never enter banking passwords, card details or one-time codes into an untrusted modified app.'].forEach(text => { const li=document.createElement('li'); li.textContent=text; checks.appendChild(li); });
-                    const status = document.createElement('p');
-                    status.textContent = 'SK Cyber Hub status: Third-party modified app. Unless a separate scan and source review are shown, this file is NOT independently verified by SK Cyber Hub. No “100% safe” guarantee is made.';
-                    status.style.cssText = 'margin:0 0 10px;padding:9px;border-radius:8px;background:#44251e;color:#ffd8c9;font-size:11px;line-height:1.55;font-weight:700';
-                    modRiskAck = document.createElement('label');
-                    modRiskAck.style.cssText = 'display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.5;color:#fff';
-                    const ack = document.createElement('input');
-                    ack.type = 'checkbox';
-                    ack.style.cssText = 'width:18px;height:18px;flex:none;margin-top:1px;accent-color:#fbbf24';
-                    modRiskAck.append(ack, document.createTextNode('I have read this warning and understand that installing a modified APK carries risk. This acknowledgement does not mean the file is safe.'));
-                    safety.prepend(safetyTitle, definition, purpose);
-                    safety.append(protect, protectHelp, checks, status, modRiskAck);
-                    detailsInner.appendChild(safety);
-                }
+                // Keep the listing simple: no mandatory warning or acknowledgement gate.
                 detailsPanel.appendChild(detailsInner);
 
                 const actions = document.createElement('div');
