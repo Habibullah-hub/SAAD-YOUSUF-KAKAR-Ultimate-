@@ -8,7 +8,7 @@ When the owner selects **All Apps Mod APK** in the existing Add/Edit App modal, 
 - Requested Android permissions summary
 - Scan status: not scanned, unknown/inconclusive, no detection reported, or detection reported
 - Scan provider, report URL, and checked date
-- Admin review notes
+- Private Admin review notes (stored in a separate admin-only table)
 
 These fields are informational, not a scanner. The owner must enter only information supported by a real source/report. Unknown values should remain blank or be described as unknown. A “no detection reported” result is not a safety guarantee.
 
@@ -20,7 +20,7 @@ These fields are informational, not a scanner. The owner must enter only informa
 - Never advise users to disable Play Protect or bypass a harmful-app warning.
 
 ## Database migration
-Run `supabase/SK-MOD-APK-SAFETY-METADATA.sql` in the SK Cyber Hub Supabase SQL Editor only after reviewing it. It adds columns to the existing `public.sk_apps` table. Existing RLS remains in control; only the existing Admin role should manage these fields.
+Run `supabase/SK-MOD-APK-SAFETY-METADATA.sql` in the SK Cyber Hub Supabase SQL Editor only after reviewing it. It adds informational columns to `public.sk_apps` and creates `public.sk_app_safety_admin_notes` for private notes. The private-notes table has its own RLS policy so only the SK Cyber Hub Admin can read or change notes; notes are not exposed through the public `sk_apps` table.
 
 **Important:** Until this migration has been run successfully, the optional metadata fields cannot be saved. The website code and SQL file in this draft PR do not apply themselves to Supabase.
 
