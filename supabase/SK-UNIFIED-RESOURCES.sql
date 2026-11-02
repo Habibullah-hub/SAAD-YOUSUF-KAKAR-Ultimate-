@@ -37,7 +37,11 @@ create table if not exists public.sk_resources (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint sk_resources_affiliate_disclosure_required
-    check (not is_affiliate or char_length(trim(coalesce(affiliate_disclosure,''))) between 8 and 300)
+    check (not is_affiliate or char_length(trim(coalesce(affiliate_disclosure,''))) between 8 and 300),
+  constraint sk_resources_direct_download_requires_review
+    check (download_mode <> 'direct_file' or (download_url is not null and source_domain is not null and source_review_status = 'reviewed')),
+  constraint sk_resources_blocked_not_published
+    check (source_review_status <> 'blocked' or published = false)
 );
 
 create index if not exists sk_resources_public_catalog_idx
