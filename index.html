@@ -931,6 +931,77 @@ main#tab-home{padding-bottom:94px}
 .global-result-card a:hover{background:#1b5360}
 @media(max-width:760px){.global-finder-controls{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.global-finder-controls button{width:100%;justify-content:center}.dock-inner>.searchbox{min-height:44px;padding-left:8px}.searchbox input{font-size:12px}}
 @media(max-width:390px){.global-finder-controls{grid-template-columns:minmax(0,1fr)}.global-finder-controls label{margin-top:4px}.global-finder-controls button{grid-column:1}}
+
+/* SK CYBER HUB ACCESSIBILITY + ADMIN CONTRAST FIX — mobile and desktop */
+#skAiFilters.finder-controls,
+#tab-home .creator-workshop,
+#tab-home .global-finder,
+#tab-admin .bulk-panel,
+#tab-admin .manager,
+#tab-admin .panel,
+#tab-admin .admin-card {
+  background:linear-gradient(145deg,#13243a,#0d1a2d)!important;
+  border:1px solid #35516e!important;
+  color:#eaf2ff!important;
+  box-shadow:0 12px 28px #02081735;
+}
+#skAiFilters.finder-controls label,
+#tab-home .creator-workshop label,
+#tab-home .global-finder label,
+#tab-admin .bulk-panel label,
+#tab-admin .manager label {
+  color:#dce8f7!important;
+  font-weight:700;
+}
+#skAiFilters.finder-controls select,
+#tab-home .creator-workshop input,
+#tab-home .creator-workshop select,
+#tab-home .creator-workshop textarea,
+#tab-home .global-finder input,
+#tab-home .global-finder select,
+#tab-home .global-finder textarea,
+#tab-admin .bulk-panel input,
+#tab-admin .bulk-panel select,
+#tab-admin .bulk-panel textarea,
+#tab-admin .manager input,
+#tab-admin .manager select,
+#tab-admin .manager textarea {
+  background:#0b1729!important;
+  color:#f3f7ff!important;
+  border:1px solid #496783!important;
+  border-radius:11px!important;
+  color-scheme:dark;
+}
+#skAiFilters.finder-controls select:focus,
+#tab-admin input:focus,
+#tab-admin select:focus,
+#tab-admin textarea:focus {
+  outline:2px solid #66e4d2!important;
+  outline-offset:2px;
+  border-color:#66e4d2!important;
+}
+#skAiFilters .finder-count,
+#tab-home .creator-workshop p,
+#tab-home .global-finder p,
+#tab-admin .bulk-panel p,
+#tab-admin .bulk-hint {
+  color:#b9c9dc!important;
+}
+#tab-admin .bulk-panel h3,
+#tab-admin .manager h2,
+#tab-admin .manager h3 {color:#f2f7ff!important}
+#tab-admin .bulk-preview,
+#tab-admin .bulk-status {background:#10243a!important;color:#e4f0ff!important;border-color:#385775!important}
+#tab-admin table th {background:#19314b!important;color:#eaf2ff!important}
+#tab-admin table td {color:#dce8f7!important;border-color:#344d68!important}
+@media(max-width:600px){
+ #skAiFilters.finder-controls{padding:14px!important;gap:8px!important}
+ #skAiFilters.finder-controls select{min-height:48px!important;font-size:15px!important}
+ #tab-admin .bulk-panel{padding:14px!important;border-radius:16px!important}
+ #tab-admin .bulk-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+ #tab-admin .bulk-actions button{min-height:44px;white-space:normal}
+}
+
 </style>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
