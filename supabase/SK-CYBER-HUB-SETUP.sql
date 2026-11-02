@@ -68,6 +68,12 @@ create trigger sk_on_auth_user_created
 after insert on auth.users
 for each row execute function public.sk_handle_new_user();
 
+-- Only one administrator may exist at a time. The owner assigns that one role
+-- manually in the SQL Editor; browser clients cannot insert/update profiles.
+create unique index if not exists sk_profiles_single_admin_idx
+  on public.sk_profiles (role)
+  where role = 'admin';
+
 -- Backfill existing Auth users as ordinary members; this never grants admin.
 insert into public.sk_profiles (id, email, role)
 select id, email, 'member'
