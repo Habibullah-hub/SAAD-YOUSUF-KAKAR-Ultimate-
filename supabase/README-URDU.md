@@ -46,6 +46,16 @@ WHERE id = 'PASTE-OWNER-USER-UUID-HERE';
 4. Project URL اور anon/public key درج کرکے Save کریں۔
 5. **service_role / secret key کبھی ویب سائٹ یا چیٹ میں نہ ڈالیں۔**
 
+## 3-A) نئے Catalog اور Suggestions / MOD APK اضافی ٹیبلز
+
+بنیادی Setup SQL کامیابی سے چلانے کے بعد یہ الگ migrations ضرورت کے مطابق ایک ایک مرتبہ چلائیں:
+
+1. `SK-UNIFIED-RESOURCES.sql` — unified resource catalog اور import-source approvals۔
+2. `SK-MOD-APK-SAFETY-METADATA.sql` — موجودہ `sk_apps` میں صرف معلوماتی MOD APK safety fields۔
+3. `SK-MEMBER-SUGGESTIONS.sql` — ممبرز کی تجاویز اور Admin review queue۔
+
+یہ migrations خودکار طور پر نہیں چلتے۔ ہر فائل کو پہلے پڑھیں، پھر اسی SK Cyber Hub Supabase پروجیکٹ کے SQL Editor میں چلائیں۔ انہیں پرانے Yousuf Kakar Free Apps ڈیٹابیس میں نہ چلائیں۔ ان تبدیلیوں سے کوئی paid سروس یا Storage فعال نہیں ہوتی۔
+
 ## 4) Admin لاگ اِن اور جانچ
 
 اپنے Authentication والے ای میل اور پاس ورڈ سے Admin Login کریں۔ کامیاب ہونے کے بعد Admin Dashboard میں App شامل، تبدیل یا حذف کر کے دیکھیں۔
