@@ -88,7 +88,7 @@ async function sendSignal(recipient,payload){
  const r=await db.from('sk_call_signals').insert({call_id:activeCall.id,sender_id:user.id,recipient_id:recipient,payload});
  if(r.error)throw r.error;
 }
-async function setupPeer(call,initiator){
+async function setupPeer(call,initiator,screenPromise=null){
  if(signalChannel){await db.removeChannel(signalChannel);signalChannel=null;}
  queuedSignals=[];handlingSignal=false;
  pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
@@ -100,7 +100,7 @@ async function setupPeer(call,initiator){
  localStream=media;
  if(call.call_type==='screen'&&initiator){
   if(!navigator.mediaDevices.getDisplayMedia)throw new Error('Screen sharing is not supported in this browser. Try a supported desktop browser.');
-  const screen=await navigator.mediaDevices.getDisplayMedia({video:true,audio:false});
+  const screen=await screenPromise;
   screen.getTracks().forEach(t=>{localStream.addTrack(t);pc.addTrack(t,localStream);t.onended=()=>endCall();});
  }
  localStream.getTracks().forEach(t=>{if(!(call.call_type==='screen'&&t.kind==='video'&&initiator))pc.addTrack(t,localStream);});
@@ -133,10 +133,11 @@ async function startCall(type){
  if(type==='screen'&&!navigator.mediaDevices?.getDisplayMedia){say('اس براؤزر میں Screen Sharing دستیاب نہیں۔');return;}
  if(!navigator.mediaDevices?.getUserMedia){say('اس browser میں microphone/camera permission دستیاب نہیں۔');return;}
  try{
+  const screenPromise=type==='screen'?navigator.mediaDevices.getDisplayMedia({video:true,audio:false}):null;
   const r=await db.from('sk_call_sessions').insert({conversation_id:activeConversation,caller_id:user.id,callee_id:activePeer.id,call_type:type,status:'ringing'}).select('*').single();
   if(r.error)throw r.error;activeCall=r.data;
   show($('skConnectCallStage'),true);say('Calling '+safeName(activePeer)+'…');
-  await setupPeer(activeCall,true);
+  await setupPeer(activeCall,true,screenPromise);
  }catch(e){say('Call start نہیں ہوئی: '+(e.message||'Permission or network error'));await cleanupCall();}
 }
 async function acceptCall(){
