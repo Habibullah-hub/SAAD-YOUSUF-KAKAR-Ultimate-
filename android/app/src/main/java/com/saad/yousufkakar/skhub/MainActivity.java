@@ -24,6 +24,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.ValueCallback;
+import android.webkit.WebResourceError;
+import android.webkit.SslErrorHandler;
+import android.net.http.SslError;
+import android.content.ActivityNotFoundException;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -51,6 +56,9 @@ public class MainActivity extends Activity {
     private static final String HOME = "https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/browser.html?native=1";
     private static final String PREFS = "sk_browser_data";
     private static final String HISTORY = "history";
+    private static final int FILE_CHOOSER_REQUEST = 901;
+    private ValueCallback<Uri[]> filePathCallback;
+    private boolean clearSiteHistoryAfterHome = false;
     private WebView web;
     private AutoCompleteTextView address;
     private ProgressBar progress;
@@ -129,12 +137,35 @@ public class MainActivity extends Activity {
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         settings.setSupportMultipleWindows(false);
         settings.setJavaScriptCanOpenWindowsAutomatically(false);
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setDisplayZoomControls(false);
+        settings.setMediaPlaybackRequiresUserGesture(true);
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+        if (Build.VERSION.SDK_INT >= 21) cookieManager.setAcceptThirdPartyCookies(web, false);
         if (Build.VERSION.SDK_INT >= 26) settings.setSafeBrowsingEnabled(true);
         web.setWebChromeClient(new WebChromeClient() {
             @Override public void onProgressChanged(WebView view, int value) {
+                progress.setIndeterminate(false);
                 progress.setProgress(value);
                 if (value >= 100) finishLoading();
                 else if (value > 0) showLoading("Loading page · " + value + "%");
+            }
+            @Override public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> callback, FileChooserParams params) {
+                if (filePathCallback != null) filePathCallback.onReceiveValue(null);
+                filePathCallback = callback;
+                Intent pick = new Intent(Intent.ACTION_GET_CONTENT);
+                pick.addCategory(Intent.CATEGORY_OPENABLE);
+                pick.setType("*/*");
+                try {
+                    startActivityForResult(Intent.createChooser(pick, "Choose a file for SK Cyber Hub"), FILE_CHOOSER_REQUEST);
+                    return true;
+                } catch (ActivityNotFoundException e) {
+                    filePathCallback = null;
+                    Toast.makeText(MainActivity.this, "No file picker is available on this device.", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
             }
         });
         web.setWebViewClient(new WebViewClient() {
@@ -151,8 +182,19 @@ public class MainActivity extends Activity {
             }
             @Override public void onPageFinished(WebView view, String url) {
                 address.setText(url);
-                remember(url);
+                if (clearSiteHistoryAfterHome && url.startsWith(HOME)) {
+                    clearSiteHistoryAfterHome = false;
+                    view.evaluateJavascript("try{localStorage.removeItem('sk-browser-history');sessionStorage.clear();}catch(e){}", null);
+                    view.clearHistory();
+                } else {
+                    remember(url);
+                }
                 finishLoading();
+            }
+            @Override public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                handler.cancel();
+                finishLoading();
+                Toast.makeText(MainActivity.this, "Unsafe or invalid website certificate. Connection blocked.", Toast.LENGTH_LONG).show();
             }
             @Override public void onReceivedError(WebView view, WebResourceRequest request, android.webkit.WebResourceError error) {
                 if (request.isForMainFrame()) {
@@ -166,6 +208,7 @@ public class MainActivity extends Activity {
                 startDownload(url, userAgent, contentDisposition, mimeType);
             }
         });
+        web.setOverScrollMode(View.OVER_SCROLL_NEVER);
         root.addView(web, new LinearLayout.LayoutParams(-1, 0, 1));
 
         LinearLayout nav = new LinearLayout(this);
@@ -194,7 +237,7 @@ public class MainActivity extends Activity {
         });
         address.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { requestSuggestions(s.toString()); }
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { if (address.hasFocus()) requestSuggestions(s.toString()); }
             @Override public void afterTextChanged(Editable e) {}
         });
         address.setOnItemClickListener((parent, view, position, id) -> navigateFromAddress());
@@ -230,7 +273,7 @@ public class MainActivity extends Activity {
         address.dismissDropDown();
         String url;
         if (q.matches("(?i)^https?://.*")) url = q;
-        else if (q.matches("(?i)^[a-z0-9.-]+\\.[a-z]{2,}(/.*)?$")) url = "https://" + q;
+        else if (q.matches("(?i)^[a-z0-9.-]+\\.[a-z]{2,}(:[0-9]{1,5})?(/.*)?$")) url = "https://" + q;
         else url = "https://www.google.com/search?q=" + Uri.encode(q);
         hideKeyboard();
         remember(q);
@@ -241,7 +284,7 @@ public class MainActivity extends Activity {
     private void requestSuggestions(String raw) {
         final String q = raw.trim();
         if (suggestionTask != null) handler.removeCallbacks(suggestionTask);
-        if (q.length() < 2 || q.contains("://")) { suggestionAdapter.clear(); suggestionAdapter.notifyDataSetChanged(); return; }
+        if (q.length() < 2 || q.contains("://") || q.matches("(?i)^[a-z0-9.-]+\\.[a-z]{2,}(:[0-9]{1,5})?(/.*)?$")) { suggestionAdapter.clear(); suggestionAdapter.notifyDataSetChanged(); return; }
         suggestionTask = () -> new Thread(() -> {
             HttpURLConnection connection = null;
             try {
@@ -275,15 +318,25 @@ public class MainActivity extends Activity {
 
     private void startDownload(String url, String userAgent, String disposition, String mimeType) {
         try {
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-            String cookie = CookieManager.getInstance().getCookie(url);
+            Uri downloadUri = Uri.parse(url);
+            String scheme = downloadUri.getScheme() == null ? "" : downloadUri.getScheme().toLowerCase();
+            if ("http".equals(scheme)) downloadUri = downloadUri.buildUpon().scheme("https").build();
+            else if (!"https".equals(scheme)) {
+                Toast.makeText(this, "For safety, SK Browser downloads only HTTPS files.", Toast.LENGTH_LONG).show();
+                return;
+            }
+            String fileName = URLUtil.guessFileName(downloadUri.toString(), disposition, mimeType);
+            fileName = fileName.replaceAll("[\\\\/:*?\"<>|]", "_").replaceAll("\\.{2,}", ".");
+            if (fileName.trim().isEmpty()) fileName = "SK-download";
+            DownloadManager.Request request = new DownloadManager.Request(downloadUri);
+            String cookie = CookieManager.getInstance().getCookie(downloadUri.toString());
             if (cookie != null) request.addRequestHeader("Cookie", cookie);
             if (userAgent != null) request.addRequestHeader("User-Agent", userAgent);
             request.setMimeType(mimeType);
-            request.setTitle(URLUtil.guessFileName(url, disposition, mimeType));
+            request.setTitle(fileName);
             request.setDescription("Downloading with SK Browser");
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, URLUtil.guessFileName(url, disposition, mimeType));
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
             downloadManager.enqueue(request);
             Toast.makeText(this, "Download started · check notifications or Downloads", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
@@ -295,19 +348,34 @@ public class MainActivity extends Activity {
         DownloadManager.Query query = new DownloadManager.Query();
         android.database.Cursor cursor = downloadManager.query(query);
         List<String> rows = new ArrayList<>();
+        List<Long> ids = new ArrayList<>();
+        List<Integer> statuses = new ArrayList<>();
         if (cursor != null) {
+            int idCol = cursor.getColumnIndex(DownloadManager.COLUMN_ID);
             int titleCol = cursor.getColumnIndex(DownloadManager.COLUMN_TITLE);
             int statusCol = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
             while (cursor.moveToNext()) {
+                long id = idCol >= 0 ? cursor.getLong(idCol) : -1;
                 String title = titleCol >= 0 ? cursor.getString(titleCol) : "Download";
                 int status = statusCol >= 0 ? cursor.getInt(statusCol) : -1;
-                String state = status == DownloadManager.STATUS_SUCCESSFUL ? "Completed" : status == DownloadManager.STATUS_FAILED ? "Failed" : "In progress";
+                String state = status == DownloadManager.STATUS_SUCCESSFUL ? "Completed · tap to open" : status == DownloadManager.STATUS_FAILED ? "Failed" : "In progress";
                 rows.add(title + " — " + state);
+                ids.add(id);
+                statuses.add(status);
             }
             cursor.close();
         }
         if (rows.isEmpty()) rows.add("No downloads yet. Download a file from a webpage.");
-        new AlertDialog.Builder(this).setTitle("SK Downloads").setItems(rows.toArray(new String[0]), (d, which) -> {}).setPositiveButton("OK", null).show();
+        new AlertDialog.Builder(this).setTitle("SK Downloads").setItems(rows.toArray(new String[0]), (d, which) -> {
+            if (which < ids.size() && statuses.get(which) == DownloadManager.STATUS_SUCCESSFUL) {
+                Uri fileUri = downloadManager.getUriForDownloadedFile(ids.get(which));
+                if (fileUri != null) {
+                    String type = downloadManager.getMimeTypeForDownloadedFile(ids.get(which));
+                    Intent open = new Intent(Intent.ACTION_VIEW).setDataAndType(fileUri, type == null ? "*/*" : type).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    try { startActivity(open); } catch (ActivityNotFoundException e) { Toast.makeText(this, "No app can open this file.", Toast.LENGTH_SHORT).show(); }
+                }
+            }
+        }).setPositiveButton("Close", null).show();
     }
 
     private void showHistory() {
@@ -320,7 +388,8 @@ public class MainActivity extends Activity {
                 getSharedPreferences(PREFS, MODE_PRIVATE).edit().remove(HISTORY).apply();
                 if (web != null) {
                     web.clearHistory();
-                    web.evaluateJavascript("try{localStorage.removeItem('sk-browser-history');sessionStorage.clear();}catch(e){}", null);
+                    clearSiteHistoryAfterHome = true;
+                    web.loadUrl(HOME);
                 }
                 Toast.makeText(this, "Browsing history cleared", Toast.LENGTH_SHORT).show();
             } else if (which < recent.size()) {
@@ -366,6 +435,19 @@ public class MainActivity extends Activity {
         loadingLabel.setVisibility(View.GONE);
     }
 
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FILE_CHOOSER_REQUEST && filePathCallback != null) {
+            Uri[] result = null;
+            if (resultCode == RESULT_OK && data != null) {
+                Uri selected = data.getData();
+                if (selected != null) result = new Uri[]{selected};
+            }
+            filePathCallback.onReceiveValue(result);
+            filePathCallback = null;
+        }
+    }
+
     private void hideKeyboard() {
         try { ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(address.getWindowToken(), 0); }
         catch (Exception ignored) {}
@@ -387,6 +469,7 @@ public class MainActivity extends Activity {
     @Override public void onBackPressed() { if (web != null && web.canGoBack()) web.goBack(); else super.onBackPressed(); }
     @Override protected void onDestroy() {
         if (suggestionTask != null) handler.removeCallbacks(suggestionTask);
+        if (filePathCallback != null) { filePathCallback.onReceiveValue(null); filePathCallback = null; }
         if (web != null) { web.stopLoading(); web.destroy(); web = null; }
         super.onDestroy();
     }
