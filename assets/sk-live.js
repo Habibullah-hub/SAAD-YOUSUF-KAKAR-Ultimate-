@@ -60,7 +60,7 @@ async function joinRoom(item){
  if(!user){say('Live دیکھنے کے لیے مفت Member Login کریں۔');return;}
  if(room){say('پہلے موجودہ Live سے نکلیں۔');return;}
  try{say('Live سے جڑ رہے ہیں…');await connectRoom(item,item.host_id===user.id);}
- catch(e){say('Live join نہیں ہوئی: '+(e.message||'Check LiveKit setup and free quota'));}
+ catch(e){if(room){room.disconnect();room=null;}activeRoom=null;showStage(false);clearMedia();say('Live join نہیں ہوئی: '+(e.message||'Check LiveKit setup and free quota'));}
 }
 async function endLive(){
  if(activeRoom?.host_id===user?.id)await db.from('sk_live_rooms').update({status:'ended',ended_at:new Date().toISOString()}).eq('id',activeRoom.id);
