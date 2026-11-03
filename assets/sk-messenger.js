@@ -1,15 +1,16 @@
 /* SK CYBER HUB — private messenger + direct WebRTC calls */
 (()=>{'use strict';
 const $=id=>document.getElementById(id),root=$('skConnectPanel');if(!root)return;
-let db=null,user=null,activeConversation=null,activePeer=null,messageChannel=null,incomingChannel=null,signalChannel=null,callChannel=null,pc=null,localStream=null,activeCall=null,queuedSignals=[],handlingSignal=false;
+let db=null,user=null,activeConversation=null,activePeer=null,messageChannel=null,incomingChannel=null,signalChannel=null,pc=null,localStream=null,activeCall=null,queuedSignals=[],authBound=false;
 const say=t=>{const n=$('skConnectStatus');if(n)n.textContent=t;};
 const el=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n;};
 const safeName=p=>p?.display_name||'SK Member';
 function currentDb(){return window.SK_SUPABASE_CLIENT||null;}
 function show(n,v){if(n)n.hidden=!v;}
-function renderSignedOut(){say('نجی پیغامات اور کالز کے لیے مفت Member Login کریں۔');$('skConnectSearchResults').replaceChildren();$('skConnectConversationList').replaceChildren(el('p','sk-connect-muted','Login کے بعد آپ کے conversations یہاں آئیں گے۔'));$('skConnectMessages').replaceChildren();}
+function renderSignedOut(){say('نجی پیغامات اور کالز کے لیے مفت Member Login کریں۔');show($('skConnectComposer'),false);$('skConnectSearch').disabled=true;$('skConnectSearchResults').replaceChildren();$('skConnectConversationList').replaceChildren(el('p','sk-connect-muted','Login کے بعد آپ کے conversations یہاں آئیں گے۔'));$('skConnectMessages').replaceChildren();}
 async function init(){
  db=currentDb();if(!db){renderSignedOut();return;}
+ if(!authBound){db.auth.onAuthStateChange(()=>setTimeout(()=>init(),0));authBound=true;}
  const {data}=await db.auth.getSession();user=data?.session?.user||null;
  if(!user){renderSignedOut();return;}
  const p=await db.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();
@@ -118,10 +119,12 @@ async function processSignal(row){
   if(s.type==='offer'){
    await pc.setRemoteDescription(new RTCSessionDescription({type:'offer',sdp:s.sdp}));
    const answer=await pc.createAnswer();await pc.setLocalDescription(answer);await sendSignal(row.sender_id,{type:'answer',sdp:answer.sdp});
+   for(const candidate of queuedSignals.splice(0)){try{await pc.addIceCandidate(new RTCIceCandidate(candidate.candidate));}catch(_){}}
   }else if(s.type==='answer'&&pc.signalingState!=='stable'){
    await pc.setRemoteDescription(new RTCSessionDescription({type:'answer',sdp:s.sdp}));
+   for(const candidate of queuedSignals.splice(0)){try{await pc.addIceCandidate(new RTCIceCandidate(candidate.candidate));}catch(_){}}
   }else if(s.type==='candidate'&&s.candidate){
-   try{await pc.addIceCandidate(new RTCIceCandidate(s.candidate));}catch(e){queuedSignals.push(s);}
+   if(!pc.remoteDescription)queuedSignals.push(s);else await pc.addIceCandidate(new RTCIceCandidate(s.candidate));
   }
  }catch(e){say('Call signaling: '+(e.message||'Could not process signal'));}
 }
