@@ -29,6 +29,7 @@ import android.webkit.WebResourceError;
 import android.webkit.SslErrorHandler;
 import android.net.http.SslError;
 import android.content.ActivityNotFoundException;
+import android.content.pm.PackageManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -59,6 +60,7 @@ public class MainActivity extends Activity {
     private static final int FILE_CHOOSER_REQUEST = 901;
     private ValueCallback<Uri[]> filePathCallback;
     private boolean clearSiteHistoryAfterHome = false;
+    private String pendingDownloadUrl, pendingDownloadAgent, pendingDownloadDisposition, pendingDownloadMime;
     private WebView web;
     private AutoCompleteTextView address;
     private ProgressBar progress;
@@ -97,7 +99,7 @@ public class MainActivity extends Activity {
         address = new AutoCompleteTextView(this);
         address.setSingleLine(true);
         address.setTextSize(14);
-        address.setHint("Search the web or enter a website");
+        address.setHint("Search the web · live suggestions via Google");
         address.setHintTextColor(Color.LTGRAY);
         address.setTextColor(Color.WHITE);
         address.setDropDownBackgroundDrawable(new android.graphics.drawable.ColorDrawable(panel));
@@ -325,6 +327,15 @@ public class MainActivity extends Activity {
                 Toast.makeText(this, "For safety, SK Browser downloads only HTTPS files.", Toast.LENGTH_LONG).show();
                 return;
             }
+            if (Build.VERSION.SDK_INT <= 28 && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                pendingDownloadUrl = downloadUri.toString();
+                pendingDownloadAgent = userAgent;
+                pendingDownloadDisposition = disposition;
+                pendingDownloadMime = mimeType;
+                requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 902);
+                Toast.makeText(this, "Allow storage access to save this download in the public Downloads folder.", Toast.LENGTH_LONG).show();
+                return;
+            }
             String fileName = URLUtil.guessFileName(downloadUri.toString(), disposition, mimeType);
             fileName = fileName.replaceAll("[\\\\/:*?\"<>|]", "_").replaceAll("\\.{2,}", ".");
             if (fileName.trim().isEmpty()) fileName = "SK-download";
@@ -433,6 +444,20 @@ public class MainActivity extends Activity {
         progress.setProgress(100);
         progress.setVisibility(View.GONE);
         loadingLabel.setVisibility(View.GONE);
+    }
+
+    @Override public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 902) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && pendingDownloadUrl != null) {
+                String url = pendingDownloadUrl, agent = pendingDownloadAgent, disposition = pendingDownloadDisposition, mime = pendingDownloadMime;
+                pendingDownloadUrl = pendingDownloadAgent = pendingDownloadDisposition = pendingDownloadMime = null;
+                startDownload(url, agent, disposition, mime);
+            } else {
+                pendingDownloadUrl = pendingDownloadAgent = pendingDownloadDisposition = pendingDownloadMime = null;
+                Toast.makeText(this, "Storage permission was not granted; download cancelled.", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
