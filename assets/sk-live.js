@@ -1,7 +1,7 @@
 /* SK CYBER HUB — LiveKit-powered public live rooms */
 (()=>{'use strict';
 const $=id=>document.getElementById(id),root=$('skLivePanel');if(!root)return;
-let db=null,user=null,room=null,activeRoom=null,chatChannel=null,roomsChannel=null;
+let db=null,user=null,room=null,activeRoom=null,chatChannel=null,roomsChannel=null,authBound=false;
 const say=t=>{const n=$('skLiveStatus');if(n)n.textContent=t;};
 const el=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n;};
 function currentDb(){return window.SK_SUPABASE_CLIENT||null;}
@@ -97,6 +97,7 @@ async function shareScreen(){
 }
 async function init(){
  db=currentDb();if(!db){say('Supabase database connect کریں۔');return;}
+ if(!authBound){db.auth.onAuthStateChange(()=>setTimeout(()=>init().catch(e=>say(e.message)),0));authBound=true;}
  const s=await db.auth.getSession();user=s.data?.session?.user||null;
  $('skLiveStartForm').hidden=!user;
  await loadRooms();
