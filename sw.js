@@ -1,5 +1,5 @@
 /* SK Cyber Hub offline app shell. Dynamic APIs and third-party content are never cached. */
-const CACHE_NAME = "sk-cyber-hub-shell-v4";
+const CACHE_NAME = "sk-cyber-hub-shell-v5";
 const APP_ROOT = new URL("./", self.location).href;
 
 self.addEventListener("message", event => {
@@ -13,6 +13,7 @@ self.addEventListener("install", event => {
     const cache = await caches.open(CACHE_NAME);
     await cache.add(APP_ROOT);
     try { await cache.add(new URL("browser.html", APP_ROOT).href); } catch (_) {}
+    try { await cache.add(new URL("games.html", APP_ROOT).href); } catch (_) {}
     try { await cache.add(new URL("manifest.webmanifest", APP_ROOT).href); } catch (_) {}
     await self.skipWaiting();
   })());
