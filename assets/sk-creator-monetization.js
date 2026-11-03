@@ -43,7 +43,7 @@ async function loadMember(){
 }
 async function apply(event){
  event.preventDefault();if(!user||isAdmin)return;
- const creator_type=$('skCreatorType').value,country=$('skCreatorCountry').value,channel=safeUrl($('skCreatorChannel').value);
+ const creator_type=$('skCreatorProgramType').value,country=$('skCreatorCountry').value,channel=safeUrl($('skCreatorChannel').value);
  if($('skCreatorChannel').value.trim()&&!channel){setStatus('Portfolio link must be a valid HTTPS URL.');return;}
  if(!$('skCreatorOriginalAck').checked){setStatus('Please confirm that you will share content you own or have permission to use.');return;}
  const button=$('skCreatorApplyButton');button.disabled=true;setStatus('Saving your creator application…');
