@@ -4492,7 +4492,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
  function openModal(query){
   const q=String(query||'').trim();
   modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
-  if(q){queryInput.value=q;search(q,/\\b(youtube|you\\s*tube|yt)\\b/i.test(q)?'youtube':modeInput.value);}
+  if(q){queryInput.value=q;search(q,/\b(youtube|you\s*tube|yt)\b/i.test(q)?'youtube':modeInput.value);}
   else {topic.textContent='ویڈیو تلاش کریں';queryInput.focus();}
  }
  function show(query){
