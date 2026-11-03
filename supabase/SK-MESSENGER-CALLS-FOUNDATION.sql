@@ -140,8 +140,7 @@ drop policy if exists sk_calls_caller_create on public.sk_call_sessions;
 create policy sk_calls_caller_create on public.sk_call_sessions
 for insert to authenticated with check (
   caller_id=(select auth.uid())
-  and exists(select 1 from public.sk_conversation_members m where m.conversation_id=sk_call_sessions.conversation_id and m.user_id=caller_id)
-  and exists(select 1 from public.sk_conversation_members m where m.conversation_id=sk_call_sessions.conversation_id and m.user_id=callee_id)
+  and public.sk_is_conversation_member(sk_call_sessions.conversation_id)
 );
 
 -- Participants and conversation identity are immutable after a call is created.
@@ -196,7 +195,7 @@ returns uuid
 language plpgsql
 security definer
 set search_path = ''
-as $sk$$
+as $sk$
 declare me uuid; existing_id uuid; new_id uuid;
 begin
   me := auth.uid();
