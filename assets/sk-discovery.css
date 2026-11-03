@@ -1,0 +1,8 @@
+#sk-next-discovery .sk-next-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#sk-next-discovery .sk-next-card{display:flex;min-height:126px;flex-direction:column;justify-content:space-between;gap:12px;padding:17px;border:1px solid #36516e;border-radius:14px;background:linear-gradient(145deg,#142943,#101d32);color:#f2f7ff;transition:transform .18s,border-color .18s,box-shadow .18s}
+#sk-next-discovery .sk-next-card:hover{transform:translateY(-3px);border-color:#65ddcf;box-shadow:0 12px 26px #06132655}
+#sk-next-discovery .sk-next-card b{font-size:15px}
+#sk-next-discovery .sk-next-card small{color:#aebfd4;font-size:11px;line-height:1.6}
+#sk-next-discovery .sk-next-label{color:#72e5d4;font-size:9px;font-weight:900;letter-spacing:1.3px}
+@media(max-width:700px){#sk-next-discovery .sk-next-grid{grid-template-columns:1fr}#sk-next-discovery .sk-next-card{min-height:92px;padding:14px}}
+@media(prefers-reduced-motion:reduce){#sk-next-discovery .sk-next-card{transition:none}}
