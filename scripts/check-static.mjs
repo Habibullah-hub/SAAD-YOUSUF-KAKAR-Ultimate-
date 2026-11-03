@@ -53,7 +53,7 @@ else {
   const worker = spawnSync(process.execPath, ["--check", workerPath], { encoding: "utf8" });
   if (worker.status !== 0) errors.push(`Service worker has a JavaScript syntax error:\n${worker.stderr || worker.stdout}`);
 }
-if (!html.includes('rel="manifest"') || !html.includes("serviceWorker.register")) {
+if (!html.includes('rel="manifest"') || (!html.includes("serviceWorker.register") && !html.includes('src="./pwa-register.js"'))) {
   errors.push("index.html is missing the PWA manifest or service-worker registration.");
 }
 
