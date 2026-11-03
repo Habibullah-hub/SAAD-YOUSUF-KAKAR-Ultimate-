@@ -1601,7 +1601,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
   <a href="#developer-tools" data-search="developer coding web programming tools">⌘ Developer Tools</a>
   <a href="#security-privacy" data-search="security privacy password protection">◆ Security & Privacy</a>
   <a href="#creator-studio" data-search="creator studio video editing social media content creation">🎥 Creator Studio</a>
-  <a href="#global-search" data-search="global search engine google bing duckduckgo brave">⌕ Global Search</a>
+  <a href="./search.html" data-search="SK Search web search engine google bing duckduckgo brave">⌕ SK Search Engine</a>
   <a href="#jobs" data-search="jobs careers employment saudi arabia pakistan opportunities">💼 Jobs & Opportunities</a>
   <a href="#deals" data-search="deals freebies free games open source offers">🎁 Deals & Freebies</a>
   <a href="#community" data-search="community user accounts member profiles">👥 Community & Accounts</a>
@@ -1795,7 +1795,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
  <p class="creator-status" id="skCreatorStatus" role="status" aria-live="polite">Enter a topic and generate a content pack. Review drafts before publishing.</p>
 </div></section>
 
-<section class="section wrap" id="global-search"><div class="section-head"><div><h2>Global Search</h2><p>Choose a search engine and compare results. External search providers have their own privacy policies.</p></div></div>
+<section class="section wrap" id="global-search"><div class="section-head"><div><h2>Global Search</h2><p>Search SK Cyber Hub resources with filters, or open the dedicated SK Search page for a focused search experience and trusted web providers.</p><p><a class="primary" href="./search.html" style="display:inline-flex;margin-top:8px">Open SK Search Engine ↗</a></p></div></div>
 <div class="global-finder" id="skGlobalFinder">
  <h3>Search inside SK Cyber Hub</h3><p>Search our directory, then narrow results by category, price and device.</p>
  <div class="global-finder-controls">
@@ -2238,7 +2238,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 </nav>
 <button class="sk-back-top" id="skBackTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
 
-<footer class="wrap footer"><span>© <span id="year"></span> SK Cyber Hub · SAAD YOUSUF KAKAR</span><span><a href="about.html">About</a> · <a href="privacy.html">Privacy</a> · <a href="disclosure.html">Ads & Affiliate Disclosure</a> · Built for everyone</span></footer>
+<footer class="wrap footer"><span>© <span id="year"></span> SK Cyber Hub · SAAD YOUSUF KAKAR</span><span><a href="./search.html">SK Search</a> · <a href="about.html">About</a> · <a href="privacy.html">Privacy</a> · <a href="disclosure.html">Ads & Affiliate Disclosure</a> · Built for everyone</span></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
@@ -4093,7 +4093,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
      addText('small','sk-live-arrow','OPEN ↗',link);panel.appendChild(link);
     });
     const footer=document.createElement('div');footer.className='sk-live-footer';
-    const web=document.createElement('a');web.href='https://www.google.com/search?q='+encodeURIComponent(raw);web.target='_blank';web.rel='noopener noreferrer';web.textContent='Search the wider web ↗';footer.appendChild(web);
+    const web=document.createElement('a');web.href='./search.html?q='+encodeURIComponent(raw);web.target='_blank';web.rel='noopener noreferrer';web.textContent='Open SK Search ↗';footer.appendChild(web);
     const hint=document.createElement('span');hint.textContent='Enter to search · Esc to close';footer.appendChild(hint);panel.appendChild(footer);
     panel.hidden=false;requestAnimationFrame(()=>panel.classList.add('is-open'));
    };
