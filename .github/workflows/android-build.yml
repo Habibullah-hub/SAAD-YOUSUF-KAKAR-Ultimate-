@@ -42,13 +42,18 @@ jobs:
       - name: Build debug APK
         run: gradle -p android --no-daemon assembleDebug
       - name: Verify APK package before publishing
+        shell: bash
         run: |
+          set -euxo pipefail
           APK="android/app/build/outputs/apk/debug/app-debug.apk"
           test -s "$APK"
-          unzip -t "$APK"
-          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK" | tee /tmp/sk-apk-badging.txt
-          grep -q "package: name='com.saad.yusufkakar.skhub'" /tmp/sk-apk-badging.txt
           ls -lh "$APK"
+          file "$APK"
+          unzip -t "$APK"
+          AAPT="$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort | tail -n 1)"
+          test -x "$AAPT"
+          "$AAPT" dump badging "$APK" | tee /tmp/sk-apk-badging.txt
+          grep -F "package: name='com.saad.yusufkakar.skhub'" /tmp/sk-apk-badging.txt
       - name: Upload debug APK for testing
         uses: actions/upload-artifact@v4
         with:
