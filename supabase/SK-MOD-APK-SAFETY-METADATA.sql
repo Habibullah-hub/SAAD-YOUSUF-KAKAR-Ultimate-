@@ -52,7 +52,7 @@ create table if not exists public.sk_app_safety_admin_notes (
 );
 
 -- Preserve notes from an earlier draft version, then remove the public-table column.
-do $
+do $$
 begin
   if exists (
     select 1 from information_schema.columns
@@ -67,7 +67,7 @@ begin
     $migrate$;
     alter table public.sk_apps drop column safety_review_notes;
   end if;
-end $;
+end $$;
 
 alter table public.sk_app_safety_admin_notes enable row level security;
 drop policy if exists sk_app_safety_admin_notes_admin_only on public.sk_app_safety_admin_notes;
