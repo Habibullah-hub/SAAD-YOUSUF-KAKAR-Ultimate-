@@ -105,7 +105,7 @@ for insert to authenticated with check (
 drop policy if exists sk_messages_sender_edit on public.sk_messages;
 create policy sk_messages_sender_edit on public.sk_messages
 for update to authenticated using (sender_id=(select auth.uid()))
-with check (sender_id=(select auth.uid()));
+with check (sender_id=(select auth.uid()) and public.sk_is_conversation_member(conversation_id));
 
 drop policy if exists sk_messages_sender_delete on public.sk_messages;
 create policy sk_messages_sender_delete on public.sk_messages
@@ -226,8 +226,10 @@ grant execute on function public.sk_create_direct_conversation(uuid) to authenti
 
 revoke all on public.sk_conversations,public.sk_conversation_members,public.sk_messages,public.sk_call_sessions,public.sk_call_signals from anon,authenticated;
 grant select on public.sk_conversations,public.sk_conversation_members,public.sk_messages,public.sk_call_sessions,public.sk_call_signals to authenticated;
-grant insert,update,delete on public.sk_messages to authenticated;
-grant insert,update on public.sk_call_sessions to authenticated;
+grant insert,delete on public.sk_messages to authenticated;
+grant update (body,edited_at) on public.sk_messages to authenticated;
+grant insert on public.sk_call_sessions to authenticated;
+grant update (status,ended_at) on public.sk_call_sessions to authenticated;
 grant insert,select,delete on public.sk_call_signals to authenticated;
 
 -- Basic server-side anti-spam guards for private messages and call requests.
