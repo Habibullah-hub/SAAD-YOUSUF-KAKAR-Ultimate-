@@ -22,7 +22,7 @@ async function connectRoom(item,hostMode){
  room.on(LivekitClient.RoomEvent.TrackUnsubscribed,(track)=>{track.detach().forEach(n=>n.remove());});
  room.on(LivekitClient.RoomEvent.Disconnected,()=>{say('Live session disconnected.');});
  await room.connect(creds.serverUrl,creds.token);
- activeRoom=item;showStage(true);$('skLiveStartForm').hidden=!!hostMode;$('skLiveShareScreen').hidden=!hostMode;$('skLiveEnd').hidden=!hostMode;
+ activeRoom=item;showStage(true);$('skLiveStartForm').hidden=!!hostMode;$('skLiveShareScreen').hidden=!hostMode;$('skLiveShareScreen').disabled=!navigator.mediaDevices?.getDisplayMedia;$('skLiveEnd').hidden=!hostMode;
  if(hostMode){
   await room.localParticipant.enableCameraAndMicrophone();
   for(const pub of room.localParticipant.videoTrackPublications.values()){if(pub.track)attachTrack(pub.track);}
