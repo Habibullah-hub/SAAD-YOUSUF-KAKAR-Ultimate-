@@ -219,7 +219,7 @@ begin
   insert into public.sk_conversation_members(conversation_id,user_id) values(new_id,me),(new_id,p_other_user);
   return new_id;
 end;
-$$;
+$sk$;
 
 revoke all on function public.sk_create_direct_conversation(uuid) from public;
 grant execute on function public.sk_create_direct_conversation(uuid) to authenticated;
