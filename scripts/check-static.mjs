@@ -7,6 +7,9 @@ if (!/^<!doctype html>/i.test(html.trimStart())) errors.push("index.html is miss
 if (!/<meta\s+name=["']viewport["']/i.test(html)) errors.push("index.html is missing a responsive viewport meta tag.");
 if (!/<title>[^<]+<\/title>/i.test(html)) errors.push("index.html is missing a page title.");
 if (html.includes("\\n</style>\\n")) errors.push("index.html contains literal escaped newline markers around a style block; use real line breaks.");
+if (!html.includes("window.skRunDirectorySearch=()=>{runSearch();filterApps();}")) errors.push("Header search is missing the unified directory-search entry point.");
+if (!html.includes("window.skRunDirectorySearch?.();if(input.value.trim())render();")) errors.push("Header search button is not connected to the directory search.");
+if (/headerSearch\\.addEventListener\\(['"]input['"][^;]*stopImmediatePropagation/.test(html)) errors.push("A legacy capture-phase header search handler is still intercepting the unified search.");
 
 const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)];
 let checked = 0;
