@@ -12,7 +12,7 @@ function currentDb(){return window.SK_SUPABASE_CLIENT||window.skSupabaseClient||
 async function syncSession(){
  db=currentDb();if(!db){user=null;renderSignedOut();return;}
  const {data}=await db.auth.getSession();user=data?.session?.user||null;
- if(user){const {data:p}=await db.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();if(p?.role==='admin')user=null;}
+ if(user){const {data:p}=await db.from('sk_profiles').select('role,display_name,bio').eq('id',user.id).maybeSingle();if(p?.role==='admin')user=null;else if(p){$('skCommunityProfileName').value=p.display_name||'';$('skCommunityProfileBio').value=p.bio||'';}}
  updateComposer();await loadFeed();
 }
 function renderSignedOut(){updateComposer();loadFeed();}
