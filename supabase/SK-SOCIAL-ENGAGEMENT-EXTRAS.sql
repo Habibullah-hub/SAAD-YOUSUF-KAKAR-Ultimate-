@@ -161,6 +161,47 @@ drop trigger if exists sk_streak_on_like on public.sk_post_likes;
 create trigger sk_streak_on_like after insert on public.sk_post_likes
 for each row execute function public.sk_touch_member_streak();
 
+create or replace function public.sk_post_engagement_counts(p_post_ids uuid[])
+returns table(post_id uuid,like_count bigint,comment_count bigint)
+language sql
+stable
+security definer
+set search_path = ''
+as $
+  select p.id,
+    (select count(*) from public.sk_post_likes l where l.post_id=p.id),
+    (select count(*) from public.sk_post_comments c where c.post_id=p.id and c.status='published')
+  from public.sk_posts p
+  where p.id=any(coalesce(p_post_ids,array[]::uuid[]))
+    and p.status='published'
+    and (
+      p.visibility='public'
+      or p.author_id=(select auth.uid())
+      or public.sk_is_admin()
+      or (p.visibility='followers' and exists(
+        select 1 from public.sk_follows f
+        where f.follower_id=(select auth.uid()) and f.following_id=p.author_id
+      ))
+    );
+$;
+
+create or replace function public.sk_profile_follower_counts(p_profile_ids uuid[])
+returns table(profile_id uuid,follower_count bigint)
+language sql
+stable
+security definer
+set search_path = ''
+as $
+  select p.id,(select count(*) from public.sk_follows f where f.following_id=p.id)
+  from public.sk_profiles p
+  where p.id=any(coalesce(p_profile_ids,array[]::uuid[]));
+$;
+
+revoke all on function public.sk_post_engagement_counts(uuid[]) from public;
+revoke all on function public.sk_profile_follower_counts(uuid[]) from public;
+grant execute on function public.sk_post_engagement_counts(uuid[]) to anon,authenticated;
+grant execute on function public.sk_profile_follower_counts(uuid[]) to anon,authenticated;
+
 revoke all on function public.sk_emit_social_notification() from public,anon,authenticated;
 revoke all on function public.sk_touch_member_streak() from public,anon,authenticated;
 
