@@ -14,8 +14,11 @@ Run these scripts in the **SK Cyber Hub Supabase project only**, in this order:
 6. `supabase/SK-CREATOR-MONETIZATION-FOUNDATION.sql`
 7. `supabase/SK-SECURITY-HARDENING-2026-11.sql`
 8. `supabase/SK-ACCOUNT-SECURITY-REMEDIATION.sql`
+9. `supabase/SK-SOCIAL-ENGAGEMENT-EXTRAS.sql`
 
 The account remediation migration is repeat-safe. It enforces the single-admin index, removes browser-role REFERENCES/TRIGGER/TRUNCATE privileges from SK tables, and prevents direct browser execution of the auth-user trigger function. It does not create/delete accounts or alter content. The owner has already applied these same changes manually in the live project; do not rerun migrations blindly if the live schema has since changed.
+
+Run migration #9 only after the community v2 migration has created the final `sk_posts`, `sk_post_comments`, `sk_post_likes` and `sk_follows` tables. It creates owner-scoped notifications and member activity streaks. Notifications are generated only by actual follows, likes, comments and new posts from followed creators. Streaks count a genuine post, like or comment once per UTC day. No paid streak restore, fake urgency, fake activity, or false popularity counters are used. The web interface also includes a personalized feed, latest/following/saved filters, progressive scrolling with a clear end cue, topic buzz based on actual hashtags, optional local like-count hiding and basic image color filters. Image filters are applied to the selected upload; this is not yet a live AR face-lens camera.
 
 Do not run the community extension before the base setup. Do not paste a Supabase service-role key into the website or any browser code.
 
@@ -61,6 +64,8 @@ Live video is transported by LiveKit Cloud; it is not stored in the SK Supabase 
 - The community media design uses a private bucket and signed image URLs only when the related post is visible to that viewer. However, a live audit on 2026-11-03 found no Storage buckets or Storage policies in the current Supabase project, so community image uploads are **not yet deployed**. Do not create a public bucket to fix previews. The private bucket migration must be reviewed and applied separately before uploads are enabled.
 - Photos on public posts are visible to everyone; followers-only post photos are signed only for permitted viewers. Members should still avoid uploading highly sensitive images.
 - If a free quota is reached, the feature should pause or fail safely rather than trigger a paid upgrade.
+- Notifications and streaks are optional engagement aids. Users can ignore them; the platform must not use fake red alerts, fake social proof, fabricated countdowns or coercive streak-loss prompts.
+- Any countdown or limited-time message must refer to a real, published event/deadline. Users should be able to control notification permission at browser level.
 
 ## Visitor privacy
 
