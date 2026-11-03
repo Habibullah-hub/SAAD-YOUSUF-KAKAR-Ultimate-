@@ -2,6 +2,7 @@ package com.saad.yousufkakar.skhub;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Build;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
@@ -72,7 +73,7 @@ public class MainActivity extends Activity {
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         settings.setSupportMultipleWindows(false);
         settings.setJavaScriptCanOpenWindowsAutomatically(false);
-        settings.setSafeBrowsingEnabled(true);
+        if (Build.VERSION.SDK_INT >= 26) settings.setSafeBrowsingEnabled(true);
         web.setWebChromeClient(new WebChromeClient());
         web.setWebViewClient(new WebViewClient() {
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
