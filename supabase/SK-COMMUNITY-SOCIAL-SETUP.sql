@@ -274,8 +274,8 @@ grant insert,select,update on public.sk_post_reports to authenticated;
 
 -- Shared public photo bucket. Each member is restricted to their own UID folder.
 insert into storage.buckets (id,name,public,file_size_limit,allowed_mime_types)
-values ('sk-community-media','sk-community-media',true,8388608,array['image/jpeg','image/png','image/webp'])
-on conflict (id) do update set public=true,file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;
+values ('sk-community-media','sk-community-media',false,8388608,array['image/jpeg','image/png','image/webp'])
+on conflict (id) do update set public=false,file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;
 
 create or replace function public.sk_limit_community_user_storage()
 returns trigger
@@ -305,6 +305,24 @@ create trigger sk_community_user_storage_limit before insert or update on storag
 for each row execute function public.sk_limit_community_user_storage();
 
 drop policy if exists sk_community_media_public_read on storage.objects;
+drop policy if exists sk_community_media_read_visible on storage.objects;
+create policy sk_community_media_read_visible on storage.objects for select to anon,authenticated
+using (
+  bucket_id='sk-community-media'
+  and exists(
+    select 1 from public.sk_posts p
+    where p.media_path=storage.objects.name
+      and p.status='published'
+      and (
+        p.visibility='public'
+        or p.author_id=(select auth.uid())
+        or (p.visibility='followers' and exists(
+          select 1 from public.sk_follows f
+          where f.follower_id=(select auth.uid()) and f.following_id=p.author_id
+        ))
+      )
+  )
+);
 drop policy if exists sk_community_media_insert_own on storage.objects;
 drop policy if exists sk_community_media_update_own on storage.objects;
 drop policy if exists sk_community_media_delete_own on storage.objects;
@@ -322,6 +340,6 @@ commit;
 
 -- This is a shared platform bucket, not the owner's personal Drive or phone.
 -- Each member has a UID folder; all members still share the project's free quota.
--- Public post photos are visible to everyone. Do not upload private/sensitive images.
+-- The bucket is private. Signed URLs are issued only when the related post is visible to the current viewer. Do not upload highly sensitive images.
 -- Videos remain external links in v2; direct video uploads are intentionally disabled.
 -- Never enable paid billing or upgrades without the owner's explicit approval.
