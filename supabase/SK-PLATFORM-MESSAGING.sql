@@ -28,6 +28,7 @@ as $$
 declare
  v_recipient_id uuid;
  v_sender_email text;
+ v_recent_count integer;
 begin
  if new.sender_id <> (select auth.uid()) then
   raise exception 'Sender must be the signed-in SK member.';
@@ -38,6 +39,11 @@ begin
  limit 1;
  if v_recipient_id is null then
   raise exception 'No registered SK member uses that email address.';
+ end if;
+ select count(*) into v_recent_count from public.sk_messages m
+ where m.sender_id=new.sender_id and m.created_at > now() - interval '1 hour';
+ if v_recent_count >= 20 then
+  raise exception 'SK Mail sending limit reached. Please try again later.';
  end if;
  if v_recipient_id=new.sender_id then
   raise exception 'You cannot send a message to yourself.';
