@@ -70,7 +70,7 @@ Deno.serve(async (req: Request) => {
       room: roomName,
       canPublish: isHost,
       canSubscribe: true,
-      canPublishData: true,
+      canPublishData: isHost,
     });
     const token = await access.toJwt();
     return reply(200, { serverUrl: livekitUrl, token, room: roomName, role: isHost ? "host" : "viewer" });
