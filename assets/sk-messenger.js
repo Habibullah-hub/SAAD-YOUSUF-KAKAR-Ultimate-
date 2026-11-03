@@ -162,6 +162,7 @@ async function endCall(){
 async function cleanupCall(){
  if(signalChannel){await db.removeChannel(signalChannel);signalChannel=null;}
  if(callChannel){await db.removeChannel(callChannel);callChannel=null;}
+ if(activeCall&&db&&user){await db.from('sk_call_signals').delete().eq('call_id',activeCall.id);}
  if(pc){pc.close();pc=null;}
  if(localStream){localStream.getTracks().forEach(t=>t.stop());localStream=null;}
  const a=$('skConnectLocalMedia'),b=$('skConnectRemoteMedia');if(a)a.srcObject=null;if(b)b.srcObject=null;
