@@ -4577,7 +4577,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    let grid=section.querySelector('.resource-grid');
    if(!grid){grid=element('div','resource-grid');section.appendChild(grid);}
    let host=byId('skUnifiedPublicResources-'+sectionId);
-   if(!host){host=element('div','');host.id='skUnifiedPublicResources-'+sectionId;grid.appendChild(host);}
+   if(!host){host=element('div','resource-grid');host.id='skUnifiedPublicResources-'+sectionId;grid.appendChild(host);}
    const card=element('article','resource tile');
    const platformTerms={Web:'browser website online tool web app',Android:'android apk google play', 'iPhone/iPad':'iphone ipad ios app store',Windows:'windows pc desktop',Mac:'mac macos desktop',Linux:'linux desktop','Multi-platform':'android ios windows browser web'}; 
    card.dataset.search=[item.title,item.category,item.resource_type,item.platform,platformTerms[item.platform]||'',item.pricing,item.description].filter(Boolean).join(' ').toLowerCase();
