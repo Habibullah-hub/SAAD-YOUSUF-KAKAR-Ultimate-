@@ -114,7 +114,7 @@ async function setupPeer(call,initiator,screenPromise=null){
  }
 }
 async function processSignal(row){
- if(!pc||handlingSignal)return;
+ if(!pc)return;
  const s=row.payload||{};
  try{
   if(s.type==='offer'){
