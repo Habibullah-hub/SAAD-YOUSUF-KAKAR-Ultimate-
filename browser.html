@@ -51,7 +51,7 @@ function renderSaved(){let el=$('savedList');el.replaceChildren();if(!saved.leng
 function theme(){let t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;localStorage.setItem('sk-browser-theme',t);$('theme').textContent=t==='light'?'☾':'☼'}let t=localStorage.getItem('sk-browser-theme');if(t)document.documentElement.dataset.theme=t;$('theme').addEventListener('click',theme);$('themeSetting').addEventListener('click',e=>{e.preventDefault();theme()});
 $('shuffle').addEventListener('click',drawDiscover);$('historyBtn').addEventListener('click',()=>{show('searchView');$('results').replaceChildren();if(!history.length){$('results').innerHTML='<div class="empty">No recent searches yet.</div>';return}history.forEach(q=>{let b=document.createElement('button');b.className='result';b.style.width='100%';b.style.color='var(--text)';b.textContent='◷  '+q;b.addEventListener('click',()=>submit(q));$('results').append(b)})});
 $('clearHistory').addEventListener('click',()=>{history=[];localStorage.removeItem('sk-browser-history');toast('Recent searches cleared')});
-drawDiscover();
+drawDiscover();const initial=new URLSearchParams(location.search).get('q');if(initial){$('q').value=initial;submit(initial)}if(location.hash==='#searchView')show('searchView');
 })();
 </script><script src="./pwa-register.js" defer></script>
 </body></html>
