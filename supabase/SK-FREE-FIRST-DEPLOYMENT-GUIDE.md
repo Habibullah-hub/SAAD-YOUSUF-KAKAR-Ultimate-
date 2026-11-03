@@ -13,6 +13,9 @@ Run these scripts in the **SK Cyber Hub Supabase project only**, in this order:
 5. `supabase/SK-LIVE-ROOMS-FOUNDATION.sql`
 6. `supabase/SK-CREATOR-MONETIZATION-FOUNDATION.sql`
 7. `supabase/SK-SECURITY-HARDENING-2026-11.sql`
+8. `supabase/SK-ACCOUNT-SECURITY-REMEDIATION.sql`
+
+The account remediation migration is repeat-safe. It enforces the single-admin index, removes browser-role REFERENCES/TRIGGER/TRUNCATE privileges from SK tables, and prevents direct browser execution of the auth-user trigger function. It does not create/delete accounts or alter content. The owner has already applied these same changes manually in the live project; do not rerun migrations blindly if the live schema has since changed.
 
 Do not run the community extension before the base setup. Do not paste a Supabase service-role key into the website or any browser code.
 
@@ -55,6 +58,6 @@ Live video is transported by LiveKit Cloud; it is not stored in the SK Supabase 
 ## No-cost and security rules
 
 - No paid storage, video recording, TURN relay, billing plan or automatic upgrade is enabled by this repository.
-- Supabase project storage and egress quotas are shared by the project; each member is restricted to their own UID folder and a 50 MB per-member photo cap, but these are not separate unlimited storage accounts. The bucket is private and signed image URLs are issued only when the related post is visible to that viewer.
+- The community media design uses a private bucket and signed image URLs only when the related post is visible to that viewer. However, a live audit on 2026-11-03 found no Storage buckets or Storage policies in the current Supabase project, so community image uploads are **not yet deployed**. Do not create a public bucket to fix previews. The private bucket migration must be reviewed and applied separately before uploads are enabled.
 - Photos on public posts are visible to everyone; followers-only post photos are signed only for permitted viewers. Members should still avoid uploading highly sensitive images.
 - If a free quota is reached, the feature should pause or fail safely rather than trigger a paid upgrade.
