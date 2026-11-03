@@ -4853,7 +4853,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
  function render(){
   chips.forEach(chip=>{const active=selected.has(chip.dataset.skInterest);chip.setAttribute('aria-pressed',String(active));});
   let visible=0;
-  cards.forEach(card=>{const tags=(card.dataset.skTopics||'').split(/\\s+/);const show=!selected.size||tags.some(tag=>selected.has(tag));card.hidden=!show;if(show)visible++;});
+  cards.forEach(card=>{const tags=(card.dataset.skTopics||'').split(/\s+/);const show=!selected.size||tags.some(tag=>selected.has(tag));card.hidden=!show;if(show)visible++;});
   if(status)status.textContent=selected.size?('Your mix is showing '+visible+' matching destinations. Saved only in this browser.'):'All '+visible+' destinations are visible. Choose interests to personalize this device.';
   try{localStorage.setItem(storageKey,JSON.stringify([...selected]));}catch(e){}
  }
