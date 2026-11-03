@@ -57,6 +57,14 @@ if (!html.includes('rel="manifest"') || !html.includes("serviceWorker.register")
   errors.push("index.html is missing the PWA manifest or service-worker registration.");
 }
 
+const pwaRegisterPath = "pwa-register.js";
+if (!fs.existsSync(pwaRegisterPath)) errors.push("PWA registration/update script is missing.");
+else {
+  const registration = spawnSync(process.execPath, ["--check", pwaRegisterPath], { encoding: "utf8" });
+  if (registration.status !== 0) errors.push(`PWA registration script has a JavaScript syntax error:\n${registration.stderr || registration.stdout}`);
+  if (!html.includes('src="./pwa-register.js"')) errors.push("index.html is not loading the PWA registration/update script.");
+}
+
 if (errors.length) {
   console.error(errors.join("\n\n"));
   process.exit(1);
