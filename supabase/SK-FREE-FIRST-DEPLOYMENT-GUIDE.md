@@ -15,6 +15,7 @@ Run these scripts in the **SK Cyber Hub Supabase project only**, in this order:
 7. `supabase/SK-SECURITY-HARDENING-2026-11.sql`
 8. `supabase/SK-ACCOUNT-SECURITY-REMEDIATION.sql`
 9. `supabase/SK-SOCIAL-ENGAGEMENT-EXTRAS.sql`
+10. `supabase/SK-PLATFORM-MESSAGING.sql`
 
 The account remediation migration is repeat-safe. It enforces the single-admin index, removes browser-role REFERENCES/TRIGGER/TRUNCATE privileges from SK tables, and prevents direct browser execution of the auth-user trigger function. It does not create/delete accounts or alter content. The owner has already applied these same changes manually in the live project; do not rerun migrations blindly if the live schema has since changed.
 
@@ -72,3 +73,15 @@ Live video is transported by LiveKit Cloud; it is not stored in the SK Supabase 
 - The website records a coarse page-visit count in Supabase, with one count per browser session and page path.
 - It does not request visitor geolocation or send visitor IP addresses to a third-party IP-geolocation service. Country is stored as `ZZ` / `Not collected` until an explicit opt-in feature is designed.
 - This is aggregate page analytics, not a precise unique-person count. Browser storage can be cleared and visitors may use multiple devices.
+
+
+## Native SK platforms — first implementation
+The website now has an in-site SK Platforms workspace:
+- **SK AI Studio:** device-local prompt workspace and reusable task templates. A real AI model is not connected yet; never show mock text as an AI answer. A secure server-side provider integration must be selected and cost/privacy reviewed first.
+- **SK Mail:** internal member-to-member messages, not public internet email and not Gmail/SMTP. Run migration #10 only after migrations #1 and #3 and the live member profile/auth system are confirmed. It resolves recipient email against registered Supabase Auth accounts; only participants can read messages; recipients can update only the read receipt. No external email is sent.
+- **SK Browser:** searches resources already listed inside SK Cyber Hub. It is not a standalone browser engine and does not browse arbitrary websites in an embedded browser.
+- **SK Media Center:** plays audio/video files selected from the user's device in the current browser session. Files are not uploaded or stored on the server.
+- These first native modules require no paid API, paid storage or new billing. Favorites/prompts and local media are device/session scoped.
+
+### Boundaries before claiming full replacements
+A full AI assistant needs a model runtime or an approved inference provider; a public email service needs a domain, mail server, deliverability and anti-abuse controls; a complete mobile browser needs an Android browser engine; a cloud media platform needs private storage, quotas and moderation. Those are separate engineering phases. Do not collect provider passwords or paste secret API keys into browser JavaScript. Do not enable paid plans without the owner's explicit approval.
