@@ -4428,8 +4428,29 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 #skNewsVideoModalV1 .sk-video-fallback-card .sk-video-open-original{margin:0;background:linear-gradient(120deg,#075b98,#087b70);border:0;box-shadow:0 5px 14px #075b9833}
 @keyframes skVideoLauncherFloat{0%,100%{transform:translateY(0);box-shadow:0 9px 30px #001b25aa,0 0 0 1px #75f5d633,inset 0 1px #ffffff40}50%{transform:translateY(-4px);box-shadow:0 13px 34px #001b25bb,0 0 17px #40e8d566,inset 0 1px #ffffff55}}
 @media(prefers-reduced-motion:reduce){#skNewsVideoLauncherV1{animation:none;transition:none}}
+/* Compact floating video control: unobtrusive on phones and desktops */
+#skNewsVideoLauncherV1{
+ position:fixed;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));left:auto;top:auto;z-index:1199;
+ width:42px;height:42px;min-width:42px;min-height:42px;padding:0;display:grid;place-items:center;
+ border:1px solid #79c8f0;border-radius:50%;
+ background:linear-gradient(145deg,#0879bd,#07528e);color:#fff;
+ font-size:0;line-height:1;box-shadow:0 3px 12px #062b4b38;
+ cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
+ animation:skVideoLauncherFloat 4.8s ease-in-out infinite;
+ transition:left .25s ease,top .25s ease,transform .18s,box-shadow .18s,background .18s;
+}
+#skNewsVideoLauncherV1::before{content:"▶";font-size:15px;margin-left:2px}
+#skNewsVideoLauncherV1::after{content:none}
+#skNewsVideoLauncherV1 .sk-video-launcher-grip{display:none}
+#skNewsVideoLauncherV1:hover{transform:scale(1.06);box-shadow:0 5px 16px #062b4b55}
+#skNewsVideoLauncherV1.is-dragging{cursor:grabbing;animation:none;transform:scale(1.12);transition:none;box-shadow:0 0 0 3px #0879bd30,0 7px 18px #062b4b55}
+#skNewsVideoLauncherV1.is-docked-left{border-radius:50%}
+#skNewsVideoLauncherV1.is-docked-right{border-radius:50%}
+#skNewsVideoLauncherV1:focus-visible{outline:3px solid #0879bd;outline-offset:3px}
+@media(max-width:600px){#skNewsVideoLauncherV1{width:40px;height:40px;min-width:40px;min-height:40px;right:9px;bottom:calc(12px + env(safe-area-inset-bottom))}}
+@media(prefers-reduced-motion:reduce){#skNewsVideoLauncherV1{animation:none;transition:none}}
 </style>
-<button id="skNewsVideoLauncherV1" type="button" aria-label="ویڈیو سرچ کھولیں؛ بٹن کو گھسیٹ کر جگہ بدلیں" aria-haspopup="dialog" aria-controls="skNewsVideoModalV1"><span class="sk-video-launcher-grip" aria-hidden="true">⠿</span><span>▶ ویڈیو سرچ</span></button>
+<button id="skNewsVideoLauncherV1" type="button" aria-label="ویڈیو سرچ کھولیں؛ بٹن کو گھسیٹ کر جگہ بدلیں" title="ویڈیو سرچ — گھسیٹ کر جگہ بدلیں" aria-haspopup="dialog" aria-controls="skNewsVideoModalV1"></button>
 <div id="skNewsVideoModalV1" aria-hidden="true">
  <section class="sk-video-dialog" role="dialog" aria-modal="true" aria-labelledby="skNewsVideoTitleV1">
   <header class="sk-video-head"><strong id="skNewsVideoTitleV1">Related news videos</strong><button class="sk-video-close" id="skNewsVideoCloseV1" type="button" aria-label="Close video window">×</button></header>
