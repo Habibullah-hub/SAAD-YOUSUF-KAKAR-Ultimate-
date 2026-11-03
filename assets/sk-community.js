@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
 const root=$('skCommunityPanel');if(!root)return;
-let db=null,user=null,activeTab='feed',busy=false;
+let db=null,user=null,isAdmin=false,activeTab='feed',busy=false;
 const say=t=>{const n=$('skCommunityStatus');if(n)n.textContent=t;};
 const el=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n;};
 const safeUrl=value=>{try{const u=new URL(value);return u.protocol==='https:'?u.href:'';}catch(_){return '';}};
@@ -10,9 +10,9 @@ const shortDate=value=>{try{return new Intl.DateTimeFormat(undefined,{dateStyle:
 const escName=p=>p?.display_name||'SK Member';
 function currentDb(){return window.SK_SUPABASE_CLIENT||window.skSupabaseClient||null;}
 async function syncSession(){
- db=currentDb();if(!db){user=null;renderSignedOut();return;}
- const {data}=await db.auth.getSession();user=data?.session?.user||null;
- if(user){const {data:p}=await db.from('sk_profiles').select('role,display_name,bio').eq('id',user.id).maybeSingle();if(p?.role==='admin')user=null;else if(p){$('skCommunityProfileName').value=p.display_name||'';$('skCommunityProfileBio').value=p.bio||'';}}
+ db=currentDb();if(!db){user=null;isAdmin=false;renderSignedOut();return;}
+ const {data}=await db.auth.getSession();user=data?.session?.user||null;isAdmin=false;
+ if(user){const {data:p}=await db.from('sk_profiles').select('role,display_name,bio').eq('id',user.id).maybeSingle();isAdmin=p?.role==='admin';if(p){$('skCommunityProfileName').value=p.display_name||'';$('skCommunityProfileBio').value=p.bio||'';}}
  updateComposer();await loadFeed();
 }
 function renderSignedOut(){updateComposer();loadFeed();}
@@ -104,7 +104,7 @@ function makePost(post,profile,likeCount,commentCount,liked,saved,isFollowing,me
  const share=el('button','','Share ↗');share.type='button';share.addEventListener('click',()=>sharePost(post));
  const report=el('button','','Report');report.type='button';report.disabled=!user||user.id===post.author_id;report.addEventListener('click',()=>reportPost(post.id));
  actions.append(like,comment,save,share,report);
- if(user?.id===post.author_id||user?.id){if(user?.id===post.author_id){const del=el('button','','Delete');del.type='button';del.addEventListener('click',()=>deletePost(post));actions.append(del);}}
+ if(user&&(user.id===post.author_id||isAdmin)){const del=el('button','',isAdmin&&user.id!==post.author_id?'Moderate · Delete':'Delete');del.type='button';del.addEventListener('click',()=>deletePost(post));actions.append(del);}
  card.append(actions);return card;
 }
 async function toggleLike(id,liked,button){if(!user)return;say('');button.disabled=true;const r=liked?await db.from('sk_post_likes').delete().eq('post_id',id).eq('user_id',user.id):await db.from('sk_post_likes').insert({post_id:id,user_id:user.id});if(r.error)say(r.error.message);await loadFeed();}
@@ -127,7 +127,7 @@ async function toggleComments(postId,card){
 }
 async function sharePost(post){const url=location.origin+location.pathname+'#community';const text=(post.body||'A post on SK Cyber Hub').slice(0,220);try{if(navigator.share)await navigator.share({title:'SK Cyber Hub Community',text,url});else{await navigator.clipboard.writeText(text+' '+url);say('پوسٹ کا لنک کاپی ہوگیا۔');}}catch(_){}}
 async function reportPost(id){const reason=prompt('Report reason: spam, harassment, hate, nudity, copyright, scam, other');if(!reason)return;const allowed=['spam','harassment','hate','nudity','copyright','scam','other'];const r=await db.from('sk_post_reports').insert({post_id:id,reporter_id:user.id,reason:allowed.includes(reason.toLowerCase())?reason.toLowerCase():'other'});say(r.error?'Report نہیں ہوا: '+r.error.message:'شکایت موصول ہوگئی۔ شکریہ۔');}
-async function deletePost(post){if(!confirm('کیا آپ اپنی پوسٹ حذف کرنا چاہتے ہیں؟'))return;const r=await db.from('sk_posts').delete().eq('id',post.id).eq('author_id',user.id);if(r.error)say(r.error.message);else{if(post.media_path)await db.storage.from('sk-community-media').remove([post.media_path]);say('پوسٹ حذف ہوگئی۔');}await loadFeed();}
+async function deletePost(post){if(!user||(!isAdmin&&post.author_id!==user.id))return;const own=post.author_id===user.id;if(!confirm(own?'کیا آپ اپنی پوسٹ حذف کرنا چاہتے ہیں؟':'کیا آپ بطور Admin اس پوسٹ کو حذف کرنا چاہتے ہیں؟'))return;let q=db.from('sk_posts').delete().eq('id',post.id);if(!isAdmin)q=q.eq('author_id',user.id);const r=await q;if(r.error)say(r.error.message);else{if(post.media_path)await db.storage.from('sk-community-media').remove([post.media_path]);say('پوسٹ حذف ہوگئی۔');}await loadFeed();}
 async function saveProfile(){if(!user||!db)return;const name=$('skCommunityProfileName').value.trim().slice(0,40),bio=$('skCommunityProfileBio').value.trim().slice(0,160);if(!name){say('پروفائل نام لکھیں۔');return;}const r=await db.from('sk_profiles').update({display_name:name,bio}).eq('id',user.id);say(r.error?'پروفائل محفوظ نہیں ہوا: '+r.error.message:'پروفائل اپ ڈیٹ ہوگیا۔');}
 function init(){
  $('skCommunityPostText')?.addEventListener('input',e=>{$('skCommunityCharCount').textContent=e.target.value.length+' / 2000';});
