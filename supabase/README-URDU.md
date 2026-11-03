@@ -60,8 +60,9 @@ WHERE role = 'admin';
 - Private community posts کے likes/comments عام عوام کو نظر نہیں آنے چاہییں؛ Admin اور متعلقہ پوسٹ کا مالک ہی private پوسٹ سے متعلق ڈیٹا دیکھ سکتے ہیں۔
 - Admin کی MOD APK review notes الگ private table میں محفوظ ہیں، public app record میں نہیں۔
 - Scan status صرف درج شدہ معلومات ہے؛ اس کا مطلب APK کے محفوظ ہونے کی ضمانت نہیں۔
-- Unified catalog ابھی schema foundation ہے؛ جب تک frontend integration اور حقیقی runtime tests مکمل نہ ہوں، اسے مکمل طور پر منسلک یا live نہ سمجھیں۔
-- ویب سائٹ کا موجودہ importer اگر `sk_apps` استعمال کرتا ہے تو catalog migration اکیلے اسے `sk_resources` پر منتقل نہیں کرتی۔
+- Unified Catalog کا frontend اب `main` برانچ میں منسلک ہے: Owner Admin نئی listing کو unpublished حالت میں محفوظ کر سکتا ہے، پھر Review & Publish کے ذریعے عوامی کر سکتا ہے؛ published listings متعلقہ directory sections اور Global Search میں آتی ہیں۔
+- اس نئے حصے کے لیے `SK-UNIFIED-RESOURCES.sql` لازمی ہے۔ جب تک یہ migration SK Cyber Hub Supabase project میں نہیں چلتی، نیا catalog save/load نہیں ہوگا۔
+- پرانا Add/Edit App اور Bulk Import ابھی بھی الگ `sk_apps` table استعمال کرتے ہیں۔ ان پرانی app rows کو `sk_resources` میں خودکار copy نہیں کیا گیا؛ اس لیے دونوں tables ایک ہی Supabase project میں ہیں مگر legacy app records ابھی unified catalog میں migrate نہیں ہوئے۔
 - کوئی بھی external APK، software یا earning link شائع کرنے سے پہلے اصل publisher/source، HTTPS، terms، خطرات اور affiliate/sponsored disclosure چیک کریں۔
 
 
