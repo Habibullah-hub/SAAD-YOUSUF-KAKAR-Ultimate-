@@ -4469,7 +4469,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   const seq=++requestNo;activeQuery=String(q||'').trim();if(!activeQuery)return;
   const wantsYouTube=/\b(youtube|you\s*tube|yt)\b/i.test(activeQuery);
   const cleanQuery=activeQuery.replace(/\b(youtube|you\s*tube|yt)\b/ig,' ').replace(/\s+/g,' ').trim()||activeQuery;
-  const mode=forcedMode||(wantsYouTube?'youtube':modeInput.value);
+  const mode=wantsYouTube?'youtube':(forcedMode||modeInput.value);
   modeInput.value=mode;
   searches.replaceChildren();results.replaceChildren();
   if(mode!=='youtube')providers.forEach(([label,base])=>searches.append(makeLink(label,base,cleanQuery)));
