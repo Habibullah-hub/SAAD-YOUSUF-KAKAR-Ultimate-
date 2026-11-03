@@ -54,10 +54,14 @@ The AI video finder records free-use limits, account/card requirements, resoluti
 ## Zero-cost rule
 Development and launch should use free tools and free tiers wherever possible. Do not enable a paid plan, service, domain, ad spend or purchase without the owner's explicit approval. Free services have limits and may change.
 
-## SK Digital Workbench
-The Digital Workbench brings service launch links for UC Browser, Opera, Snaptube, Gmail, ChatGPT, Microsoft Copilot, DeepSeek and Gemini into one searchable area. It includes device-local favorites, recent launches (up to 12), a prompt composer with copy action, and private device-local notes. These are safe launch links and local utilities, not claims of native integrations into third-party accounts or inboxes.
+## Native SK Platforms
+SK Cyber Hub is moving from a third-party app link directory toward native SK services. The current in-site workspace includes:
+- SK AI Studio: local prompt workspace and templates; live AI inference is not connected yet.
+- SK Mail: private member-to-member messaging after the separate Supabase migration; not public email/SMTP.
+- SK Browser: internal search across SK Hub resources; not a full standalone web browser.
+- SK Media Center: local device audio/video playback; no upload or cloud storage in this version.
 
-See [the product blueprint](docs/SK-DIGITAL-WORKBENCH-PRODUCT-BLUEPRINT.md) for the capability map, privacy boundaries and roadmap. Favorites, recents and notes use browser localStorage and do not sync between devices. The AI prompt is not sent anywhere until the user manually pastes it into a provider. The Snaptube link is informational; only download content the user owns or has permission to save.
+See [the native platform deployment guide](supabase/SK-FREE-FIRST-DEPLOYMENT-GUIDE.md) and [the product blueprint](docs/SK-DIGITAL-WORKBENCH-PRODUCT-BLUEPRINT.md). No paid API, subscription, storage bucket or billing is enabled.
 
 ## Development status
 Member signup uses Supabase Auth and the existing profile trigger; if email confirmation is enabled in Supabase, new users must confirm their email before logging in. The browser verifies that member accounts have the `member` role and never offers role promotion.\n\nThe website is being improved incrementally. A successful GitHub commit does not by itself confirm that GitHub Pages has finished deploying or that every third-party service is available. Test the live site on both mobile and desktop after deployment.
