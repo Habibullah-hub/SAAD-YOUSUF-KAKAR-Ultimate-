@@ -24,6 +24,26 @@ set display_name = coalesce(
 from auth.users u
 where u.id=p.id and (p.display_name='Member' or p.display_name='');
 
+-- New registrations inherit the optional first name as their initial public name.
+create or replace function public.sk_handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $
+begin
+  insert into public.sk_profiles (id,email,role,display_name)
+  values (
+    new.id,
+    new.email,
+    'member',
+    coalesce(nullif(left(trim(new.raw_user_meta_data->>'first_name'),40),''),nullif(split_part(new.email,'@',1),''),'Member')
+  )
+  on conflict (id) do update set email=excluded.email;
+  return new;
+end;
+$;
+
 create table if not exists public.sk_posts (
   id uuid primary key default gen_random_uuid(),
   author_id uuid not null references public.sk_profiles(id) on delete cascade,
@@ -237,6 +257,40 @@ on conflict (id) do update set
   public=true,
   file_size_limit=excluded.file_size_limit,
   allowed_mime_types=excluded.allowed_mime_types;
+
+-- Per-member storage cap: 50 MB total inside each member's own folder.
+create or replace function public.sk_limit_community_user_storage()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $
+declare
+  folder_owner text;
+  used_bytes bigint;
+  new_bytes bigint;
+begin
+  if new.bucket_id <> 'sk-community-media' then return new; end if;
+  folder_owner := (storage.foldername(new.name))[1];
+  if folder_owner is null or folder_owner <> (select auth.uid())::text then
+    raise exception 'Community uploads must be stored in your own member folder.';
+  end if;
+  new_bytes := coalesce((new.metadata->>'size')::bigint,0);
+  select coalesce(sum(coalesce((metadata->>'size')::bigint,0)),0)
+    into used_bytes
+    from storage.objects
+    where bucket_id='sk-community-media'
+      and (storage.foldername(name))[1]=folder_owner
+      and name <> new.name;
+  if used_bytes + new_bytes > 52428800 then
+    raise exception 'Your community photo storage limit is 50 MB. Delete an old photo before uploading more.';
+  end if;
+  return new;
+end;
+$;
+drop trigger if exists sk_community_user_storage_limit on storage.objects;
+create trigger sk_community_user_storage_limit before insert on storage.objects
+for each row execute function public.sk_limit_community_user_storage();
 
 drop policy if exists sk_community_media_public_read on storage.objects;
 create policy sk_community_media_public_read on storage.objects
