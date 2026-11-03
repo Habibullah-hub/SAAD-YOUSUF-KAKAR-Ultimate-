@@ -9,7 +9,7 @@ if (!/<title>[^<]+<\/title>/i.test(html)) errors.push("index.html is missing a p
 if (html.includes("\\n</style>\\n")) errors.push("index.html contains literal escaped newline markers around a style block; use real line breaks.");
 if (!html.includes("window.skRunDirectorySearch=()=>{runSearch();filterApps();}")) errors.push("Header search is missing the unified directory-search entry point.");
 if (!html.includes("window.skRunDirectorySearch?.();if(input.value.trim())render();")) errors.push("Header search button is not connected to the directory search.");
-if (/headerSearch\\.addEventListener\\(['"]input['"][^;]*stopImmediatePropagation/.test(html)) errors.push("A legacy capture-phase header search handler is still intercepting the unified search.");
+if (html.includes("headerSearch.addEventListener('input'")) errors.push("A legacy header search input handler is still present.");
 
 const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)];
 let checked = 0;
