@@ -81,10 +81,12 @@ async function loadFeed(){
   ]);
   const pm=new Map((profiles.data||[]).map(x=>[x.id,x])),count=(arr,id)=>((arr||[]).filter(x=>x.post_id===id).length);
   const liked=new Set((myLikes.data||[]).map(x=>x.post_id)),saved=new Set((mySaves.data||[]).map(x=>x.post_id)),followSet=new Set(followed);
-  feed.replaceChildren(...posts.map(post=>makePost(post,pm.get(post.author_id),count(likes.data,post.id),count(comments.data,post.id),liked.has(post.id),saved.has(post.id),followSet.has(post.author_id))));
+  const signed=await Promise.all(posts.filter(p=>p.media_path).map(async p=>{const r=await db.storage.from('sk-community-media').createSignedUrl(p.media_path,21600);return [p.id,r.error?null:r.data?.signedUrl||null];}));
+  const mediaUrls=new Map(signed);
+  feed.replaceChildren(...posts.map(post=>makePost(post,pm.get(post.author_id),count(likes.data,post.id),count(comments.data,post.id),liked.has(post.id),saved.has(post.id),followSet.has(post.author_id),mediaUrls.get(post.id))));
  }catch(e){feed.replaceChildren(el('div','sk-social-empty','سوشل فیڈ ابھی تیار نہیں: '+(e.message||'Database setup مکمل کریں۔')));}
 }
-function makePost(post,profile,likeCount,commentCount,liked,saved,isFollowing){
+function makePost(post,profile,likeCount,commentCount,liked,saved,isFollowing,mediaUrl){
  const card=el('article','sk-social-post');card.dataset.postId=post.id;
  const head=el('div','sk-social-post-head'),avatar=el('div','sk-social-avatar');
  if(profile?.avatar_url){const im=el('img');im.src=safeUrl(profile.avatar_url);im.alt='';avatar.append(im);}else avatar.textContent=(escName(profile).trim()[0]||'S').toUpperCase();
@@ -93,7 +95,7 @@ function makePost(post,profile,likeCount,commentCount,liked,saved,isFollowing){
  if(user&&user.id!==post.author_id){const follow=el('button','secondary',isFollowing?'Following':'Follow +');follow.type='button';follow.style.marginLeft='auto';follow.addEventListener('click',()=>toggleFollow(post.author_id,isFollowing,follow));head.append(follow);}
  card.append(head);
  if(post.body)card.append(el('p','sk-social-post-body',post.body));
- if(post.media_path){const {data}=db.storage.from('sk-community-media').getPublicUrl(post.media_path);const im=el('img','sk-social-media');im.src=data.publicUrl;im.alt=post.media_alt||'Shared community photo';im.loading='lazy';card.append(im);}
+ if(post.media_path){if(mediaUrl){const im=el('img','sk-social-media');im.src=mediaUrl;im.alt=post.media_alt||'Shared community photo';im.loading='lazy';card.append(im);}else{card.append(el('p','sk-social-muted','Photo is not available to this viewer.'));}}
  if(post.video_url){const a=el('a','sk-social-muted','▶ اصل ویڈیو کھولیں ↗');a.href=safeUrl(post.video_url);a.target='_blank';a.rel='noopener noreferrer';card.append(a);}
  const actions=el('div','sk-social-actions');
  const like=el('button',liked?'is-active':'',(liked?'♥':'♡')+' Like · '+likeCount);like.type='button';like.addEventListener('click',()=>toggleLike(post.id,liked,like));if(!user)like.disabled=true;
