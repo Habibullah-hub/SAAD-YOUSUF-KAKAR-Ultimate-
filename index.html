@@ -4560,7 +4560,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    let host=byId('skUnifiedPublicResources-'+sectionId);
    if(!host){host=element('div','');host.id='skUnifiedPublicResources-'+sectionId;grid.appendChild(host);}
    const card=element('article','resource tile');
-   card.dataset.search=[item.title,item.category,item.resource_type,item.platform,item.pricing,item.description].filter(Boolean).join(' ').toLowerCase();
+   const platformTerms={Web:'browser website online tool web app',Android:'android apk google play', 'iPhone/iPad':'iphone ipad ios app store',Windows:'windows pc desktop',Mac:'mac macos desktop',Linux:'linux desktop','Multi-platform':'android ios windows browser web'}; 
+   card.dataset.search=[item.title,item.category,item.resource_type,item.platform,platformTerms[item.platform]||'',item.pricing,item.description].filter(Boolean).join(' ').toLowerCase();
    card.dataset.cost=costLabel[item.pricing]||'unknown';
    const info=element('div','app-info');
    info.appendChild(element('span','tag',(item.category||item.resource_type||'Resource').toUpperCase()));
