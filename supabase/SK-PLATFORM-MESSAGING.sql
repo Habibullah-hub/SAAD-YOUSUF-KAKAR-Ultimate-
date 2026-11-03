@@ -75,7 +75,8 @@ with check (recipient_id=(select auth.uid()));
 
 revoke all on table public.sk_messages from anon;
 revoke all on table public.sk_messages from authenticated;
-grant select,insert,update on table public.sk_messages to authenticated;
+grant select,insert on table public.sk_messages to authenticated;
+grant update(read_at) on table public.sk_messages to authenticated;
 revoke all on function public.sk_messages_resolve_recipient() from public,anon,authenticated;
 
 commit;
