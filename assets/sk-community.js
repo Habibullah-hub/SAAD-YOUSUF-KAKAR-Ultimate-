@@ -82,22 +82,25 @@ async function loadFeed(append=false){
   if(!posts?.length){feedExhausted=true;if(!append)feed.replaceChildren(el('div','sk-social-empty','ابھی کوئی عوامی پوسٹ نہیں۔ پہلی پوسٹ آپ کر سکتے ہیں!'));else feed.append(el('div','sk-social-muted','آپ تمام تازہ پوسٹس دیکھ چکے ہیں۔'));return;}
   feedOffset+=posts.length;if(posts.length<20)feedExhausted=true;
   const ids=[...new Set(posts.map(p=>p.author_id))],postIds=posts.map(p=>p.id);
-  const [profiles,likes,comments,myLikes,mySaves,followers]=await Promise.all([
+  const [profiles,counts,myLikes,mySaves,followers]=await Promise.all([
    db.from('sk_public_profiles').select('id,display_name,avatar_url,bio').in('id',ids),
-   db.from('sk_post_likes').select('post_id').in('post_id',postIds),
-   db.from('sk_post_comments').select('post_id').in('post_id',postIds).eq('status','published'),
+   db.rpc('sk_post_engagement_counts',{p_post_ids:postIds}),
    user?db.from('sk_post_likes').select('post_id').eq('user_id',user.id).in('post_id',postIds):Promise.resolve({data:[]}),
    user?db.from('sk_saved_posts').select('post_id').eq('user_id',user.id).in('post_id',postIds):Promise.resolve({data:[]}),
-   db.from('sk_follows').select('following_id').in('following_id',ids)
+   db.rpc('sk_profile_follower_counts',{p_profile_ids:ids})
   ]);
-  const pm=new Map((profiles.data||[]).map(x=>[x.id,x])),count=(arr,id)=>((arr||[]).filter(x=>x.post_id===id).length);
-  const followerCounts=new Map();(followers.data||[]).forEach(x=>followerCounts.set(x.following_id,(followerCounts.get(x.following_id)||0)+1));
+  let rawLikes=[],rawComments=[],rawFollowers=[];
+  if(counts.error){const [l,cm]=await Promise.all([db.from('sk_post_likes').select('post_id').in('post_id',postIds),db.from('sk_post_comments').select('post_id').in('post_id',postIds).eq('status','published')]);rawLikes=l.data||[];rawComments=cm.data||[];}
+  if(followers.error){const f=await db.from('sk_follows').select('following_id').in('following_id',ids);rawFollowers=f.data||[];}
+  const pm=new Map((profiles.data||[]).map(x=>[x.id,x])),postCountMap=new Map((counts.data||[]).map(x=>[x.post_id,x]));
+  const count=(id,field)=>postCountMap.has(id)?Number(postCountMap.get(id)[field]||0):((field==='like_count'?rawLikes:rawComments).filter(x=>x.post_id===id).length);
+  const followerCounts=new Map();if(!followers.error)(followers.data||[]).forEach(x=>followerCounts.set(x.profile_id,Number(x.follower_count||0)));else rawFollowers.forEach(x=>followerCounts.set(x.following_id,(followerCounts.get(x.following_id)||0)+1));
   const liked=new Set((myLikes.data||[]).map(x=>x.post_id)),saved=new Set((mySaves.data||[]).map(x=>x.post_id)),followSet=new Set(followed);
-  if(activeTab==='for-you')posts.sort((a,b)=>{const score=p=>count(likes.data,p.id)*1.4+count(comments.data,p.id)*2+(followSet.has(p.author_id)?4:0);return score(b)-score(a);});
+  if(activeTab==='for-you')posts.sort((a,b)=>{const score=p=>count(p.id,'like_count')*1.4+count(p.id,'comment_count')*2+(followSet.has(p.author_id)?4:0);return score(b)-score(a);});
   const signed=await Promise.all(posts.filter(p=>p.media_path).map(async p=>{const r=await db.storage.from('sk-community-media').createSignedUrl(p.media_path,21600);return [p.id,r.error?null:r.data?.signedUrl||null];}));
   const mediaUrls=new Map(signed);
   if(!append)feed.replaceChildren();
-  feed.append(...posts.map(post=>makePost(post,pm.get(post.author_id),count(likes.data,post.id),count(comments.data,post.id),liked.has(post.id),saved.has(post.id),followSet.has(post.author_id),mediaUrls.get(post.id),followerCounts.get(post.author_id)||0)));
+  feed.append(...posts.map(post=>makePost(post,pm.get(post.author_id),count(post.id,'like_count'),count(post.id,'comment_count'),liked.has(post.id),saved.has(post.id),followSet.has(post.author_id),mediaUrls.get(post.id),followerCounts.get(post.author_id)||0)));
   renderBuzz(posts);
   feed.querySelector('#skCommunityMore')?.remove();
   if(!feedExhausted){const more=el('button','sk-social-load-more','مزید پوسٹس دیکھیں ↓');more.id='skCommunityMore';more.type='button';more.addEventListener('click',()=>loadFeed(true));feed.append(more);if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>{if(entries.some(x=>x.isIntersecting)){observer.disconnect();loadFeed(true);}},{rootMargin:'180px'});observer.observe(more);}}
