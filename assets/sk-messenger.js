@@ -1,7 +1,7 @@
 /* SK CYBER HUB — private messenger + direct WebRTC calls */
 (()=>{'use strict';
 const $=id=>document.getElementById(id),root=$('skConnectPanel');if(!root)return;
-let db=null,user=null,activeConversation=null,activePeer=null,messageChannel=null,incomingChannel=null,signalChannel=null,pc=null,localStream=null,activeCall=null,queuedSignals=[],authBound=false;
+let db=null,user=null,activeConversation=null,activePeer=null,messageChannel=null,incomingChannel=null,signalChannel=null,callChannel=null,pc=null,localStream=null,activeCall=null,queuedSignals=[],authBound=false;
 const say=t=>{const n=$('skConnectStatus');if(n)n.textContent=t;};
 const el=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n;};
 const safeName=p=>p?.display_name||'SK Member';
@@ -96,6 +96,7 @@ async function setupPeer(call,initiator,screenPromise=null){
  pc.ontrack=e=>{const remote=$('skConnectRemoteMedia');if(remote.srcObject!==e.streams[0])remote.srcObject=e.streams[0];show(remote,true);};
  pc.onconnectionstatechange=()=>{const state=pc?.connectionState;if(state==='connected')say('Call connected. Media is exchanged through WebRTC.');if(state==='failed')say('Call connection failed. This network may require a TURN relay, which is not configured in the free setup.');};
  signalChannel=db.channel('sk-call-signal-'+call.id+'-'+user.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'sk_call_signals',filter:'recipient_id=eq.'+user.id},payload=>{const row=payload.new;if(row.call_id===call.id)processSignal(row).catch(e=>say(e.message));}).subscribe();
+ callChannel=db.channel('sk-call-status-'+call.id+'-'+user.id).on('postgres_changes',{event:'UPDATE',schema:'public',table:'sk_call_sessions',filter:'id=eq.'+call.id},payload=>{if(payload.new.status==='accepted')say('Call accepted. Connecting…');if(['ended','declined','missed'].includes(payload.new.status)){say('دوسرے ممبر نے کال ختم کر دی۔');cleanupCall();}}).subscribe();
  const media=call.call_type==='video'?await navigator.mediaDevices.getUserMedia({audio:true,video:true}):call.call_type==='screen'&&initiator?await navigator.mediaDevices.getUserMedia({audio:true}):await navigator.mediaDevices.getUserMedia({audio:true});
  localStream=media;
  if(call.call_type==='screen'&&initiator){
