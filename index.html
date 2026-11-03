@@ -4392,14 +4392,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 #skNewsVideoModalV1 .sk-video-help{margin:10px 0 0;color:#52677d;font-size:11px;line-height:1.6}
 .news-card-actions .sk-news-video-button{padding:7px 10px;border:1px solid #a9cce5;border-radius:6px;background:#edf6fd;color:#075b98;font-size:11px;font-weight:800;cursor:pointer}
 @media(max-width:600px){#skNewsVideoModalV1{padding:7px}#skNewsVideoModalV1 .sk-video-content{padding:11px}#skNewsVideoModalV1 .sk-video-input-row{flex-direction:column}#skNewsVideoModalV1 button.sk-video-load{min-height:42px}}
+
+#skNewsVideoLauncherV1{position:fixed;right:14px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:1199;padding:12px 16px;border:1px solid #36c9b4;border-radius:999px;background:#073d3a;color:#fff;font-weight:850;box-shadow:0 8px 28px #001b25aa;cursor:pointer}
+#skNewsVideoLauncherV1:focus-visible{outline:3px solid #f6c85f;outline-offset:3px}
 </style>
+<button id="skNewsVideoLauncherV1" type="button" aria-haspopup="dialog" aria-controls="skNewsVideoModalV1">▶ ویڈیو سرچ</button>
 <div id="skNewsVideoModalV1" aria-hidden="true">
  <section class="sk-video-dialog" role="dialog" aria-modal="true" aria-labelledby="skNewsVideoTitleV1">
   <header class="sk-video-head"><strong id="skNewsVideoTitleV1">Related news videos</strong><button class="sk-video-close" id="skNewsVideoCloseV1" type="button" aria-label="Close video window">×</button></header>
   <div class="sk-video-content">
    <p class="sk-video-topic" id="skNewsVideoTopicV1"></p>
    <div class="sk-video-search-row">
-    <input id="skNewsVideoQueryV2" type="search" placeholder="Search videos… / ویڈیو تلاش کریں" aria-label="Search videos">
+    <input id="skNewsVideoQueryV2" type="search" enterkeyhint="search" autocomplete="off" placeholder="Search videos… / ویڈیو تلاش کریں" aria-label="Search videos">
     <select id="skNewsVideoModeV2" aria-label="Video search scope"><option value="all">All platforms</option><option value="youtube">YouTube only</option></select>
     <button id="skNewsVideoSearchV2" type="button">Search</button>
    </div>
@@ -4485,22 +4489,31 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    player.replaceChildren();const placeholder=document.createElement('div');placeholder.style.cssText='height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center';placeholder.textContent='اوپر نتائج میں سے ویڈیو منتخب کریں۔';player.append(placeholder);
   }catch(e){if(seq!==requestNo)return;player.replaceChildren();const placeholder=document.createElement('div');placeholder.style.cssText='height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center';placeholder.textContent='اس وقت ویڈیو سرچ سروس دستیاب نہیں۔ دوبارہ کوشش کریں یا YouTube کا لنک نیچے پیسٹ کریں۔';player.append(placeholder);note.textContent='عوامی سرچ سرور عارضی طور پر بند یا نیٹ ورک سے بلاک ہو سکتا ہے؛ کسی ویڈیو کو فرضی طور پر نہیں دکھایا گیا۔';}
  }
+ function openModal(query){
+  const q=String(query||'').trim();
+  modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+  if(q){queryInput.value=q;search(q,/\b(youtube|you\s*tube|yt)\b/i.test(q)?'youtube':modeInput.value);}
+  else {topic.textContent='ویڈیو تلاش کریں';queryInput.focus();}
+ }
  function show(query){
   activeQuery=String(query||'').trim();if(!activeQuery)return;
   topic.textContent='خبر سے متعلق ویڈیو تلاش: '+activeQuery;
   queryInput.value=activeQuery;modeInput.value=/\b(youtube|you\s*tube|yt)\b/i.test(activeQuery)?'youtube':'all';
   urlInput.value='';searches.replaceChildren();results.replaceChildren();
   player.replaceChildren();const p=document.createElement('div');p.style.cssText='height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center';p.textContent='ویڈیو تلاش شروع ہو رہی ہے…';player.append(p);
-  modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
-  $('skNewsVideoCloseV1').focus();search(activeQuery,modeInput.value);
+  openModal(activeQuery);$('skNewsVideoCloseV1').focus();
  }
  function embed(raw){
   const id=videoIdFromUrl(raw);if(!id){alert('براہ کرم درست عوامی YouTube ویڈیو لنک پیسٹ کریں۔');return;}
   playYouTube(id,'SK Cyber Hub video preview');note.textContent='YouTube ویڈیو اسی پاپ اَپ میں چل رہی ہے۔';
  }
  function close(){requestNo++;modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';player.replaceChildren();results.replaceChildren();}
- searchButton.addEventListener('click',()=>search(queryInput.value,modeInput.value));
- queryInput.addEventListener('keydown',e=>{if(e.key==='Enter')search(queryInput.value,modeInput.value);});
+ const runSearchFromInput=()=>{const q=queryInput.value.trim();if(!q){note.textContent='پہلے ویڈیو کا نام لکھیں۔';queryInput.focus();return;}search(q,modeInput.value);};
+ searchButton.addEventListener('click',runSearchFromInput);
+ queryInput.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key==='NumpadEnter'){e.preventDefault();runSearchFromInput();}});
+ queryInput.form?.addEventListener('submit',e=>{e.preventDefault();runSearchFromInput();});
+ $('skNewsVideoLauncherV1')?.addEventListener('click',()=>openModal(''));
+ $('skNewsVideoLauncherV1')?.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openModal('');}});
  $('skNewsVideoLoadV1').addEventListener('click',()=>embed(urlInput.value));
  urlInput.addEventListener('keydown',e=>{if(e.key==='Enter')embed(urlInput.value);});
  $('skNewsVideoCloseV1').addEventListener('click',close);
