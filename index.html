@@ -1581,7 +1581,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 @media(max-width:560px){#sk-world-network .sk-world-atlas{grid-template-columns:1fr;padding:18px}#sk-world-network .sk-atlas-globe{width:135px}#sk-world-network .sk-world-pillars{gap:8px}#sk-world-network .sk-world-pillars a{min-height:105px;padding:11px}#sk-world-network .sk-shorts-panel{grid-template-columns:1fr;padding:15px}#sk-world-network .sk-shorts-player{grid-column:auto}#community .sk-community-panel{padding:13px}#community .sk-community-head{flex-direction:column}}
 @media(prefers-reduced-motion:reduce){#sk-world-network .sk-world-pillars a{transition:none}}
 </style>
-<link rel="stylesheet" href="./assets/sk-platforms.css">
+<link rel="stylesheet" href="./assets/sk-platforms.css"><link rel="stylesheet" href="./assets/sk-discovery.css">
 </head>
 <body>
 <div id="google_translate_element" aria-hidden="true"></div><div id="configAlert" class="config-alert"><span>SK Cyber Hub database is not connected. Set up its separate database tables to manage listings.</span><button type="button" onclick="openSupabaseModal()">Configure</button></div>
@@ -1663,6 +1663,11 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
   <a href="#quick-tools" data-sk-view="quick-tools"><span>⚡</span><b>Instant browser tools</b><small>Useful utilities with no upload</small></a>
   <a href="#earnings-model" data-sk-view="earnings-model"><span>💰</span><b>Explore survey rewards</b><small>Country and reward rules apply</small></a>
  </div>
+</section>
+
+<section class="section wrap" id="sk-next-discovery" aria-label="More discoveries">
+ <div class="section-head"><div><h2>Keep discovering</h2><p>A fresh mix of useful destinations. Choose what interests you next.</p></div><button type="button" class="secondary" id="skShuffleDiscoveries">Show me something new ↻</button></div>
+ <div class="sk-next-grid" id="skNextGrid" aria-live="polite"></div>
 </section>
 
 <section class="section wrap" id="apps"><div class="section-head"><div><h2>Official app stores</h2><p>Use trusted publisher pages and official app stores.</p></div></div><div class="grid resource-grid">
@@ -4792,7 +4797,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 <script src="./assets/sk-live.js" defer></script>
 <script src="./assets/sk-creator-monetization.js" defer></script>
 <script src="./assets/sk-community.js" defer></script>
-<script src="./assets/sk-platforms.js" defer></script>
+<script src="./assets/sk-platforms.js" defer></script><script src="./assets/sk-discovery.js" defer></script>
 <script src="./pwa-register.js" defer></script>
 
 <script id="sk-unified-catalog-runtime-v1">
