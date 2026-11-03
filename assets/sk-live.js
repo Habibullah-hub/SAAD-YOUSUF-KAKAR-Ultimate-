@@ -22,7 +22,7 @@ async function connectRoom(item,hostMode){
  room.on(LivekitClient.RoomEvent.TrackUnsubscribed,(track)=>{track.detach().forEach(n=>n.remove());});
  room.on(LivekitClient.RoomEvent.Disconnected,()=>{say('Live session disconnected.');});
  await room.connect(creds.serverUrl,creds.token);
- activeRoom=item;showStage(true);$('skLiveShareScreen').hidden=!hostMode;$('skLiveEnd').hidden=!hostMode;
+ activeRoom=item;showStage(true);$('skLiveStartForm').hidden=!!hostMode;$('skLiveShareScreen').hidden=!hostMode;$('skLiveEnd').hidden=!hostMode;
  if(hostMode){
   await room.localParticipant.enableCameraAndMicrophone();
   for(const pub of room.localParticipant.videoTrackPublications.values()){if(pub.track)attachTrack(pub.track);}
@@ -64,12 +64,13 @@ async function joinRoom(item){
 }
 async function endLive(){
  if(activeRoom?.host_id===user?.id)await db.from('sk_live_rooms').update({status:'ended',ended_at:new Date().toISOString()}).eq('id',activeRoom.id);
- await leaveLive();await loadRooms();
+ await leaveLive();$('skLiveStartForm').hidden=!user;await loadRooms();
 }
 async function leaveLive(){
+ const wasHost=activeRoom?.host_id===user?.id;
  if(chatChannel){await db.removeChannel(chatChannel);chatChannel=null;}
  if(room){room.disconnect();room=null;}
- activeRoom=null;clearMedia();showStage(false);$('skLiveStartForm').hidden=false;
+ activeRoom=null;clearMedia();showStage(false);$('skLiveStartForm').hidden=!!wasHost;
 }
 async function loadChat(roomId){
  if(chatChannel){await db.removeChannel(chatChannel);chatChannel=null;}
