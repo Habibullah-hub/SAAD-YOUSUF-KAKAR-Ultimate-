@@ -1,0 +1,27 @@
+#skCreatorProgram{margin-top:24px;padding:clamp(16px,3vw,26px);border:1px solid #2b5068;border-radius:22px;background:linear-gradient(145deg,#0b1c2b,#102b40 58%,#102c35);color:#eaf5fb;box-shadow:0 16px 40px #03101d30}
+#skCreatorProgram h3{margin:0 0 8px;color:#fff}
+#skCreatorProgram p{line-height:1.65}
+#skCreatorProgram .sk-creator-kicker{color:#74e3ce;font-size:10px;font-weight:900;letter-spacing:1.6px}
+#skCreatorProgram .sk-creator-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+#skCreatorProgram .sk-creator-benefit{padding:15px;border:1px solid #31536a;border-radius:15px;background:#0a1b2b}
+#skCreatorProgram .sk-creator-benefit b{display:block;color:#e8fff9;margin-bottom:5px}
+#skCreatorProgram .sk-creator-benefit small,#skCreatorProgram .sk-creator-muted{color:#a8bfce;font-size:12px;line-height:1.6}
+#skCreatorProgram .sk-creator-form,#skCreatorProgram .sk-creator-admin{margin-top:15px;padding:15px;border:1px solid #31536a;border-radius:16px;background:#081827}
+#skCreatorProgram label{display:block;margin:10px 0 5px;color:#dcecf5;font-size:12px;font-weight:750}
+#skCreatorProgram input,#skCreatorProgram select{width:100%;min-width:0;padding:11px;border:1px solid #45677d;border-radius:10px;background:#071421;color:#fff}
+#skCreatorProgram input[type=checkbox]{width:auto;accent-color:#1cb99b}
+#skCreatorProgram button{padding:10px 14px;border:1px solid #2eaa98;border-radius:10px;background:#087c70;color:white;font-weight:800}
+#skCreatorProgram button:disabled{opacity:.55}
+#skCreatorProgram .sk-creator-check{display:flex;gap:9px;align-items:flex-start;margin:13px 0}
+#skCreatorProgram .sk-creator-check label{margin:0;font-weight:500}
+#skCreatorProgram .sk-creator-status-card,#skCreatorProgram .sk-creator-ledger-row,#skCreatorProgram .sk-creator-admin-row{padding:12px;margin:9px 0;border:1px solid #31536a;border-radius:12px;background:#0d2233}
+#skCreatorProgram .sk-creator-ledger-row{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;align-items:center}
+#skCreatorProgram .sk-creator-ledger-row small{grid-column:1/-1;color:#9db6c7}
+#skCreatorProgram .sk-creator-admin-row{display:grid;gap:8px}
+#skCreatorProgram .sk-creator-admin-row a{color:#7ee6d1}
+#skCreatorProgram .sk-creator-admin-actions{display:flex;gap:8px;flex-wrap:wrap}
+#skCreatorProgram .sk-creator-admin-actions button{font-size:11px}
+#skCreatorProgram .sk-creator-revenue-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+#skCreatorProgram [hidden]{display:none!important}
+#skCreatorProgram .sk-creator-status{min-height:24px;color:#8cebd6;font-size:12px}
+@media(max-width:650px){#skCreatorProgram .sk-creator-grid{grid-template-columns:1fr}#skCreatorProgram .sk-creator-revenue-grid{grid-template-columns:1fr}#skCreatorProgram .sk-creator-ledger-row{grid-template-columns:1fr}}
