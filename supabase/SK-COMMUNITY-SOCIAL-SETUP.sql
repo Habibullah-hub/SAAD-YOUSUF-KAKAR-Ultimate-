@@ -301,7 +301,7 @@ begin
 end;
 $$;
 drop trigger if exists sk_community_user_storage_limit on storage.objects;
-create trigger sk_community_user_storage_limit before insert on storage.objects
+create trigger sk_community_user_storage_limit before insert or update on storage.objects
 for each row execute function public.sk_limit_community_user_storage();
 
 drop policy if exists sk_community_media_public_read on storage.objects;
