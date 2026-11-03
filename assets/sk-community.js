@@ -2,12 +2,18 @@
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
 const root=$('skCommunityPanel');if(!root)return;
-let db=null,user=null,isAdmin=false,activeTab='feed',busy=false;
+let db=null,user=null,isAdmin=false,activeTab='for-you',busy=false,feedOffset=0,feedExhausted=false,feedLoading=false,activeTag='',photoPreviewUrl=null,hideCounts=false;
 const say=t=>{const n=$('skCommunityStatus');if(n)n.textContent=t;};
 const el=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n;};
 const safeUrl=value=>{try{const u=new URL(value);return u.protocol==='https:'?u.href:'';}catch(_){return '';}};
 const shortDate=value=>{try{return new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(new Date(value));}catch(_){return '';}};
 const escName=p=>p?.display_name||'SK Member';
+const photoFilters={normal:'none',vivid:'saturate(1.45) contrast(1.08)',warm:'sepia(.22) saturate(1.2)',cool:'hue-rotate(12deg) saturate(.9)',mono:'grayscale(1)',vintage:'sepia(.42) contrast(.92) saturate(.82)'};
+function updatePhotoPreview(){const file=$('skCommunityPhoto')?.files?.[0],img=$('skCommunityPhotoPreview');if(!img)return;if(photoPreviewUrl)URL.revokeObjectURL(photoPreviewUrl);photoPreviewUrl=null;if(!file){img.hidden=true;img.removeAttribute('src');return;}photoPreviewUrl=URL.createObjectURL(file);img.src=photoPreviewUrl;img.style.filter=photoFilters[$('skCommunityFilter')?.value||'normal']||'none';img.hidden=false;}
+function renderBuzz(posts){const host=$('skCommunityBuzz');if(!host)return;const counts=new Map();(posts||[]).forEach(p=>{for(const tag of (p.body||'').match(/#[\\p{L}\\p{N}_]{2,30}/gu)||[])counts.set(tag,(counts.get(tag)||0)+1);});const top=[...counts].sort((a,b)=>b[1]-a[1]).slice(0,6);host.replaceChildren();if(!top.length){host.append(el('span','sk-social-muted','Buzz · تازہ گفتگو کے موضوعات یہاں دکھائی دیں گے۔'));return;}host.append(el('span','sk-social-muted','🔥 Buzz:'));top.forEach(([tag,n])=>{const b=el('button',activeTag===tag?'is-active':'',tag+' · '+n);b.type='button';b.addEventListener('click',()=>{activeTag=activeTag===tag?'':tag;loadFeed();});host.append(b);});if(activeTag){const clear=el('button','','Clear topic');clear.type='button';clear.addEventListener('click',()=>{activeTag='';loadFeed();});host.append(clear);}}
+async function loadStreak(){const host=$('skCommunityStreak');if(!host)return;host.replaceChildren();if(!user)return;const {data,error}=await db.from('sk_member_streaks').select('current_streak,longest_streak,last_active_date').eq('user_id',user.id).maybeSingle();if(error){host.textContent='🔥 Streak دستیاب ہوگا جب نیا Social Extras SQL فعال ہوگا۔';return;}const n=data?.current_streak||0;host.textContent='🔥 '+n+' دن کی سرگرمی · بہترین '+(data?.longest_streak||0)+' دن';}
+async function refreshNotificationBadge(){const badge=$('skCommunityNotificationBadge');if(!badge)return;if(!user){badge.hidden=true;return;}const {count,error}=await db.from('sk_notifications').select('id',{count:'exact',head:true}).is('read_at',null);if(error){badge.hidden=true;return;}badge.textContent=count>99?'99+':String(count||0);badge.hidden=!count;}
+async function toggleNotifications(){const panel=$('skCommunityNotifications');if(!panel)return;panel.hidden=!panel.hidden;if(panel.hidden)return;if(!user){panel.replaceChildren(el('p','sk-social-muted','Notifications دیکھنے کے لیے Member Login کریں۔'));return;}const {data,error}=await db.from('sk_notifications').select('id,message,kind,post_id,created_at,read_at').order('created_at',{ascending:false}).limit(20);panel.replaceChildren();if(error){panel.append(el('p','sk-social-muted','Notifications کے لیے Social Extras SQL فعال کریں۔'));return;}if(!data?.length){panel.append(el('p','sk-social-muted','ابھی کوئی نئی اطلاع نہیں۔'));return;}data.forEach(n=>{const b=el('button','sk-social-notification'+(n.read_at?'':' is-unread'),n.message+' · '+shortDate(n.created_at));b.type='button';b.addEventListener('click',async()=>{if(!n.read_at)await db.from('sk_notifications').update({read_at:new Date().toISOString()}).eq('id',n.id);if(n.post_id){const card=document.querySelector('[data-post-id="'+CSS.escape(n.post_id)+'"]');card?.scrollIntoView({behavior:'smooth',block:'center'});}panel.hidden=true;refreshNotificationBadge();});panel.append(b);});await db.from('sk_notifications').update({read_at:new Date().toISOString()}).is('read_at',null);refreshNotificationBadge();}
 function currentDb(){return window.SK_SUPABASE_CLIENT||window.skSupabaseClient||null;}
 async function syncSession(){
  db=currentDb();if(!db){user=null;isAdmin=false;renderSignedOut();return;}
@@ -34,7 +40,7 @@ async function compressImage(file){
  if(!('createImageBitmap'in window))return file;
  const bitmap=await createImageBitmap(file);const scale=Math.min(1,1600/Math.max(bitmap.width,bitmap.height));
  const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));
- const ctx=canvas.getContext('2d');ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close();
+ const ctx=canvas.getContext('2d');ctx.filter=photoFilters[$('skCommunityFilter')?.value||'normal']||'none';ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);ctx.filter='none';bitmap.close();
  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',.78));
  if(!blob)return file;return new File([blob],'photo.webp',{type:'image/webp'});
 }
@@ -60,37 +66,50 @@ async function publish(){
  }catch(e){if(mediaPath)await db.storage.from('sk-community-media').remove([mediaPath]);say('پوسٹ محفوظ نہیں ہوئی: '+(e.message||'براہِ کرم دوبارہ کوشش کریں۔'));}
  finally{busy=false;$('skCommunityPublish').disabled=!user;}
 }
-async function loadFeed(){
+async function loadFeed(append=false){
  if(!db){$('skCommunityFeed').replaceChildren(el('div','sk-social-empty','Database connect کرنے کے بعد یہاں حقیقی ممبرز کی پوسٹس نظر آئیں گی۔'));return;}
- const feed=$('skCommunityFeed');feed.replaceChildren(el('div','sk-social-muted','Feed لوڈ ہو رہی ہے…'));
+ if(feedLoading|| (append&&feedExhausted))return;
+ const feed=$('skCommunityFeed');feedLoading=true;
+ if(!append){feedOffset=0;feedExhausted=false;feed.replaceChildren(el('div','sk-social-muted','Feed لوڈ ہو رہی ہے…'));}
  try{
   let followed=[];
   if(user){const f=await db.from('sk_follows').select('following_id').eq('follower_id',user.id);if(!f.error)followed=(f.data||[]).map(x=>x.following_id);}
-  let query=db.from('sk_posts').select('*').eq('status','published').order('created_at',{ascending:false}).limit(30);
-  if(activeTab==='following'){if(!user){feed.replaceChildren(el('div','sk-social-empty','Following feed کے لیے پہلے Member Login کریں۔'));return;}if(!followed.length){feed.replaceChildren(el('div','sk-social-empty','آپ نے ابھی کسی کو Follow نہیں کیا۔'));return;}query=query.in('author_id',followed);}
-  if(activeTab==='saved'){if(!user){feed.replaceChildren(el('div','sk-social-empty','Saved posts دیکھنے کے لیے Member Login کریں۔'));return;}const saved=await db.from('sk_saved_posts').select('post_id').eq('user_id',user.id);const ids=(saved.data||[]).map(x=>x.post_id);if(!ids.length){feed.replaceChildren(el('div','sk-social-empty','ابھی کوئی پوسٹ محفوظ نہیں۔'));return;}query=query.in('id',ids);}
+  let query=db.from('sk_posts').select('*').eq('status','published').order('created_at',{ascending:false}).range(feedOffset,feedOffset+19);
+  if(activeTag)query=query.ilike('body','%'+activeTag+'%');
+  if(activeTab==='following'){if(!user){if(!append)feed.replaceChildren(el('div','sk-social-empty','Following feed کے لیے پہلے Member Login کریں۔'));return;}if(!followed.length){if(!append)feed.replaceChildren(el('div','sk-social-empty','آپ نے ابھی کسی کو Follow نہیں کیا۔'));return;}query=query.in('author_id',followed);}
+  if(activeTab==='saved'){if(!user){if(!append)feed.replaceChildren(el('div','sk-social-empty','Saved posts دیکھنے کے لیے Member Login کریں۔'));return;}const saved=await db.from('sk_saved_posts').select('post_id').eq('user_id',user.id);const ids=(saved.data||[]).map(x=>x.post_id);if(!ids.length){if(!append)feed.replaceChildren(el('div','sk-social-empty','ابھی کوئی پوسٹ محفوظ نہیں۔'));return;}query=query.in('id',ids);}
   const {data:posts,error}=await query;if(error)throw error;
-  if(!posts?.length){feed.replaceChildren(el('div','sk-social-empty',activeTab==='following'?'Following creators کی نئی پوسٹس یہاں آئیں گی۔':'ابھی کوئی عوامی پوسٹ نہیں۔ پہلی پوسٹ آپ کر سکتے ہیں!'));return;}
+  if(!posts?.length){feedExhausted=true;if(!append)feed.replaceChildren(el('div','sk-social-empty','ابھی کوئی عوامی پوسٹ نہیں۔ پہلی پوسٹ آپ کر سکتے ہیں!'));else feed.append(el('div','sk-social-muted','آپ تمام تازہ پوسٹس دیکھ چکے ہیں۔'));return;}
+  feedOffset+=posts.length;if(posts.length<20)feedExhausted=true;
   const ids=[...new Set(posts.map(p=>p.author_id))],postIds=posts.map(p=>p.id);
-  const [profiles,likes,comments,myLikes,mySaves]=await Promise.all([
+  const [profiles,likes,comments,myLikes,mySaves,followers]=await Promise.all([
    db.from('sk_public_profiles').select('id,display_name,avatar_url,bio').in('id',ids),
    db.from('sk_post_likes').select('post_id').in('post_id',postIds),
    db.from('sk_post_comments').select('post_id').in('post_id',postIds).eq('status','published'),
    user?db.from('sk_post_likes').select('post_id').eq('user_id',user.id).in('post_id',postIds):Promise.resolve({data:[]}),
-   user?db.from('sk_saved_posts').select('post_id').eq('user_id',user.id).in('post_id',postIds):Promise.resolve({data:[]})
+   user?db.from('sk_saved_posts').select('post_id').eq('user_id',user.id).in('post_id',postIds):Promise.resolve({data:[]}),
+   db.from('sk_follows').select('following_id').in('following_id',ids)
   ]);
   const pm=new Map((profiles.data||[]).map(x=>[x.id,x])),count=(arr,id)=>((arr||[]).filter(x=>x.post_id===id).length);
+  const followerCounts=new Map();(followers.data||[]).forEach(x=>followerCounts.set(x.following_id,(followerCounts.get(x.following_id)||0)+1));
   const liked=new Set((myLikes.data||[]).map(x=>x.post_id)),saved=new Set((mySaves.data||[]).map(x=>x.post_id)),followSet=new Set(followed);
+  if(activeTab==='for-you')posts.sort((a,b)=>{const score=p=>count(likes.data,p.id)*1.4+count(comments.data,p.id)*2+(followSet.has(p.author_id)?4:0);return score(b)-score(a);});
   const signed=await Promise.all(posts.filter(p=>p.media_path).map(async p=>{const r=await db.storage.from('sk-community-media').createSignedUrl(p.media_path,21600);return [p.id,r.error?null:r.data?.signedUrl||null];}));
   const mediaUrls=new Map(signed);
-  feed.replaceChildren(...posts.map(post=>makePost(post,pm.get(post.author_id),count(likes.data,post.id),count(comments.data,post.id),liked.has(post.id),saved.has(post.id),followSet.has(post.author_id),mediaUrls.get(post.id))));
- }catch(e){feed.replaceChildren(el('div','sk-social-empty','سوشل فیڈ ابھی تیار نہیں: '+(e.message||'Database setup مکمل کریں۔')));}
+  if(!append)feed.replaceChildren();
+  feed.append(...posts.map(post=>makePost(post,pm.get(post.author_id),count(likes.data,post.id),count(comments.data,post.id),liked.has(post.id),saved.has(post.id),followSet.has(post.author_id),mediaUrls.get(post.id),followerCounts.get(post.author_id)||0)));
+  renderBuzz(posts);
+  feed.querySelector('#skCommunityMore')?.remove();
+  if(!feedExhausted){const more=el('button','sk-social-load-more','مزید پوسٹس دیکھیں ↓');more.id='skCommunityMore';more.type='button';more.addEventListener('click',()=>loadFeed(true));feed.append(more);if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>{if(entries.some(x=>x.isIntersecting)){observer.disconnect();loadFeed(true);}},{rootMargin:'180px'});observer.observe(more);}}
+  else feed.append(el('div','sk-social-muted','آپ تازہ پوسٹس تک پہنچ گئے ہیں۔ جب نئی پوسٹس آئیں گی تو یہاں نظر آئیں گی۔'));
+ }catch(e){if(!append)feed.replaceChildren();feed.append(el('div','sk-social-empty','سوشل فیڈ ابھی تیار نہیں: '+(e.message||'Database setup مکمل کریں۔')));}
+ finally{feedLoading=false;refreshNotificationBadge();loadStreak();}
 }
-function makePost(post,profile,likeCount,commentCount,liked,saved,isFollowing,mediaUrl){
+function makePost(post,profile,likeCount,commentCount,liked,saved,isFollowing,mediaUrl,followerCount){
  const card=el('article','sk-social-post');card.dataset.postId=post.id;
  const head=el('div','sk-social-post-head'),avatar=el('div','sk-social-avatar');
  if(profile?.avatar_url){const im=el('img');im.src=safeUrl(profile.avatar_url);im.alt='';avatar.append(im);}else avatar.textContent=(escName(profile).trim()[0]||'S').toUpperCase();
- const ident=el('div');ident.append(el('div','sk-social-name',escName(profile)),el('div','sk-social-date',shortDate(post.created_at)+(post.visibility==='followers'?' · Followers':' · Public')));
+ const ident=el('div');ident.append(el('div','sk-social-name',escName(profile)),el('div','sk-social-date',shortDate(post.created_at)+(post.visibility==='followers'?' · Followers':' · Public')+' · '+followerCount+' followers'));
  head.append(avatar,ident);
  if(user&&user.id!==post.author_id){const follow=el('button','secondary',isFollowing?'Following':'Follow +');follow.type='button';follow.style.marginLeft='auto';follow.addEventListener('click',()=>toggleFollow(post.author_id,isFollowing,follow));head.append(follow);}
  card.append(head);
@@ -98,7 +117,7 @@ function makePost(post,profile,likeCount,commentCount,liked,saved,isFollowing,me
  if(post.media_path){if(mediaUrl){const im=el('img','sk-social-media');im.src=mediaUrl;im.alt=post.media_alt||'Shared community photo';im.loading='lazy';card.append(im);}else{card.append(el('p','sk-social-muted','Photo is not available to this viewer.'));}}
  if(post.video_url){const a=el('a','sk-social-muted','▶ اصل ویڈیو کھولیں ↗');a.href=safeUrl(post.video_url);a.target='_blank';a.rel='noopener noreferrer';card.append(a);}
  const actions=el('div','sk-social-actions');
- const like=el('button',liked?'is-active':'',(liked?'♥':'♡')+' Like · '+likeCount);like.type='button';like.addEventListener('click',()=>toggleLike(post.id,liked,like));if(!user)like.disabled=true;
+ const like=el('button',liked?'is-active':'',(liked?'♥':'♡')+' Like'+(hideCounts?'':' · '+likeCount));like.type='button';like.addEventListener('click',()=>toggleLike(post.id,liked,like));if(!user)like.disabled=true;
  const comment=el('button','','Comment · '+commentCount);comment.type='button';comment.addEventListener('click',()=>toggleComments(post.id,card));
  const save=el('button',saved?'is-active':'',(saved?'Saved ✓':'Save'));save.type='button';save.disabled=!user;save.addEventListener('click',()=>toggleSave(post.id,saved,save));
  const share=el('button','','Share ↗');share.type='button';share.addEventListener('click',()=>sharePost(post));
@@ -134,7 +153,12 @@ function init(){
  $('skCommunityPublish')?.addEventListener('click',publish);
  $('skCommunityRefresh')?.addEventListener('click',loadFeed);
  $('skCommunityProfileSave')?.addEventListener('click',saveProfile);
+ $('skCommunityPhoto')?.addEventListener('change',updatePhotoPreview);
+ $('skCommunityFilter')?.addEventListener('change',updatePhotoPreview);
+ $('skCommunityNotificationsButton')?.addEventListener('click',toggleNotifications);
+ $('skCommunityHideCounts')?.addEventListener('change',e=>{hideCounts=e.target.checked;loadFeed();});
  root.querySelectorAll('[data-sk-social-tab]').forEach(b=>b.addEventListener('click',()=>{activeTab=b.dataset.skSocialTab;root.querySelectorAll('[data-sk-social-tab]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));loadFeed();}));
+ hideCounts=false;
  window.addEventListener('sk:database-ready',()=>{db=currentDb();syncSession();});
  db=currentDb();if(db){db.auth.onAuthStateChange(()=>setTimeout(syncSession,0));syncSession();}
  else{window.addEventListener('load',()=>{db=currentDb();if(db)syncSession();});}
