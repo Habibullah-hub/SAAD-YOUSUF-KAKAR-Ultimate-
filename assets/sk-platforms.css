@@ -20,7 +20,7 @@
 .sk-ai-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(240px,.8fr);gap:14px}
 .sk-ai-compose,.sk-ai-side,.sk-ai-saved,.sk-mail-compose,.sk-mail-inbox{min-width:0;padding:17px;border:1px solid #2c4032;border-radius:9px;background:#101813}
 .sk-ai-compose label,.sk-mail-compose label{display:block;margin:0 0 6px;color:#d9e8dc;font-size:12px;font-weight:700}
-.sk-ai-compose select,.sk-ai-compose textarea,.sk-mail-compose input,.sk-mail-compose textarea,.sk-browser-search input{display:block;width:100%;margin:0 0 12px;padding:11px 12px;border:1px solid #3a4c3e;border-radius:6px;background:#0a100c;color:#f2f8f3;font:13px/1.55 inherit}
+.sk-ai-compose select,.sk-ai-compose textarea,.sk-mail-compose input,.sk-mail-compose textarea,.sk-browser-search input{display:block;width:100%;margin:0 0 12px;padding:11px 12px;border:1px solid #3a4c3e;border-radius:6px;background:#0a100c;color:#f2f8f3;font:inherit;font-size:13px;line-height:1.55}
 .sk-ai-compose textarea,.sk-mail-compose textarea{resize:vertical}
 .sk-ai-compose select:focus,.sk-ai-compose textarea:focus,.sk-mail-compose input:focus,.sk-mail-compose textarea:focus,.sk-browser-search input:focus{outline:2px solid #4a9860;outline-offset:1px}
 .sk-ai-actions{display:flex;gap:8px;flex-wrap:wrap}
