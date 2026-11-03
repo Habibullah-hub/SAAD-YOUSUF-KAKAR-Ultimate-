@@ -7,7 +7,7 @@ const el=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=
 const safeName=p=>p?.display_name||'SK Member';
 function currentDb(){return window.SK_SUPABASE_CLIENT||null;}
 function show(n,v){if(n)n.hidden=!v;}
-function renderSignedOut(){say('نجی پیغامات اور کالز کے لیے مفت Member Login کریں۔');show($('skConnectComposer'),false);$('skConnectSearch').disabled=true;$('skConnectSearchResults').replaceChildren();$('skConnectConversationList').replaceChildren(el('p','sk-connect-muted','Login کے بعد آپ کے conversations یہاں آئیں گے۔'));$('skConnectMessages').replaceChildren();}
+function renderSignedOut(){say('نجی پیغامات اور کالز کے لیے مفت Member Login کریں۔');show($('skConnectSendForm'),false);$('skConnectSearch').disabled=true;$('skConnectSearchResults').replaceChildren();$('skConnectConversationList').replaceChildren(el('p','sk-connect-muted','Login کے بعد آپ کے conversations یہاں آئیں گے۔'));$('skConnectMessages').replaceChildren();}
 async function init(){
  db=currentDb();if(!db){renderSignedOut();return;}
  if(!authBound){db.auth.onAuthStateChange(()=>setTimeout(()=>init(),0));authBound=true;}
@@ -15,7 +15,7 @@ async function init(){
  if(!user){renderSignedOut();return;}
  const p=await db.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();
  if(p.error){say('Account profile is not ready.');return;}
- show($('skConnectComposer'),true);$('skConnectMessageText').disabled=false;$('skConnectSend').disabled=false;$('skConnectSearch').disabled=false;
+ show($('skConnectSendForm'),true);$('skConnectMessageText').disabled=false;$('skConnectSend').disabled=false;$('skConnectSearch').disabled=false;
  await loadConversations();await watchIncomingCalls();
 }
 async function searchMembers(){
@@ -49,7 +49,7 @@ async function loadConversations(){
 async function openConversation(id,profile){
  activeConversation=id;activePeer=profile;
  $('skConnectActiveName').textContent=safeName(profile);$('skConnectActiveHint').textContent='Private conversation · Only participants can read messages';
- show($('skConnectComposer'),true);$('skConnectCallAudio').disabled=false;$('skConnectCallVideo').disabled=false;
+ show($('skConnectSendForm'),true);$('skConnectCallAudio').disabled=false;$('skConnectCallVideo').disabled=false;
  $('skConnectCallScreen').disabled=!navigator.mediaDevices?.getDisplayMedia;
  if(messageChannel){await db.removeChannel(messageChannel);messageChannel=null;}
  const q=await db.from('sk_messages').select('id,sender_id,body,created_at').eq('conversation_id',id).order('created_at',{ascending:true}).limit(100);
