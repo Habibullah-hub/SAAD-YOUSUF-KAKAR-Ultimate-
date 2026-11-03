@@ -6,6 +6,7 @@ const errors = [];
 if (!/^<!doctype html>/i.test(html.trimStart())) errors.push("index.html is missing an HTML5 doctype.");
 if (!/<meta\s+name=["']viewport["']/i.test(html)) errors.push("index.html is missing a responsive viewport meta tag.");
 if (!/<title>[^<]+<\/title>/i.test(html)) errors.push("index.html is missing a page title.");
+if (/\\\\n\\s*<\\/style>\\\\n/i.test(html)) errors.push("index.html contains literal escaped newline markers around a style block; use real line breaks.");
 
 const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)];
 let checked = 0;
