@@ -316,6 +316,7 @@ using (
       and (
         p.visibility='public'
         or p.author_id=(select auth.uid())
+        or public.sk_is_admin()
         or (p.visibility='followers' and exists(
           select 1 from public.sk_follows f
           where f.follower_id=(select auth.uid()) and f.following_id=p.author_id
@@ -334,7 +335,7 @@ create policy sk_community_media_update_own on storage.objects for update to aut
 using (bucket_id='sk-community-media' and (storage.foldername(name))[1]=(select auth.uid())::text)
 with check (bucket_id='sk-community-media' and (storage.foldername(name))[1]=(select auth.uid())::text);
 create policy sk_community_media_delete_own on storage.objects for delete to authenticated
-using (bucket_id='sk-community-media' and (storage.foldername(name))[1]=(select auth.uid())::text);
+using (bucket_id='sk-community-media' and ((storage.foldername(name))[1]=(select auth.uid())::text or public.sk_is_admin()));
 
 commit;
 
