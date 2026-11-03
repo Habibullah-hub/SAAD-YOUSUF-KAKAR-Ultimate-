@@ -4356,7 +4356,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   ranked.forEach(item=>{const top=[...item.pages.entries()].sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';const tr=node('tr');tr.append(node('td','',flagFromCode(item.code)+' '+item.name),node('td','',String(item.views)),node('td','',top));analyticsRows.append(tr);});
   if(!ranked.length)analyticsRows.append(node('tr','',''));
   if(!ranked.length){const tr=analyticsRows.firstChild;const td=node('td','','ابھی کوئی وزٹ ریکارڈ نہیں ہوا۔');td.colSpan=3;tr.append(td);}
-  analyticsStatus.textContent='گزشتہ 30 دن میں '+total+' سیشن وزٹس · ملک کی شناخت جمع نہیں کی جاتی۔;
+  analyticsStatus.textContent='گزشتہ 30 دن میں '+total+' سیشن وزٹس · ملک کی شناخت جمع نہیں کی جاتی۔';
  }
  analyticsRefresh?.addEventListener('click',loadSiteAnalytics);
 
