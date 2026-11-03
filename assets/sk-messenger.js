@@ -90,7 +90,7 @@ async function sendSignal(recipient,payload){
 }
 async function setupPeer(call,initiator,screenPromise=null){
  if(signalChannel){await db.removeChannel(signalChannel);signalChannel=null;}
- queuedSignals=[];handlingSignal=false;
+ queuedSignals=[];
  pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
  pc.onicecandidate=e=>{if(e.candidate&&activeCall)sendSignal(initiator?activeCall.callee_id:activeCall.caller_id,{type:'candidate',candidate:e.candidate.toJSON()}).catch(err=>say('Network signal: '+err.message));};
  pc.ontrack=e=>{const remote=$('skConnectRemoteMedia');if(remote.srcObject!==e.streams[0])remote.srcObject=e.streams[0];show(remote,true);};
