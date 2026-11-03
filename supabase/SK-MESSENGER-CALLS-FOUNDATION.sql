@@ -63,29 +63,43 @@ alter table public.sk_messages enable row level security;
 alter table public.sk_call_sessions enable row level security;
 alter table public.sk_call_signals enable row level security;
 
+-- Security-definer membership check avoids recursive RLS policies on membership rows.
+create or replace function public.sk_is_conversation_member(p_conversation_id uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $sk$
+  select exists(select 1 from public.sk_conversation_members m
+    where m.conversation_id=p_conversation_id and m.user_id=(select auth.uid()));
+$sk$;
+revoke all on function public.sk_is_conversation_member(uuid) from public;
+grant execute on function public.sk_is_conversation_member(uuid) to authenticated;
+
 drop policy if exists sk_conversations_member_read on public.sk_conversations;
 create policy sk_conversations_member_read on public.sk_conversations
 for select to authenticated using (
-  exists(select 1 from public.sk_conversation_members m where m.conversation_id=id and m.user_id=(select auth.uid()))
+  public.sk_is_conversation_member(id)
 );
 
 drop policy if exists sk_conversation_members_read on public.sk_conversation_members;
 create policy sk_conversation_members_read on public.sk_conversation_members
 for select to authenticated using (
-  exists(select 1 from public.sk_conversation_members mine where mine.conversation_id=conversation_id and mine.user_id=(select auth.uid()))
+  public.sk_is_conversation_member(conversation_id)
 );
 
 drop policy if exists sk_messages_member_read on public.sk_messages;
 create policy sk_messages_member_read on public.sk_messages
 for select to authenticated using (
-  exists(select 1 from public.sk_conversation_members m where m.conversation_id=sk_messages.conversation_id and m.user_id=(select auth.uid()))
+  public.sk_is_conversation_member(sk_messages.conversation_id)
 );
 
 drop policy if exists sk_messages_member_send on public.sk_messages;
 create policy sk_messages_member_send on public.sk_messages
 for insert to authenticated with check (
   sender_id=(select auth.uid())
-  and exists(select 1 from public.sk_conversation_members m where m.conversation_id=sk_messages.conversation_id and m.user_id=(select auth.uid()))
+  and public.sk_is_conversation_member(sk_messages.conversation_id)
 );
 
 drop policy if exists sk_messages_sender_edit on public.sk_messages;
@@ -96,6 +110,25 @@ with check (sender_id=(select auth.uid()));
 drop policy if exists sk_messages_sender_delete on public.sk_messages;
 create policy sk_messages_sender_delete on public.sk_messages
 for delete to authenticated using (sender_id=(select auth.uid()));
+
+-- Validate that the callee is the other participant in the same direct conversation.
+create or replace function public.sk_guard_call_insert()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $sk$
+begin
+  if not exists(select 1 from public.sk_conversation_members m
+    where m.conversation_id=new.conversation_id and m.user_id=new.callee_id) then
+    raise exception 'The invited member is not part of this conversation.';
+  end if;
+  return new;
+end;
+$sk$;
+drop trigger if exists sk_call_session_member_guard on public.sk_call_sessions;
+create trigger sk_call_session_member_guard before insert on public.sk_call_sessions
+for each row execute function public.sk_guard_call_insert();
 
 drop policy if exists sk_calls_participant_read on public.sk_call_sessions;
 create policy sk_calls_participant_read on public.sk_call_sessions
@@ -110,6 +143,25 @@ for insert to authenticated with check (
   and exists(select 1 from public.sk_conversation_members m where m.conversation_id=sk_call_sessions.conversation_id and m.user_id=caller_id)
   and exists(select 1 from public.sk_conversation_members m where m.conversation_id=sk_call_sessions.conversation_id and m.user_id=callee_id)
 );
+
+-- Participants and conversation identity are immutable after a call is created.
+create or replace function public.sk_guard_call_session_update()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $sk$
+begin
+  if new.conversation_id<>old.conversation_id or new.caller_id<>old.caller_id
+    or new.callee_id<>old.callee_id or new.call_type<>old.call_type then
+    raise exception 'Call participants and type cannot be changed.';
+  end if;
+  return new;
+end;
+$sk$;
+drop trigger if exists sk_call_session_identity_guard on public.sk_call_sessions;
+create trigger sk_call_session_identity_guard before update on public.sk_call_sessions
+for each row execute function public.sk_guard_call_session_update();
 
 drop policy if exists sk_calls_participant_update on public.sk_call_sessions;
 create policy sk_calls_participant_update on public.sk_call_sessions
@@ -144,13 +196,13 @@ returns uuid
 language plpgsql
 security definer
 set search_path = ''
-as $$
+as $sk$$
 declare me uuid; existing_id uuid; new_id uuid;
 begin
   me := auth.uid();
   if me is null then raise exception 'Sign in first.'; end if;
   if p_other_user is null or p_other_user=me then raise exception 'Choose another member.'; end if;
-  if not exists(select 1 from public.sk_profiles p where p.id=p_other_user and p.role='member') then
+  if not exists(select 1 from public.sk_profiles p where p.id=p_other_user ) then
     raise exception 'This member is not available for private chat.';
   end if;
 
