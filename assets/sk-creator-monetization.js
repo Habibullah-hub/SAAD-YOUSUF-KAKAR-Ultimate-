@@ -1,7 +1,7 @@
 /* SK CYBER HUB — transparent creator monetization center */
 (()=>{'use strict';
 const $=id=>document.getElementById(id),root=$('skCreatorProgram');if(!root)return;
-let db=null,user=null,isAdmin=false;
+let db=null,user=null,isAdmin=false,authBound=false,starting=false;
 const text=(id,value)=>{const n=$(id);if(n)n.textContent=value;};
 const node=(tag,cls,content)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(content!==undefined)n.textContent=content;return n;};
 const safeUrl=v=>{try{const u=new URL(String(v||'').trim());return u.protocol==='https:'?u.href:'';}catch(_){return '';}};
@@ -10,19 +10,21 @@ function statusLabel(s){return ({pending:'Under review',approved:'Approved',reje
 function setStatus(msg){text('skCreatorProgramStatus',msg);}
 function show(n,yes){if(n)n.hidden=!yes;}
 async function start(){
+ if(starting)return;starting=true;
  db=window.SK_SUPABASE_CLIENT||null;
- if(!db){setStatus('Database connection is not ready. Connect the SK Supabase database first.');return;}
+ if(!db){setStatus('Database connection is not ready. Connect the SK Supabase database first.');starting=false;return;}
+ if(!authBound){db.auth.onAuthStateChange(()=>setTimeout(()=>start().catch(e=>{setStatus('Creator center: '+(e.message||'Database error'));starting=false;}),0));authBound=true;}
  const {data,error}=await db.auth.getSession();if(error)throw error;
  user=data?.session?.user||null;
- if(!user){setStatus('Apply کرنے، creator status دیکھنے اور اپنی confirmed earnings دیکھنے کے لیے مفت Member Login کریں۔');show($('skCreatorApplicationForm'),false);show($('skCreatorLedger'),false);return;}
+ if(!user){setStatus('Apply کرنے، creator status دیکھنے اور اپنی confirmed earnings دیکھنے کے لیے مفت Member Login کریں۔');show($('skCreatorApplicationForm'),false);show($('skCreatorLedger'),false);starting=false;return;}
  const profile=await db.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();
  if(profile.error)throw profile.error;
  isAdmin=profile.data?.role==='admin';
  show($('skCreatorApplicationForm'),!isAdmin);
  show($('skCreatorAdminPanel'),isAdmin);
  show($('skCreatorLedger'),!isAdmin);
- if(isAdmin){setStatus('Owner Admin: review creator applications and record only revenue that has actually been confirmed.');await loadAdmin();return;}
- await loadMember();
+ if(isAdmin){setStatus('Owner Admin: review creator applications and record only revenue that has actually been confirmed.');await loadAdmin();starting=false;return;}
+ await loadMember();starting=false;
 }
 async function loadMember(){
  const app=await db.from('sk_creator_applications').select('creator_type,country,channel_url,status,admin_note,created_at').eq('user_id',user.id).maybeSingle();
@@ -82,6 +84,6 @@ async function recordRevenue(event){
 }
 $('skCreatorApplicationForm')?.addEventListener('submit',apply);
 $('skCreatorRevenueForm')?.addEventListener('submit',recordRevenue);
-window.addEventListener('sk:database-ready',()=>start().catch(e=>setStatus('Creator center: '+(e.message||'Database error'))));
-if(db)start().catch(e=>setStatus('Creator center: '+(e.message||'Database error')));
+window.addEventListener('sk:database-ready',()=>start().catch(e=>{setStatus('Creator center: '+(e.message||'Database error'));starting=false;}));
+if(window.SK_SUPABASE_CLIENT)start().catch(e=>{setStatus('Creator center: '+(e.message||'Database error'));starting=false;});
 })();
