@@ -15,7 +15,7 @@ This is the separate **Saad Yousuf Kakar Ultimate / SK Cyber Hub** project. It i
 - Documents & Learning and Games
 - Video & Audio, Images & Design, Developer Tools, Security & Privacy
 - Creator Studio, Global Search, Jobs & Opportunities, Deals & Freebies
-- Community & User Accounts (free member registration and login; community posting remains planned)
+- SK Pulse Community: member profiles, public/followers posts, photo sharing, likes, comments, follows, saved posts and abuse reports (activate the optional SQL extension)
 - Languages & Global Access
 - World News search, language selection, speech input where supported, translated summaries, sharing and publisher links
 
@@ -34,7 +34,7 @@ The site uses the isolated `public.sk_apps` and `public.sk_profiles` tables. It 
 
 The SQL setup creates the SK-specific Row Level Security policies and a trigger that creates new profiles as `member`. Browser clients have read-only access to `sk_profiles`; neither members nor an Admin session can change account roles through the website. The owner must manually promote only their own Auth user UUID to `admin` using the final SQL statement in `supabase/SK-CYBER-HUB-SETUP.sql`. Verify that exactly one owner row is updated. Do not promote other accounts. Role changes after setup must also be performed by the owner in the Supabase SQL Editor.
 
-Public member registration and login are enabled in the website. New accounts are assigned `member` by the database trigger. Community posting remains disabled until moderation, spam controls and privacy settings are implemented. No Storage bucket is required for the current external-icon listing design.
+Public member registration and login are enabled in the website. New accounts are assigned `member` by the database trigger. To activate SK Pulse, run `supabase/SK-COMMUNITY-SOCIAL-SETUP.sql` after the base setup. It creates social tables and the `sk-community-media` image bucket. Members can upload only into their own UID folder. Public feed photos are publicly readable; never upload private images. Version 1 accepts JPEG/PNG/WebP photos up to 8 MB and uses external video links rather than hosting video files. Images are compressed in supported browsers and uploaded with long-lived cache headers. Supabase Free currently lists 1 GB file storage and 5 GB egress; monitor usage and do not upgrade or add billing without explicit owner approval. Browser/service-worker cache is device-local; authenticated feed/API responses are not placed in the shared offline shell cache.
 
 Browser configuration is local to the device and browser. Setting it on one phone does not automatically configure another. Do not reuse credentials from the separate Yousuf Kakar Free Apps project.
 
@@ -54,3 +54,4 @@ Development and launch should use free tools and free tiers wherever possible. D
 
 ## Development status
 Member signup uses Supabase Auth and the existing profile trigger; if email confirmation is enabled in Supabase, new users must confirm their email before logging in. The browser verifies that member accounts have the `member` role and never offers role promotion.\n\nThe website is being improved incrementally. A successful GitHub commit does not by itself confirm that GitHub Pages has finished deploying or that every third-party service is available. Test the live site on both mobile and desktop after deployment.
+\n\n## SK Pulse social database activation\n1. Run `supabase/SK-CYBER-HUB-SETUP.sql` if the base SK database is not already installed.\n2. Run `supabase/SK-COMMUNITY-SOCIAL-SETUP.sql` in the same separate SK Supabase project.\n3. Refresh the website and sign in as a normal member. Public posts, follows, likes, comments, saved posts and reports are then connected to the shared SK backend.\n4. Do not enable a paid plan or billing. Keep uploads small and monitor storage/egress quotas.\n5. Public photos are visible to anyone; user folders isolate upload/delete permissions, not public viewing. Video-file uploads and creator payouts are not part of v1.\n
