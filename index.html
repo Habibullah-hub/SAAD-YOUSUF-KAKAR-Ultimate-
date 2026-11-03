@@ -1581,7 +1581,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 @media(max-width:560px){#sk-world-network .sk-world-atlas{grid-template-columns:1fr;padding:18px}#sk-world-network .sk-atlas-globe{width:135px}#sk-world-network .sk-world-pillars{gap:8px}#sk-world-network .sk-world-pillars a{min-height:105px;padding:11px}#sk-world-network .sk-shorts-panel{grid-template-columns:1fr;padding:15px}#sk-world-network .sk-shorts-player{grid-column:auto}#community .sk-community-panel{padding:13px}#community .sk-community-head{flex-direction:column}}
 @media(prefers-reduced-motion:reduce){#sk-world-network .sk-world-pillars a{transition:none}}
 </style>
-<link rel="stylesheet" href="./assets/sk-digital-workbench.css">
+<link rel="stylesheet" href="./assets/sk-platforms.css">
 </head>
 <body>
 <div id="google_translate_element" aria-hidden="true"></div><div id="configAlert" class="config-alert"><span>SK Cyber Hub database is not connected. Set up its separate database tables to manage listings.</span><button type="button" onclick="openSupabaseModal()">Configure</button></div>
@@ -1605,6 +1605,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
   <a href="#jobs" data-search="jobs careers employment saudi arabia pakistan opportunities">💼 Jobs & Opportunities</a>
   <a href="#deals" data-search="deals freebies free games open source offers">🎁 Deals & Freebies</a>
   <a href="#community" data-search="community user accounts member profiles">👥 Community & Accounts</a>
+<a href="#sk-platforms">SK Platforms</a>
   <a href="#digital-workbench" data-search="digital workbench browser ai email media notes bookmarks favorites productivity">✦ Digital Workbench</a>\n  <a href="#sk-connect" data-search="private messenger text audio video calls screen sharing whatsapp">💬 SK Messenger & Calls</a>\n  <a href="#sk-live" data-search="public live stream live video creator live chat tiktok">🔴 SK Live</a>
   <a href="#languages" data-search="languages global access urdu arabic pashto translation">🌐 Languages & Global Access</a>
   <a href="#quick-tools" data-search="instant online tools word counter password generator unit converter image compressor">⚙ Instant Online Tools</a>
@@ -2024,63 +2025,32 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 </section>
 <section class="wrap" id="about"><div class="notice"><b>Our promise:</b> We aim to prioritize free and legitimate resources. External download links and advertisements will be clearly labelled. We will respect software licenses and copyright, and will not disguise download destinations. Any future ad-supported waiting step will be disclosed before the user continues. Sponsored placements and affiliate links, if introduced, will be clearly labelled and enabled only after the required provider approvals; no earnings are guaranteed.</div></section>
 
-<section id="digital-workbench" class="section wrap sk-workbench">
- <div class="sk-workbench-hero">
-  <div><span class="sk-workbench-kicker">SK CYBER HUB · YOUR DIGITAL DESK</span>
-   <h2>One hub. <span>Many possibilities.</span></h2>
-   <p>اپنے پسندیدہ براؤزر، AI اسسٹنٹس، ای میل اور میڈیا ٹولز ایک جگہ کھولیں۔ اپنے اہم لنکس محفوظ کریں، حالیہ استعمال دیکھیں اور فوری نوٹس بنائیں۔</p>
-  </div>
-  <div class="sk-workbench-mark" aria-hidden="true">SK<span>✦</span></div>
+<section id="sk-platforms" class="section wrap sk-platforms">
+ <div class="sk-platform-hero"><div><span class="sk-platform-kicker">SAAD YOUSUF KAKAR · OWN PLATFORM</span><h2>SK <em>Digital Operating Hub</em></h2><p>ایک ہی SK اکاؤنٹ کے اندر اپنی AI ورک اسپیس، ممبرز کا اِن باکس، اندرونی سرچ اور میڈیا لائبریری۔ یہاں اصل کام SK کے اندر ہوگا، صرف دوسرے Apps کے لنکس نہیں۔</p></div><div class="sk-platform-seal">SK<span>✦</span></div></div>
+ <div class="sk-platform-tabs" role="tablist" aria-label="SK platforms">
+  <button type="button" class="sk-platform-tab active" data-sk-tab="ai" role="tab" aria-selected="true">✦ AI Studio</button>
+  <button type="button" class="sk-platform-tab" data-sk-tab="mail" role="tab" aria-selected="false">✉ SK Mail</button>
+  <button type="button" class="sk-platform-tab" data-sk-tab="browser" role="tab" aria-selected="false">⌕ SK Browser</button>
+  <button type="button" class="sk-platform-tab" data-sk-tab="media" role="tab" aria-selected="false">▣ Media Center</button>
  </div>
- <div class="sk-workbench-toolbar">
-  <label class="sk-workbench-search"><span>⌕</span><input id="skWorkbenchSearch" type="search" placeholder="Search browser, AI, email or media..." aria-label="Search digital workbench"></label>
-  <button type="button" id="skWorkbenchShowAll" class="sk-wb-button">All tools</button>
-  <button type="button" id="skWorkbenchShowSaved" class="sk-wb-button">★ Saved</button>
-  <button type="button" id="skWorkbenchShowRecent" class="sk-wb-button">◷ Recent</button>
+ <div class="sk-platform-panel" data-sk-panel="ai">
+  <div class="sk-platform-panel-head"><div><span class="sk-platform-label">PRIVATE WORKSPACE</span><h3>SK AI Studio</h3><p>ایک جگہ اپنے سوالات، پرامپٹس اور AI کام منظم کریں۔</p></div><span class="sk-platform-state">ENGINE SETUP PENDING</span></div>
+  <div class="sk-ai-grid"><div class="sk-ai-compose"><label for="skAiTask">آپ کیا کرنا چاہتے ہیں؟</label><select id="skAiTask"><option value="general">عام سوال / General</option><option value="write">تحریر اور مضمون</option><option value="translate">ترجمہ</option><option value="summarize">خلاصہ</option><option value="code">کوڈنگ</option><option value="research">تحقیق</option><option value="creator">ویڈیو اور تخلیقی کام</option></select><textarea id="skAiPrompt" rows="7" placeholder="اپنا سوال یا کام یہاں لکھیں…"></textarea><div class="sk-ai-actions"><button type="button" class="sk-platform-primary" id="skAiSavePrompt">Save in my workspace</button><button type="button" class="sk-platform-ghost" id="skAiClearPrompt">Clear</button></div><p id="skAiStatus" class="sk-platform-hint" role="status">یہ ورک اسپیس ابھی پرامپٹس محفوظ کرتی ہے؛ حقیقی AI جوابات کے لیے محفوظ AI انجن کنکشن درکار ہے۔</p></div><div class="sk-ai-side"><h4>آپ کے AI ورک فلو</h4><button type="button" data-sk-template="write">✍ تحریر بہتر بنائیں</button><button type="button" data-sk-template="translate">🌐 اردو / انگریزی ترجمہ</button><button type="button" data-sk-template="summarize">▤ لمبی تحریر کا خلاصہ</button><button type="button" data-sk-template="code">⌘ کوڈ سمجھائیں یا بنائیں</button><button type="button" data-sk-template="creator">▶ ویڈیو اسکرپٹ اور آئیڈیا</button><div class="sk-platform-note"><b>اہم:</b> ابھی یہ خود سے AI جواب پیدا کرنے کا دعویٰ نہیں کرتا۔ کوئی API key یا پیسہ درکار نہیں؛ AI انجن کا انتخاب اور محفوظ کنکشن بعد کے مرحلے میں ہوگا۔</div></div></div><div class="sk-ai-saved"><div class="sk-platform-panel-head"><div><h4>Saved Prompts</h4><p>آپ کے اس فون/براؤزر میں محفوظ پرامپٹس</p></div><button type="button" class="sk-platform-ghost" id="skAiClearSaved">Clear all</button></div><div id="skAiSavedList" class="sk-platform-list"><p class="sk-platform-empty">ابھی کوئی محفوظ پرامپٹ نہیں۔</p></div></div>
  </div>
- <div class="sk-workbench-group"><div class="sk-workbench-heading"><div><h3>AI Command Center</h3><p>ایک ہی سوال، مختلف AI ماڈلز — جواب خود موازنہ کریں</p></div><span>04 SERVICES</span></div>
-  <div class="sk-workbench-grid">
-   <article class="sk-wb-card" data-wb-id="chatgpt" data-wb-category="ai" data-wb-name="ChatGPT" data-wb-keywords="chatgpt openai writing reasoning research images files coding projects">
-    <div class="sk-wb-icon">GPT</div><div class="sk-wb-card-main"><span class="sk-wb-tag">AI ASSISTANT</span><h4>ChatGPT</h4><p>سوال جواب، تحریر، خلاصہ، تحقیق، تصاویر، فائلز اور کوڈنگ۔</p><a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">Open ChatGPT ↗</a></div><button class="sk-wb-save" type="button" aria-label="Save ChatGPT" aria-pressed="false">☆</button>
-   </article>
-   <article class="sk-wb-card" data-wb-id="copilot" data-wb-category="ai" data-wb-name="Microsoft Copilot" data-wb-keywords="copilot microsoft writing productivity search work assistant">
-    <div class="sk-wb-icon">Co</div><div class="sk-wb-card-main"><span class="sk-wb-tag">AI ASSISTANT</span><h4>Microsoft Copilot</h4><p>تحریر، آئیڈیاز، ویب سے مدد، روزمرہ کام اور پروڈکٹیوٹی۔</p><a href="https://copilot.microsoft.com/" target="_blank" rel="noopener noreferrer">Open Copilot ↗</a></div><button class="sk-wb-save" type="button" aria-label="Save Copilot" aria-pressed="false">☆</button>
-   </article>
-   <article class="sk-wb-card" data-wb-id="deepseek" data-wb-category="ai" data-wb-name="DeepSeek" data-wb-keywords="deepseek reasoning deep think coding file upload research">
-    <div class="sk-wb-icon">DS</div><div class="sk-wb-card-main"><span class="sk-wb-tag">REASONING & CODE</span><h4>DeepSeek</h4><p>منطقی سوچ، پیچیدہ سوالات، کوڈنگ اور دستاویزات پر کام۔</p><a href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer">Open DeepSeek ↗</a></div><button class="sk-wb-save" type="button" aria-label="Save DeepSeek" aria-pressed="false">☆</button>
-   </article>
-   <article class="sk-wb-card" data-wb-id="gemini" data-wb-category="ai" data-wb-name="Google Gemini" data-wb-keywords="gemini google deep research canvas live image video docs">
-    <div class="sk-wb-icon">Ge</div><div class="sk-wb-card-main"><span class="sk-wb-tag">RESEARCH & CREATE</span><h4>Google Gemini</h4><p>تحقیق، فائلز، Canvas، سیکھنے، تصاویر اور تخلیقی کام۔</p><a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">Open Gemini ↗</a></div><button class="sk-wb-save" type="button" aria-label="Save Gemini" aria-pressed="false">☆</button>
-   </article>
-  </div>
+ <div class="sk-platform-panel" data-sk-panel="mail" hidden>
+  <div class="sk-platform-panel-head"><div><span class="sk-platform-label">MEMBER-TO-MEMBER MESSAGING</span><h3>SK Mail</h3><p>SK ممبرز کے درمیان اپنے پلیٹ فارم کا اندرونی اِن باکس۔ یہ ابھی Gmail یا بیرونی ای میل بھیجنے کا نظام نہیں ہے۔</p></div><span class="sk-platform-state">SUPABASE MIGRATION REQUIRED</span></div>
+  <div class="sk-mail-layout"><div class="sk-mail-compose"><h4>نیا پیغام</h4><label for="skMailTo">وصول کنندہ کا رجسٹرڈ ای میل</label><input id="skMailTo" type="email" autocomplete="off" placeholder="member@example.com"><label for="skMailSubject">موضوع</label><input id="skMailSubject" maxlength="120" placeholder="پیغام کا موضوع"><label for="skMailBody">پیغام</label><textarea id="skMailBody" rows="6" maxlength="5000" placeholder="اپنا پیغام لکھیں…"></textarea><button type="button" class="sk-platform-primary" id="skMailSend">Send inside SK</button><p id="skMailStatus" class="sk-platform-hint" role="status">اس فیچر کے لیے نیچے دی گئی نئی Supabase migration ایک بار چلانا ہوگی۔</p></div><div class="sk-mail-inbox"><div class="sk-platform-panel-head"><div><h4>Inbox & Sent</h4><p>صرف آپ کے بھیجے یا موصول کردہ پیغامات</p></div><button type="button" class="sk-platform-ghost" id="skMailRefresh">↻ Refresh</button></div><div id="skMailList" class="sk-platform-list"><p class="sk-platform-empty">Migration کے بعد اپنے SK پیغامات یہاں دیکھ سکیں گے۔</p></div></div></div>
  </div>
- <div class="sk-workbench-group"><div class="sk-workbench-heading"><div><h3>Browser & Communication Desk</h3><p>تیز رسائی، محفوظ براؤزنگ اور رابطے کے اہم ٹولز</p></div><span>04 SERVICES</span></div>
-  <div class="sk-workbench-grid">
-   <article class="sk-wb-card" data-wb-id="ucbrowser" data-wb-category="browser" data-wb-name="UC Browser" data-wb-keywords="uc browser browsing privacy video download data saving">
-    <div class="sk-wb-icon">UC</div><div class="sk-wb-card-main"><span class="sk-wb-tag">BROWSER</span><h4>UC Browser</h4><p>براؤزنگ، ویڈیو پلے بیک، ڈاؤن لوڈ مینجمنٹ اور پرائیویسی فیچرز۔</p><a href="https://www.ucweb.com/" target="_blank" rel="noopener noreferrer">Explore UC Browser ↗</a></div><button class="sk-wb-save" type="button" aria-label="Save UC Browser" aria-pressed="false">☆</button>
-   </article>
-   <article class="sk-wb-card" data-wb-id="opera" data-wb-category="browser" data-wb-name="Opera Browser" data-wb-keywords="opera browser workspaces tabs vpn ad blocker sync flow">
-    <div class="sk-wb-icon">O</div><div class="sk-wb-card-main"><span class="sk-wb-tag">BROWSER & WORKSPACE</span><h4>Opera Browser</h4><p>ٹیب مینجمنٹ، ورک اسپیسز، سنک، بلٹ اِن ٹولز اور پرائیویسی۔</p><a href="https://www.opera.com/" target="_blank" rel="noopener noreferrer">Explore Opera ↗</a></div><button class="sk-wb-save" type="button" aria-label="Save Opera" aria-pressed="false">☆</button>
-   </article>
-   <article class="sk-wb-card" data-wb-id="gmail" data-wb-category="communication" data-wb-name="Gmail" data-wb-keywords="gmail email inbox labels filters search attachments spam">
-    <div class="sk-wb-icon">M</div><div class="sk-wb-card-main"><span class="sk-wb-tag">EMAIL</span><h4>Gmail</h4><p>ای میل، سرچ، لیبلز، فلٹرز، اٹیچمنٹس اور اسپیم مینجمنٹ۔</p><a href="https://mail.google.com/" target="_blank" rel="noopener noreferrer">Open Gmail ↗</a></div><button class="sk-wb-save" type="button" aria-label="Save Gmail" aria-pressed="false">☆</button>
-   </article>
-   <article class="sk-wb-card" data-wb-id="snaptube" data-wb-category="media" data-wb-name="Snaptube" data-wb-keywords="snaptube video audio media offline player download copyright">
-    <div class="sk-wb-icon">▶</div><div class="sk-wb-card-main"><span class="sk-wb-tag">MEDIA DISCOVERY</span><h4>Snaptube</h4><p>میڈیا دریافت اور آف لائن پلیئر کے تصورات؛ صرف اپنی یا اجازت یافتہ فائلیں محفوظ کریں۔</p><a href="https://www.snaptube.io/" target="_blank" rel="noopener noreferrer">Visit Snaptube site ↗</a></div><button class="sk-wb-save" type="button" aria-label="Save Snaptube" aria-pressed="false">☆</button>
-   </article>
-  </div>
+ <div class="sk-platform-panel" data-sk-panel="browser" hidden>
+  <div class="sk-platform-panel-head"><div><span class="sk-platform-label">INTERNAL RESOURCE DISCOVERY</span><h3>SK Browser</h3><p>SK Cyber Hub کے اپنے Apps، Tools، News، Documents اور Software میں تلاش کریں۔</p></div><span class="sk-platform-state">BUILT-IN SEARCH</span></div>
+  <div class="sk-browser-search"><input id="skInternalSearch" type="search" placeholder="SK Hub کے اندر تلاش کریں…" aria-label="Search inside SK Cyber Hub"><button type="button" class="sk-platform-primary" id="skInternalSearchBtn">Search</button></div><div id="skInternalResults" class="sk-platform-list"><p class="sk-platform-empty">کوئی لفظ لکھیں؛ نتائج اسی SK Hub کے اندر سے آئیں گے۔</p></div>
+  <div class="sk-platform-note">یہ اپنی ویب سائٹ کا اندرونی سرچ/ریسورس براؤزر ہے، مکمل Chrome/Opera جیسا آزاد ویب براؤزر نہیں۔ مکمل براؤزر انجن عام ویب صفحے کے اندر بنانا ممکن نہیں؛ اس کے لیے الگ Android ایپ اور براؤزر انجن درکار ہوگا۔</div>
  </div>
- <div class="sk-workbench-lab">
-  <div class="sk-workbench-group"><div class="sk-workbench-heading"><div><h3>AI Prompt Comparison</h3><p>اپنا سوال لکھیں، کاپی کریں اور جس AI سے چاہیں جواب لیں۔</p></div><span>YOUR CONTROL</span></div>
-   <textarea id="skWorkbenchPrompt" rows="4" placeholder="اپنا سوال یا کام یہاں لکھیں… / Write your question or task here"></textarea>
-   <div class="sk-wb-actions"><button type="button" id="skWorkbenchCopyPrompt" class="sk-wb-primary">Copy prompt</button><span id="skWorkbenchPromptStatus" role="status" aria-live="polite">آپ کا سوال صرف اسی وقت شیئر ہوگا جب آپ خود AI سروس کھول کر پیسٹ کریں گے۔</span></div>
-  </div>
-  <div class="sk-workbench-group"><div class="sk-workbench-heading"><div><h3>Quick Notes</h3><p>آپ کے نوٹس اسی ڈیوائس کے براؤزر میں محفوظ ہوں گے، کسی سرور پر نہیں۔</p></div><span>DEVICE ONLY</span></div>
-   <textarea id="skWorkbenchNotes" rows="5" placeholder="اپنے خیالات، لنکس یا کاموں کے نوٹس یہاں لکھیں…"></textarea>
-   <div class="sk-wb-actions"><span id="skWorkbenchNotesStatus" role="status" aria-live="polite">خودکار مقامی محفوظ کاری فعال ہے۔</span><button type="button" id="skWorkbenchClearNotes" class="sk-wb-button">Clear notes</button></div>
-  </div>
+ <div class="sk-platform-panel" data-sk-panel="media" hidden>
+  <div class="sk-platform-panel-head"><div><span class="sk-platform-label">YOUR DEVICE MEDIA</span><h3>SK Media Center</h3><p>اپنے فون سے ویڈیو یا آڈیو منتخب کریں اور اسی SK اسکرین پر چلائیں۔</p></div><span class="sk-platform-state">LOCAL PLAYBACK</span></div>
+  <label class="sk-media-picker">＋ اپنے فون سے میڈیا منتخب کریں<input id="skMediaFile" type="file" accept="audio/*,video/*" multiple></label><div id="skMediaList" class="sk-platform-list"><p class="sk-platform-empty">منتخب کردہ فائلیں صرف اس سیشن میں چلیں گی؛ سرور پر اپ لوڈ نہیں ہوں گی۔</p></div><div class="sk-platform-note">موجودہ ورژن مقامی پلیئر ہے۔ آن لائن کلاؤڈ لائبریری، ممبرز کے اپ لوڈز اور ڈاؤن لوڈز کے لیے نجی Storage bucket اور اس کی RLS پالیسیوں کی تصدیق پہلے ضروری ہے۔</div>
  </div>
- <div class="sk-workbench-foot"><b>Privacy & safety:</b> یہ شارٹ کٹس اصل سروسز کھولتے ہیں، ان کے اکاؤنٹس یا ان باکس تک SK Cyber Hub کو رسائی نہیں دیتے۔ کسی بھی APK یا فائل کو انسٹال کرنے سے پہلے ماخذ، اجازت، وائرس اسکین اور کاپی رائٹ ضرور چیک کریں۔ جعلی ڈاؤن لوڈ بٹن یا خودکار ویڈیو ڈاؤن لوڈنگ شامل نہیں کی گئی۔</div>
+ <div class="sk-platform-foot"><b>SK کا اصول:</b> اپنی شناخت، اپنا انٹرفیس، اپنے ممبرز اور اپنا ڈیٹا۔ تیسرے فریق کے اکاؤنٹس یا کوڈ کی نقل نہیں؛ صرف مجاز APIs اور محفوظ کنکشن جہاں واقعی ضروری ہوں۔</div>
 </section>
 </main>
 <section id="tab-admin" class="section wrap hidden">
@@ -4822,7 +4792,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 <script src="./assets/sk-live.js" defer></script>
 <script src="./assets/sk-creator-monetization.js" defer></script>
 <script src="./assets/sk-community.js" defer></script>
-<script src="./assets/sk-digital-workbench.js" defer></script>
+<script src="./assets/sk-platforms.js" defer></script>
 <script src="./pwa-register.js" defer></script>
 
 <script id="sk-unified-catalog-runtime-v1">
