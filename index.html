@@ -4424,6 +4424,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 #skNewsVideoModalV1 .sk-video-searches{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 15px}
 #skNewsVideoModalV1 .sk-video-searches a{display:inline-flex;align-items:center;padding:9px 12px;border:1px solid #c5d9e9;border-radius:8px;background:#edf6fd;color:#075b98;font-size:12px;font-weight:750;text-decoration:none}
 #skNewsVideoModalV1 .sk-video-player{width:100%;aspect-ratio:16/9;min-height:180px;border:1px solid #c9d9e6;border-radius:10px;background:#071321}
+/* Keep the selected video beside its result while the results list scrolls. */
+#skNewsVideoModalV1 .sk-video-results>.sk-video-player{grid-column:1/-1;position:sticky;top:62px;z-index:4;width:100%;margin:4px 0 8px;box-shadow:0 8px 22px #102b4430}
+#skNewsVideoModalV1 .sk-video-player[hidden]{display:none!important}
+#skNewsVideoModalV1 .sk-inline-player-close{position:absolute;top:7px;right:7px;z-index:6;width:29px;height:29px;padding:0;border:1px solid #fff9;border-radius:50%;background:#10283ddd;color:#fff;font-size:20px;line-height:1;cursor:pointer;box-shadow:0 2px 8px #0005}
+#skNewsVideoModalV1 .sk-video-player{position:relative}
+@media(max-width:600px){#skNewsVideoModalV1 .sk-video-results>.sk-video-player{top:55px}}
 
 #skNewsVideoModalV1 .sk-video-frame-wrap{position:relative;width:100%;height:auto;aspect-ratio:16/9;min-height:0;background:#000;border-radius:10px;overflow:hidden}
 #skNewsVideoModalV1 .sk-video-frame-wrap iframe{position:absolute;inset:0;display:block;width:100%;height:100%;min-height:0;border:0}
@@ -4526,7 +4532,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   }catch(_){return '';}
  }
  function focusInlinePlayer(){
-  player.scrollIntoView({behavior:'smooth',block:'nearest'});
+  /* Avoid jumping to the bottom; playback stays beside the selected result. */
+ }
+ function addInlinePlayerClose(){
+  player.hidden=false;player.classList.add('is-active');
+  if(player.querySelector('.sk-inline-player-close'))return;
+  const closeButton=document.createElement('button');closeButton.type='button';closeButton.className='sk-inline-player-close';closeButton.textContent='×';closeButton.setAttribute('aria-label','Close video player');closeButton.title='Close video';
+  closeButton.addEventListener('click',()=>{player.replaceChildren();player.hidden=true;player.classList.remove('is-active');});
+  player.append(closeButton);
  }
  function playYouTube(id,title){
   if(!/^[A-Za-z0-9_-]{11}$/.test(id)){note.textContent='اس ویڈیو کا درست YouTube شناختی نمبر نہیں ملا۔';return;}
@@ -4538,7 +4551,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   const wrap=document.createElement('div');wrap.className='sk-video-frame-wrap';wrap.append(frame);
   const fallback=document.createElement('a');fallback.href='https://www.youtube.com/watch?v='+encodeURIComponent(id);fallback.target='_blank';fallback.rel='noopener noreferrer';fallback.className='sk-video-open-original';fallback.textContent='▶ اگر پاپ اَپ میں پلے نہ ہو تو YouTube پر کھولیں';
   const hint=document.createElement('p');hint.className='sk-video-play-hint';hint.textContent='ویڈیو اسی پاپ اَپ کے پلیئر میں کھل گئی ہے۔ پلیئر کے اندر ▶ دبائیں؛ اگر مالک نے embedding بند کی ہو تو اصل YouTube لنک استعمال کریں۔';
-  player.replaceChildren(wrap,fallback,hint);focusInlinePlayer();
+  player.replaceChildren(wrap,fallback,hint);addInlinePlayerClose();
  }
  async function fetchVideos(q,seq){
   let lastError=null;
@@ -4564,7 +4577,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    const title=document.createElement('strong');title.textContent=String(v.title||'YouTube video').slice(0,180);
    const meta=document.createElement('small');meta.textContent=[v.author||'YouTube',v.lengthSeconds?Math.floor(v.lengthSeconds/60)+':'+String(v.lengthSeconds%60).padStart(2,'0'):''].filter(Boolean).join(' · ');
    const play=document.createElement('span');play.className='sk-video-play-label';play.textContent='▶ ویڈیو چلائیں';
-   b.append(img,title,meta,play);b.setAttribute('aria-label','اس ویڈیو کو اسی پاپ اَپ کے پلیئر میں چلائیں: '+String(v.title||'YouTube video'));b.addEventListener('click',()=>{playYouTube(v.videoId,v.title);note.textContent='منتخب ویڈیو اسی پاپ اَپ کے پلیئر میں لوڈ کی گئی ہے۔ اگر پلے نہ ہو تو پلیئر کے اندر ▶ دبائیں یا اصل YouTube لنک کھولیں۔';});results.append(b);
+   b.append(img,title,meta,play);b.setAttribute('aria-label','اس ویڈیو کو اسی پاپ اَپ کے پلیئر میں چلائیں: '+String(v.title||'YouTube video'));b.addEventListener('click',()=>{results.insertBefore(player,b);player.hidden=false;player.classList.add('is-active');playYouTube(v.videoId,v.title);note.textContent='منتخب ویڈیو اسی نتیجے کے پاس چل رہی ہے۔ اسکرول کرنے پر پلیئر اوپر چپکا رہے گا؛ بند کرنے کے لیے × دبائیں۔';});results.append(b);
   });
  }
  async function search(q,forcedMode){
@@ -4576,7 +4589,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   searches.replaceChildren();results.replaceChildren();appendYoutubeFallback(cleanQuery);
   if(mode!=='youtube')providers.forEach(([label,base])=>searches.append(makeLink(label,base,cleanQuery)));
   topic.textContent=(mode==='youtube'?'YouTube ویڈیوز: ':'تمام پلیٹ فارمز پر ویڈیو تلاش: ')+cleanQuery;
-  player.replaceChildren();
+  player.hidden=true;player.classList.remove('is-active');player.replaceChildren();
   const wait=document.createElement('div');wait.style.cssText='height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center';wait.textContent='ویڈیوز تلاش کی جا رہی ہیں…';player.append(wait);
   note.textContent=mode==='youtube'?'صرف YouTube کے نتائج تلاش ہو رہے ہیں؛ ویڈیو منتخب کریں تاکہ یہ اسی پاپ اَپ میں چلے۔':'YouTube کے قابلِ پلے نتائج نیچے ہیں؛ باقی پلیٹ فارمز کے سرچ لنکس اوپر دستیاب ہیں۔';
   try{
@@ -4584,8 +4597,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    renderVideos(videos);appendYoutubeFallback(cleanQuery);
    if(!videos.length)note.textContent='اس تلاش کے لیے کوئی YouTube ویڈیو نتیجہ نہیں ملا۔';
    else note.textContent=videos.length+' YouTube نتائج ملے۔ کسی نتیجے پر دبائیں؛ ویڈیو اسی پاپ اَپ میں چلے گی۔';
-   player.replaceChildren();const placeholder=document.createElement('div');placeholder.style.cssText='height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center';placeholder.textContent='اوپر نتائج میں سے ویڈیو منتخب کریں۔';player.append(placeholder);
-  }catch(e){if(seq!==requestNo)return;player.replaceChildren();const placeholder=document.createElement('div');placeholder.style.cssText='height:100%;min-height:120px;display:grid;place-items:center;padding:18px;color:#52677d;text-align:center';placeholder.textContent='مفت خودکار ویڈیو سرچ فی الحال دستیاب نہیں۔';player.append(placeholder);results.replaceChildren();appendYoutubeFallback(cleanQuery);note.textContent='مفت سرچ سرور بند یا بلاک ہے؛ نیچے YouTube کا بٹن ہر صورت دستیاب ہے۔';}
+   player.hidden=true;player.classList.remove('is-active');player.replaceChildren();const placeholder=document.createElement('div');placeholder.style.cssText='height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center';placeholder.textContent='اوپر نتائج میں سے ویڈیو منتخب کریں۔';player.append(placeholder);
+  }catch(e){if(seq!==requestNo)return;player.hidden=true;player.classList.remove('is-active');player.replaceChildren();const placeholder=document.createElement('div');placeholder.style.cssText='height:100%;min-height:120px;display:grid;place-items:center;padding:18px;color:#52677d;text-align:center';placeholder.textContent='مفت خودکار ویڈیو سرچ فی الحال دستیاب نہیں۔';player.append(placeholder);results.replaceChildren();appendYoutubeFallback(cleanQuery);note.textContent='مفت سرچ سرور بند یا بلاک ہے؛ نیچے YouTube کا بٹن ہر صورت دستیاب ہے۔';}
  }
  function openModal(query){
   const q=String(query||'').trim();
