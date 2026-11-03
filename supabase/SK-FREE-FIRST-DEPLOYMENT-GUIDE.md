@@ -12,6 +12,7 @@ Run these scripts in the **SK Cyber Hub Supabase project only**, in this order:
 4. `supabase/SK-MESSENGER-CALLS-FOUNDATION.sql`
 5. `supabase/SK-LIVE-ROOMS-FOUNDATION.sql`
 6. `supabase/SK-CREATOR-MONETIZATION-FOUNDATION.sql`
+7. `supabase/SK-SECURITY-HARDENING-2026-11.sql`
 
 Do not run the community extension before the base setup. Do not paste a Supabase service-role key into the website or any browser code.
 
