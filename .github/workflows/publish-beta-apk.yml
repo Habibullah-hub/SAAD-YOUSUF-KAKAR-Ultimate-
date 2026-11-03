@@ -30,8 +30,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create v1.0.2-beta release-assets/app-debug.apk \
-            --repo "${GITHUB_REPOSITORY}" \
-            --title "SK Cyber Hub Android 1.0.2 Beta (Testing)" \
-            --prerelease \
-            --notes "Public testing build only. Not a Google Play production release. Install only if you understand this is a beta test. Please report crashes, login problems, download issues and device compatibility feedback."
+          gh release view v1.0.2-beta --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1 \
+            && gh release upload v1.0.2-beta release-assets/app-debug.apk --clobber --repo "${GITHUB_REPOSITORY}" \
+            || gh release create v1.0.2-beta release-assets/app-debug.apk \
+              --repo "${GITHUB_REPOSITORY}" \
+              --title "SK Cyber Hub Android 1.0.2 Beta (Testing)" \
+              --prerelease \
+              --notes "Public testing build only. Not a Google Play production release. Install only if you understand this is a beta test. Please report crashes, login problems, download issues and device compatibility feedback."
