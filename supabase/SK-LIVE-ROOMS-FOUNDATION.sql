@@ -10,7 +10,7 @@ create table if not exists public.sk_live_rooms (
   room_name text not null unique,
   host_id uuid not null references public.sk_profiles(id) on delete cascade,
   title text not null check (char_length(trim(title)) between 3 and 100),
-  description text not null default '',
+  description text not null default '' check (char_length(description)<=300),
   status text not null default 'live' check (status in ('live','ended','blocked')),
   started_at timestamptz not null default now(),
   ended_at timestamptz
@@ -63,7 +63,8 @@ for delete to authenticated using (user_id=(select auth.uid()) or public.sk_is_a
 
 revoke all on public.sk_live_rooms,public.sk_live_chat from anon,authenticated;
 grant select on public.sk_live_rooms,public.sk_live_chat to anon,authenticated;
-grant insert,update on public.sk_live_rooms to authenticated;
+grant insert on public.sk_live_rooms to authenticated;
+grant update (status,ended_at) on public.sk_live_rooms to authenticated;
 grant insert,delete on public.sk_live_chat to authenticated;
 
 -- Limit live chat spam per member. This does not record or inspect video/audio media.
