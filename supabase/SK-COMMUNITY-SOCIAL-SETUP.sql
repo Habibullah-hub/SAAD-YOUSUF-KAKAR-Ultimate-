@@ -327,8 +327,6 @@ using (
 drop policy if exists sk_community_media_insert_own on storage.objects;
 drop policy if exists sk_community_media_update_own on storage.objects;
 drop policy if exists sk_community_media_delete_own on storage.objects;
-create policy sk_community_media_public_read on storage.objects for select to anon,authenticated
-using (bucket_id='sk-community-media');
 create policy sk_community_media_insert_own on storage.objects for insert to authenticated
 with check (bucket_id='sk-community-media' and (storage.foldername(name))[1]=(select auth.uid())::text);
 create policy sk_community_media_update_own on storage.objects for update to authenticated
