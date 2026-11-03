@@ -61,3 +61,9 @@ Live video is transported by LiveKit Cloud; it is not stored in the SK Supabase 
 - The community media design uses a private bucket and signed image URLs only when the related post is visible to that viewer. However, a live audit on 2026-11-03 found no Storage buckets or Storage policies in the current Supabase project, so community image uploads are **not yet deployed**. Do not create a public bucket to fix previews. The private bucket migration must be reviewed and applied separately before uploads are enabled.
 - Photos on public posts are visible to everyone; followers-only post photos are signed only for permitted viewers. Members should still avoid uploading highly sensitive images.
 - If a free quota is reached, the feature should pause or fail safely rather than trigger a paid upgrade.
+
+## Visitor privacy
+
+- The website records a coarse page-visit count in Supabase, with one count per browser session and page path.
+- It does not request visitor geolocation or send visitor IP addresses to a third-party IP-geolocation service. Country is stored as `ZZ` / `Not collected` until an explicit opt-in feature is designed.
+- This is aggregate page analytics, not a precise unique-person count. Browser storage can be cleared and visitors may use multiple devices.
