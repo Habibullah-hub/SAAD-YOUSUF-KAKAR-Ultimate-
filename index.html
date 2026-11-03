@@ -1928,18 +1928,24 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
  <div class="manager">
   <div class="manager-grid">
    <div><label for="resourceName">Resource / App Name</label><input id="resourceName" type="text" placeholder="Example: SnapTube v7.69.1"></div>
-   <div><label for="resourceCategory">Category</label><select id="resourceCategory"><option>Apps</option><option>All Apps Mod APK</option><option>Software</option><option>AI Tools</option><option>Free Online Tools</option><option>Documents</option><option>Games</option><option>Video & Audio</option><option>Images & Design</option><option>Developer Tools</option><option>Security & Privacy</option><option>World News</option></select></div>
-   <div class="wide"><label for="resourceUrl">Direct Download URL / Website URL</label><input id="resourceUrl" type="url" placeholder="https://example.com/app.apk"></div>
+   <div><label for="resourceCategory">Category</label><select id="resourceCategory"><option>Apps</option><option>Software</option><option>AI Tools</option><option>Free Online Tools</option><option>Documents</option><option>Games</option><option>Video & Audio</option><option>Images & Design</option><option>Developer Tools</option><option>Security & Privacy</option><option>World News</option><option>Creator Tools</option><option>Jobs & Earning</option><option>Services</option></select></div>
+   <div><label for="resourceType">Resource type</label><select id="resourceType"><option value="app">App</option><option value="software">Software</option><option value="ai_tool">AI tool</option><option value="web_tool">Online tool</option><option value="document">Document</option><option value="course">Course / Learning</option><option value="game">Game</option><option value="earning">Earning opportunity</option><option value="news_source">News source</option><option value="creator_tool">Creator tool</option><option value="service">Service</option></select></div>
+   <div><label for="resourcePrice">Pricing</label><select id="resourcePrice"><option value="unknown">Unknown / not verified</option><option value="free">Free</option><option value="limited_free">Limited free</option><option value="paid">Paid</option></select></div>
+   <div><label for="resourcePlatform">Platform</label><select id="resourcePlatform"><option value="Web">Web</option><option value="Android">Android</option><option value="iPhone/iPad">iPhone / iPad</option><option value="Windows">Windows</option><option value="Mac">Mac</option><option value="Linux">Linux</option><option value="Multi-platform">Multi-platform</option></select></div>
+   <div class="wide"><label for="resourceUrl">Official website / resource URL (HTTPS)</label><input id="resourceUrl" type="url" placeholder="https://example.com/resource"></div>
+   <div class="wide"><label for="resourceDescription">Description</label><textarea id="resourceDescription" rows="2" maxlength="2000" placeholder="What does this resource offer? Mention limits or requirements honestly."></textarea></div>
    <div class="wide"><label for="resourceFile">Or select a file from your phone (local test only)</label><input id="resourceFile" type="file"></div>
   </div>
   <div class="manager-actions">
-   <button class="primary" id="testResource" type="button">Test Link ↗</button>
-   <button class="secondary" id="addResource" type="button">Add to Temporary Preview</button>
+   <button class="primary" id="saveUnifiedResource" type="button">Save to SK Catalog</button>
+   <button class="secondary" id="testResource" type="button">Test Link ↗</button>
+   <button class="secondary" id="addResource" type="button">Temporary Preview</button>
    <button class="secondary" id="clearResource" type="button">Clear</button>
   </div>
-  <p class="manager-note">Important: This is a temporary test tool. Added links/files appear only in this browser session; they are not uploaded or permanently saved to the website. The Test Link button opens the address so you can check whether the download starts. A normal webpage link may open a webpage instead of downloading.</p>
-  <div id="resourceStatus" class="manager-status" role="status" aria-live="polite">Ready. Add your link and press “Test Link”.</div>
+  <p class="manager-note">Save to SK Catalog stores the listing in the shared Supabase database as unpublished. It appears publicly only after the owner reviews and publishes it. HTTPS links only; no paid storage or uploads are used.</p>
+  <div id="resourceStatus" class="manager-status" role="status" aria-live="polite">Connect the SK Cyber Hub database and sign in as the owner Admin to save a permanent listing.</div>
   <div id="resourcePreview" aria-live="polite"></div>
+  <div class="manager" style="margin-top:14px"><h3 style="margin:0 0 10px">Unified Catalog Review Queue</h3><div id="unifiedResourceAdminList" aria-live="polite">Admin listings will appear here after the unified catalog migration is installed.</div></div>
  </div>
 </section>
 </section>
@@ -2652,6 +2658,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 alertBox?.classList.add('hidden');
                 await checkSession();
                 await fetchApps();
+                window.dispatchEvent(new Event('sk:database-ready'));
             } catch (error) {
                 supabaseClient = null;
                 if (alertText) alertText.textContent = 'SK Cyber Hub database is not ready: ' + (error?.message || 'Connection failed') + '. Run the separate SK setup SQL, then Configure again.';
@@ -4523,4 +4530,131 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </script>
 
 <script src="./pwa-register.js" defer></script>
+
+<script id="sk-unified-catalog-runtime-v1">
+(function(){
+ 'use strict';
+ const byId=id=>document.getElementById(id);
+ const status=byId('resourceStatus'),queue=byId('unifiedResourceAdminList');
+ const sectionFor={
+  app:'apps',software:'software',ai_tool:'tools',web_tool:'free-tools',
+  document:'documents',course:'documents',game:'games',earning:'earnings-model',
+  news_source:'news',creator_tool:'creator-studio',service:'quick-tools'
+ };
+ const costLabel={free:'free',limited_free:'limited',paid:'paid',unknown:'unknown'};
+ const deviceLabel={'Android':'android','iPhone/iPad':'iphone','Windows':'windows','Mac':'windows','Linux':'windows','Web':'browser','Multi-platform':'browser'};
+ function say(message){if(status)status.textContent=message;}
+ function db(){return typeof supabaseClient!=='undefined'&&supabaseClient?supabaseClient:null;}
+ function slugify(value){return String(value||'resource').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,90)||'resource';}
+ function safeHttps(value){
+  try{const u=new URL(String(value||'').trim());return u.protocol==='https:'?u.href:'';}catch(_){return '';}
+ }
+ function element(tag,cls,text){const node=document.createElement(tag);if(cls)node.className=cls;if(text!==undefined)node.textContent=text;return node;}
+ function renderPublicResources(rows){
+  document.querySelectorAll('[id^="skUnifiedPublicResources-"]').forEach(node=>node.remove());
+  (rows||[]).forEach(item=>{
+   const sectionId=sectionFor[item.resource_type]||'quick-tools';
+   const section=byId(sectionId);if(!section)return;
+   let grid=section.querySelector('.resource-grid');
+   if(!grid){grid=element('div','resource-grid');section.appendChild(grid);}
+   let host=byId('skUnifiedPublicResources-'+sectionId);
+   if(!host){host=element('div','');host.id='skUnifiedPublicResources-'+sectionId;grid.appendChild(host);}
+   const card=element('article','resource tile');
+   card.dataset.search=[item.title,item.category,item.resource_type,item.platform,item.pricing,item.description].filter(Boolean).join(' ').toLowerCase();
+   card.dataset.cost=costLabel[item.pricing]||'unknown';
+   const info=element('div','app-info');
+   info.appendChild(element('span','tag',(item.category||item.resource_type||'Resource').toUpperCase()));
+   info.appendChild(element('h3','',item.title||'Resource'));
+   info.appendChild(element('p','',item.description||'Open the provider website for details.'));
+   const a=element('a','arrow','Open resource ↗');a.href=item.target_url;a.target='_blank';a.rel='noopener noreferrer';
+   const icon=element('div','app-icon',(item.title||'SK').trim().slice(0,2).toUpperCase());
+   card.append(icon,info,a);host.appendChild(card);
+  });
+ }
+ async function loadPublicResources(){
+  const client=db();if(!client)return;
+  const result=await client.from('sk_resources').select('id,title,resource_type,category,platform,pricing,description,target_url,published,sort_order').eq('published',true).order('sort_order',{ascending:true}).limit(200);
+  if(result.error){
+   if(queue&&typeof currentUser!=='undefined'&&currentUser)queue.textContent='Unified Catalog migration is not ready yet: '+result.error.message;
+   return;
+  }
+  renderPublicResources(result.data||[]);
+  const searchStatus=byId('skGlobalStatus');
+  if(searchStatus&&result.data?.length)searchStatus.textContent='Shared SK Catalog connected · '+result.data.length+' published resources loaded. Search across the directory.';
+ }
+ async function loadAdminQueue(){
+  const client=db();if(!client||typeof currentUser==='undefined'||!currentUser){if(queue)queue.textContent='Owner Admin login is required to manage catalog listings.';return;}
+  const check=await client.rpc('sk_is_admin');
+  if(check.error||check.data!==true){if(queue)queue.textContent='Owner Admin permission could not be verified.';return;}
+  const result=await client.from('sk_resources').select('id,title,resource_type,category,target_url,published,source_review_status,created_at').order('created_at',{ascending:false}).limit(60);
+  if(result.error){if(queue)queue.textContent='Run supabase/SK-UNIFIED-RESOURCES.sql first. Details: '+result.error.message;return;}
+  if(!queue)return;
+  queue.replaceChildren();
+  if(!result.data?.length){queue.textContent='Catalog is empty. Add the first resource above.';return;}
+  result.data.forEach(item=>{
+   const card=element('article','user-resource');
+   const title=element('h3','',item.title);
+   const meta=element('p','',(item.resource_type||'resource')+' · '+(item.category||'General')+' · '+(item.published?'Published':'Pending review'));
+   const link=element('a','', 'Open source ↗');link.href=item.target_url;link.target='_blank';link.rel='noopener noreferrer';
+   const actions=element('div','manager-actions');
+   const toggle=element('button','secondary',item.published?'Unpublish':'Review & Publish');toggle.type='button';
+   toggle.addEventListener('click',async()=>{
+    toggle.disabled=true;
+    const update=await client.from('sk_resources').update({published:!item.published,source_review_status:'reviewed'}).eq('id',item.id);
+    if(update.error){say('Could not update listing: '+update.error.message);toggle.disabled=false;return;}
+    say(item.published?'Listing unpublished.':'Listing reviewed and published in the shared catalog.');
+    await loadAdminQueue();await loadPublicResources();
+   });
+   const remove=element('button','secondary','Delete');remove.type='button';
+   remove.addEventListener('click',async()=>{
+    if(!window.confirm('Permanently delete this catalog listing?'))return;
+    remove.disabled=true;
+    const del=await client.from('sk_resources').delete().eq('id',item.id);
+    if(del.error){say('Could not delete listing: '+del.error.message);remove.disabled=false;return;}
+    say('Catalog listing deleted.');await loadAdminQueue();await loadPublicResources();
+   });
+   actions.append(toggle,remove);card.append(title,meta,link,actions);queue.appendChild(card);
+  });
+ }
+ async function saveListing(){
+  const client=db();
+  if(!client){say('پہلے SK Cyber Hub کا Supabase database connect کریں۔');return;}
+  if(typeof currentUser==='undefined'||!currentUser){say('صرف Owner Admin لاگ اِن ہو کر مستقل listing محفوظ کر سکتا ہے۔');return;}
+  const permission=await client.rpc('sk_is_admin');
+  if(permission.error||permission.data!==true){say('Database نے Owner Admin permission کی تصدیق نہیں کی۔');return;}
+  const title=(byId('resourceName')?.value||'').trim();
+  const target=safeHttps(byId('resourceUrl')?.value);
+  const description=(byId('resourceDescription')?.value||'').trim();
+  if(title.length<2||title.length>140){say('عنوان 2 سے 140 حروف کے درمیان ہونا چاہیے۔');return;}
+  if(!target){say('صرف مکمل HTTPS ویب سائٹ یا resource URL درج کریں۔');return;}
+  if(description.length>2000){say('تفصیل زیادہ سے زیادہ 2000 حروف کی ہو سکتی ہے۔');return;}
+  const category=byId('resourceCategory')?.value||'General';
+  const type=byId('resourceType')?.value||'service';
+  const platform=byId('resourcePlatform')?.value||'Web';
+  const pricing=byId('resourcePrice')?.value||'unknown';
+  let host='';try{host=new URL(target).hostname.toLowerCase().replace(/^www\./,'');}catch(_){}
+  const payload={
+   title,slug:slugify(title)+'-'+Date.now().toString(36),resource_type:type,category,platform,pricing,
+   description,target_url:target,download_url:null,download_mode:'external_page',
+   source_domain:host||null,source_review_status:'unverified',icon_url:null,
+   country_availability:'Global',featured:false,published:false,is_affiliate:false,
+   affiliate_disclosure:null,created_by:currentUser.id
+  };
+  const button=byId('saveUnifiedResource');if(button){button.disabled=true;button.textContent='Saving…';}
+  say('محفوظ کیا جا رہا ہے…');
+  try{
+   const result=await client.from('sk_resources').insert(payload).select('id').single();
+   if(result.error)throw result.error;
+   say('محفوظ ہوگیا۔ یہ listing ابھی Pending ہے؛ عوام کو دکھانے کے لیے نیچے Review & Publish دبائیں۔');
+   byId('resourceName').value='';byId('resourceUrl').value='';byId('resourceDescription').value='';
+   await loadAdminQueue();
+  }catch(error){say('محفوظ نہیں ہوا: '+(error.message||'Database error')+' — تصدیق کریں کہ SK-UNIFIED-RESOURCES.sql چل چکی ہے۔');}
+  finally{if(button){button.disabled=false;button.textContent='Save to SK Catalog';}}
+ }
+ byId('saveUnifiedResource')?.addEventListener('click',saveListing);
+ window.addEventListener('sk:database-ready',()=>{loadPublicResources();loadAdminQueue();});
+ if(db()) {loadPublicResources();loadAdminQueue();}
+})();
+</script>
+
 </body></html>
