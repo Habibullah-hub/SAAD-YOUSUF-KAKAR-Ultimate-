@@ -8,6 +8,7 @@ Method: Read-only SQL queries run by the owner in Supabase SQL Editor, plus owne
 
 - Profile counts: 1 admin and 2 members.
 - RLS is enabled on all seven observed public SK tables: `sk_apps`, `sk_post_comments`, `sk_post_likes`, `sk_post_reports`, `sk_posts`, `sk_profiles`, and `sk_site_analytics`.
+- The observed `sk_profiles` table has 4 columns in the live Table Editor snapshot. The repository's community-v2 migration adds `display_name`, `avatar_url`, `bio`, and `updated_at`; those additions are not reflected in the reported live schema.
 - The observed `sk_profiles` SELECT policy allows an authenticated user to read their own profile, or an admin to read profiles.
 - After remediation, `authenticated` has only table-level SELECT on `sk_profiles`.
 - After remediation, `sk_apps` grants are anon SELECT and authenticated SELECT/INSERT/UPDATE/DELETE; the observed RLS policies restrict writes to `sk_is_admin()` and public reads to published apps.
@@ -24,6 +25,7 @@ Method: Read-only SQL queries run by the owner in Supabase SQL Editor, plus owne
 - No rows were returned from `storage.buckets`.
 - No policies were returned for `storage.objects` or the `storage` schema.
 - The current project therefore has no configured Storage bucket or object policies. Community image uploads are not ready.
+- Together with the 4-column `sk_profiles` snapshot, the empty Storage bucket list is strong evidence that `supabase/SK-COMMUNITY-SOCIAL-SETUP.sql` has not yet been applied to this live project. The older community tables may exist, but the v2 profile/follow/save/media upgrade is not confirmed live.
 - Do not create a public bucket as a workaround. Review and apply the repository's private-bucket migration separately before enabling uploads.
 - Do not revoke Supabase Storage's broad internal schema grants blindly. RLS and Storage's supported bucket/object policies must be configured together.
 
@@ -32,6 +34,7 @@ Method: Read-only SQL queries run by the owner in Supabase SQL Editor, plus owne
 - Supabase Auth dashboard settings: email confirmation, provider settings, redirect allowlist, CAPTCHA/abuse protection, MFA, session settings and rate limits.
 - Whether the one existing admin profile belongs to the intended owner Auth UUID (do not expose the UUID in public logs).
 - Full column-level profile update behavior and all live schema/migration versions.
+- Whether the complete community-v2 migration has been run; the current column count and Storage results indicate it has not.
 - Storage bucket creation and private object policies.
 - Backups, recovery, quota alerts, GitHub account MFA, repository collaborators and branch protection.
 - Browser/API tests with independent anon, member and admin sessions.
