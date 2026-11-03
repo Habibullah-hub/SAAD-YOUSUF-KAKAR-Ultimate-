@@ -230,6 +230,45 @@ grant insert,update,delete on public.sk_messages to authenticated;
 grant insert,update on public.sk_call_sessions to authenticated;
 grant insert,select,delete on public.sk_call_signals to authenticated;
 
+-- Basic server-side anti-spam guards for private messages and call requests.
+create or replace function public.sk_guard_message_rate()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $sk$
+declare recent_count integer;
+begin
+  if new.sender_id<>(select auth.uid()) then raise exception 'You can only send messages as your own account.'; end if;
+  select count(*) into recent_count from public.sk_messages
+    where sender_id=new.sender_id and created_at>now()-interval '1 minute';
+  if recent_count>=30 then raise exception 'Message rate limit reached. Please wait a moment.'; end if;
+  return new;
+end;
+$sk$;
+drop trigger if exists sk_messages_rate_guard on public.sk_messages;
+create trigger sk_messages_rate_guard before insert on public.sk_messages
+for each row execute function public.sk_guard_message_rate();
+
+create or replace function public.sk_guard_call_rate()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $sk$
+declare recent_count integer;
+begin
+  if new.caller_id<>(select auth.uid()) then raise exception 'You can only start calls from your own account.'; end if;
+  select count(*) into recent_count from public.sk_call_sessions
+    where caller_id=new.caller_id and created_at>now()-interval '1 hour';
+  if recent_count>=20 then raise exception 'Call rate limit reached. Please try again later.'; end if;
+  return new;
+end;
+$sk$;
+drop trigger if exists sk_call_rate_guard on public.sk_call_sessions;
+create trigger sk_call_rate_guard before insert on public.sk_call_sessions
+for each row execute function public.sk_guard_call_rate();
+
 -- Enable realtime delivery for private conversations, messages and call signaling.
 do $sk$
 begin
