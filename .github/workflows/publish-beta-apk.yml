@@ -1,0 +1,37 @@
+name: Publish SK Android test APK
+
+on:
+  workflow_run:
+    workflows:
+      - SK Android debug build
+    types:
+      - completed
+    branches:
+      - main
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  publish-beta:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download tested APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: sk-cyber-hub-debug-apk
+          path: release-assets
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Publish public beta release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create v1.0.1-beta release-assets/app-debug.apk \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "SK Cyber Hub Android 1.0.1 Beta (Testing)" \
+            --prerelease \
+            --notes "Public testing build only. Not a Google Play production release. Install only if you understand this is a beta test. Please report crashes, login problems, download issues and device compatibility feedback."
