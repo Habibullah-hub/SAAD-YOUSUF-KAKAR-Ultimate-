@@ -311,7 +311,7 @@ using (
   bucket_id='sk-community-media'
   and exists(
     select 1 from public.sk_posts p
-    where p.media_path=storage.objects.name
+    where p.media_path=name
       and p.status='published'
       and (
         p.visibility='public'
