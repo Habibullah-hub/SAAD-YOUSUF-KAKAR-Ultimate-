@@ -82,6 +82,8 @@ async function showIncoming(call){
  if(activeCall)return;
  activeCall=call;const p=await db.from('sk_public_profiles').select('display_name').eq('id',call.caller_id).maybeSingle();
  $('skConnectIncomingText').textContent=(p.data?.display_name||'A member')+' is calling ('+call.call_type+').';
+ if(callChannel)await db.removeChannel(callChannel);
+ callChannel=db.channel('sk-incoming-status-'+call.id).on('postgres_changes',{event:'UPDATE',schema:'public',table:'sk_call_sessions',filter:'id=eq.'+call.id},payload=>{if(['ended','declined','missed'].includes(payload.new.status)){show($('skConnectIncoming'),false);activeCall=null;say('کال ختم ہو چکی ہے۔');if(callChannel){db.removeChannel(callChannel);callChannel=null;}}}).subscribe();
  show($('skConnectIncoming'),true);
 }
 async function sendSignal(recipient,payload){
@@ -90,6 +92,7 @@ async function sendSignal(recipient,payload){
 }
 async function setupPeer(call,initiator,screenPromise=null){
  if(signalChannel){await db.removeChannel(signalChannel);signalChannel=null;}
+ if(callChannel){await db.removeChannel(callChannel);callChannel=null;}
  queuedSignals=[];
  pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
  pc.onicecandidate=e=>{if(e.candidate&&activeCall)sendSignal(initiator?activeCall.callee_id:activeCall.caller_id,{type:'candidate',candidate:e.candidate.toJSON()}).catch(err=>say('Network signal: '+err.message));};
