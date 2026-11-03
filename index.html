@@ -2459,7 +2459,7 @@ input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDe
    const entityPhrases=knownNames.filter(name=>q.toLocaleLowerCase().includes(name.toLocaleLowerCase()));
    const capitalized=q.match(/\b[A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,}){0,2}\b/g)||[];
    capitalized.forEach(name=>{if(entityPhrases.length<4&&!entityPhrases.some(x=>x.toLowerCase()===name.toLowerCase()))entityPhrases.push(name);});
-   const variants=[q,...entityPhrases.filter(x=>!q.toLowerCase().includes(x.toLowerCase())).map(x=>'"'+x+'"')];
+   const variants=[q,...entityPhrases.map(x=>'"'+x+'"')];
    const feeds=await Promise.allSettled([...new Set(variants)].slice(0,4).map(fetchFeed));if(requestId!==searchSequence)return;
    const feed=feeds.filter(x=>x.status==='fulfilled').flatMap(x=>x.value);
    if(!feed.length)throw new Error('No free news feeds returned results');
