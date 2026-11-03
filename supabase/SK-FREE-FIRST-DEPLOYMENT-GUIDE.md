@@ -54,6 +54,6 @@ Live video is transported by LiveKit Cloud; it is not stored in the SK Supabase 
 ## No-cost and security rules
 
 - No paid storage, video recording, TURN relay, billing plan or automatic upgrade is enabled by this repository.
-- Supabase project storage and egress quotas are shared by the project; UID folders enforce per-member access but are not separate unlimited storage accounts.
-- Public community photos are public. Members must not upload sensitive/private images.
+- Supabase project storage and egress quotas are shared by the project; each member is restricted to their own UID folder and a 50 MB per-member photo cap, but these are not separate unlimited storage accounts. The bucket is private and signed image URLs are issued only when the related post is visible to that viewer.
+- Photos on public posts are visible to everyone; followers-only post photos are signed only for permitted viewers. Members should still avoid uploading highly sensitive images.
 - If a free quota is reached, the feature should pause or fail safely rather than trigger a paid upgrade.
