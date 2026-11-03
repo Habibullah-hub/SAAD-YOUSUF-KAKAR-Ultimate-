@@ -404,6 +404,11 @@ body{top:0!important}
 .news-language-chevron{right:13px;color:#fff}
 .news-language-row>label{color:#183653!important}
 @media(max-width:600px){.news-language-control{min-height:40px}.news-language-control input{height:38px;font-size:12px}}
+/* Direct, visible entry point for the related-video popup */
+.sk-video-launcher-row{display:flex;justify-content:flex-start;margin:12px 0 0}
+.sk-video-launcher{min-height:44px;padding:10px 16px;border:1px solid #0879c9;border-radius:8px;background:#0879c9;color:#fff;font-weight:800;cursor:pointer;touch-action:manipulation}
+.sk-video-launcher:focus-visible{outline:3px solid #58b9ff;outline-offset:3px}
+@media(max-width:600px){.sk-video-launcher{width:100%;min-height:48px}}
 /* Cleaner editorial image treatment for every news card */
 .news-card-image{height:190px;object-fit:cover;object-position:center 35%;background:#e8eff5}
 .news-card-image-fallback{height:190px}
@@ -1824,6 +1829,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
   <label for="newsQuery">Search any news topic</label>
   <div class="news-search-row"><div class="news-query-control"><input id="newsQuery" type="search" placeholder="Type a news topic (e.g. Pakistan, cricket, technology)" autocomplete="off" aria-label="Type or speak a news topic"><button id="newsMicButton" class="news-mic-button" type="button" aria-label="Speak your search" title="Speak your search"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2.5" width="6" height="12" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5M8.5 21.5h7"></path></svg></button><button id="newsSearchButton" class="news-search-icon-button" type="button" aria-label="Search news" title="Search news"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg><span>Search</span></button></div></div>
   <p class="news-hint">Search live headlines by topic. Exact matches appear first, followed by related stories.</p>
+  <div class="sk-video-launcher-row"><button id="skNewsVideoLauncherV1" class="sk-video-launcher" type="button">▶ ویڈیوز تلاش کریں / Search videos</button></div>
   <div class="news-topic-chips" aria-label="Popular news searches"><span>Explore:</span><button type="button" data-news-topic="Pakistan">Pakistan</button><button type="button" data-news-topic="Saudi Arabia">Saudi Arabia</button><button type="button" data-news-topic="Technology">Technology</button><button type="button" data-news-topic="Cricket">Cricket</button><button type="button" data-news-topic="World">World</button></div>
  </div>
  <div id="newsStatus" class="news-status" role="status" aria-live="polite">Choose a topic or type your own to explore the latest available headlines.</div>
