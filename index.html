@@ -3123,7 +3123,8 @@ if (!validDownloadUrl) {
             closeAuthModal();
             updateAuthUI();
             switchTab('admin');
-            fetchApps();
+            await fetchApps();
+            window.dispatchEvent(new Event('sk:database-ready'));
         }
 
         async function logoutAdmin() {
