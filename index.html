@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0b120e">
-<link rel="manifest" href="./manifest.webmanifest"><link rel="apple-touch-icon" href="./assets/sk-cyber-hub-icon.svg">
+<link rel="manifest" href="./manifest.webmanifest"><link rel="stylesheet" href="./assets/sk-community.css"><link rel="apple-touch-icon" href="./assets/sk-cyber-hub-icon.svg">
 <link id="sk-cyber-hub-final-identity" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cdefs%3E%3ClinearGradient id=%27g%27 x1=%270%27 y1=%270%27 x2=%271%27 y2=%271%27%3E%3Cstop stop-color=%27%2353e0c1%27/%3E%3Cstop offset=%271%27 stop-color=%27%2378baff%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2764%27 height=%2764%27 rx=%2716%27 fill=%27%230b1425%27/%3E%3Cpath d=%27M15 16h34v7H23v8h21v7H23v9h27v7H15z%27 fill=%27url(%23g)%27/%3E%3C/svg%3E"><meta name="apple-mobile-web-app-title" content="SK Cyber Hub"><meta name="description" content="Discover useful AI tools, free online tools, apps, software, learning resources, creator tools and world news at SK Cyber Hub."><meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"><link rel="canonical" href="https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/"><meta name="author" content="SK Cyber Hub"><meta property="og:title" content="SK Cyber Hub | Discover Apps, AI Tools & Digital Resources"><meta property="og:description" content="Explore useful AI tools, apps, free online tools, software, learning resources, creator tools and world news in one digital hub."><meta property="og:type" content="website"><meta property="og:site_name" content="SK Cyber Hub"><meta property="og:url" content="https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="SK Cyber Hub | Apps, AI Tools & Digital Resources"><meta name="twitter:description" content="Discover useful apps, AI tools, online tools, software, learning and world news."><meta name="color-scheme" content="dark">
 <title>SK Cyber Hub | Apps, AI Tools & Digital Resources</title>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/#organization","name":"SK Cyber Hub","url":"https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/"},{"@type":"WebSite","@id":"https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/#website","url":"https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/","name":"SK Cyber Hub","publisher":{"@id":"https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/#organization"},"inLanguage":"en"},{"@type":"WebPage","@id":"https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/#webpage","url":"https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/","name":"SK Cyber Hub | Apps, AI Tools & Digital Resources","isPartOf":{"@id":"https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/#website"},"about":{"@id":"https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/#organization"},"description":"Discover useful AI tools, free online tools, apps, software, learning resources, creator tools and world news at SK Cyber Hub.","inLanguage":"en"}]}</script>
@@ -1833,15 +1833,27 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 <a class="tile resource" data-search="Google for Education learning tools" href="https://edu.google.com/" target="_blank" rel="noopener noreferrer"><span class="tag">LEARNING RESOURCES</span><h3>Google for Education</h3><p>Explore education tools and learning resources; account requirements may apply.</p><span class="arrow">Explore resources ↗</span></a>
 <a class="tile resource" data-search="OpenLearn free courses learning" href="https://www.open.edu/openlearn/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE LEARNING</span><h3>OpenLearn Free Courses</h3><p>Free learning materials; check course pages for certificates and completion details.</p><span class="arrow">Browse courses ↗</span></a></div></section>
 
-<section class="section wrap" id="community"><div class="section-head"><div><h2>Community & User Accounts</h2><p>Create a free member account to access future community features.</p></div></div><div class="notice"><b>Member registration is available.</b> Every new account is automatically assigned the member role. Only the website owner can grant administrator access through the Supabase SQL Editor. Registration is free; email confirmation may be required.</div><div class="hero-actions" style="margin-top:16px"><button class="primary" type="button" onclick="openMemberAuthModal('signup')">Create free account</button><button class="hero-secondary" type="button" onclick="openMemberAuthModal('login')">Member login</button></div><p id="memberSessionNote" class="notice" aria-live="polite" style="margin-top:12px">You are browsing as a guest.</p><div class="sk-community-actions" style="margin:10px 0 16px"><input id="skMemberFirstName" type="text" maxlength="40" placeholder="Your first name" aria-label="Your first name" style="flex:1;min-width:160px;padding:10px;border-radius:10px;background:#061b29;border:1px solid #315365;color:#fff"><button class="secondary" id="skSaveMemberName" type="button">Save my name</button></div>
-<div class="sk-community-panel" id="skCommunityPanel">
- <div class="sk-community-head"><div><h3>SK Pulse · Global Community Feed</h3><p>Share a useful idea, learning milestone or creator tip with the community.</p></div><span class="sk-live-dot">COMMUNITY</span></div>
- <label for="skCommunityPostText">Your public post</label>
- <textarea id="skCommunityPostText" maxlength="800" rows="3" placeholder="Write something helpful… (maximum 800 characters)"></textarea>
- <div class="sk-community-actions"><small id="skCommunityCharCount">0 / 800</small><button class="primary" id="skCommunityPublish" type="button">Publish post</button><button class="secondary" id="skCommunityRefresh" type="button">Refresh feed</button></div>
- <p id="skCommunityStatus" class="creator-status" role="status" aria-live="polite">Public community posts require the SK Community database extension. Sign in with a free member account to publish.</p>
- <div id="skCommunityFeed" class="sk-community-feed" aria-live="polite"></div>
-</div></section>
+<section class="section wrap" id="community">
+ <div class="section-head"><div><span class="sk-kicker">SK PULSE · SOCIAL COMMUNITY</span><h2>Share, connect & create</h2><p>Your own friendly social space inside SK Cyber Hub.</p></div><a href="./community.html" class="secondary" style="text-decoration:none;padding:10px 14px;border-radius:10px">About SK Community ↗</a></div>
+ <div class="notice"><b>Free member accounts.</b> Every new account is a member by default. Only the owner can grant Admin access. Run the separate Community SQL extension once to activate posts, photo sharing, likes, comments, follows and saves.</div>
+ <div class="hero-actions" style="margin-top:16px"><button class="primary" type="button" onclick="openMemberAuthModal('signup')">Create free account</button><button class="hero-secondary" type="button" onclick="openMemberAuthModal('login')">Member login</button><button class="secondary hidden" id="memberLogoutButton" type="button" onclick="logoutMember()">Log out</button></div>
+ <p id="memberSessionNote" class="notice" aria-live="polite" style="margin-top:12px">You are browsing as a guest.</p>
+ <div class="sk-community-panel" id="skCommunityPanel">
+  <div class="sk-community-head"><div><h3>SK Pulse · Global Community Feed</h3><p>Discover people, share original photos and ideas, and build your own community.</p></div><span class="sk-live-dot">COMMUNITY</span></div>
+  <div class="sk-social-tabs" role="group" aria-label="Community feed filters"><button type="button" data-sk-social-tab="feed" aria-pressed="true">🌍 Explore</button><button type="button" data-sk-social-tab="following" aria-pressed="false">＋ Following</button><button type="button" data-sk-social-tab="saved" aria-pressed="false">🔖 Saved</button><button type="button" id="skCommunityRefresh">↻ Refresh</button></div>
+  <div class="sk-social-composer">
+   <label for="skCommunityPostText">What would you like to share?</label>
+   <textarea id="skCommunityPostText" maxlength="2000" rows="3" placeholder="Write a helpful thought, story, learning milestone or creator tip…"></textarea>
+   <div class="sk-social-controls"><input id="skCommunityPhoto" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Choose a photo"><input id="skCommunityPhotoAlt" type="text" maxlength="180" placeholder="Describe your photo (optional)" aria-label="Photo description"></div>
+   <div class="sk-social-controls"><input id="skCommunityVideoUrl" type="url" placeholder="Optional public video link (YouTube / Vimeo / Dailymotion)" aria-label="Public video URL"><select id="skCommunityVisibility" aria-label="Post audience"><option value="public">🌍 Public post</option><option value="followers">👥 Followers only</option></select><button class="primary" id="skCommunityPublish" type="button">Publish post</button></div>
+   <div class="sk-social-profile" style="margin-top:12px"><input id="skCommunityProfileName" maxlength="40" placeholder="Your public display name" aria-label="Public display name"><textarea id="skCommunityProfileBio" maxlength="160" rows="2" placeholder="Short profile bio (optional)" aria-label="Profile bio"></textarea><button class="secondary" id="skCommunityProfileSave" type="button">Save profile</button></div>
+   <p id="skCommunityCharCount" class="sk-social-muted">0 / 2000</p>
+   <p id="skCommunityStatus" class="sk-social-status" role="status" aria-live="polite">فوٹو اور پوسٹس شیئر کرنے کے لیے پہلے مفت Member Login کریں۔</p>
+   <p class="sk-social-muted">Photo uploads: JPEG / PNG / WebP, up to 8 MB. Public photos can be viewed by anyone. Video uploads are not enabled yet; share a public video link instead.</p>
+  </div>
+  <div id="skCommunityFeed" class="sk-community-feed" aria-live="polite"><div class="sk-social-empty">Connect the database and run the Community SQL extension to activate the real member feed.</div></div>
+ </div>
+</section>
 
 <section class="section wrap" id="languages"><div class="section-head"><div><h2>Languages & Global Access</h2><p>Use the language button at the top of the website to choose a supported page language. World News has its own display-language selector.</p></div></div><div class="grid resource-grid">
 <a class="tile resource" data-search="google translate languages translation" href="https://translate.google.com/" target="_blank" rel="noopener noreferrer"><span class="tag">LANGUAGE SUPPORT</span><h3>Google Translate</h3><p>Translate text and web pages across supported languages.</p><span class="arrow">Open translator ↗</span></a>
@@ -2692,6 +2704,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
             }
             try {
                 supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storage: window.localStorage } });
+                window.SK_SUPABASE_CLIENT = supabaseClient;
                 const { error } = await supabaseClient.from('sk_apps').select('id').limit(1);
                 if (error) throw error;
                 alertBox?.classList.add('hidden');
@@ -2700,6 +2713,7 @@ document.getElementById('clearResource').addEventListener('click',()=>{
                 window.dispatchEvent(new Event('sk:database-ready'));
             } catch (error) {
                 supabaseClient = null;
+                window.SK_SUPABASE_CLIENT = null;
                 if (alertText) alertText.textContent = 'SK Cyber Hub database is not ready: ' + (error?.message || 'Connection failed') + '. Run the separate SK setup SQL, then Configure again.';
                 alertBox?.classList.remove('hidden');
                 console.error('SK Cyber Hub database check failed:', error);
@@ -4723,6 +4737,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 })();
 </script>
 
+<script src="./assets/sk-community.js" defer></script>
 <script src="./pwa-register.js" defer></script>
 
 <script id="sk-unified-catalog-runtime-v1">
