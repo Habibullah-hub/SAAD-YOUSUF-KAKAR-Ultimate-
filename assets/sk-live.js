@@ -22,7 +22,7 @@ async function connectRoom(item,hostMode){
  room.on(LivekitClient.RoomEvent.TrackUnsubscribed,(track)=>{track.detach().forEach(n=>n.remove());});
  room.on(LivekitClient.RoomEvent.Disconnected,()=>{say('Live session disconnected.');});
  await room.connect(creds.serverUrl,creds.token);
- activeRoom=item;showStage(true);
+ activeRoom=item;showStage(true);$('skLiveShareScreen').hidden=!hostMode;$('skLiveEnd').hidden=!hostMode;
  if(hostMode){
   await room.localParticipant.enableCameraAndMicrophone();
   for(const pub of room.localParticipant.videoTrackPublications.values()){if(pub.track)attachTrack(pub.track);}
@@ -54,7 +54,7 @@ async function startLive(e){
  const r=await db.from('sk_live_rooms').insert({room_name:roomName,host_id:user.id,title,description,status:'live'}).select('*').single();
  if(r.error){say('Live room محفوظ نہیں ہوا: '+r.error.message);return;}
  try{await connectRoom(r.data,true);$('skLiveStartForm').hidden=true;await loadRooms();}
- catch(err){await db.from('sk_live_rooms').update({status:'ended',ended_at:new Date().toISOString()}).eq('id',r.data.id);say('Live شروع نہیں ہوئی: '+(err.message||'Setup incomplete'));}
+ catch(err){await db.from('sk_live_rooms').update({status:'ended',ended_at:new Date().toISOString()}).eq('id',r.data.id);if(room){room.disconnect();room=null;}activeRoom=null;showStage(false);say('Live شروع نہیں ہوئی: '+(err.message||'Setup incomplete'));}
 }
 async function joinRoom(item){
  if(!user){say('Live دیکھنے کے لیے مفت Member Login کریں۔');return;}
