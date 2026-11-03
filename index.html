@@ -4428,8 +4428,29 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 #skNewsVideoModalV1 .sk-video-fallback-card .sk-video-open-original{margin:0;background:linear-gradient(120deg,#075b98,#087b70);border:0;box-shadow:0 5px 14px #075b9833}
 @keyframes skVideoLauncherFloat{0%,100%{transform:translateY(0);box-shadow:0 9px 30px #001b25aa,0 0 0 1px #75f5d633,inset 0 1px #ffffff40}50%{transform:translateY(-4px);box-shadow:0 13px 34px #001b25bb,0 0 17px #40e8d566,inset 0 1px #ffffff55}}
 @media(prefers-reduced-motion:reduce){#skNewsVideoLauncherV1{animation:none;transition:none}}
+/* Compact floating video control: unobtrusive on phones and desktops */
+#skNewsVideoLauncherV1{
+ position:fixed;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));left:auto;top:auto;z-index:1199;
+ width:42px;height:42px;min-width:42px;min-height:42px;padding:0;display:grid;place-items:center;
+ border:1px solid #79c8f0;border-radius:50%;
+ background:linear-gradient(145deg,#0879bd,#07528e);color:#fff;
+ font-size:0;line-height:1;box-shadow:0 3px 12px #062b4b38;
+ cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
+ animation:skVideoLauncherFloat 4.8s ease-in-out infinite;
+ transition:left .25s ease,top .25s ease,transform .18s,box-shadow .18s,background .18s;
+}
+#skNewsVideoLauncherV1::before{content:"▶";font-size:15px;margin-left:2px}
+#skNewsVideoLauncherV1::after{content:none}
+#skNewsVideoLauncherV1 .sk-video-launcher-grip{display:none}
+#skNewsVideoLauncherV1:hover{transform:scale(1.06);box-shadow:0 5px 16px #062b4b55}
+#skNewsVideoLauncherV1.is-dragging{cursor:grabbing;animation:none;transform:scale(1.12);transition:none;box-shadow:0 0 0 3px #0879bd30,0 7px 18px #062b4b55}
+#skNewsVideoLauncherV1.is-docked-left{border-radius:50%}
+#skNewsVideoLauncherV1.is-docked-right{border-radius:50%}
+#skNewsVideoLauncherV1:focus-visible{outline:3px solid #0879bd;outline-offset:3px}
+@media(max-width:600px){#skNewsVideoLauncherV1{width:40px;height:40px;min-width:40px;min-height:40px;right:9px;bottom:calc(12px + env(safe-area-inset-bottom))}}
+@media(prefers-reduced-motion:reduce){#skNewsVideoLauncherV1{animation:none;transition:none}}
 </style>
-<button id="skNewsVideoLauncherV1" type="button" aria-label="ویڈیو سرچ کھولیں؛ بٹن کو گھسیٹ کر جگہ بدلیں" aria-haspopup="dialog" aria-controls="skNewsVideoModalV1"><span class="sk-video-launcher-grip" aria-hidden="true">⠿</span><span>▶ ویڈیو سرچ</span></button>
+<button id="skNewsVideoLauncherV1" type="button" aria-label="ویڈیو سرچ کھولیں؛ بٹن کو گھسیٹ کر جگہ بدلیں" title="ویڈیو سرچ — گھسیٹ کر جگہ بدلیں" aria-haspopup="dialog" aria-controls="skNewsVideoModalV1"></button>
 <div id="skNewsVideoModalV1" aria-hidden="true">
  <section class="sk-video-dialog" role="dialog" aria-modal="true" aria-labelledby="skNewsVideoTitleV1">
   <header class="sk-video-head"><strong id="skNewsVideoTitleV1">Related news videos</strong><button class="sk-video-close" id="skNewsVideoCloseV1" type="button" aria-label="Close video window">×</button></header>
@@ -4478,17 +4499,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    return /^[A-Za-z0-9_-]{11}$/.test(id)?id:'';
   }catch(_){return '';}
  }
+ function focusInlinePlayer(){
+  player.scrollIntoView({behavior:'smooth',block:'nearest'});
+ }
  function playYouTube(id,title){
-  if(!/^[A-Za-z0-9_-]{11}$/.test(id))return;
+  if(!/^[A-Za-z0-9_-]{11}$/.test(id)){note.textContent='اس ویڈیو کا درست YouTube شناختی نمبر نہیں ملا۔';return;}
   const frame=document.createElement('iframe');
-  frame.src='https://www.youtube.com/embed/'+encodeURIComponent(id)+'?autoplay=1&playsinline=1&rel=0';
+  frame.src='https://www.youtube.com/embed/'+encodeURIComponent(id)+'?autoplay=1&playsinline=1&rel=0&enablejsapi=1';
   frame.title=title||'SK Cyber Hub video';frame.loading='eager';frame.referrerPolicy='strict-origin-when-cross-origin';
   frame.allow='autoplay; encrypted-media; picture-in-picture; web-share; fullscreen';
   frame.allowFullscreen=true;frame.setAttribute('allowfullscreen','');
   const wrap=document.createElement('div');wrap.className='sk-video-frame-wrap';wrap.append(frame);
-  const fallback=document.createElement('a');fallback.href='https://www.youtube.com/watch?v='+encodeURIComponent(id);fallback.target='_blank';fallback.rel='noopener noreferrer';fallback.className='sk-video-open-original';fallback.textContent='▶ اگر یہاں پلے نہ ہو تو YouTube پر کھولیں';
-  const hint=document.createElement('p');hint.className='sk-video-play-hint';hint.textContent='ویڈیو اسی پاپ اَپ میں خود چلنے کی کوشش کرے گی۔ آواز یا ایمبیڈنگ کی اجازت نہ ہو تو YouTube پر کھولیں۔';
-  player.replaceChildren(wrap,fallback,hint);
+  const fallback=document.createElement('a');fallback.href='https://www.youtube.com/watch?v='+encodeURIComponent(id);fallback.target='_blank';fallback.rel='noopener noreferrer';fallback.className='sk-video-open-original';fallback.textContent='▶ اگر پاپ اَپ میں پلے نہ ہو تو YouTube پر کھولیں';
+  const hint=document.createElement('p');hint.className='sk-video-play-hint';hint.textContent='ویڈیو اسی پاپ اَپ کے پلیئر میں کھل گئی ہے۔ پلیئر کے اندر ▶ دبائیں؛ اگر مالک نے embedding بند کی ہو تو اصل YouTube لنک استعمال کریں۔';
+  player.replaceChildren(wrap,fallback,hint);focusInlinePlayer();
  }
  async function fetchVideos(q,seq){
   let lastError=null;
@@ -4514,7 +4538,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    const title=document.createElement('strong');title.textContent=String(v.title||'YouTube video').slice(0,180);
    const meta=document.createElement('small');meta.textContent=[v.author||'YouTube',v.lengthSeconds?Math.floor(v.lengthSeconds/60)+':'+String(v.lengthSeconds%60).padStart(2,'0'):''].filter(Boolean).join(' · ');
    const play=document.createElement('span');play.className='sk-video-play-label';play.textContent='▶ ویڈیو چلائیں';
-   b.append(img,title,meta,play);b.addEventListener('click',()=>{playYouTube(v.videoId,v.title);note.textContent='پلیئر کھل گیا ہے۔ اگر پلے نہ ہو تو YouTube پر کھولیں؛ کچھ ویڈیوز embed کی اجازت نہیں دیتیں۔';});results.append(b);
+   b.append(img,title,meta,play);b.setAttribute('aria-label','اس ویڈیو کو اسی پاپ اَپ کے پلیئر میں چلائیں: '+String(v.title||'YouTube video'));b.addEventListener('click',()=>{playYouTube(v.videoId,v.title);note.textContent='منتخب ویڈیو اسی پاپ اَپ کے پلیئر میں لوڈ کی گئی ہے۔ اگر پلے نہ ہو تو پلیئر کے اندر ▶ دبائیں یا اصل YouTube لنک کھولیں۔';});results.append(b);
   });
  }
  async function search(q,forcedMode){
@@ -4569,8 +4593,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   }
   const youtubeId=videoIdFromUrl(u.href);if(youtubeId){playYouTube(youtubeId,'SK Cyber Hub video preview');note.textContent='YouTube ویڈیو چلانے کی کوشش کی جا رہی ہے۔ اگر مالک نے embedding بند کی ہو تو YouTube پر کھولیں۔ YouTube کی ویڈیو ڈاؤن لوڈ یہاں فعال نہیں۔';return;}
   let externalId='';
-  if(/(^|\.)vimeo\.com$/i.test(u.hostname)){externalId=(path.match(/\/(?:video\/)?(\d+)/)||[])[1]||'';if(externalId){const frame=document.createElement('iframe');frame.src='https://player.vimeo.com/video/'+externalId;frame.title='Vimeo video';frame.allow='autoplay; fullscreen; picture-in-picture';frame.allowFullscreen=true;player.replaceChildren(frame);note.textContent='Vimeo پلیئر لوڈ ہو رہا ہے؛ دستیابی Vimeo کی اجازت اور نیٹ ورک پر منحصر ہے۔';return;}}
-  if(/(^|\.)dailymotion\.com$/i.test(u.hostname)||u.hostname==='dai.ly'){externalId=(path.match(/\/video\/([A-Za-z0-9]+)/)||path.match(/^\/([A-Za-z0-9]+)/)||[])[1]||'';if(externalId){const frame=document.createElement('iframe');frame.src='https://www.dailymotion.com/embed/video/'+externalId;frame.title='Dailymotion video';frame.allow='autoplay; fullscreen; picture-in-picture';frame.allowFullscreen=true;player.replaceChildren(frame);note.textContent='Dailymotion پلیئر لوڈ ہو رہا ہے؛ دستیابی اصل پلیٹ فارم کی اجازت پر منحصر ہے۔';return;}}
+  if(/(^|\.)vimeo\.com$/i.test(u.hostname)){externalId=(path.match(/\/(?:video\/)?(\d+)/)||[])[1]||'';if(externalId){const frame=document.createElement('iframe');frame.src='https://player.vimeo.com/video/'+externalId+'?autoplay=1&playsinline=1';frame.title='Vimeo video';frame.loading='eager';frame.allow='autoplay; fullscreen; picture-in-picture';frame.allowFullscreen=true;const wrap=document.createElement('div');wrap.className='sk-video-frame-wrap';wrap.append(frame);const original=document.createElement('a');original.href=u.href;original.target='_blank';original.rel='noopener noreferrer';original.className='sk-video-open-original';original.textContent='Vimeo پر اصل ویڈیو کھولیں ↗';player.replaceChildren(wrap,original);note.textContent='Vimeo ویڈیو اسی پاپ اَپ میں چلانے کی کوشش کی جا رہی ہے۔ اگر مالک نے embedding بند کی ہو تو اصل لنک کھولیں۔';focusInlinePlayer();return;}}
+  if(/(^|\.)dailymotion\.com$/i.test(u.hostname)||u.hostname==='dai.ly'){externalId=(path.match(/\/video\/([A-Za-z0-9]+)/)||path.match(/^\/([A-Za-z0-9]+)/)||[])[1]||'';if(externalId){const frame=document.createElement('iframe');frame.src='https://www.dailymotion.com/embed/video/'+externalId+'?autoplay=1';frame.title='Dailymotion video';frame.loading='eager';frame.allow='autoplay; fullscreen; picture-in-picture';frame.allowFullscreen=true;const wrap=document.createElement('div');wrap.className='sk-video-frame-wrap';wrap.append(frame);const original=document.createElement('a');original.href=u.href;original.target='_blank';original.rel='noopener noreferrer';original.className='sk-video-open-original';original.textContent='Dailymotion پر اصل ویڈیو کھولیں ↗';player.replaceChildren(wrap,original);note.textContent='Dailymotion ویڈیو اسی پاپ اَپ میں چلانے کی کوشش کی جا رہی ہے۔ اگر مالک نے embedding بند کی ہو تو اصل لنک کھولیں۔';focusInlinePlayer();return;}}
   note.textContent='یہ لنک سپورٹ نہیں ہوتا۔ YouTube، Vimeo، Dailymotion یا براہِ راست MP4/WebM ویڈیو لنک استعمال کریں۔';
  }
  function close(){requestNo++;modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';player.replaceChildren();results.replaceChildren();}
