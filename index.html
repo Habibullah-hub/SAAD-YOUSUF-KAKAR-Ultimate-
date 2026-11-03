@@ -4327,15 +4327,13 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   const page=(location.pathname||'/').slice(0,120);
   const visitKey='skcyberhub_visit_'+page;
   try{if(sessionStorage.getItem(visitKey))return;}catch(e){}
+  // Privacy-first: never send a visitor IP address to a third-party geolocation service.
+  // Country is intentionally not collected until an explicit opt-in feature exists.
   try{
-   const response=await fetch('https://ipwho.is/',{cache:'no-store'});
-   if(!response.ok)return;
-   const geo=await response.json();
-   if(!geo.success||!/^[A-Za-z]{2}$/.test(geo.country_code||''))return;
-   const result=await supabaseClient.rpc('sk_record_site_visit',{p_country_code:String(geo.country_code).toUpperCase(),p_country_name:String(geo.country||'').slice(0,80),p_page_path:page});
+   const result=await supabaseClient.rpc('sk_record_site_visit',{p_country_code:'ZZ',p_country_name:'Not collected',p_page_path:page});
    if(result.error){console.warn('SK analytics visit was not recorded:',result.error.message);return;}
    try{sessionStorage.setItem(visitKey,'1');}catch(e){}
-  }catch(e){console.warn('SK analytics country estimate unavailable:',e);}
+  }catch(e){console.warn('SK analytics visit could not be recorded:',e);}
  }
  async function loadSiteAnalytics(){
   if(!analyticsRows)return;
@@ -4352,13 +4350,13 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   (data||[]).forEach(row=>{const key=row.country_code||'XX';const item=countries.get(key)||{code:key,name:row.country_name||'Unknown',views:0,pages:new Map()};item.views+=Number(row.views)||0;item.pages.set(row.page_path,(item.pages.get(row.page_path)||0)+(Number(row.views)||0));countries.set(key,item);});
   const ranked=[...countries.values()].sort((a,b)=>b.views-a.views),total=ranked.reduce((n,x)=>n+x.views,0);
   analyticsSummary.replaceChildren();
-  const stats=[['Total visits',String(total)],['Countries',String(ranked.length)],['Period','30 days']];
+  const stats=[['Total visits',String(total)],['Country data','Not collected'],['Period','30 days']];
   stats.forEach(([label,value])=>{const card=node('div','platform-card');card.append(node('b','',value),node('p','',label));analyticsSummary.append(card);});
   analyticsRows.replaceChildren();
   ranked.forEach(item=>{const top=[...item.pages.entries()].sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';const tr=node('tr');tr.append(node('td','',flagFromCode(item.code)+' '+item.name),node('td','',String(item.views)),node('td','',top));analyticsRows.append(tr);});
   if(!ranked.length)analyticsRows.append(node('tr','',''));
   if(!ranked.length){const tr=analyticsRows.firstChild;const td=node('td','','ابھی کوئی وزٹ ریکارڈ نہیں ہوا۔');td.colSpan=3;tr.append(td);}
-  analyticsStatus.textContent='گزشتہ 30 دن میں '+total+' سیشن وزٹس · '+ranked.length+' ممالک۔';
+  analyticsStatus.textContent='گزشتہ 30 دن میں '+total+' سیشن وزٹس · ملک کی شناخت جمع نہیں کی جاتی۔;
  }
  analyticsRefresh?.addEventListener('click',loadSiteAnalytics);
 
