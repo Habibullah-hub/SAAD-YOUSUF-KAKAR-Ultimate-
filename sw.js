@@ -1,6 +1,12 @@
 /* SK Cyber Hub offline app shell. Dynamic APIs and third-party content are never cached. */
-const CACHE_NAME = "sk-cyber-hub-shell-v1";
+const CACHE_NAME = "sk-cyber-hub-shell-v2";
 const APP_ROOT = new URL("./", self.location).href;
+
+self.addEventListener("message", event => {
+  if (event.data && event.data.type === "SK_SKIP_WAITING") {
+    event.waitUntil(self.skipWaiting());
+  }
+});
 
 self.addEventListener("install", event => {
   event.waitUntil((async () => {
