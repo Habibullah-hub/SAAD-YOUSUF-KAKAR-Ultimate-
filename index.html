@@ -3558,8 +3558,7 @@ if (!validDownloadUrl) {
   if(!results)return;
   const rawQuery=(q?.value||'').trim(),query=rawQuery.toLocaleLowerCase();
   const terms=query.split(/\s+/).filter(Boolean),category=cat?.value||'all',pricing=price?.value||'all',deviceValue=device?.value||'all';
-  const engines={google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q=',duckduckgo:'https://duckduckgo.com/?q=',brave:'https://search.brave.com/search?q='};
-  document.querySelectorAll('[data-global-engine]').forEach(link=>{const engine=link.dataset.globalEngine;if(engines[engine])link.href=engines[engine]+encodeURIComponent(rawQuery);});
+  document.querySelectorAll('[data-global-engine]').forEach(link=>{link.href='./browser.html?q='+encodeURIComponent(rawQuery);});
   results.replaceChildren();let count=0;
   const cards=[...document.querySelectorAll('#tab-home .resource')].filter(card=>card.querySelector('h3')||card.querySelector('.app-name'));
   cards.forEach(card=>{
@@ -3578,15 +3577,13 @@ if (!validDownloadUrl) {
    const name=document.createElement('h4');name.textContent=title;
    const description=document.createElement('p');description.textContent=desc;
    const metadata=document.createElement('span');metadata.className='global-result-meta';metadata.textContent=meta.id.replace(/-/g,' ')+' · '+meta.cost+' · '+meta.platform;
-   const a=document.createElement('a');a.href=safe;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open resource ↗';
+   const a=document.createElement('a');a.href='./#'+meta.id;a.textContent='Explore inside SK →';
    item.append(name,description,metadata,a);results.appendChild(item);count++;
   });
   if(globalStatus)globalStatus.textContent=count+' matching resources found'+(rawQuery?' for “'+rawQuery+'”':'')+'. Search matches all entered words; verify price and device details with the provider.';
-  if(!count){const empty=document.createElement('p');empty.className='empty';empty.textContent='No matching resource found. Try fewer words, choose “All categories”, or use Google/Bing below for a wider web search.';results.appendChild(empty);}
+  if(!count){const empty=document.createElement('p');empty.className='empty';empty.textContent='No matching resource found. Try fewer words, choose “All categories”, or try a different keyword or browse categories inside SK.';results.appendChild(empty);}
  }
- const updateWebEngineLinks=()=>{const term=(q?.value||'').trim();const engines={google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q=',duckduckgo:'https://duckduckgo.com/?q=',brave:'https://search.brave.com/search?q='};document.querySelectorAll('[data-global-engine]').forEach(link=>{const engine=link.dataset.globalEngine;if(engines[engine])link.href=engines[engine]+encodeURIComponent(term);});};
- updateWebEngineLinks();
- q?.addEventListener('input',()=>{updateWebEngineLinks();runGlobal();});
+ q?.addEventListener('input',runGlobal);
  byId('skGlobalSearchButton')?.addEventListener('click',runGlobal);
  q?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runGlobal();}});
  [cat,price,device].forEach(el=>el?.addEventListener('change',runGlobal));
@@ -3960,8 +3957,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   function runGlobalSearch(){
    if(!results)return;
    const raw=(q?.value||'').trim(),terms=raw.toLocaleLowerCase().split(/\s+/).filter(Boolean),category=cat?.value||'all',cost=price?.value||'all',platform=device?.value||'all';
-   const engines={google:'https://www.google.com/search?q=',bing:'https://www.bing.com/search?q=',duckduckgo:'https://duckduckgo.com/?q=',brave:'https://search.brave.com/search?q='};
-   document.querySelectorAll('[data-global-engine]').forEach(link=>{const engine=link.dataset.globalEngine;if(engines[engine])link.href=engines[engine]+encodeURIComponent(raw);});
+   document.querySelectorAll('[data-global-engine]').forEach(link=>{link.href='./browser.html?q='+encodeURIComponent(raw);});
    results.replaceChildren();let count=0;
    const cards=[...document.querySelectorAll('#tab-home .resource')].filter(card=>card.querySelector('h3')||card.querySelector('.app-name'));
    cards.forEach(card=>{
@@ -3982,10 +3978,8 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
     const link=card.matches('a[href]')?card:card.querySelector('a[href]');
     const href=link?.getAttribute('href')||'';
     let safe='';try{const u=new URL(href,location.href);if(u.protocol==='https:'||u.protocol==='http:')safe=u.href;}catch(e){}
-    if(safe&&(href.startsWith('https://')||href.startsWith('http://'))){
-     const a=document.createElement('a');a.href=safe;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open resource ↗';article.appendChild(a);
-    }else{
-     const b=document.createElement('button');b.type='button';b.textContent='Open section →';b.addEventListener('click',()=>{if(typeof window.skSetView==='function')window.skSetView(id);else location.hash=id;});article.appendChild(b);
+    {
+     const b=document.createElement('button');b.type='button';b.textContent='Explore inside SK →';b.addEventListener('click',()=>{if(typeof window.skSetView==='function')window.skSetView(id);else location.hash=id;});article.appendChild(b);
     }
     results.appendChild(article);count++;
    });
@@ -4098,7 +4092,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
      addText('small','sk-live-arrow','OPEN ↗',link);panel.appendChild(link);
     });
     const footer=document.createElement('div');footer.className='sk-live-footer';
-    const web=document.createElement('a');web.href='./search.html?q='+encodeURIComponent(raw);web.target='_blank';web.rel='noopener noreferrer';web.textContent='Open SK Search ↗';footer.appendChild(web);
+    const web=document.createElement('a');web.href='./browser.html?q='+encodeURIComponent(raw);web.textContent='Open SK Browser ↗';footer.appendChild(web);
     const hint=document.createElement('span');hint.textContent='Enter to search · Esc to close';footer.appendChild(hint);panel.appendChild(footer);
     panel.hidden=false;requestAnimationFrame(()=>panel.classList.add('is-open'));
    };
