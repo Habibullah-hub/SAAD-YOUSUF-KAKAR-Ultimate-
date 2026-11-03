@@ -230,6 +230,27 @@ grant insert,update,delete on public.sk_messages to authenticated;
 grant insert,update on public.sk_call_sessions to authenticated;
 grant insert,select,delete on public.sk_call_signals to authenticated;
 
+-- Enable realtime delivery for private conversations, messages and call signaling.
+do $sk$
+begin
+  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='sk_conversations') then
+    alter publication supabase_realtime add table public.sk_conversations;
+  end if;
+  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='sk_conversation_members') then
+    alter publication supabase_realtime add table public.sk_conversation_members;
+  end if;
+  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='sk_messages') then
+    alter publication supabase_realtime add table public.sk_messages;
+  end if;
+  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='sk_call_sessions') then
+    alter publication supabase_realtime add table public.sk_call_sessions;
+  end if;
+  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='sk_call_signals') then
+    alter publication supabase_realtime add table public.sk_call_signals;
+  end if;
+end;
+$sk$;
+
 commit;
 
 -- Important limits:
