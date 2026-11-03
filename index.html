@@ -3195,6 +3195,11 @@ if (!validDownloadUrl) {
             if (!name) return alert('Please enter the app or resource name.');
             if (!isHttpUrl(downloadUrl)) return alert('Enter a valid full http:// or https:// download or official listing URL.');
             if (iconUrl && !isHttpUrl(iconUrl)) return alert('The icon must use a valid http:// or https:// image URL.');
+            const originalAppUrl=document.getElementById('appOriginalUrl').value.trim();
+            const scanUrl=document.getElementById('appScanUrl').value.trim();
+            const isHttpsUrl=value=>{try{return new URL(value).protocol==='https:';}catch(_){return false;}};
+            if(originalAppUrl&&!isHttpsUrl(originalAppUrl))return alert('Original publisher URL must use HTTPS.');
+            if(scanUrl&&!isHttpsUrl(scanUrl))return alert('Security scan evidence URL must use HTTPS.');
             const id = document.getElementById('appId').value;
             const data = {
                 name,
@@ -3204,25 +3209,38 @@ if (!validDownloadUrl) {
                 icon_url: iconUrl,
                 download_url: downloadUrl,
                 description: document.getElementById('appDesc').value.trim(),
-                original_app_url: document.getElementById('appOriginalUrl').value.trim() || null,
+                original_app_url: originalAppUrl || null,
                 publisher_name: document.getElementById('appPublisher').value.trim() || null,
                 modifications_summary: document.getElementById('appModifications').value.trim() || null,
                 requested_permissions_summary: document.getElementById('appPermissions').value.trim() || null,
                 security_scan_status: document.getElementById('appScanStatus').value,
                 security_scan_provider: document.getElementById('appScanProvider').value.trim() || null,
-                security_scan_url: document.getElementById('appScanUrl').value.trim() || null,
+                security_scan_url: scanUrl || null,
                 security_scan_checked_at: document.getElementById('appScanDate').value || null,
                 featured: document.getElementById('appFeatured').checked,
                 published: true
             };
-            const res = id ? await supabaseClient.from('sk_apps').update(data).eq('id', id).select('id').single() : await supabaseClient.from('sk_apps').insert([data]).select('id').single();
+            const baseData={...data};
+            ['original_app_url','publisher_name','modifications_summary','requested_permissions_summary','security_scan_status','security_scan_provider','security_scan_url','security_scan_checked_at'].forEach(key=>delete baseData[key]);
+            let res = id ? await supabaseClient.from('sk_apps').update(data).eq('id', id).select('id').single() : await supabaseClient.from('sk_apps').insert([data]).select('id').single();
+            let safetyFieldsSaved=true;
+            if(res.error&&/(original_app_url|publisher_name|modifications_summary|requested_permissions_summary|security_scan_status|security_scan_provider|security_scan_url|security_scan_checked_at)/i.test(res.error.message||'')){
+                safetyFieldsSaved=false;
+                res = id ? await supabaseClient.from('sk_apps').update(baseData).eq('id', id).select('id').single() : await supabaseClient.from('sk_apps').insert([baseData]).select('id').single();
+            }
             if (res.error) { alert(res.error.message); return; }
-            const savedId=res.data?.id||id, privateNotes=document.getElementById('appSafetyNotes').value.trim();
-            const noteResult=privateNotes
-              ? await supabaseClient.from('sk_app_safety_admin_notes').upsert({app_id:savedId,notes:privateNotes},{onConflict:'app_id'})
-              : await supabaseClient.from('sk_app_safety_admin_notes').delete().eq('app_id',savedId);
-            if (noteResult.error) { alert('App saved, but private admin notes were not saved: '+noteResult.error.message); return; }
-            closeAppModal(); fetchApps();
+            const savedId=res.data?.id||id;
+            let warning=safetyFieldsSaved?'':'App saved, but MOD APK safety fields were not saved because the safety migration is not installed. Run SK-MOD-APK-SAFETY-METADATA.sql after a verified backup.';
+            if(safetyFieldsSaved){
+                const privateNotes=document.getElementById('appSafetyNotes').value.trim();
+                const noteResult=privateNotes
+                  ? await supabaseClient.from('sk_app_safety_admin_notes').upsert({app_id:savedId,notes:privateNotes},{onConflict:'app_id'})
+                  : await supabaseClient.from('sk_app_safety_admin_notes').delete().eq('app_id',savedId);
+                if(noteResult.error)warning='App saved, but private admin notes were not saved: '+noteResult.error.message;
+            }
+            closeAppModal();
+            await fetchApps();
+            if(warning)alert(warning);
         }
 
         function editApp(id) { openAppModal(appsList.find(a => a.id === id)); }
