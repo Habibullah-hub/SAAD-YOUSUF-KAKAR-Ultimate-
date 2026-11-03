@@ -4399,8 +4399,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 #skNewsVideoModalV1 .sk-video-searches a{display:inline-flex;align-items:center;padding:9px 12px;border:1px solid #c5d9e9;border-radius:8px;background:#edf6fd;color:#075b98;font-size:12px;font-weight:750;text-decoration:none}
 #skNewsVideoModalV1 .sk-video-player{width:100%;aspect-ratio:16/9;min-height:180px;border:1px solid #c9d9e6;border-radius:10px;background:#071321}
 
-#skNewsVideoModalV1 .sk-video-frame-wrap{width:100%;height:auto;aspect-ratio:16/9;min-height:200px;background:#000;border-radius:10px;overflow:hidden}
-#skNewsVideoModalV1 .sk-video-frame-wrap iframe{display:block;width:100%;height:100%;min-height:200px;border:0}
+#skNewsVideoModalV1 .sk-video-frame-wrap{position:relative;width:100%;height:auto;aspect-ratio:16/9;min-height:0;background:#000;border-radius:10px;overflow:hidden}
+#skNewsVideoModalV1 .sk-video-frame-wrap iframe{position:absolute;inset:0;display:block;width:100%;height:100%;min-height:0;border:0}
 #skNewsVideoModalV1 .sk-video-play-hint{margin:5px 8px;color:#52677d;font-size:11px}
 #skNewsVideoModalV1 .sk-video-play-label{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:7px 12px;border-radius:7px;background:#087b70;color:white;font-size:12px;font-weight:850}
 #skNewsVideoModalV1 .sk-video-format-row{margin:8px;padding:8px 10px;border:1px solid #c9d9e6;border-radius:8px;background:#f2f7fb;color:#18324b;font-size:12px}
@@ -4480,10 +4480,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
  }
  function playYouTube(id,title){
   if(!/^[A-Za-z0-9_-]{11}$/.test(id))return;
-  const frame=document.createElement('iframe');frame.src='https://www.youtube.com/embed/'+encodeURIComponent(id)+'?playsinline=1&rel=0';frame.title=title||'SK Cyber Hub video';frame.loading='eager';frame.referrerPolicy='strict-origin-when-cross-origin';frame.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';frame.allowFullscreen=true;frame.setAttribute('allowfullscreen','');frame.setAttribute('webkitallowfullscreen','');frame.setAttribute('mozallowfullscreen','');
+  const frame=document.createElement('iframe');
+  frame.src='https://www.youtube.com/embed/'+encodeURIComponent(id)+'?autoplay=1&playsinline=1&rel=0';
+  frame.title=title||'SK Cyber Hub video';frame.loading='eager';frame.referrerPolicy='strict-origin-when-cross-origin';
+  frame.allow='autoplay; encrypted-media; picture-in-picture; web-share; fullscreen';
+  frame.allowFullscreen=true;frame.setAttribute('allowfullscreen','');
   const wrap=document.createElement('div');wrap.className='sk-video-frame-wrap';wrap.append(frame);
-  const fallback=document.createElement('a');fallback.href='https://www.youtube.com/watch?v='+encodeURIComponent(id);fallback.target='_blank';fallback.rel='noopener noreferrer';fallback.className='sk-video-open-original';fallback.textContent='▶ ویڈیو نہ چلے تو YouTube پر کھولیں';
-  const hint=document.createElement('p');hint.className='sk-video-play-hint';hint.textContent='پلے بٹن دبائیں؛ اگر ایمبیڈنگ بند ہو تو اوپر والا YouTube بٹن استعمال کریں۔';
+  const fallback=document.createElement('a');fallback.href='https://www.youtube.com/watch?v='+encodeURIComponent(id);fallback.target='_blank';fallback.rel='noopener noreferrer';fallback.className='sk-video-open-original';fallback.textContent='▶ اگر یہاں پلے نہ ہو تو YouTube پر کھولیں';
+  const hint=document.createElement('p');hint.className='sk-video-play-hint';hint.textContent='ویڈیو اسی پاپ اَپ میں خود چلنے کی کوشش کرے گی۔ آواز یا ایمبیڈنگ کی اجازت نہ ہو تو YouTube پر کھولیں۔';
   player.replaceChildren(wrap,fallback,hint);
  }
  async function fetchVideos(q,seq){
