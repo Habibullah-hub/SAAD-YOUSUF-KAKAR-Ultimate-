@@ -2455,21 +2455,17 @@ input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDe
    let q=spokenOrTyped;
    if(!/^[\x00-\x7F]*$/.test(q))try{q=await translateText(q,'en','auto');}catch(e){console.warn('Search phrase translation unavailable',e);}
    if(requestId!==searchSequence)return;
-   const entityPhrases=[...new Set((q.match(/\b[A-Z][a-z]{2,}(?:\\s+[A-Z][a-z]{2,}){0,2}\b/g)||[]).map(x=>x.trim()).filter(x=>x.length>2))].slice(0,3);
    const knownNames=['Imran Khan','Karachi','Pakistan','Donald Trump','Saudi Arabia'];
-   knownNames.forEach(name=>{if(new RegExp(name.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\  let q=spokenOrTyped;
-   if(!/^[\x00-\x7F]*$/.test(q))try{q=await translateText(q,'en','auto');}catch(e){console.warn('Search phrase translation unavailable',e);}
-   if(requestId!==searchSequence)return;
-   const feed=await fetchFeed(q);if(requestId!==searchSequence)return;
-   const seen=new Set(),exact=[],related=[],terms=q.toLocaleLowerCase().split(/\s+/).filter(Boolean);
-   feed.forEach(item=>{const title=cleanText(item.title).toLocaleLowerCase(),desc=cleanText(item.description||item.content||'').toLocaleLowerCase(),key=cleanText(item.title)+'|'+(item.pubDate||'');if(!title||seen.has(key))return;seen.add(key);const phrase=title.includes(q.toLocaleLowerCase()),hits=terms.filter(t=>title.includes(t)||desc.includes(t)).length;if(phrase||hits===terms.length)exact.push(item);else if(hits>0)related.push(item);});'),'i').test(q)&&!entityPhrases.some(x=>x.toLowerCase()===name.toLowerCase()))entityPhrases.push(name);});
-   const variants=[q,...entityPhrases.filter(x=>!q.toLowerCase().includes(x.toLowerCase())).map(x=>x+' '+q)];
+   const entityPhrases=knownNames.filter(name=>q.toLocaleLowerCase().includes(name.toLocaleLowerCase()));
+   const capitalized=q.match(/\b[A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,}){0,2}\b/g)||[];
+   capitalized.forEach(name=>{if(entityPhrases.length<4&&!entityPhrases.some(x=>x.toLowerCase()===name.toLowerCase()))entityPhrases.push(name);});
+   const variants=[q,...entityPhrases.filter(x=>!q.toLowerCase().includes(x.toLowerCase())).map(x=>'"'+x+'"')];
    const feeds=await Promise.allSettled([...new Set(variants)].slice(0,4).map(fetchFeed));if(requestId!==searchSequence)return;
    const feed=feeds.filter(x=>x.status==='fulfilled').flatMap(x=>x.value);
    if(!feed.length)throw new Error('No free news feeds returned results');
-   const seen=new Set(),exact=[],related=[],terms=q.toLocaleLowerCase().split(/\\s+/).filter(Boolean);
+   const seen=new Set(),exact=[],related=[],terms=q.toLocaleLowerCase().split(/\s+/).filter(Boolean);
    feed.forEach(item=>{const title=cleanText(item.title).toLocaleLowerCase(),desc=cleanText(item.description||item.content||'').toLocaleLowerCase(),key=cleanText(item.title)+'|'+(item.pubDate||'');if(!title||seen.has(key))return;seen.add(key);const phrase=title.includes(q.toLocaleLowerCase()),hits=terms.filter(t=>title.includes(t)||desc.includes(t)).length;if(phrase||hits===terms.length)exact.push(item);else if(hits>0||entityPhrases.some(entity=>(title+' '+desc).includes(entity.toLowerCase())))related.push(item);});
-   const newestFirst=(a,b)=>{const da=Date.parse(a.pubDate)||0,db=Date.parse(b.pubDate)||0;return db-da;};exact.sort(newestFirst);related.sort(newestFirst);
+   const newestFirst=(a,b)=>(Date.parse(b.pubDate)||0)-(Date.parse(a.pubDate)||0);exact.sort(newestFirst);related.sort(newestFirst);
    const exactTop=exact.slice(0,6),relatedTop=related.slice(0,6);activeNewsExact=exactTop;activeNewsRelated=relatedTop;
    exactTop.forEach(item=>exactResults.appendChild(makeCard(item)));
    relatedTop.forEach(item=>relatedResults.appendChild(makeCard(item)));
