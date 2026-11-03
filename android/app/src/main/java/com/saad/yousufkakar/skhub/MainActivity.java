@@ -278,7 +278,6 @@ public class MainActivity extends Activity {
         else if (q.matches("(?i)^[a-z0-9.-]+\\.[a-z]{2,}(:[0-9]{1,5})?(/.*)?$")) url = "https://" + q;
         else url = "https://www.google.com/search?q=" + Uri.encode(q);
         hideKeyboard();
-        remember(q);
         showLoading("Searching the web…");
         web.loadUrl(url);
     }
