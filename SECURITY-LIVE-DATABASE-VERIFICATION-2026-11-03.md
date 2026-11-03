@@ -19,6 +19,10 @@ Method: Read-only SQL queries run by the owner in Supabase SQL Editor, plus owne
 - Direct EXECUTE on `sk_handle_new_user()` is false for `anon` and `authenticated`, and true for `postgres` and `service_role`.
 - `sk_is_admin()` is SECURITY DEFINER and checks the current auth UID against `sk_profiles.role = 'admin'`.
 
+## Frontend privacy change
+
+- The website analytics client was updated on 2026-11-03 to remove the third-party `ipwho.is` IP-geolocation request. New visit records use `ZZ` / `Not collected`; country-level visitor tracking is disabled unless a future explicit opt-in is added.
+
 ## Storage status observed
 
 - RLS is enabled on the eight observed `storage` tables.
