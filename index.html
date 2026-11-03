@@ -2204,6 +2204,7 @@ function runSearch(){
  searchFeedback.classList.toggle('hidden',!q);
  searchFeedback.textContent=q?(matched+' matching resource'+(matched===1?'':'s')+' found · keep typing to refine'):'';
 }
+window.skRunDirectorySearch=()=>{runSearch();filterApps();};
 input.addEventListener('input',runSearch);
 input.addEventListener('input',filterApps);
 // Make the visible header search button and Enter key run the same live directory search.
@@ -3751,13 +3752,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
    /* Keep live-search results anchored beside the search field; do not jump the page. */
    if(typeof window.filterApps==='function')window.filterApps();
   }
-  if(headerSearch){
-   headerSearch.addEventListener('input',e=>{e.stopImmediatePropagation();runHeaderSearch();},true);
-   headerSearch.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.stopImmediatePropagation();runHeaderSearch();}},true);
-  }
-  if(headerButton)headerButton.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();runHeaderSearch();},true);
-  const clear=document.querySelector('.searchbox .search-clear');
-  clear?.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();if(headerSearch)headerSearch.value='';runHeaderSearch();headerSearch?.focus();},true);
+  /* Header search is handled once by the directory filter and live-results controller. */
   const q=$('skGlobalQuery'),cat=$('skGlobalCategory'),price=$('skGlobalPrice'),device=$('skGlobalDevice'),results=$('skGlobalResults'),status=$('skGlobalStatus'),searchButton=$('skGlobalSearchButton'),reset=$('skGlobalResetButton');
   function runGlobalSearch(){
    if(!results)return;
@@ -3904,10 +3899,10 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
     const hint=document.createElement('span');hint.textContent='Enter to search · Esc to close';footer.appendChild(hint);panel.appendChild(footer);
     panel.hidden=false;requestAnimationFrame(()=>panel.classList.add('is-open'));
    };
-   input.addEventListener('input',e=>{e.stopImmediatePropagation();render();},true);
+   input.addEventListener('input',()=>{render();});
    input.addEventListener('focus',()=>{if(input.value.trim())render();});
-   input.addEventListener('keydown',e=>{if(e.key==='Escape'){close();}else if(e.key==='Enter'){e.preventDefault();e.stopImmediatePropagation();render();}},true);
-   if(searchButton){const fresh=searchButton.cloneNode(true);searchButton.replaceWith(fresh);fresh.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(input.value.trim()){render();input.focus();}else input.focus();});}
+   input.addEventListener('keydown',e=>{if(e.key==='Escape'){close();}else if(e.key==='Enter'){render();}});
+   if(searchButton){const fresh=searchButton.cloneNode(true);searchButton.replaceWith(fresh);fresh.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();window.skRunDirectorySearch?.();if(input.value.trim())render();input.focus();});}
    document.addEventListener('click',e=>{if(!box.contains(e.target))close();});
   }
   /* Remove the old More button listeners by replacing the button node; keep one toggle only. */
