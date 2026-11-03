@@ -48,7 +48,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    private static final String HOME = "https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/browser.html";
+    private static final String HOME = "https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/browser.html?native=1";
     private static final String PREFS = "sk_browser_data";
     private static final String HISTORY = "history";
     private WebView web;
@@ -318,7 +318,10 @@ public class MainActivity extends Activity {
             if (which == items.size() - 1) {
                 recent.clear();
                 getSharedPreferences(PREFS, MODE_PRIVATE).edit().remove(HISTORY).apply();
-                if (web != null) web.clearHistory();
+                if (web != null) {
+                    web.clearHistory();
+                    web.evaluateJavascript("try{localStorage.removeItem('sk-browser-history');sessionStorage.clear();}catch(e){}", null);
+                }
                 Toast.makeText(this, "Browsing history cleared", Toast.LENGTH_SHORT).show();
             } else if (which < recent.size()) {
                 String entry = recent.get(which);
