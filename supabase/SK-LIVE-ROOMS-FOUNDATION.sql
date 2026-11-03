@@ -25,6 +25,7 @@ create table if not exists public.sk_live_chat (
 );
 
 create index if not exists sk_live_rooms_status_idx on public.sk_live_rooms(status,started_at desc);
+create unique index if not exists sk_live_one_active_host_idx on public.sk_live_rooms(host_id) where status='live';
 create index if not exists sk_live_chat_room_idx on public.sk_live_chat(room_id,created_at asc);
 
 alter table public.sk_live_rooms enable row level security;
@@ -64,6 +65,26 @@ revoke all on public.sk_live_rooms,public.sk_live_chat from anon,authenticated;
 grant select on public.sk_live_rooms,public.sk_live_chat to anon,authenticated;
 grant insert,update on public.sk_live_rooms to authenticated;
 grant insert,delete on public.sk_live_chat to authenticated;
+
+-- Limit live chat spam per member. This does not record or inspect video/audio media.
+create or replace function public.sk_guard_live_chat_rate()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $sk$
+declare recent_count integer;
+begin
+  if new.user_id<>(select auth.uid()) then raise exception 'You can only chat as your own account.'; end if;
+  select count(*) into recent_count from public.sk_live_chat
+    where user_id=new.user_id and created_at>now()-interval '1 minute';
+  if recent_count>=10 then raise exception 'Live chat rate limit reached. Please wait a moment.'; end if;
+  return new;
+end;
+$sk$;
+drop trigger if exists sk_live_chat_rate_guard on public.sk_live_chat;
+create trigger sk_live_chat_rate_guard before insert on public.sk_live_chat
+for each row execute function public.sk_guard_live_chat_rate();
 
 -- Enable Supabase Realtime only for the small metadata/chat tables required by the UI.
 do $sk$
