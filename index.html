@@ -4345,6 +4345,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 #skNewsVideoModalV1 .sk-video-close{width:40px;height:40px;border:1px solid #d5a1a1;border-radius:50%;background:#fff;color:#b4232d;font-size:24px;cursor:pointer}
 #skNewsVideoModalV1 .sk-video-content{padding:16px}
 #skNewsVideoModalV1 .sk-video-topic{margin:0 0 12px;color:#405c76;font-size:13px;overflow-wrap:anywhere}
+#skNewsVideoModalV1 .sk-video-search-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;margin:12px 0}
+#skNewsVideoModalV1 .sk-video-search-row input,#skNewsVideoModalV1 .sk-video-search-row select{min-width:0;padding:11px;border:1px solid #b9cad8;border-radius:8px;background:#fff;color:#18324b}
+#skNewsVideoModalV1 .sk-video-search-row button{padding:10px 14px;border:1px solid #087b70;border-radius:8px;background:#087b70;color:#fff;font-weight:800}
+#skNewsVideoModalV1 .sk-video-results{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:10px;margin:12px 0}
+#skNewsVideoModalV1 .sk-video-result{display:flex;flex-direction:column;gap:7px;padding:8px;border:1px solid #d4e1ea;border-radius:10px;background:#fff;color:#18324b;text-align:left;cursor:pointer}
+#skNewsVideoModalV1 .sk-video-result img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:7px;background:#e6edf3}
+#skNewsVideoModalV1 .sk-video-result strong{font-size:12px;line-height:1.4}
+#skNewsVideoModalV1 .sk-video-result small{font-size:10px;color:#61758a}
+#skNewsVideoModalV1 .sk-video-search-note{font-size:11px;color:#52677d;line-height:1.6}
+@media(max-width:600px){#skNewsVideoModalV1 .sk-video-search-row{grid-template-columns:1fr 1fr}#skNewsVideoModalV1 .sk-video-search-row input{grid-column:1/-1}#skNewsVideoModalV1 .sk-video-search-row button{min-height:42px}}
+
 #skNewsVideoModalV1 .sk-video-searches{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 15px}
 #skNewsVideoModalV1 .sk-video-searches a{display:inline-flex;align-items:center;padding:9px 12px;border:1px solid #c5d9e9;border-radius:8px;background:#edf6fd;color:#075b98;font-size:12px;font-weight:750;text-decoration:none}
 #skNewsVideoModalV1 .sk-video-player{width:100%;aspect-ratio:16/9;min-height:180px;border:1px solid #c9d9e6;border-radius:10px;background:#071321}
@@ -4361,8 +4372,15 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   <header class="sk-video-head"><strong id="skNewsVideoTitleV1">Related news videos</strong><button class="sk-video-close" id="skNewsVideoCloseV1" type="button" aria-label="Close video window">×</button></header>
   <div class="sk-video-content">
    <p class="sk-video-topic" id="skNewsVideoTopicV1"></p>
+   <div class="sk-video-search-row">
+    <input id="skNewsVideoQueryV2" type="search" placeholder="Search videos… / ویڈیو تلاش کریں" aria-label="Search videos">
+    <select id="skNewsVideoModeV2" aria-label="Video search scope"><option value="all">All platforms</option><option value="youtube">YouTube only</option></select>
+    <button id="skNewsVideoSearchV2" type="button">Search</button>
+   </div>
+   <p class="sk-video-search-note" id="skNewsVideoSearchNoteV2" role="status" aria-live="polite">YouTube لکھیں یا YouTube Only منتخب کریں تو نتائج صرف YouTube کے ہوں گے۔ عام تلاش میں دوسرے پلیٹ فارمز کے سرچ لنکس بھی دکھیں گے۔</p>
    <div class="sk-video-searches" id="skNewsVideoSearchesV1"></div>
-   <div class="sk-video-player" id="skNewsVideoPlayerV1"><div style="height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center">منتخب ویڈیو یہاں ویب سائٹ کے اندر چلے گی، اگر متعلقہ پلیٹ فارم embedding کی اجازت دے۔</div></div>
+   <div class="sk-video-results" id="skNewsVideoResultsV2"></div>
+   <div class="sk-video-player" id="skNewsVideoPlayerV1"><div style="height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center">تلاش کے نتائج میں ویڈیو منتخب کریں؛ دستیاب YouTube ویڈیو اسی جگہ چلے گی۔</div></div>
    <div class="sk-video-input-row"><input id="skNewsVideoUrlV1" type="url" inputmode="url" placeholder="YouTube / Vimeo / Dailymotion video link یہاں پیسٹ کریں"><button class="sk-video-load" id="skNewsVideoLoadV1" type="button">Play inside site</button></div>
    <p class="sk-video-help">متعلقہ ویڈیوز تلاش کرنے کے لیے پلیٹ فارم منتخب کریں۔ کچھ پلیٹ فارمز اپنے ویڈیو پلیئر کو دوسری ویب سائٹ میں چلانے کی اجازت نہیں دیتے؛ ایسی صورت میں اصل پلیٹ فارم پر کھولنے کا لنک دستیاب ہوگا۔</p>
   </div>
@@ -4371,41 +4389,95 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 <script id="sk-news-video-popup-script-v1">
 (()=>{
  const modal=document.getElementById('skNewsVideoModalV1');if(!modal)return;
- const topic=document.getElementById('skNewsVideoTopicV1'),searches=document.getElementById('skNewsVideoSearchesV1'),player=document.getElementById('skNewsVideoPlayerV1'),urlInput=document.getElementById('skNewsVideoUrlV1');
- let activeQuery='';
- const makeLink=(label,base)=>{const a=document.createElement('a');a.href=base+encodeURIComponent(activeQuery);a.target='_blank';a.rel='noopener noreferrer';a.textContent=label+' ↗';return a;};
+ const $=id=>document.getElementById(id);
+ const topic=$('skNewsVideoTopicV1'),searches=$('skNewsVideoSearchesV1'),player=$('skNewsVideoPlayerV1'),urlInput=$('skNewsVideoUrlV1');
+ const queryInput=$('skNewsVideoQueryV2'),modeInput=$('skNewsVideoModeV2'),searchButton=$('skNewsVideoSearchV2'),results=$('skNewsVideoResultsV2'),note=$('skNewsVideoSearchNoteV2');
+ let activeQuery='',requestNo=0;
+ const instances=['https://inv.nadeko.net','https://invidious.nerdvpn.de','https://yt.chocolatemoo53.com','https://invidious.tiekoetter.com'];
+ const providers=[
+  ['TikTok','https://www.tiktok.com/search?q='],
+  ['Facebook Watch','https://www.facebook.com/watch/search/?query='],
+  ['Instagram','https://www.instagram.com/explore/search/keyword/?q='],
+  ['Dailymotion','https://www.dailymotion.com/search/'],
+  ['Vimeo','https://vimeo.com/search?q=']
+ ];
+ const makeLink=(label,base,q)=>{const a=document.createElement('a');a.href=base+encodeURIComponent(q);a.target='_blank';a.rel='noopener noreferrer';a.textContent=label+' ↗';return a;};
+ function videoIdFromUrl(raw){
+  try{const u=new URL(raw.trim());const h=u.hostname.toLowerCase();if(!['https:','http:'].includes(u.protocol))return '';
+   let id='';if(h==='youtu.be'||h==='www.youtu.be')id=u.pathname.split('/').filter(Boolean)[0]||'';
+   else if(h==='youtube.com'||h==='www.youtube.com'||h==='m.youtube.com'||h==='music.youtube.com'||h.endsWith('.youtube.com')){if(u.pathname==='/watch')id=u.searchParams.get('v')||'';else if(/^\/(shorts|embed|live)\//.test(u.pathname))id=u.pathname.split('/')[2]||'';}
+   return /^[A-Za-z0-9_-]{11}$/.test(id)?id:'';
+  }catch(_){return '';}
+ }
+ function playYouTube(id,title){
+  if(!/^[A-Za-z0-9_-]{11}$/.test(id))return;
+  const frame=document.createElement('iframe');frame.src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id);frame.title=title||'SK Cyber Hub video';frame.loading='lazy';frame.referrerPolicy='strict-origin-when-cross-origin';frame.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';frame.allowFullscreen=true;player.replaceChildren(frame);
+ }
+ async function fetchVideos(q,seq){
+  let lastError=null;
+  for(const base of instances){
+   if(seq!==requestNo)return [];
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),7000);
+   try{
+    const url=base+'/api/v1/search?q='+encodeURIComponent(q)+'&type=video&sort_by=relevance';
+    const response=await fetch(url,{signal:controller.signal,headers:{Accept:'application/json'}});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    const data=await response.json();
+    if(!Array.isArray(data))throw new Error('Unexpected search response');
+    return data.filter(v=>v&&/^[A-Za-z0-9_-]{11}$/.test(String(v.videoId||''))).slice(0,18);
+   }catch(e){lastError=e;}finally{clearTimeout(timer);}
+  }
+  throw lastError||new Error('Video search services are unavailable');
+ }
+ function renderVideos(videos){
+  results.replaceChildren();
+  videos.forEach(v=>{
+   const b=document.createElement('button');b.type='button';b.className='sk-video-result';
+   const img=document.createElement('img');img.loading='lazy';img.alt='';img.src='https://i.ytimg.com/vi/'+v.videoId+'/hqdefault.jpg';
+   const title=document.createElement('strong');title.textContent=String(v.title||'YouTube video').slice(0,180);
+   const meta=document.createElement('small');meta.textContent=[v.author||'YouTube',v.lengthSeconds?Math.floor(v.lengthSeconds/60)+':'+String(v.lengthSeconds%60).padStart(2,'0'):''].filter(Boolean).join(' · ');
+   b.append(img,title,meta);b.addEventListener('click',()=>{playYouTube(v.videoId,v.title);note.textContent='ویڈیو SK Cyber Hub کے اندر YouTube player میں چل رہی ہے۔ اگر مالک نے embedding بند کی ہو تو YouTube اسے نہیں چلائے گا۔';});results.append(b);
+  });
+ }
+ async function search(q,forcedMode){
+  const seq=++requestNo;activeQuery=String(q||'').trim();if(!activeQuery)return;
+  const wantsYouTube=/\b(youtube|you\s*tube|yt)\b/i.test(activeQuery);
+  const cleanQuery=activeQuery.replace(/\b(youtube|you\s*tube|yt)\b/ig,' ').replace(/\s+/g,' ').trim()||activeQuery;
+  const mode=forcedMode||(wantsYouTube?'youtube':modeInput.value);
+  modeInput.value=mode;
+  searches.replaceChildren();results.replaceChildren();
+  if(mode!=='youtube')providers.forEach(([label,base])=>searches.append(makeLink(label,base,cleanQuery)));
+  topic.textContent=(mode==='youtube'?'YouTube ویڈیوز: ':'تمام پلیٹ فارمز پر ویڈیو تلاش: ')+cleanQuery;
+  player.replaceChildren();
+  const wait=document.createElement('div');wait.style.cssText='height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center';wait.textContent='ویڈیوز تلاش کی جا رہی ہیں…';player.append(wait);
+  note.textContent=mode==='youtube'?'صرف YouTube کے نتائج تلاش ہو رہے ہیں؛ ویڈیو منتخب کریں تاکہ یہ اسی پاپ اَپ میں چلے۔':'YouTube کے قابلِ پلے نتائج نیچے ہیں؛ باقی پلیٹ فارمز کے سرچ لنکس اوپر دستیاب ہیں۔';
+  try{
+   const videos=await fetchVideos(cleanQuery,seq);if(seq!==requestNo)return;
+   renderVideos(videos);
+   if(!videos.length)note.textContent='اس تلاش کے لیے کوئی YouTube ویڈیو نتیجہ نہیں ملا۔';
+   else note.textContent=videos.length+' YouTube نتائج ملے۔ کسی نتیجے پر دبائیں؛ ویڈیو اسی پاپ اَپ میں چلے گی۔';
+   player.replaceChildren();const placeholder=document.createElement('div');placeholder.style.cssText='height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center';placeholder.textContent='اوپر نتائج میں سے ویڈیو منتخب کریں۔';player.append(placeholder);
+  }catch(e){if(seq!==requestNo)return;player.replaceChildren();const placeholder=document.createElement('div');placeholder.style.cssText='height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center';placeholder.textContent='اس وقت ویڈیو سرچ سروس دستیاب نہیں۔ دوبارہ کوشش کریں یا YouTube کا لنک نیچے پیسٹ کریں۔';player.append(placeholder);note.textContent='عوامی سرچ سرور عارضی طور پر بند یا نیٹ ورک سے بلاک ہو سکتا ہے؛ کسی ویڈیو کو فرضی طور پر نہیں دکھایا گیا۔';}
+ }
  function show(query){
   activeQuery=String(query||'').trim();if(!activeQuery)return;
   topic.textContent='خبر سے متعلق ویڈیو تلاش: '+activeQuery;
-  searches.replaceChildren(
-   makeLink('YouTube','https://www.youtube.com/results?search_query='),
-   makeLink('Dailymotion','https://www.dailymotion.com/search/'),
-   makeLink('Vimeo','https://vimeo.com/search?q='),
-   makeLink('TikTok','https://www.tiktok.com/search?q='),
-   makeLink('Facebook','https://www.facebook.com/watch/search/?query=')
-  );
-  urlInput.value='';player.innerHTML='<div style="height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center">اوپر کسی پلیٹ فارم پر متعلقہ ویڈیو تلاش کریں، پھر اس ویڈیو کا لنک نیچے پیسٹ کرکے اسی جگہ چلائیں۔</div>';
+  queryInput.value=activeQuery;modeInput.value=/\b(youtube|you\s*tube|yt)\b/i.test(activeQuery)?'youtube':'all';
+  urlInput.value='';searches.replaceChildren();results.replaceChildren();
+  player.replaceChildren();const p=document.createElement('div');p.style.cssText='height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center';p.textContent='ویڈیو تلاش شروع ہو رہی ہے…';player.append(p);
   modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
-  document.getElementById('skNewsVideoCloseV1').focus();
+  $('skNewsVideoCloseV1').focus();search(activeQuery,modeInput.value);
  }
  function embed(raw){
-  let u;try{u=new URL(raw.trim());}catch(_){alert('براہ کرم ویڈیو کا مکمل درست لنک پیسٹ کریں۔');return;}
-  if(!['https:','http:'].includes(u.protocol)){alert('صرف http یا https ویڈیو لنک قابل قبول ہے۔');return;}
-  let src='',host=u.hostname.toLowerCase();
-  if(host==='youtu.be'||host==='youtube.com'||host.endsWith('.youtube.com')){
-   let id='';if(host==='youtu.be')id=u.pathname.split('/').filter(Boolean)[0]||'';else if(u.pathname==='/watch')id=u.searchParams.get('v')||'';else if(u.pathname.startsWith('/shorts/'))id=u.pathname.split('/')[2]||'';else if(u.pathname.startsWith('/embed/'))id=u.pathname.split('/')[2]||'';
-   if(/^[A-Za-z0-9_-]{11}$/.test(id))src='https://www.youtube-nocookie.com/embed/'+id;
-  }else if(host==='vimeo.com'||host.endsWith('.vimeo.com')){const id=u.pathname.split('/').filter(Boolean).pop()||'';if(/^\d+$/.test(id))src='https://player.vimeo.com/video/'+id;}
-  else if(host==='dailymotion.com'||host.endsWith('.dailymotion.com')){const m=u.pathname.match(/video\/([a-zA-Z0-9]+)/);if(m)src='https://www.dailymotion.com/embed/video/'+m[1];}
-  else if(host==='dai.ly'){const id=u.pathname.replace('/','');if(id)src='https://www.dailymotion.com/embed/video/'+encodeURIComponent(id);}
-  else if(host==='tiktok.com'||host.endsWith('.tiktok.com')){const m=u.pathname.match(/\/video\/(\d+)/);if(m)src='https://www.tiktok.com/player/v1/'+m[1];}
-  if(!src){alert('اس لنک کا اندرونی پلیئر دستیاب نہیں۔ براہ کرم YouTube، Vimeo، Dailymotion یا TikTok کا اصل ویڈیو لنک آزمائیں۔');return;}
-  const frame=document.createElement('iframe');frame.src=src;frame.title='Related news video';frame.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';frame.allowFullscreen=true;frame.referrerPolicy='strict-origin-when-cross-origin';player.replaceChildren(frame);
+  const id=videoIdFromUrl(raw);if(!id){alert('براہ کرم درست عوامی YouTube ویڈیو لنک پیسٹ کریں۔');return;}
+  playYouTube(id,'SK Cyber Hub video preview');note.textContent='YouTube ویڈیو اسی پاپ اَپ میں چل رہی ہے۔';
  }
- function close(){modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';player.replaceChildren();}
- document.getElementById('skNewsVideoLoadV1').addEventListener('click',()=>embed(urlInput.value));
+ function close(){requestNo++;modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';player.replaceChildren();results.replaceChildren();}
+ searchButton.addEventListener('click',()=>search(queryInput.value,modeInput.value));
+ queryInput.addEventListener('keydown',e=>{if(e.key==='Enter')search(queryInput.value,modeInput.value);});
+ $('skNewsVideoLoadV1').addEventListener('click',()=>embed(urlInput.value));
  urlInput.addEventListener('keydown',e=>{if(e.key==='Enter')embed(urlInput.value);});
- document.getElementById('skNewsVideoCloseV1').addEventListener('click',close);
+ $('skNewsVideoCloseV1').addEventListener('click',close);
  modal.addEventListener('click',e=>{if(e.target===modal)close();});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('is-open'))close();});
  const attach=()=>{
@@ -4414,8 +4486,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    const title=card.querySelector('strong')?.textContent||card.getAttribute('aria-label')||'World news';
    const actions=card.querySelector('.news-card-actions');if(!actions)return;
    const b=document.createElement('button');b.type='button';b.className='sk-news-video-button';b.textContent='▶ Related videos';
-   b.addEventListener('click',e=>{e.stopPropagation();show(title);});
-   actions.appendChild(b);
+   b.addEventListener('click',e=>{e.stopPropagation();show(title);});actions.appendChild(b);
   });
  };
  const root=document.getElementById('newsExactResults')||document.querySelector('.news-result-group');
