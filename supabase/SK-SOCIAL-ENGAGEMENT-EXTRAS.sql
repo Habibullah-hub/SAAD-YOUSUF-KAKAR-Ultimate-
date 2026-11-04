@@ -167,7 +167,7 @@ language sql
 stable
 security definer
 set search_path = ''
-as $
+as $$
   select p.id,
     (select count(*) from public.sk_post_likes l where l.post_id=p.id),
     (select count(*) from public.sk_post_comments c where c.post_id=p.id and c.status='published')
@@ -183,7 +183,7 @@ as $
         where f.follower_id=(select auth.uid()) and f.following_id=p.author_id
       ))
     );
-$;
+$$;
 
 create or replace function public.sk_profile_follower_counts(p_profile_ids uuid[])
 returns table(profile_id uuid,follower_count bigint)
@@ -191,11 +191,11 @@ language sql
 stable
 security definer
 set search_path = ''
-as $
+as $$
   select p.id,(select count(*) from public.sk_follows f where f.following_id=p.id)
   from public.sk_profiles p
   where p.id=any(coalesce(p_profile_ids,array[]::uuid[]));
-$;
+$$;
 
 revoke all on function public.sk_post_engagement_counts(uuid[]) from public;
 revoke all on function public.sk_profile_follower_counts(uuid[]) from public;

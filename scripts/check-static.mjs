@@ -80,6 +80,12 @@ for (const assetPath of jsAssets) {
 }
 if (!html.includes('id="skCommunityAnticipation"')) errors.push("Community feed is missing its honest anticipation status.");
 if (!html.includes('id="skCommunityHideCounts"')) errors.push("Community count visibility control is missing.");
+const engagementSqlPath = "supabase/SK-SOCIAL-ENGAGEMENT-EXTRAS.sql";
+if (!fs.existsSync(engagementSqlPath)) errors.push("Social engagement SQL migration is missing.");
+else {
+  const sql = fs.readFileSync(engagementSqlPath, "utf8");
+  if (/\\bas\\s+\\$(?!\\$)|^\\$;$/m.test(sql)) errors.push("Social engagement SQL contains an invalid single-dollar function delimiter.");
+}
 if (!html.includes('id="skEasyModeToggle"')) errors.push("Accessible Easy Mode toggle is missing.");
 if (!html.includes('href="./assets/sk-easy-mode.css"')) errors.push("Easy Mode stylesheet is not loaded.");
 if (!html.includes('src="./assets/sk-easy-mode.js"')) errors.push("Easy Mode behavior script is not loaded.");

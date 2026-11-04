@@ -9,6 +9,7 @@ on:
       - "index.html"
       - "assets/**"
       - "scripts/**"
+      - "supabase/**"
       - "pwa-register.js"
       - "sw.js"
       - "manifest.webmanifest"
