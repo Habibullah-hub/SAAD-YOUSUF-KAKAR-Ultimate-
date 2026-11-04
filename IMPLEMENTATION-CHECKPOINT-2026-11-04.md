@@ -50,3 +50,41 @@ Base branch: `main`
 
 ## Resume instruction for a new chat
 Continue from this checkpoint and the branch `implementation/ethical-engagement-android-home`. First inspect current branch/PR and Actions status; do not redo completed commits. Continue testing, fix failures, then merge to `main` only after checks pass. Do not claim the live Supabase migration or APK installation succeeded until actually verified.
+
+---
+
+## Verified continuation update — 2026-11-04 (supersedes older status above)
+
+Current main commit: `e44606e3a55ca1972444d954555b8d53b2601811`.
+
+### Merged and verified
+- PR #25 merged: Android Home opens the main SK site, file chooser improvements, community engagement improvements, version 1.0.3.
+- PR #26 merged: optional Easy Mode with larger text, 44px touch targets, clear focus, reduced-motion support, and persistent local preference.
+- PR #28 merged: corrected PostgreSQL dollar-quoted SQL function bodies in `SK-SOCIAL-ENGAGEMENT-EXTRAS.sql`; added a static regression check and made the Android/static validation workflow run when Supabase migrations change.
+- PR #27 was closed as superseded by PR #28.
+- Main branch Actions for commit `e44606e`: static security checks SUCCESS (run 41895011823), Android debug build SUCCESS (run 41895011630), GitHub Pages deployment SUCCESS (run 41895011211), public beta APK publishing SUCCESS (run 41895229783).
+- APK verified from latest main build artifact 13356055036. Package `com.saad.yousufkakar.skhub`, versionCode 4 / versionName 1.0.3, debug build. CI verified the APK archive and package metadata. The APK has NOT been installed or manually tested on the owner's phone.
+- GitHub Pages deployment completed successfully after Easy Mode and SQL source corrections.
+
+### Current feature boundaries
+- Progressive feed, unread notification badge, personalized feed tabs, actual hashtag buzz, optional local count hiding, local photo filters, and Easy Mode are present in the website.
+- Photo filters are not live AR face lenses. AI Studio is a local prompt workspace, not a connected AI model. Android is a WebView-based app shell, not a full native browser.
+- Creator center only stores applications and owner-entered confirmed revenue records. No ad network, affiliate payout, payment provider, or guaranteed earnings is connected. Do not show fabricated balances or promise earnings.
+- No phone-side install test has been performed. Ask the owner to install the verified debug APK and report first-launch/file-picker/download results.
+
+### Supabase — do not blindly rerun migrations
+- The separate SK Cyber Hub Supabase project is active on the Free plan: project ref `ruhezvslqocpzdmrkwtm`. It is distinct from legacy Yousuf Kakar Free Apps project `itwprbfqunqzwsbotepa`.
+- User screenshots on 2026-11-03 showed these SK project tables: `sk_apps`, `sk_post_comments`, `sk_post_likes`, `sk_post_reports`, `sk_posts`, `sk_profiles`, `sk_site_analytics`. This proves some setup has happened, but does NOT prove every migration, RLS policy, Storage bucket/policy, or trigger is correct.
+- No current verified audit result for all RLS policies or private Storage exists in this checkpoint. The prior audit found no community Storage bucket/policies; re-check the live project before enabling uploads.
+- Social Extras SQL source is now syntactically corrected in main. It has NOT been confirmed executed in Supabase.
+- Before any SQL write: inspect current tables/policies/triggers/storage in project `ruhezvslqocpzdmrkwtm`, compare against each migration, take/export a backup, then run only missing migrations in the documented order. Never run SK migrations against `itwprbfqunqzwsbotepa`.
+- Keep exactly one Admin (the owner); new accounts must remain ordinary members. Never place a service-role/secret key in browser, PWA, Android or GitHub frontend code.
+
+### Next actions
+1. Obtain a current read-only Supabase audit (tables, RLS policies, triggers, Storage buckets/policies) for project `ruhezvslqocpzdmrkwtm`; reconcile existing migrations before executing anything.
+2. Complete the private community Storage setup only after policy review; test two member accounts and the owner Admin.
+3. Install the current 1.0.3 debug APK on Honor 400 Lite; test launch, home, login, camera/file picker, downloads, back/refresh and network loss.
+4. Test live website/PWA on Android and desktop. Pages CI success is not a substitute for real-device UX testing.
+5. Build real earning only after a legitimate revenue source is approved and connected; current ledger is recordkeeping, not a payout system.
+
+Resume from current `main`, not the old implementation branch. Do not repeat PRs #25, #26 or #28.
