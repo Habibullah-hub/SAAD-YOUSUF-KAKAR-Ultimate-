@@ -46,3 +46,7 @@
 #skCommunityPanel .sk-social-load-more{display:block;width:100%;margin:14px 0;padding:12px;border:1px solid #36536a;border-radius:12px;background:#10283a;color:#e4f1f8;font-weight:800}
 #skCommunityPanel [hidden]{display:none!important}
 @media(max-width:600px){#skCommunityPanel .sk-social-toolbar{display:block}#skCommunityPanel .sk-social-notification-wrap{margin:5px 0 10px}#skCommunityPanel .sk-social-notification-panel{left:0;right:auto}}
+
+#skCommunityPanel .sk-social-anticipation{margin:9px 0 12px;padding:10px 13px;border:1px solid #31516a;border-radius:11px;background:linear-gradient(110deg,#10263a,#122d3b);color:#bfe9e4;font-size:12px;line-height:1.6}
+#skCommunityPanel .sk-social-anticipation[aria-live]{min-height:38px}
+@media(prefers-reduced-motion:reduce){#skCommunityPanel .sk-social-anticipation{scroll-behavior:auto}}
