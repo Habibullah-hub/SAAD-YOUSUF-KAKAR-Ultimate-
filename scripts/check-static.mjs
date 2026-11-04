@@ -80,6 +80,12 @@ for (const assetPath of jsAssets) {
 if (!html.includes('id="skCommunityAnticipation"')) errors.push("Community feed is missing its honest anticipation status.");
 if (!html.includes('id="skCommunityHideCounts"')) errors.push("Community count visibility control is missing.");
 
+const engagementSqlPath = "supabase/SK-SOCIAL-ENGAGEMENT-EXTRAS.sql";
+if (!fs.existsSync(engagementSqlPath)) errors.push("Social engagement SQL migration is missing.");
+else {
+  const sql = fs.readFileSync(engagementSqlPath, "utf8");
+  if (/\\bas\\s+\\$(?!\\$)|^\\$;$/m.test(sql)) errors.push("Social engagement SQL contains an invalid single-dollar function delimiter.");
+}
 const pwaRegisterPath = "pwa-register.js";
 if (!fs.existsSync(pwaRegisterPath)) errors.push("PWA registration/update script is missing.");
 else {
