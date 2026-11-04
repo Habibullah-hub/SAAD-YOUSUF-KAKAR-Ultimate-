@@ -72,7 +72,7 @@ SK Cyber Hub میں پہلے ہی بہت سے مفید حصے بنے ہوئے ہ
 ## L — World News
 - News search، language selection، speech input (جہاں browser support کرے)، translated summaries، publisher links اور related-video search/popup کے حصے موجود ہیں۔
 - ہر result میں اصل publisher اور تاریخ دکھانا ضروری ہے؛ “Read full article” اور “Open publisher website” اصل source کی طرف جائیں۔
-- مسئلہ: duplicate ID `skNewsLiveSuggestions` ملا؛ ایک ہی ID ایک سے زیادہ عناصر کو نہیں دینی چاہیے۔
+- کوڈ میں `skNewsLiveSuggestions` کی dynamic ID assignment دو جگہ ہے؛ دوسری جگہ پہلے موجود element کو remove کیا جاتا ہے۔ اس لیے یہ static source scan کا duplicate-ID warning ہے، بیک وقت دو DOM elements ہونے کا ثبوت نہیں۔ Runtime test سے تصدیق ضروری ہے۔
 - اصلاح: News، social trend اور opinion کو الگ labels؛ claims کے ساتھ source/date؛ publisher copyright کی خلاف ورزی یا full-text copying نہیں۔
 
 ## M — Community / SK Pulse
