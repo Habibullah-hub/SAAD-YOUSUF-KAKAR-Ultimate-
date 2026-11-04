@@ -40,6 +40,16 @@ Public member registration and login are enabled in the website. New accounts ar
 
 Browser configuration is local to the device and browser. Setting it on one phone does not automatically configure another. Do not reuse credentials from the separate Yousuf Kakar Free Apps project.
 
+## SK Pulse engagement rules
+- The community feed supports For You, Latest, Following and Saved views, progressive loading with a visible manual fallback, and topic Buzz based on real hashtags in loaded posts.
+- For You ranking is a lightweight on-device page ranking based on freshness, genuine likes/comments and followed creators; it is not an AI recommendation model and does not claim to know private interests.
+- Red notification counts are based only on actual unread follow, like, comment and followed-creator post events. Opening the panel does not silently mark every alert read; a member marks an alert read by selecting it.
+- A streak counts a genuine post, like or comment once per UTC calendar day. No paid restore, punishment, fake loss warning or guaranteed reward is used.
+- Like and follower counts are genuine database counts. Members can hide both on their own device.
+- Photo filters (Original, Vivid, Warm, Cool, Mono, Vintage) are applied locally to a chosen or camera-captured photo before upload. This is not a live augmented-reality face-lens camera. The selected image is not uploaded until the member presses Publish.
+- Anticipation messages describe real loading and available content only. Artificial scarcity, fake countdowns, fabricated likes/followers, fake online users and deceptive red alerts are prohibited. Limited-time notices must refer to a real published deadline.
+- Social Extras require running `supabase/SK-SOCIAL-ENGAGEMENT-EXTRAS.sql` after the base, community and private-media migrations. A file in GitHub is not the same as an applied live database migration.
+
 ## Smart Free Finder policy
 The AI video finder records free-use limits, account/card requirements, resolution, duration and watermark information from official provider pages. Free allowances change, may be shared or restricted, and are not unlimited. Users should re-check provider terms before generating. Never pay for credits or subscriptions unless you independently choose to do so.
 
