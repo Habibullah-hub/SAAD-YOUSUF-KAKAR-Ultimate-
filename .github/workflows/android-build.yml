@@ -6,12 +6,24 @@ on:
       - main
     paths:
       - "android/**"
+      - "index.html"
+      - "assets/**"
+      - "scripts/**"
+      - "pwa-register.js"
+      - "sw.js"
+      - "manifest.webmanifest"
       - ".github/workflows/android-build.yml"
   pull_request:
     branches:
       - main
     paths:
       - "android/**"
+      - "index.html"
+      - "assets/**"
+      - "scripts/**"
+      - "pwa-register.js"
+      - "sw.js"
+      - "manifest.webmanifest"
       - ".github/workflows/android-build.yml"
   workflow_dispatch:
 

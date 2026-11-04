@@ -1,0 +1,51 @@
+/* Optional Easy Mode: larger reading text, clearer focus, and touch-friendly controls. */
+body.sk-easy-mode {
+  font-size: 18px;
+  line-height: 1.65;
+}
+body.sk-easy-mode p,
+body.sk-easy-mode li,
+body.sk-easy-mode label,
+body.sk-easy-mode .trust-item,
+body.sk-easy-mode .sk-platform-note,
+body.sk-easy-mode .sk-interest-copy {
+  line-height: 1.75;
+  font-size: 1.06em;
+}
+body.sk-easy-mode button,
+body.sk-easy-mode input,
+body.sk-easy-mode select,
+body.sk-easy-mode textarea,
+body.sk-easy-mode .category-menu a,
+body.sk-easy-mode .sk-bottom-nav a {
+  min-height: 44px;
+}
+body.sk-easy-mode :focus-visible {
+  outline: 3px solid #16c7d8 !important;
+  outline-offset: 3px !important;
+}
+body.sk-easy-mode .sk-easy-toggle {
+  background: #0c7b72;
+  color: #fff;
+  border-color: #16c7d8;
+}
+.sk-easy-toggle {
+  border: 1px solid #52738a;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: #10283d;
+  color: #e8f7ff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.sk-easy-mode *,
+  body.sk-easy-mode *::before,
+  body.sk-easy-mode *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

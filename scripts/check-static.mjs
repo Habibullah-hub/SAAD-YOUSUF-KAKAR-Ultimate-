@@ -67,7 +67,8 @@ const jsAssets = [
   "assets/sk-platforms.js",
   "assets/sk-messenger.js",
   "assets/sk-live.js",
-  "assets/sk-creator-monetization.js"
+  "assets/sk-creator-monetization.js",
+  "assets/sk-easy-mode.js"
 ];
 for (const assetPath of jsAssets) {
   if (!fs.existsSync(assetPath)) {
@@ -79,6 +80,9 @@ for (const assetPath of jsAssets) {
 }
 if (!html.includes('id="skCommunityAnticipation"')) errors.push("Community feed is missing its honest anticipation status.");
 if (!html.includes('id="skCommunityHideCounts"')) errors.push("Community count visibility control is missing.");
+if (!html.includes('id="skEasyModeToggle"')) errors.push("Accessible Easy Mode toggle is missing.");
+if (!html.includes('href="./assets/sk-easy-mode.css"')) errors.push("Easy Mode stylesheet is not loaded.");
+if (!html.includes('src="./assets/sk-easy-mode.js"')) errors.push("Easy Mode behavior script is not loaded.");
 
 const pwaRegisterPath = "pwa-register.js";
 if (!fs.existsSync(pwaRegisterPath)) errors.push("PWA registration/update script is missing.");
