@@ -6,12 +6,16 @@ on:
       - main
     paths:
       - "android/**"
+      - "supabase/**"
+      - "scripts/**"
       - ".github/workflows/android-build.yml"
   pull_request:
     branches:
       - main
     paths:
       - "android/**"
+      - "supabase/**"
+      - "scripts/**"
       - ".github/workflows/android-build.yml"
   workflow_dispatch:
 
