@@ -63,6 +63,7 @@ if (!html.includes('rel="manifest"') || (!html.includes("serviceWorker.register"
 
 const jsAssets = [
   "assets/sk-community.js",
+  "assets/sk-public-posts.js",
   "assets/sk-discovery.js",
   "assets/sk-platforms.js",
   "assets/sk-messenger.js",
