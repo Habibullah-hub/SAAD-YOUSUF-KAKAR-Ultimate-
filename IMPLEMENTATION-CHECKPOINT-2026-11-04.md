@@ -4,6 +4,8 @@ Updated: 2026-11-04
 
 Project: `Habibullah-hub/SAAD-YOUSUF-KAKAR-Ultimate-`
 Implementation branch: `implementation/ethical-engagement-android-home`
+Pull Request: https://github.com/Habibullah-hub/SAAD-YOUSUF-KAKAR-Ultimate-/pull/25
+Latest known branch commit at checkpoint update: `96141b23af12ec0ec7aa02fbc7b45f0375765b16`
 Base branch: `main`
 
 ## Changes completed in this implementation pass
@@ -38,7 +40,7 @@ Base branch: `main`
 - Do not add paid plans, billing, paid APIs, ad spend, or paid storage.
 
 ## Required validation before calling this release-ready
-1. Run `scripts/check-static.mjs` in CI.
+1. Run `scripts/check-static.mjs` in CI. The Android workflow was updated to run this check, but a workflow-run result has not yet been returned; verify GitHub Actions on PR #25.
 2. Confirm Android debug APK build succeeds and APK archive passes `unzip -t`.
 3. Install APK on the Honor 400 Lite and test first launch, main home, sign-in, file/photo picker, downloads, Back, refresh and network-loss recovery.
 4. Test website/PWA on Android Chrome and desktop; verify RTL/LTR, reduced motion, keyboard and screen-reader labels.
