@@ -61,6 +61,25 @@ if (!html.includes('rel="manifest"') || (!html.includes("serviceWorker.register"
   errors.push("index.html is missing the PWA manifest or service-worker registration.");
 }
 
+const jsAssets = [
+  "assets/sk-community.js",
+  "assets/sk-discovery.js",
+  "assets/sk-platforms.js",
+  "assets/sk-messenger.js",
+  "assets/sk-live.js",
+  "assets/sk-creator-monetization.js"
+];
+for (const assetPath of jsAssets) {
+  if (!fs.existsSync(assetPath)) {
+    errors.push(`JavaScript asset is missing: ${assetPath}`);
+    continue;
+  }
+  const result = spawnSync(process.execPath, ["--check", assetPath], { encoding: "utf8" });
+  if (result.status !== 0) errors.push(`JavaScript asset has a syntax error (${assetPath}):\\n${result.stderr || result.stdout}`);
+}
+if (!html.includes('id="skCommunityAnticipation"')) errors.push("Community feed is missing its honest anticipation status.");
+if (!html.includes('id="skCommunityHideCounts"')) errors.push("Community count visibility control is missing.");
+
 const pwaRegisterPath = "pwa-register.js";
 if (!fs.existsSync(pwaRegisterPath)) errors.push("PWA registration/update script is missing.");
 else {

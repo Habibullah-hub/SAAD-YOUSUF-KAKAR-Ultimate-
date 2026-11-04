@@ -54,7 +54,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    private static final String HOME = "https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/browser.html?native=1";
+    private static final String HOME = "https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/";
     private static final String PREFS = "sk_browser_data";
     private static final String HISTORY = "history";
     private static final int FILE_CHOOSER_REQUEST = 901;
@@ -157,9 +157,16 @@ public class MainActivity extends Activity {
             @Override public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> callback, FileChooserParams params) {
                 if (filePathCallback != null) filePathCallback.onReceiveValue(null);
                 filePathCallback = callback;
-                Intent pick = new Intent(Intent.ACTION_GET_CONTENT);
-                pick.addCategory(Intent.CATEGORY_OPENABLE);
-                pick.setType("*/*");
+                Intent pick;
+                try {
+                    // Respect the web page's accept/capture hints so Android can offer
+                    // the camera when a photo input requests capture.
+                    pick = params.createIntent();
+                } catch (Exception ignored) {
+                    pick = new Intent(Intent.ACTION_GET_CONTENT);
+                    pick.addCategory(Intent.CATEGORY_OPENABLE);
+                    pick.setType("*/*");
+                }
                 try {
                     startActivityForResult(Intent.createChooser(pick, "Choose a file for SK Cyber Hub"), FILE_CHOOSER_REQUEST);
                     return true;
