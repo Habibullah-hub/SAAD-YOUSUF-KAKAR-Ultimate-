@@ -17,7 +17,7 @@ const PUBLIC_STATIC_ASSETS = new Set([
   "assets/sk-live.js","assets/sk-messenger.js",
   "assets/sk-platforms.css","assets/sk-platforms.js",
   "assets/sk-ultimate-experience-v2.css","assets/sk-world-class-experience-v1.css",
-  "assets/sk-tailwind-compat.css","assets/sk-share.js","pwa-register.js"
+  "assets/sk-tailwind-compat.css","assets/sk-share.js","assets/sk-cyber-hub-icon-192.png","assets/sk-cyber-hub-icon-512.png","pwa-register.js"
 ].map(path => new URL(path, APP_ROOT).href));
 
 self.addEventListener("message", event => {
