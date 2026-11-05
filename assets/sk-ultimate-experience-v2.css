@@ -199,3 +199,36 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opa
 @media(prefers-reduced-motion:reduce){
  *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
+
+/* Specificity guard: supersede earlier legacy !important presentation layers. */
+body .top{background:rgba(5,10,23,.88)!important;border-bottom:1px solid var(--sk2-line)!important;backdrop-filter:blur(24px)!important}
+body .top .nav{min-height:76px!important}
+body .brand{color:#f5f8ff!important}
+body .brand .mark{background:linear-gradient(145deg,#143f59,#27214d)!important;border:1px solid rgba(97,242,223,.62)!important;border-radius:15px!important;color:#c2fff6!important}
+body .brand small{color:#91a9c8!important}
+body .nav-actions button,body .nav-actions a{border:1px solid var(--sk2-line)!important;background:rgba(17,31,55,.82)!important;color:#e8f3ff!important}
+body .category-dock{background:rgba(8,17,34,.94)!important;border-bottom:1px solid var(--sk2-line)!important}
+body .category-toggle{border:1px solid #34506f!important;border-radius:14px!important;background:linear-gradient(145deg,#142743,#0c1a30)!important;color:#f1f6ff!important}
+body .category-menu{border:1px solid #355477!important;border-radius:20px!important;background:rgba(7,16,32,.98)!important}
+body .dock-inner>.searchbox{border:1px solid #355477!important;border-radius:14px!important;background:rgba(13,28,49,.95)!important}
+body .hero.store-hero.sk-ultimate-hero{display:grid!important;grid-template-columns:minmax(0,1.08fr) minmax(300px,.92fr)!important;min-height:510px!important;margin:28px auto 20px!important;padding:clamp(28px,5vw,68px)!important;border:1px solid rgba(133,190,235,.34)!important;border-radius:34px!important;background:radial-gradient(ellipse at 80% 18%,rgba(97,242,223,.22),transparent 27%),radial-gradient(ellipse at 72% 90%,rgba(160,112,255,.2),transparent 35%),linear-gradient(128deg,#0c1d35 0%,#0c1b32 48%,#1a2042 100%)!important;box-shadow:0 32px 100px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.08)!important}
+body .hero.store-hero.sk-ultimate-hero h1{max-width:780px!important;margin:22px 0 16px!important;color:#f7f9ff!important;font-size:clamp(43px,6.2vw,78px)!important;line-height:.99!important;letter-spacing:-.065em!important}
+body .hero.store-hero.sk-ultimate-hero h1 span{display:block!important;margin-top:8px!important;background:linear-gradient(95deg,#61f2df 0%,#85c9ff 48%,#c6a4ff 85%)!important;background-clip:text!important;-webkit-background-clip:text!important;color:transparent!important}
+body .hero.store-hero.sk-ultimate-hero .sk-hero-intro{max-width:650px!important;margin:0!important;color:#c1d0e6!important;font-size:clamp(15px,1.4vw,18px)!important;line-height:1.8!important}
+body .hero.store-hero.sk-ultimate-hero .sk-hero-visual{min-height:350px!important}
+body .trust-strip{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
+body .trust-item{border:1px solid var(--sk2-line)!important;border-radius:17px!important;background:linear-gradient(145deg,rgba(17,34,58,.9),rgba(9,20,38,.95))!important;color:#eaf3ff!important}
+body .sk-start-here,body .sk-discovery{border:1px solid var(--sk2-line)!important;border-radius:26px!important;background:linear-gradient(145deg,rgba(14,31,54,.96),rgba(8,18,35,.98))!important}
+body .sk-start-link{border:1px solid var(--sk2-line)!important;border-radius:17px!important;background:linear-gradient(145deg,rgba(24,47,76,.82),rgba(10,24,44,.96))!important}
+body .sk-category-card{border:1px solid var(--sk2-line)!important;border-radius:21px!important;background:linear-gradient(145deg,rgba(22,47,78,.96),rgba(9,24,45,.98))!important}
+@media(max-width:1050px){body .hero.store-hero.sk-ultimate-hero{grid-template-columns:minmax(0,1fr) minmax(240px,.72fr)!important}}
+@media(max-width:760px){
+ body .top .nav{min-height:64px!important;flex-wrap:wrap!important}
+ body .hero.store-hero.sk-ultimate-hero{grid-template-columns:1fr!important;min-height:0!important;gap:15px!important;margin:15px auto 13px!important;padding:25px 19px 18px!important;border-radius:24px!important}
+ body .hero.store-hero.sk-ultimate-hero h1{font-size:clamp(39px,10.5vw,54px)!important;margin:18px 0 12px!important}
+ body .hero.store-hero.sk-ultimate-hero .sk-hero-visual{min-height:230px!important}
+ body .trust-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ body .sk-start-here,body .sk-discovery{padding:16px!important;border-radius:19px!important}
+ body .sk-start-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body .sk-category-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
