@@ -1,8 +1,8 @@
 {
   "name": "Saad Yousuf Kakar Ultimate — SK Cyber Hub",
   "short_name": "SK Cyber Hub",
-  "description": "SK Browser: a branded, installable SK Cyber Hub home with internal search, discovery, saved shortcuts and light/dark themes.",
-  "start_url": "./browser.html",
+  "description": "SK Cyber Hub premium home with integrated SK Browser search, apps, AI tools, learning, games, creator resources and world news.",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
