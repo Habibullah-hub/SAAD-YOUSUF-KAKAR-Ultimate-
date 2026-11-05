@@ -1589,33 +1589,14 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 <a class="skip-to-content" href="#tab-home">Skip to main content</a>
 <div id="google_translate_element" aria-hidden="true"></div><div id="configAlert" class="config-alert"><span>SK Cyber Hub database is not connected. Set up its separate database tables to manage listings.</span><button type="button" onclick="openSupabaseModal()">Configure</button></div>
 <header class="top"><div class="wrap nav"><div class="brand"><button class="mark" id="skAdminButton" type="button" aria-label="Admin Login" title="Admin Login" onclick="openAuthModal()">SK</button><span>SK CYBER HUB<small>SAAD YOUSUF KAKAR</small></span></div><div class="nav-actions"><a class="news-nav-link" href="#news" aria-label="Go to World News">⌁ <span>World News</span></a><button type="button" class="sk-easy-toggle" id="skEasyModeToggle" aria-pressed="false" title="Make text and controls easier to read">Easy mode</button><button type="button" class="language-toggle" id="siteLanguageToggle" aria-expanded="false" aria-controls="siteLanguagePanel">🌐 ENG</button></div></div><div class="site-language-panel hidden" id="siteLanguagePanel"><label for="siteLanguageSearch">Choose or type a language</label><input id="siteLanguageSearch" class="language-one-field" type="text" list="siteLanguageOptions" placeholder="Type a language name…" autocomplete="off"><datalist id="siteLanguageOptions"></datalist><div id="siteLanguageChoices" class="language-choice-list" aria-label="Available languages"></div><p>Tap a language or type its name. Urdu and English are shown first.</p></div><select id="siteLanguageSelect" class="hidden" aria-hidden="true" tabindex="-1"><option value="en">English</option></select><button type="button" id="applySiteLanguage" class="hidden" tabindex="-1" aria-hidden="true">Apply</button><div class="category-dock"><div class="wrap dock-inner"><div class="category-dropdown">
- <button class="category-toggle" id="categoryToggle" type="button" aria-expanded="false" aria-controls="categoryMenu">☰ Browse All Categories <span>▾</span></button>
- <div class="category-menu" id="categoryMenu">
-  <a href="#apps" data-search="apps android mobile applications">▦ Apps</a>
-  <a href="#mod-apk" data-search="all apps mod apk modified applications">⚡ All Apps Mod APK</a>
-  <a href="#software" data-search="software pc windows utilities">⌘ Software</a>
-  <a href="#tools" data-search="ai tools artificial intelligence">✦ AI Tools</a>
-  <a href="#smart-free-finder" data-search="smart free finder free ai video generator text to video image to video no card">🎬 Smart Free Finder</a>
-  <a href="#free-tools" data-search="free online tools converters pdf image text">◉ Free Online Tools</a>
-  <a href="#documents" data-search="documents pdf ebooks guides learning">▤ Documents & Learning</a>
-  <a href="#games" data-search="games android pc entertainment">◈ Games</a>
-  <a href="#video-audio" data-search="video audio media editing tools">▶ Video & Audio</a>
-  <a href="#images-design" data-search="images design graphics photo editing">▧ Images & Design</a>
-  <a href="#developer-tools" data-search="developer coding web programming tools">⌘ Developer Tools</a>
-  <a href="#security-privacy" data-search="security privacy password protection">◆ Security & Privacy</a>
-  <a href="#creator-studio" data-search="creator studio video editing social media content creation">🎥 Creator Studio</a>
-  <a href="./browser.html" data-search="SK Search web search engine google bing duckduckgo brave">⌕ SK Browser</a>
-  <a href="#jobs" data-search="jobs careers employment saudi arabia pakistan opportunities">💼 Jobs & Opportunities</a>
-  <a href="#deals" data-search="deals freebies free games open source offers">🎁 Deals & Freebies</a>
-  <a href="#community" data-search="community user accounts member profiles">👥 Community & Accounts</a>
-<a href="#sk-platforms">SK Platforms</a>
-  \n  <a href="#sk-connect" data-search="private messenger text audio video calls screen sharing whatsapp">💬 SK Messenger & Calls</a>\n  <a href="#sk-live" data-search="public live stream live video creator live chat tiktok">🔴 SK Live</a>
-  <a href="#languages" data-search="languages global access urdu arabic pashto translation">🌐 Languages & Global Access</a>
-  <a href="#quick-tools" data-search="instant online tools word counter password generator unit converter image compressor">⚙ Instant Online Tools</a>
-  <a href="#earnings-model" data-search="earning model adsense affiliate sponsored listings premium digital services">¤ Earning Model</a>
-  <a href="#global-growth" data-search="global growth seo traffic tiktok youtube social media strategy">↗ Global Growth</a>
-  <a href="#sk-world-network" data-search="world network discover atlas global regions shorts video community">◎ SK World Network</a>
- </div>
+ <button class="category-toggle" id="categoryToggle" type="button" aria-expanded="false" aria-controls="categoryMenu">☰ Explore <span>▾</span></button>
+ <div class="category-menu" id="categoryMenu" aria-label="Main categories">
+<div class="category-group"><strong>Discover</strong><a href="#apps" data-sk-view="apps">📱 Apps & APKs</a><a href="#software" data-sk-view="software">💻 Software</a><a href="#news" data-sk-view="news">🌍 World News</a><a href="./browser.html">🔎 SK Browser</a></div>
+<div class="category-group"><strong>AI & Create</strong><a href="#tools" data-sk-view="tools">✦ AI Tools</a><a href="#smart-free-finder" data-sk-view="smart-free-finder">🎬 Free AI Video Finder</a><a href="#creator-studio" data-sk-view="creator-studio">🎨 Creator Studio</a><a href="#video-audio" data-sk-view="video-audio">▶ Video & Audio</a><a href="#images-design" data-sk-view="images-design">🖼 Images & Design</a></div>
+<div class="category-group"><strong>Learn & Play</strong><a href="#documents" data-sk-view="documents">📚 Documents & Learning</a><a href="#games" data-sk-view="games">🎮 Games</a><a href="#languages" data-sk-view="languages">🌐 Languages</a><a href="#free-tools" data-sk-view="free-tools">🧰 Online Tools</a></div>
+<div class="category-group"><strong>Work & Connect</strong><a href="#jobs" data-sk-view="jobs">💼 Jobs & Opportunities</a><a href="#earnings-model" data-sk-view="earnings-model">💰 Earning & Rewards</a><a href="#community" data-sk-view="community">👥 Community</a><a href="#sk-connect" data-sk-view="sk-connect">💬 Messenger & Calls</a><a href="#sk-live" data-sk-view="sk-live">🔴 SK Live</a></div>
+<div class="category-group"><strong>More</strong><a href="#deals" data-sk-view="deals">🎁 Deals & Freebies</a><a href="#security-privacy" data-sk-view="security-privacy">🛡 Security & Privacy</a><a href="#quick-tools" data-sk-view="quick-tools">⚙ Instant Tools</a><a href="#sk-world-network" data-sk-view="sk-world-network">◎ SK World Network</a><a href="#global-growth" data-sk-view="global-growth">↗ Global Growth</a></div>
+</div>
 </div><div class="searchbox"><input id="search" type="search" placeholder="Search apps, AI, online tools, software and news..." aria-label="Search the SK Cyber Hub directory"><button id="searchBtn" class="search-icon-button" type="button" aria-label="Search" title="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg></button></div></div></div>
 </header>
 
@@ -1657,19 +1638,16 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
   </div>
   <p class="sk-interest-status" id="skInterestStatus" role="status" aria-live="polite">All destinations are visible. Your choices stay in this browser only.</p>
  </div>
- <div class="sk-category-grid">
-  <a class="sk-category-card" href="#apps" data-sk-view="apps" data-sk-topics="apps"><span class="sk-category-icon">📱</span><b>Apps & APKs</b><small>Android, iPhone and trusted apps</small><span class="sk-card-arrow">Explore ↗</span></a>
-  <a class="sk-category-card" href="#tools" data-sk-view="tools" data-sk-topics="ai"><span class="sk-category-icon">✦</span><b>AI Tools</b><small>Writing, images, video and voice</small><span class="sk-card-arrow">Explore ↗</span></a>
-  <a class="sk-category-card" href="#smart-free-finder" data-sk-view="smart-free-finder" data-sk-topics="ai"><span class="sk-category-icon">🎬</span><b>Free AI Video Finder</b><small>Compare free access and limits</small><span class="sk-card-arrow">Find tools ↗</span></a>
-  <a class="sk-category-card" href="#free-tools" data-sk-view="free-tools" data-sk-topics="tools"><span class="sk-category-icon">🧰</span><b>Online Tools</b><small>PDF, image, text and converters</small><span class="sk-card-arrow">Use tools ↗</span></a>
-  <a class="sk-category-card" href="#games" data-sk-view="games" data-sk-topics="games"><span class="sk-category-icon">🎮</span><b>Games</b><small>Discover free and popular games</small><span class="sk-card-arrow">Play & browse ↗</span></a>
-  <a class="sk-category-card" href="#documents" data-sk-view="documents" data-sk-topics="learning"><span class="sk-category-icon">📚</span><b>Learning & Documents</b><small>Books, courses and study material</small><span class="sk-card-arrow">Start learning ↗</span></a>
-  <a class="sk-category-card" href="#creator-studio" data-sk-view="creator-studio" data-sk-topics="creator"><span class="sk-category-icon">🎥</span><b>Creator Studio</b><small>Ideas, scripts, captions and prompts</small><span class="sk-card-arrow">Create ↗</span></a>
-  <a class="sk-category-card sk-earn-card" href="#earnings-model" data-sk-view="earnings-model" data-sk-topics="work"><span class="sk-category-icon">💰</span><b>Earn & Rewards</b><small>Surveys and legitimate opportunities</small><span class="sk-card-arrow">Discover ↗</span></a>
-    <a class="sk-category-card" href="#jobs" data-sk-view="jobs" data-sk-topics="work"><span class="sk-category-icon">💼</span><b>Jobs & Skills</b><small>Work, remote jobs and opportunities</small><span class="sk-card-arrow">Find opportunities ↗</span></a>
-  <a class="sk-category-card" href="#security-privacy" data-sk-view="security-privacy" data-sk-topics="security"><span class="sk-category-icon">🛡️</span><b>Security & Privacy</b><small>Protect accounts and devices</small><span class="sk-card-arrow">Explore ↗</span></a>
-  <a class="sk-category-card" href="#languages" data-sk-view="languages" data-sk-topics="learning"><span class="sk-category-icon">🌐</span><b>Languages</b><small>Urdu, Arabic, Pashto and more</small><span class="sk-card-arrow">Explore ↗</span></a>
-  <a class="sk-category-card" href="#news" data-sk-view="news" data-sk-topics="news"><span class="sk-category-icon">🌍</span><b>World News</b><small>Explore headlines from around the world</small><span class="sk-card-arrow">Read news ↗</span></a>
+ <div class="sk-category-grid sk-universal-grid">
+<a class="sk-category-card" href="#community" data-sk-view="community" data-sk-topics="creator"><span class="sk-category-icon">🌐</span><b>Social & Community</b><small>Posts, profiles and conversations</small><span class="sk-card-arrow">Explore ↗</span></a>
+<a class="sk-category-card" href="#tools" data-sk-view="tools" data-sk-topics="ai"><span class="sk-category-icon">✦</span><b>AI Studio</b><small>Discover AI tools for everyday work</small><span class="sk-card-arrow">Explore ↗</span></a>
+<a class="sk-category-card" href="#video-audio" data-sk-view="video-audio" data-sk-topics="creator"><span class="sk-category-icon">▶</span><b>Video & Media</b><small>Video, audio and creative resources</small><span class="sk-card-arrow">Explore ↗</span></a>
+<a class="sk-category-card" href="#games" data-sk-view="games" data-sk-topics="games"><span class="sk-category-icon">🎮</span><b>Games</b><small>Find games to play and explore</small><span class="sk-card-arrow">Explore ↗</span></a>
+<a class="sk-category-card" href="#creator-studio" data-sk-view="creator-studio" data-sk-topics="creator"><span class="sk-category-icon">🎨</span><b>Creator Studio</b><small>Ideas, scripts and creator resources</small><span class="sk-card-arrow">Create ↗</span></a>
+<a class="sk-category-card" href="#sk-connect" data-sk-view="sk-connect" data-sk-topics="creator"><span class="sk-category-icon">🔒</span><b>Messenger</b><small>Open the messaging area</small><span class="sk-card-arrow">Open ↗</span></a>
+<a class="sk-category-card sk-earn-card" href="#earnings-model" data-sk-view="earnings-model" data-sk-topics="work"><span class="sk-category-icon">💰</span><b>Work & Earn</b><small>Explore opportunities and earning rules</small><span class="sk-card-arrow">Discover ↗</span></a>
+<a class="sk-category-card" href="#deals" data-sk-view="deals" data-sk-topics="tools"><span class="sk-category-icon">🛍</span><b>Deals & Discover</b><small>Explore useful offers and resources</small><span class="sk-card-arrow">Explore ↗</span></a>
+
  </div>
  <div class="sk-home-shortcuts"><button type="button" data-sk-home-search="free AI video">Find free AI video tools</button><button type="button" data-sk-home-search="Android apps">Browse Android apps</button><button type="button" data-sk-home-search="Saudi survey rewards">Saudi survey opportunities</button></div>
 </section>
@@ -5033,5 +5011,20 @@ body :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px
 @media(max-width:900px){body .hero.store-hero{grid-template-columns:minmax(0,1fr) minmax(160px,.55fr)!important;gap:12px!important;padding:30px!important}body .store-hero-art{transform:scale(.86)!important}body .sk-start-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(max-width:620px){html{scroll-padding-top:120px!important}body .top .nav{min-height:62px!important;flex-wrap:wrap!important}body .brand{flex:1 1 auto!important}body .nav-actions{width:auto!important;flex-wrap:wrap!important}body .nav-actions button,body .nav-actions a{padding:8px 9px!important;font-size:11px!important}body .hero.store-hero{grid-template-columns:1fr!important;min-height:0!important;margin:14px auto 12px!important;padding:26px 19px!important;border-radius:23px!important}body .store-hero h1{font-size:clamp(37px,10vw,50px)!important}body .store-hero-art{height:145px!important;min-height:145px!important;transform:scale(.78)!important;transform-origin:center top!important;margin:0 auto -20px!important}body .trust-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}body .trust-item{min-height:70px!important;padding:10px!important;font-size:11px!important}body .sk-start-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}body .sk-start-link{min-height:90px!important;padding:12px!important}body .sk-category-grid,body .resource-grid{gap:10px!important}body .sk-category-card{min-height:138px!important;padding:15px!important}body .tile.resource,body .resource.tile{padding:15px!important;min-height:140px!important}body .section{margin-block:25px!important}}
 @media(prefers-reduced-motion:reduce){body *,body *:before,body *:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+<style id="sk-information-architecture-v1">
+.category-menu{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px!important;width:min(760px,calc(100vw - 24px))!important;max-height:min(72vh,620px)!important;overflow:auto!important;padding:18px!important}
+.category-group{min-width:0;padding:12px;border:1px solid rgba(0,240,255,.16);border-radius:15px;background:rgba(8,18,30,.72)}
+.category-group strong{display:block;margin:0 0 8px;color:#00dff2;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.category-group a{display:flex!important;align-items:center;min-height:38px;padding:8px 9px!important;border-radius:9px;color:#e7f5fb!important;font-size:13px!important;text-decoration:none}
+.category-group a:hover,.category-group a:focus-visible{background:rgba(0,240,255,.1)!important;outline:1px solid rgba(0,240,255,.32)}
+.sk-universal-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important}
+.sk-universal-grid .sk-category-card{min-height:158px!important;justify-content:flex-start!important}
+.sk-universal-grid .sk-category-icon{font-size:27px!important}
+.sk-universal-grid .sk-category-card b{font-size:15px!important}
+.sk-universal-grid .sk-category-card small{line-height:1.5!important}
+#skFeaturedFeed,#sk-next-discovery{display:none!important}
+@media(max-width:760px){.category-menu{grid-template-columns:1fr!important;max-height:65vh!important}.sk-universal-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}.sk-universal-grid .sk-category-card{min-height:142px!important;padding:13px!important}}
+@media(max-width:360px){.sk-universal-grid{grid-template-columns:1fr!important}}
 </style>
 </body></html>
