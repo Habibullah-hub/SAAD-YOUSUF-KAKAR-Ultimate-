@@ -2099,7 +2099,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
   <div><label for="bulkDefaultPlatform">Default platform</label><select id="bulkDefaultPlatform"><option>Android</option><option>Windows</option><option>Cross-Platform</option></select></div>
  </div>
  <div class="bulk-actions">
-  <button class="primary" id="bulkTemplate" type="button">Download Excel Template ↓</button>
+  <button class="primary" id="bulkTemplate" type="button">Download CSV Template ↓</button>
   <button class="secondary" id="bulkPreviewBtn" type="button">Preview Apps</button>
   <button class="primary" id="bulkImportBtn" type="button">Import All Approved Apps</button>
   <button class="secondary" id="bulkClearBtn" type="button">Clear</button>
@@ -2328,7 +2328,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
    const file=$('bulkFile').files[0],paste=$('bulkLinks').value.trim();
    if(file){
     if(file.size>2*1024*1024)throw new Error('CSV فائل 2 MB سے چھوٹی ہونی چاہیے۔');
-    if(!/\\.csv$/i.test(file.name))throw new Error('Excel فائل کو پہلے Save As → CSV (.csv) کریں۔');
+    if(!/\.csv$/i.test(file.name))throw new Error('Excel فائل کو پہلے Save As → CSV (.csv) کریں۔');
     const parsed=parseCSV(await file.text());
     if(parsed.length>1000)throw new Error('ایک وقت میں زیادہ سے زیادہ 1,000 rows درآمد کریں۔');
     rows=parsed.map(normalizeRow);
