@@ -1,0 +1,58 @@
+/* SK Cyber Hub — Phase 1 unified visual foundation
+   Additive only: existing section IDs, app rendering, navigation targets and feature scripts stay intact. */
+:root{
+  --bg:#071522;--surface:#0d2030;--surface-2:#122b40;--line:rgba(151,190,216,.22);
+  --text:#f2f8fc;--muted:#a8bdcc;--accent:#67e6d0;--accent-soft:rgba(103,230,208,.12);
+  --sk-ink:#071522;--sk-panel:#0d2030;--sk-panel-raised:#122b40;
+  --sk-line:rgba(151,190,216,.22);--sk-copy:#f2f8fc;--sk-muted:#a8bdcc;
+  --sk-mint:#67e6d0;--sk-blue:#83c8ff;--sk-violet:#b6a4ff;
+  color-scheme:dark;
+}
+html{background:var(--bg);scroll-padding-top:clamp(112px,14vh,156px)}
+body{background:radial-gradient(ellipse at 12% 0%,rgba(22,105,119,.22),transparent 34%),radial-gradient(ellipse at 90% 8%,rgba(49,91,145,.18),transparent 30%),var(--bg);color:var(--text)}
+/* Retire the older green palette in the cross-platform tools area. */
+.sk-platform-hero{border-color:var(--line);background:radial-gradient(circle at 82% 40%,rgba(103,230,208,.13),transparent 34%),linear-gradient(115deg,#102b3d,#0d2030 72%,#142b45);border-radius:22px}
+.sk-platform-kicker,.sk-platform-label{color:var(--sk-mint)}
+.sk-platform-hero h2,.sk-platform-panel-head h3,.sk-platform-panel-head h4{color:var(--text)}
+.sk-platform-hero h2 em{color:var(--sk-mint)}
+.sk-platform-hero p,.sk-platform-panel-head p{color:var(--muted)}
+.sk-platform-seal{border-color:rgba(103,230,208,.5);background:linear-gradient(145deg,#174b50,#102b40);color:#eafffa}
+.sk-platform-seal span{color:var(--sk-mint)}
+.sk-platform-tabs{border-color:var(--line)}
+.sk-platform-tab{border-color:var(--line);border-radius:12px;background:var(--surface);color:#c6d7e2}
+.sk-platform-tab.active,.sk-platform-tab:hover{border-color:rgba(103,230,208,.65);background:var(--accent-soft);color:#cffff6}
+.sk-ai-compose,.sk-ai-side,.sk-ai-saved,.sk-mail-compose,.sk-mail-inbox{border-color:var(--line);border-radius:17px;background:linear-gradient(145deg,rgba(18,43,62,.94),rgba(10,28,43,.96))}
+.sk-ai-compose label,.sk-mail-compose label{color:#d9e9f2}
+.sk-ai-compose select,.sk-ai-compose textarea,.sk-mail-compose input,.sk-mail-compose textarea,.sk-browser-search input{border-color:var(--line);border-radius:11px;background:#091a28;color:var(--text)}
+.sk-ai-compose select:focus,.sk-ai-compose textarea:focus,.sk-mail-compose input:focus,.sk-mail-compose textarea:focus,.sk-browser-search input:focus{outline:2px solid var(--sk-mint);outline-offset:2px}
+.sk-platform-primary,.sk-platform-ghost{min-height:48px;border-radius:12px}
+.sk-platform-primary{border-color:#67e6d0;background:#67e6d0;color:#06232a}
+.sk-platform-primary:hover{background:#8bf2e0}
+.sk-platform-ghost{border-color:var(--line);background:#142c40;color:var(--text)}
+.sk-platform-ghost:hover{background:#1b3b52}
+.sk-platform-state{border-radius:999px}
+.sk-platform-hint{color:var(--muted)}
+/* Consistent, comfortable controls and visible keyboard focus. */
+.nav-actions a,.nav-actions button,.category-toggle,.category-menu a,.sk-platform-tab{min-height:48px}
+.sk-start-link{min-height:96px}
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px solid var(--sk-mint)!important;outline-offset:3px;box-shadow:0 0 0 5px rgba(103,230,208,.18)!important}
+:where(button,.primary,.secondary,.hero-secondary,.sk-platform-primary,.sk-platform-ghost){-webkit-tap-highlight-color:transparent}
+:where(.section,.sk-discovery,#news,#community,#sk-platforms){scroll-margin-top:clamp(112px,14vh,156px)}
+/* Keep the mobile bottom bar clear of Android gesture/navigation areas. */
+.sk-bottom-nav{padding-bottom:max(10px,env(safe-area-inset-bottom));}
+.sk-bottom-nav a,.sk-bottom-nav button{min-height:52px}
+@media(max-width:620px){
+  .sk-platforms{padding-top:18px}
+  .sk-platform-hero{padding:21px 17px;border-radius:19px}
+  .sk-platform-seal{width:62px;height:62px;border-radius:17px;font-size:20px}
+  .sk-platform-tabs{gap:8px;padding:10px 0}
+  .sk-platform-tab{padding:10px 13px}
+  .sk-ai-compose,.sk-ai-side,.sk-ai-saved,.sk-mail-compose,.sk-mail-inbox{padding:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+@media(forced-colors:active){
+  :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:2px solid Highlight!important}
+}
