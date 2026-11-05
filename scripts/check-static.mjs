@@ -106,7 +106,10 @@ if (serviceWorkerSource && !serviceWorkerSource.includes("PUBLIC_SHELL_URLS")) {
 if (serviceWorkerSource && !serviceWorkerSource.includes('request.headers.has("authorization")')) {
   errors.push("Service worker must bypass requests carrying an Authorization header.");
 }
-if (/addEventListener\\(\\s*["']install["'][\\s\\S]*?self\\.skipWaiting\\(\\)/.test(serviceWorkerSource)) {
+const installHandler = serviceWorkerSource
+  .split('self.addEventListener("install"')[1]
+  ?.split('self.addEventListener("activate"')[0] || "";
+if (installHandler.includes("self.skipWaiting(")) {
   errors.push("Service worker must not skip the waiting phase during install; updates are user-controlled.");
 }
 
