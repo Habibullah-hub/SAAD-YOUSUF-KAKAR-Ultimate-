@@ -22,7 +22,7 @@ Before running SQL, take a database backup/export. Do not paste all SQL files at
 2. Apply `SK-MESSENGER-CALLS-FOUNDATION.sql` after `SK-COMMUNITY-SOCIAL-SETUP.sql`.
 3. If the older SK Mail table was previously created as `public.sk_messages` with `recipient_email` and no `conversation_id`, run `SK-PLATFORM-MESSAGING-REPAIR.sql` once. It renames that legacy inbox to `public.sk_inbox_messages` and preserves its rows. If both legacy and replacement tables already exist, the script deliberately stops; inspect and reconcile manually.
 4. For a clean/new project, or after the repair when needed, run `SK-PLATFORM-MESSAGING.sql`. SK Mail uses `public.sk_inbox_messages`; private Messenger uses `public.sk_messages`.
-5. Run `SK-MESSENGER-CALL-STATUS-HARDENING.sql` after the Messenger foundation.
+5. Run `SK-SECURITY-HARDENING-2026-11.sql` after the Messenger foundation; it validates call identity and allowed state transitions.
 6. Apply the remaining feature migrations only when their prerequisites in the file headers are met.
 
 Never remove RLS or grant broad access to make an error disappear. Test with two ordinary accounts and one admin account: verify each member can read only their own profile, messages, creator records and private conversations; verify a non-admin cannot add/edit/delete directory resources or administer members; verify anonymous users cannot read private tables.
