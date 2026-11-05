@@ -1217,8 +1217,8 @@ body{color-scheme:dark}
 @media(max-width:760px){.sk-interest-mix{grid-template-columns:1fr;gap:12px;margin:13px 0;padding:15px;border-radius:15px}.sk-interest-copy h3{font-size:16px}.sk-interest-controls{gap:7px}.sk-interest-chip,.sk-interest-reset{min-height:42px;padding:9px 11px;font-size:11px}.sk-interest-status{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.sk-interest-chip,.sk-interest-reset,.sk-category-card{transition:none!important}}
 </style>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="./assets/sk-tailwind-compat.css?v=1">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js" crossorigin="anonymous"></script>
 
 <link rel="canonical" href="https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/"><link rel="sitemap" type="application/xml" href="sitemap.xml">
 <meta property="og:url" content="https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/"><meta property="og:locale" content="en_US">
@@ -2047,6 +2047,17 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
   <div id="skShortsPlayer" class="sk-shorts-player"><div class="sk-shorts-placeholder"><span>▶</span><b>Your video preview appears here</b><small>Paste a public YouTube link above.</small></div></div>
  </div>
 </section>
+<section class="wrap" id="share-section">
+ <div class="sk-share-card">
+  <div class="sk-share-copy"><span class="sk-eyebrow">SHARE SK CYBER HUB</span><h2>Help someone discover useful digital tools.</h2><p>Share the official SK Cyber Hub link with friends. No account or payment is needed to share.</p></div>
+  <div class="sk-share-actions">
+   <label for="skShareUrl">Official website link</label>
+   <div class="sk-share-link-row"><input id="skShareUrl" type="text" readonly value="https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/"><button type="button" class="primary" id="skShareCopy">Copy link</button></div>
+   <button type="button" class="hero-secondary" id="skShareNative">Share with phone</button>
+   <p id="skShareStatus" role="status" aria-live="polite">Share the public website link. Referral rewards are not active until secure account-based tracking is deployed.</p>
+  </div>
+ </div>
+</section>
 <section class="wrap" id="about"><div class="notice"><b>Our promise:</b> We aim to prioritize free and legitimate resources. External download links and advertisements will be clearly labelled. We will respect software licenses and copyright, and will not disguise download destinations. Any future ad-supported waiting step will be disclosed before the user continues. Sponsored placements and affiliate links, if introduced, will be clearly labelled and enabled only after the required provider approvals; no earnings are guaranteed.</div></section>
 
 <section id="sk-platforms" class="section wrap sk-platforms">
@@ -2083,7 +2094,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
  <p>Paste many links or upload a CSV / Excel file. Review the preview, then import all approved rows in batches.</p>
  <div class="bulk-grid">
   <div class="wide"><label for="bulkLinks">Quick paste — one app per line</label><textarea id="bulkLinks" placeholder="App Name | Category | Platform | Version | Icon URL | Download URL | Description&#10;VLC | Apps | Android | Latest | https://example.com/icon.png | https://play.google.com/store/apps/details?id=org.videolan.vlc | Official media player"></textarea><p class="bulk-hint">Agar sirf link hai to har line mein aik link paste kar dein. Naam aur icon ka basic data link se banane ki koshish hogi.</p></div>
-  <div class="wide"><label for="bulkFile">Upload Excel (.xlsx / .xls) or CSV file</label><input id="bulkFile" type="file" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"></div>
+  <div class="wide"><label for="bulkFile">Upload CSV file (Excel: Save As → CSV)</label><input id="bulkFile" type="file" accept=".csv,text/csv"></div>
   <div><label for="bulkDefaultCategory">Default category for link-only rows</label><select id="bulkDefaultCategory"><option>Apps</option><option>All Apps Mod APK</option><option>Software</option><option>AI Tools</option><option>Free Online Tools</option><option>Documents</option><option>Games</option><option>Video & Audio</option><option>Images & Design</option><option>Developer Tools</option><option>Security & Privacy</option><option>World News</option></select></div>
   <div><label for="bulkDefaultPlatform">Default platform</label><select id="bulkDefaultPlatform"><option>Android</option><option>Windows</option><option>Cross-Platform</option></select></div>
  </div>
@@ -2262,9 +2273,9 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 </nav>
 <button class="sk-back-top" id="skBackTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
 
-<footer class="wrap footer"><span>© <span id="year"></span> SK Cyber Hub · SAAD YOUSUF KAKAR</span><span><a href="./browser.html">SK Search</a> · <a href="about.html">About</a> · <a href="privacy.html">Privacy</a> · <a href="disclosure.html">Ads & Affiliate Disclosure</a> · Built for everyone</span></footer>
+<footer class="wrap footer"><span>© <span id="year"></span> SK Cyber Hub · SAAD YOUSUF KAKAR</span><span><a href="./browser.html">SK Search</a> · <a href="about.html">About</a> · <a href="privacy.html">Privacy</a> · <a href="disclosure.html">Ads & Affiliate Disclosure</a> · <a href="#share-section">Share SK Hub</a> · Built for everyone</span></footer>
 
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
 <script>
 (function(){
  const $=id=>document.getElementById(id);
@@ -2310,16 +2321,17 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
  }
  $('bulkTemplate').addEventListener('click',()=>{
   const data=[['App Name','Category','Platform','Version','Icon URL','Download Link','Description','Featured'],['VLC','Apps','Android','Latest','https://www.google.com/s2/favicons?domain=videolan.org&sz=128','https://play.google.com/store/apps/details?id=org.videolan.vlc','Official media player','false']];
-  if(window.XLSX){const ws=XLSX.utils.aoa_to_sheet(data),wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Apps');XLSX.writeFile(wb,'SK-Cyber-Hub-App-Upload-Template.xlsx');}
-  else {const csv=data.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='SK-Cyber-Hub-App-Upload-Template.csv';a.click();URL.revokeObjectURL(a.href);}
+  const csv=data.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='SK-Cyber-Hub-App-Upload-Template.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
  });
  $('bulkPreviewBtn').addEventListener('click',async()=>{
   try{
    const file=$('bulkFile').files[0],paste=$('bulkLinks').value.trim();
    if(file){
-    const buffer=await file.arrayBuffer();
-    if(/\\.xlsx?$/i.test(file.name)){if(!window.XLSX)throw new Error('Excel reader load nahi hua. Internet on karke page refresh karein, ya file ko CSV format mein Save As karein.');const wb=XLSX.read(buffer,{type:'array'});const sheet=wb.Sheets[wb.SheetNames[0]];rows=XLSX.utils.sheet_to_json(sheet,{defval:''}).map(normalizeRow);}
-    else rows=parseCSV(new TextDecoder().decode(buffer)).map(normalizeRow);
+    if(file.size>2*1024*1024)throw new Error('CSV فائل 2 MB سے چھوٹی ہونی چاہیے۔');
+    if(!/\\.csv$/i.test(file.name))throw new Error('Excel فائل کو پہلے Save As → CSV (.csv) کریں۔');
+    const parsed=parseCSV(await file.text());
+    if(parsed.length>1000)throw new Error('ایک وقت میں زیادہ سے زیادہ 1,000 rows درآمد کریں۔');
+    rows=parsed.map(normalizeRow);
    }else if(paste) rows=fromPaste(paste);
    else {setStatus('Pehle links paste karein ya CSV/Excel file select karein.');return;}
    const seen=new Set();rows=rows.filter(r=>{const key=r.download_url;if(!key||seen.has(key))return false;seen.add(key);return true;});
@@ -5054,4 +5066,5 @@ body :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px
 @media(max-width:360px){.sk-universal-grid{grid-template-columns:1fr!important}}
 </style>
 <link rel="stylesheet" href="./assets/sk-ultimate-experience-v2.css?v=20261106-2">
+<script src="./assets/sk-share.js?v=1" defer></script>
 </body></html>
