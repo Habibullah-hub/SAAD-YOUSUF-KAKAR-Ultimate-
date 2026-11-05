@@ -304,3 +304,171 @@ body{
 @media(prefers-reduced-motion:reduce){
  .store-hero,.resource.tile,.tile.resource,.sk-start-link,.sk-category-card,.platform-card,.quick-tool{transition:none!important}
 }
+
+
+/* SK CYBER HUB — FUTURE PREMIUM SYSTEM / PASS 1
+   A unified visual foundation inspired by premium product interfaces.
+   No external libraries, paid assets, fake metrics, or feature replacements. */
+:root{
+  color-scheme:dark;
+  --sk-bg:#080b18;
+  --sk-surface:#11172b;
+  --sk-surface-raised:#171f39;
+  --sk-surface-soft:rgba(20,29,54,.76);
+  --sk-border:rgba(160,181,255,.19);
+  --sk-border-strong:rgba(85,244,220,.42);
+  --sk-text:#f4f6ff;
+  --sk-text-muted:#a8b2d0;
+  --sk-primary:#55f4dc;
+  --sk-secondary:#83c3ff;
+  --sk-highlight:#bba5ff;
+  --sk-success:#55d99a;
+  --sk-danger:#ff7889;
+  --sk-radius-card:20px;
+  --sk-radius-control:13px;
+  --sk-shadow-card:0 16px 42px rgba(0,0,0,.25);
+  --sk-shadow-float:0 24px 70px rgba(0,0,0,.38);
+  --sk-content-width:1320px;
+  --sk-space-1:8px;
+  --sk-space-2:16px;
+  --sk-space-3:24px;
+  --sk-space-4:32px;
+  --sk-space-5:48px;
+}
+html{background:var(--sk-bg);color-scheme:dark}
+body{
+  color:var(--sk-text);
+  background-color:var(--sk-bg);
+  font-size:16px;
+  line-height:1.65;
+  letter-spacing:.002em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.wrap{width:min(var(--sk-content-width),calc(100% - 40px))}
+.top{
+  background:rgba(8,11,24,.84);
+  border-bottom:1px solid var(--sk-border);
+  backdrop-filter:blur(22px) saturate(145%);
+  -webkit-backdrop-filter:blur(22px) saturate(145%);
+}
+.top .nav{min-height:74px}
+.brand{gap:11px;font-weight:850;letter-spacing:.035em}
+.mark{width:42px;height:42px;display:grid;place-items:center;border-radius:14px;font-weight:950;letter-spacing:-.06em}
+.links{gap:clamp(12px,2vw,27px);font-weight:650}
+.links a{padding:10px 2px;text-underline-offset:7px}
+.category-dock{
+  background:rgba(10,14,31,.86);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+.hero.store-hero{
+  isolation:isolate;
+  min-height:clamp(330px,37vw,440px);
+  display:flex;
+  align-items:center;
+  border-radius:30px;
+  box-shadow:var(--sk-shadow-float),inset 0 1px rgba(255,255,255,.07);
+}
+.hero.store-hero:after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:0;
+  pointer-events:none;
+  opacity:.36;
+  background-image:linear-gradient(rgba(160,181,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(160,181,255,.045) 1px,transparent 1px);
+  background-size:38px 38px;
+  mask-image:linear-gradient(90deg,#000,transparent 78%);
+}
+.store-hero-copy{position:relative;z-index:2}
+.store-hero h1{
+  max-width:760px;
+  font-size:clamp(38px,5.2vw,68px);
+  line-height:1.04;
+  font-weight:900;
+  text-wrap:balance;
+}
+.store-hero .intro{font-size:clamp(15px,1.35vw,18px);line-height:1.75}
+.hero-actions{margin-top:22px}
+.hero-actions a,.primary,.hero-secondary,.secondary{
+  min-height:48px;
+  border-radius:var(--sk-radius-control);
+  padding:12px 19px;
+  font-weight:800;
+}
+.searchbox{
+  min-height:60px;
+  border-radius:18px;
+  border:1px solid var(--sk-border-strong);
+  background:rgba(16,23,45,.94);
+  box-shadow:0 14px 38px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.05);
+}
+.searchbox input{min-height:50px;font-size:16px}
+.searchbox:focus-within{border-color:var(--sk-primary);box-shadow:0 0 0 4px rgba(85,244,220,.1),0 16px 40px rgba(0,0,0,.25)}
+.trust-strip{gap:12px}
+.trust-item{
+  min-height:78px;
+  border-radius:16px;
+  background:linear-gradient(145deg,rgba(23,32,61,.88),rgba(13,19,42,.94));
+}
+.sk-start-here{border-radius:24px;box-shadow:var(--sk-shadow-card)}
+.sk-start-grid{gap:12px}
+.sk-start-link{
+  min-height:104px;
+  padding:16px;
+  border-radius:17px;
+  background:linear-gradient(145deg,rgba(26,36,68,.78),rgba(14,21,45,.92));
+}
+.sk-start-link b{font-size:14px}
+.sk-start-link small{font-size:11px;line-height:1.5}
+.section{margin-block:clamp(28px,4vw,52px)}
+.section-head{margin-bottom:19px}
+.section-head h2{font-size:clamp(22px,2.7vw,31px);font-weight:850;letter-spacing:-.035em}
+.resource-grid{gap:16px}
+.resource.tile,.tile.resource{
+  min-height:190px;
+  padding:20px;
+  border-radius:var(--sk-radius-card);
+  box-shadow:0 10px 30px rgba(0,0,0,.16),inset 0 1px rgba(255,255,255,.035);
+}
+.resource h3,.tile.resource h3{font-size:17px;font-weight:800;line-height:1.35}
+.resource p,.tile.resource p{font-size:14px;line-height:1.65}
+.sk-category-card,.platform-card,.quick-tool,.sk-community-panel{border-radius:var(--sk-radius-card)}
+:where(button,a,input,select,textarea,[role="button"],[role="tab"],summary){touch-action:manipulation}
+:where(button,a,[role="button"],[role="tab"],summary){min-height:44px}
+:where(input,select,textarea){min-height:48px;font-size:16px}
+:where(button,a,input,select,textarea):focus-visible{outline:3px solid var(--sk-primary)!important;outline-offset:3px}
+::selection{background:rgba(85,244,220,.3);color:#fff}
+.footer{border-top:1px solid var(--sk-border);line-height:1.8}
+.sk-bottom-nav{
+  background:rgba(8,11,24,.94);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  border-top:1px solid var(--sk-border);
+}
+@media(hover:hover) and (pointer:fine){
+  .resource.tile:hover,.tile.resource:hover,.sk-category-card:hover,.platform-card:hover,.quick-tool:hover{
+    transform:translateY(-3px);
+    box-shadow:0 20px 44px rgba(0,0,0,.3),0 0 0 1px rgba(85,244,220,.1);
+  }
+  .sk-start-link:hover{transform:translateY(-3px)}
+}
+@media(max-width:700px){
+  .wrap{width:calc(100% - 28px)}
+  .top .nav{min-height:64px}
+  .hero.store-hero{min-height:350px;padding:25px 19px}
+  .store-hero h1{font-size:clamp(36px,10vw,49px);line-height:1.08}
+  .store-hero .intro{font-size:15px;line-height:1.7}
+  .searchbox{min-height:56px}
+  .sk-start-link{min-height:90px;padding:13px}
+  .resource.tile,.tile.resource{min-height:165px;padding:16px}
+  .section{margin-block:28px}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero.store-hero:after{display:none}
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+@media(forced-colors:active){
+  .hero.store-hero,.resource.tile,.tile.resource,.sk-start-link{border:1px solid CanvasText}
+}
