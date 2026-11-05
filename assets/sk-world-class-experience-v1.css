@@ -122,3 +122,63 @@ body.sk-easy-mode .sk-start-link small,body.sk-easy-mode .trust-item small{font-
  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 @media(forced-colors:active){.sk-start-link,.sk-category-card,.tile.resource{border:1px solid ButtonText}}
+
+
+/* SK Cyber Hub — implementation pass 1
+   Accessibility, predictable interaction, readable content and mobile ergonomics.
+   Additive only: existing section IDs, navigation targets and feature scripts remain intact. */
+:root{
+ --sk-content-max:1240px;
+ --sk-body-size:16px;
+ --sk-body-leading:1.62;
+ --sk-tap-min:44px;
+ --sk-motion-fast:140ms;
+ --sk-motion-standard:200ms;
+}
+html{scroll-behavior:smooth;scroll-padding-top:clamp(96px,12vh,150px)}
+body{font-size:var(--sk-body-size);line-height:var(--sk-body-leading);text-rendering:optimizeLegibility}
+main,[role="main"]{min-width:0}
+img,svg,video,canvas{max-width:100%}
+:where(button,a,input,select,textarea,[role="button"],[role="tab"],summary){-webkit-tap-highlight-color:transparent}
+:where(button,a,.primary,.secondary,.hero-secondary,.sk-platform-primary,.sk-platform-ghost){min-height:var(--sk-tap-min)}
+:where(input,select,textarea){min-height:var(--sk-tap-min)}
+:where(button,a,[role="button"],[role="tab"],summary):focus-visible{
+ outline:3px solid var(--sk-mint)!important;
+ outline-offset:3px;
+ box-shadow:0 0 0 5px rgba(103,230,208,.16)!important;
+}
+:where(.section,.sk-discovery,[id]){scroll-margin-top:clamp(96px,12vh,150px)}
+:where(.section-head p,.tile.resource p,.store-hero .intro){max-width:70ch}
+:where(.tile.resource,.sk-category-card,.platform-card,.quick-tool,.trust-item){overflow-wrap:anywhere}
+:where(.tile.resource,.sk-category-card,.platform-card,.quick-tool){transition:transform var(--sk-motion-standard) ease,border-color var(--sk-motion-standard) ease,box-shadow var(--sk-motion-standard) ease}
+@media(hover:hover) and (pointer:fine){
+ :where(.tile.resource,.sk-category-card,.platform-card,.quick-tool):hover{transform:translateY(-2px)}
+}
+@media(max-width:620px){
+ :root{--sk-body-size:16px;--sk-body-leading:1.58}
+ :where(.nav-actions button,.nav-actions a){min-height:44px}
+ :where(.sk-bottom-nav a,.sk-bottom-nav button){min-height:52px}
+ :where(.searchbox input){font-size:16px}
+ :where(.section-head h2){line-height:1.25}
+ :where(.sk-start-link,.sk-category-card,.tile.resource){overflow-wrap:anywhere}
+}
+body.sk-easy-mode{
+ --sk-body-size:19px;
+ --sk-body-leading:1.72;
+}
+body.sk-easy-mode :where(p,li,label,.section-head p,.tile.resource p){font-size:1em;line-height:1.75}
+body.sk-easy-mode :where(button,a,.sk-start-link,.sk-category-card){min-height:48px}
+body.sk-easy-mode :where(.sk-start-link small,.trust-item small){font-size:14px;line-height:1.55}
+body.sk-easy-mode :where(.section-head h2,.store-hero h1){line-height:1.2}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto!important}
+ *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+@media(forced-colors:active){
+ :where(button,a,input,select,textarea,[role="button"]):focus-visible{outline:2px solid Highlight!important}
+}
+@media print{
+ .top,.category-dock,.sk-bottom-nav,.sk-back-top,.nav-actions,.hero-actions{display:none!important}
+ body{background:#fff!important;color:#111!important}
+ .tile.resource,.sk-category-card,.trust-item{break-inside:avoid;box-shadow:none!important}
+}
