@@ -244,3 +244,19 @@ body .sk-category-card{border:1px solid var(--sk2-line)!important;border-radius:
 .sk-share-actions>.hero-secondary{margin-top:10px;cursor:pointer}
 #skShareStatus{min-height:2.8em;margin:10px 0 0}
 @media(max-width:680px){.sk-share-card{grid-template-columns:1fr;gap:14px;margin:18px auto;padding:20px}.sk-share-link-row{flex-wrap:wrap}.sk-share-link-row input{flex-basis:100%;width:100%}.sk-share-link-row button{width:100%}}
+
+
+/* SK CYBER HUB — social sharing + accessible premium polish */
+:root{--sk-font-ui:Inter,"Segoe UI",Roboto,Arial,sans-serif;--sk-font-urdu:"Noto Naskh Arabic","Noto Sans Arabic","Segoe UI",Tahoma,sans-serif}
+html,body,button,input,select,textarea{font-family:var(--sk-font-ui)!important}
+:lang(ur),:lang(ar),[dir="rtl"]{font-family:var(--sk-font-urdu)!important}
+button,a,input,select,textarea{transition:color .18s ease,background-color .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+a{text-decoration-thickness:1px;text-underline-offset:3px}
+::selection{background:rgba(97,242,223,.28);color:#fff}
+.sk-social-share{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+.sk-social-share a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 14px;border:1px solid var(--sk2-line);border-radius:12px;background:linear-gradient(145deg,rgba(24,47,76,.9),rgba(10,24,44,.98));color:#eaf4ff;font-size:12px;font-weight:850;text-decoration:none}
+.sk-social-share a:hover,.sk-social-share a:focus-visible{transform:translateY(-2px);border-color:var(--sk2-cyan);background:rgba(97,242,223,.12);color:#bafff2}
+.sk-share-actions{min-width:0}
+.sk-share-link-row input{font-family:ui-monospace,SFMono-Regular,Consolas,monospace!important}
+@media(max-width:680px){.sk-social-share{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.sk-social-share a{width:100%}}
+@media(prefers-reduced-motion:reduce){button,a,input,select,textarea{transition:none!important}}
