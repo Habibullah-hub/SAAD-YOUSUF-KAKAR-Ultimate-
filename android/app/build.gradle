@@ -1,5 +1,11 @@
 plugins { id 'com.android.application' }
 
+def releaseStoreFile = System.getenv('SK_RELEASE_STORE_FILE')
+def releaseStorePassword = System.getenv('SK_RELEASE_STORE_PASSWORD')
+def releaseKeyAlias = System.getenv('SK_RELEASE_KEY_ALIAS')
+def releaseKeyPassword = System.getenv('SK_RELEASE_KEY_PASSWORD')
+def releaseSigningReady = [releaseStoreFile, releaseStorePassword, releaseKeyAlias, releaseKeyPassword].every { it != null && !it.trim().isEmpty() }
+
 android {
     namespace 'com.saad.yousufkakar.skhub'
     compileSdk 35
@@ -9,5 +15,28 @@ android {
         targetSdk 35
         versionCode 6
         versionName '1.0.5'
+    }
+
+    signingConfigs {
+        release {
+            // A release key is never committed to this repository.
+            // GitHub Actions supplies these values only after the owner adds secrets.
+            if (releaseSigningReady) {
+                storeFile file(releaseStoreFile)
+                storePassword releaseStorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            // Without owner-provided signing secrets, release output stays unsigned.
+            // The existing debug beta workflow is intentionally unchanged.
+            if (releaseSigningReady) {
+                signingConfig signingConfigs.release
+            }
+        }
     }
 }
