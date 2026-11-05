@@ -1,0 +1,76 @@
+name: Build signed SK Android release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  signed-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Require owner-managed signing secrets and decode keystore
+        shell: bash
+        env:
+          KEYSTORE_B64: ${{ secrets.SK_RELEASE_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.SK_RELEASE_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.SK_RELEASE_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.SK_RELEASE_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          for name in KEYSTORE_B64 STORE_PASSWORD KEY_ALIAS KEY_PASSWORD; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing required repository secret for signed release. Read android/RELEASE-SIGNING-URDU.md."
+              exit 1
+            fi
+          done
+          printf '%s' "$KEYSTORE_B64" | base64 --decode > "$RUNNER_TEMP/sk-cyber-hub-release.jks"
+          test -s "$RUNNER_TEMP/sk-cyber-hub-release.jks"
+          echo "SK_RELEASE_STORE_FILE=$RUNNER_TEMP/sk-cyber-hub-release.jks" >> "$GITHUB_ENV"
+          echo "SK_RELEASE_STORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
+          echo "SK_RELEASE_KEY_ALIAS=$KEY_ALIAS" >> "$GITHUB_ENV"
+          echo "SK_RELEASE_KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools"
+
+      - name: Install Android platform
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Build release APK with the persistent owner key
+        run: gradle -p android --no-daemon assembleRelease
+
+      - name: Verify signed APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="android/app/build/outputs/apk/release/app-release.apk"
+          test -s "$APK"
+          unzip -t "$APK"
+          APKSIGNER="$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort | tail -n 1)"
+          "$APKSIGNER" verify --verbose "$APK"
+
+      - name: Upload signed release APK as a private workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sk-cyber-hub-signed-release
+          path: android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+          retention-days: 14
