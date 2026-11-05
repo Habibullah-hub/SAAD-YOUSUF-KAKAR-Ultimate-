@@ -2,7 +2,7 @@
 
 ## موجودہ APK کی حقیقت
 
-- موجودہ `publish-beta-apk.yml` صرف **Debug / Testing APK** شائع کرتا ہے۔
+- پرانا خودکار `publish-beta-apk.yml` workflow ہٹا دیا گیا ہے کیونکہ ہر build کی debug signing key بدل سکتی تھی۔ اب debug APK صرف GitHub Actions کے عارضی artifact کے طور پر دستیاب ہے (14 دن)، public production release نہیں۔
 - اسے Production APK یا Google Play release نہ سمجھیں۔
 - Production updates کے لیے ایک مستقل Release Keystore ضروری ہے۔ ہر release میں وہی key استعمال ہونی چاہیے۔
 - Debug-signed APK کو نئی release key سے براہِ راست update نہیں کیا جا سکتا۔ پہلی signed release انسٹال کرتے وقت پرانی beta app uninstall کرنا پڑ سکتی ہے؛ اس سے اس فون پر موجود app data ضائع ہو سکتا ہے۔
@@ -38,5 +38,5 @@ Keystore آپ کی اصل ملکیت اور راز ہے۔ اسے GitHub reposito
 
 - Keystore یا passwords کو GitHub code، repository files، README، APK یا chat میں کبھی نہ ڈالیں۔
 - Secret نہ ہونے پر workflow جان بوجھ کر fail ہوگا؛ وہ debug key کو Production signing کے طور پر استعمال نہیں کرے گا۔
-- موجودہ beta workflow برقرار ہے اور اسے صرف testing کے لیے سمجھیں۔
+- Debug build صرف testing artifact ہے؛ اسے مستقل update یا public release نہ سمجھیں۔
 - اس عمل کے لیے کوئی paid signing service درکار نہیں؛ JDK، Android build tools اور GitHub Actions استعمال ہوتے ہیں۔
