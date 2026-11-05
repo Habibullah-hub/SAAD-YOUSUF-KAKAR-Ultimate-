@@ -33,7 +33,7 @@ create or replace function public.sk_record_site_visit(
 returns void
 language plpgsql
 security definer
-set search_path = public, pg_temp
+set search_path = ''
 as $$
 declare
   clean_code text := upper(coalesce(p_country_code, ''));
