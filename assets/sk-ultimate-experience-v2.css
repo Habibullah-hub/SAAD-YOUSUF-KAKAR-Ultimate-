@@ -232,3 +232,15 @@ body .sk-category-card{border:1px solid var(--sk2-line)!important;border-radius:
  body .sk-start-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
  body .sk-category-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
+
+/* Share panel */
+.sk-share-card{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center;margin:28px auto;padding:clamp(20px,4vw,34px);border:1px solid rgba(97,242,223,.24);border-radius:22px;background:linear-gradient(125deg,rgba(13,35,54,.98),rgba(12,25,46,.98));box-shadow:0 18px 50px rgba(0,0,0,.22)}
+.sk-share-copy h2{margin:12px 0 8px;color:#f3fbff;font-size:clamp(22px,3vw,30px);line-height:1.2}
+.sk-share-copy p,.sk-share-actions>p{color:#afc4d4;font-size:13px;line-height:1.65}
+.sk-share-actions label{display:block;margin-bottom:7px;color:#d7eaf3;font-size:12px;font-weight:700}
+.sk-share-link-row{display:flex;gap:8px;min-width:0}
+.sk-share-link-row input{min-width:0;flex:1;padding:11px 12px;border:1px solid var(--sk2-line);border-radius:11px;background:#071626;color:#8df1e0;font-size:12px}
+.sk-share-link-row button,.sk-share-actions>.hero-secondary{min-height:44px}
+.sk-share-actions>.hero-secondary{margin-top:10px;cursor:pointer}
+#skShareStatus{min-height:2.8em;margin:10px 0 0}
+@media(max-width:680px){.sk-share-card{grid-template-columns:1fr;gap:14px;margin:18px auto;padding:20px}.sk-share-link-row{flex-wrap:wrap}.sk-share-link-row input{flex-basis:100%;width:100%}.sk-share-link-row button{width:100%}}
