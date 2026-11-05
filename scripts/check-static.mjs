@@ -98,6 +98,18 @@ else {
   if (!html.includes('src="./pwa-register.js"')) errors.push("index.html is not loading the PWA registration/update script.");
 }
 
+
+const serviceWorkerSource = fs.existsSync(workerPath) ? fs.readFileSync(workerPath, "utf8") : "";
+if (serviceWorkerSource && !serviceWorkerSource.includes("PUBLIC_SHELL_URLS")) {
+  errors.push("Service worker must use an explicit allowlist for public navigation caching.");
+}
+if (serviceWorkerSource && !serviceWorkerSource.includes('request.headers.has("authorization")')) {
+  errors.push("Service worker must bypass requests carrying an Authorization header.");
+}
+if (/addEventListener\\(\\s*["']install["'][\\s\\S]*?self\\.skipWaiting\\(\\)/.test(serviceWorkerSource)) {
+  errors.push("Service worker must not skip the waiting phase during install; updates are user-controlled.");
+}
+
 if (errors.length) {
   console.error(errors.join("\n\n"));
   process.exit(1);
