@@ -19,6 +19,50 @@ html.native-shell body{padding-bottom:12px}
 html.native-shell .top,html.native-shell .bottom,html.native-shell .foot{display:none!important}
 html.native-shell .wrap{width:min(920px,calc(100% - 22px))}
 html.native-shell .hero{padding-top:28px}
+
+/* SK CYBER HUB FUTURE SHELL — aligned with the main platform identity */
+:root{
+ --bg:#070916;--panel:#10152a;--panel2:#171e38;--line:rgba(154,177,255,.2);
+ --text:#f4f6ff;--muted:#a8b2d0;--accent:#55f4dc;--accent2:#b49aff;
+ --shadow:0 22px 65px rgba(0,0,0,.38);
+}
+body{
+ background:
+  radial-gradient(ellipse at 12% -10%,rgba(72,88,210,.25),transparent 42%),
+  radial-gradient(ellipse at 92% 5%,rgba(25,196,190,.16),transparent 34%),
+  #070916;
+ color:var(--text);
+}
+.top{border-color:rgba(154,177,255,.16)}
+.mark{background:linear-gradient(140deg,#163f57,#292451);border:1px solid rgba(85,244,220,.46);color:#b8fff5;box-shadow:0 0 28px rgba(85,244,220,.12)}
+.iconbtn,.chip,.quick,.result{border-color:rgba(154,177,255,.2);background:rgba(16,21,42,.9);color:#eaf0ff}
+.iconbtn:focus-visible,.chip:focus-visible,.quick:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.eyebrow{color:#9dfff0}
+h1{letter-spacing:-.055em}
+.hero h1 span{background:linear-gradient(95deg,#55f4dc,#83c3ff 55%,#c2a7ff);background-clip:text;-webkit-background-clip:text;color:transparent}
+.hero p{color:#c1cbe6}
+.searchbox{border-color:rgba(116,188,255,.35);border-radius:19px;background:rgba(16,21,42,.94);box-shadow:0 18px 55px rgba(0,0,0,.32),0 0 24px rgba(85,244,220,.05)}
+.searchbox input{color:#f4f6ff}
+.searchbox button{background:linear-gradient(115deg,#55f4dc,#83c3ff 58%,#b49aff);color:#081222}
+.tile{border-color:rgba(154,177,255,.18);border-radius:19px;background:linear-gradient(145deg,rgba(22,30,59,.96),rgba(13,19,42,.98));box-shadow:0 10px 30px rgba(0,0,0,.17),inset 0 1px rgba(255,255,255,.035)}
+.tile:hover{border-color:rgba(85,244,220,.45);box-shadow:0 18px 40px rgba(0,0,0,.28),0 0 25px rgba(85,244,220,.07)}
+.tile small,.sectionhead p,.hint,.foot{color:#a8b2d0}
+.sectionhead h2{color:#f3f6ff}
+.textbtn,.result .arrow{color:#9dfff0}
+.quick{border-radius:16px}
+.quick span{filter:drop-shadow(0 4px 12px rgba(85,244,220,.15))}
+.bottom{background:rgba(7,9,22,.92);border-color:rgba(154,177,255,.18)}
+.navbtn{color:#a8b2d0}
+.navbtn.active{background:rgba(85,244,220,.09);color:#9dfff0}
+.toast{border-color:rgba(154,177,255,.2);background:#10152a}
+.result{border-radius:16px}
+@media(max-width:600px){
+ .hero{padding-top:34px}
+ .searchbox{border-radius:16px}
+ .tile{border-radius:17px}
+}
+@media(prefers-reduced-motion:reduce){.tile{transition:none!important}}
+
 </style>
 </head>
 <body>
