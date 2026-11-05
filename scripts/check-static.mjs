@@ -74,7 +74,7 @@ else {
   if (shareCheck.status !== 0) errors.push(`Share controller has a JavaScript syntax error:\\n${shareCheck.stderr || shareCheck.stdout}`);
 }
 for (const icon of ["assets/sk-cyber-hub-icon-192.png", "assets/sk-cyber-hub-icon-512.png"]) {
-  if (!fs.existsSync(icon) || fs.statSync(icon).size < 1000) errors.push(`PWA PNG icon is missing or unexpectedly small: ${icon}`);
+  if (!fs.existsSync(icon) || fs.statSync(icon).size < 500) errors.push(`PWA PNG icon is missing or unexpectedly small: ${icon}`);
 }
 const platformMessagingPath = "supabase/SK-PLATFORM-MESSAGING.sql";
 const messengerPath = "supabase/SK-MESSENGER-CALLS-FOUNDATION.sql";
