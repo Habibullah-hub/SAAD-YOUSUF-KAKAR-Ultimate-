@@ -1,13 +1,24 @@
 /* SK Cyber Hub offline shell.
    Network-first for a small, explicit list of public app-shell pages only.
    Never cache API, authenticated, query-string, or third-party requests. */
-const CACHE_NAME = "sk-cyber-hub-shell-v7";
+const CACHE_NAME = "sk-cyber-hub-shell-v8";
 const APP_ROOT = new URL("./", self.location).href;
 const PUBLIC_SHELL_URLS = new Set([
   APP_ROOT,
   new URL("browser.html", APP_ROOT).href,
   new URL("games.html", APP_ROOT).href
 ]);
+const PUBLIC_STATIC_ASSETS = new Set([
+  "assets/sk-community.css","assets/sk-community.js",
+  "assets/sk-connect.css","assets/sk-creator-monetization.css","assets/sk-creator-monetization.js",
+  "assets/sk-digital-workbench.css","assets/sk-digital-workbench.js",
+  "assets/sk-discovery.css","assets/sk-discovery.js",
+  "assets/sk-easy-mode.css","assets/sk-easy-mode.js",
+  "assets/sk-live.js","assets/sk-messenger.js",
+  "assets/sk-platforms.css","assets/sk-platforms.js",
+  "assets/sk-ultimate-experience-v2.css","assets/sk-world-class-experience-v1.css",
+  "assets/sk-tailwind-compat.css","assets/sk-share.js","pwa-register.js"
+].map(path => new URL(path, APP_ROOT).href));
 
 self.addEventListener("message", event => {
   if (event.data && event.data.type === "SK_SKIP_WAITING") {
@@ -18,8 +29,9 @@ self.addEventListener("message", event => {
 self.addEventListener("install", event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
-    // Cache only the public home shell during installation.
-    await cache.add(APP_ROOT);
+    // Cache the public home shell and a fixed allowlist of same-origin CSS/JS.
+    // Never add API responses, authenticated pages, query-string URLs or third-party files.
+    await cache.addAll([APP_ROOT, ...PUBLIC_STATIC_ASSETS]);
     // Do not call skipWaiting here: pwa-register.js offers the user an
     // explicit Update action so an in-progress session is not interrupted.
   })());
@@ -39,17 +51,35 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
   const request = event.request;
-  if (request.method !== "GET" || request.mode !== "navigate") return;
+  if (request.method !== "GET") return;
 
   const requestUrl = new URL(request.url);
   if (requestUrl.origin !== self.location.origin || requestUrl.search) return;
   if (request.headers.has("authorization")) return;
-  if (!PUBLIC_SHELL_URLS.has(requestUrl.href)) return;
 
+  // Public static assets only: network-first, with a verified same-origin cache fallback.
+  if (PUBLIC_STATIC_ASSETS.has(requestUrl.href)) {
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE_NAME);
+      try {
+        const response = await fetch(request);
+        if (response && response.ok && response.type === "basic") {
+          await cache.put(requestUrl.href, response.clone());
+        }
+        return response;
+      } catch (_) {
+        return (await cache.match(requestUrl.href)) || Response.error();
+      }
+    })());
+    return;
+  }
+
+  // Only these public app-shell navigations are eligible for offline fallback.
+  if (request.mode !== "navigate" || !PUBLIC_SHELL_URLS.has(requestUrl.href)) return;
   event.respondWith((async () => {
     try {
       const response = await fetch(request);
-      if (response && response.ok && response.type !== "opaque") {
+      if (response && response.ok && response.type === "basic") {
         const cache = await caches.open(CACHE_NAME);
         await cache.put(requestUrl.href, response.clone());
       }
