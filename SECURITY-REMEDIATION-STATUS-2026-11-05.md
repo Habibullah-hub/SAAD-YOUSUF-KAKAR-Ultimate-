@@ -13,7 +13,7 @@ Scope: Repository source review and code changes. This is not a penetration test
 6. **Offline static assets allowlisted.** Service worker v8 caches a fixed list of same-origin public CSS/JS and the two PWA icons. It does not cache API calls, authenticated data, query-string URLs or third-party responses.
 7. **SK Mail / Messenger collision corrected in source.** Private Messenger continues to use `public.sk_messages` with `conversation_id`. SK Mail now uses `public.sk_inbox_messages`. The frontend and base SQL agree. A one-time compatibility migration can rename a legacy SK Mail table without discarding its rows.
 8. **Analytics RPC search path hardened.** `sk_record_site_visit` now uses an empty search path and fully qualified table references.
-9. **Android release signing prepared.** Gradle can use an owner-managed persistent release keystore supplied through environment variables. A manual GitHub Actions workflow verifies the resulting APK signature. The existing debug beta workflow remains clearly a test build.
+9. **Android release signing prepared.** Gradle can use an owner-managed persistent release keystore supplied through environment variables. A manual GitHub Actions workflow verifies the resulting APK signature. The automatic public beta-release workflow for rotating debug-signed APKs has been removed. Debug builds remain temporary GitHub Actions artifacts (14-day retention), not public production releases.
 
 ## Security items intentionally not claimed as complete
 
