@@ -62,9 +62,9 @@ if (!html.includes('rel="manifest"') || (!html.includes("serviceWorker.register"
 }
 
 // Dependency and public-share safety checks.
-if (/cdn\\.tailwindcss\\.com/i.test(html)) errors.push("Production HTML must not load the Tailwind Play CDN.");
-if (/\\@supabase\\/supabase-js@2(?:["'\\/]|$)/i.test(html)) errors.push("Supabase browser SDK must use an exact version, not the floating @2 alias.");
-if (/xlsx@0\\.18\\.5/i.test(html)) errors.push("Legacy SheetJS 0.18.5 CDN reference remains; use CSV import or a reviewed current build.");
+if (/cdn\.tailwindcss\.com/i.test(html)) errors.push("Production HTML must not load the Tailwind Play CDN.");
+if (/\\@supabase\/supabase-js@2(?:["'\\/]|$)/i.test(html)) errors.push("Supabase browser SDK must use an exact version, not the floating @2 alias.");
+if (/xlsx@0\.18\.5/i.test(html)) errors.push("Legacy SheetJS 0.18.5 CDN reference remains; use CSV import or a reviewed current build.");
 if (!html.includes('assets/sk-tailwind-compat.css')) errors.push("Local Tailwind compatibility stylesheet is not loaded.");
 if (!fs.existsSync("assets/sk-tailwind-compat.css")) errors.push("Local Tailwind compatibility stylesheet is missing.");
 if (!html.includes('assets/sk-share.js')) errors.push("Safe share controller is not loaded.");
@@ -81,9 +81,9 @@ const messengerPath = "supabase/SK-MESSENGER-CALLS-FOUNDATION.sql";
 if (fs.existsSync(platformMessagingPath) && fs.existsSync(messengerPath)) {
   const platformSql = fs.readFileSync(platformMessagingPath, "utf8");
   const messengerSql = fs.readFileSync(messengerPath, "utf8");
-  if (/create table(?: if not exists)? public\\.sk_messages\\b/i.test(platformSql)) errors.push("SK Mail must not create the private Messenger table name public.sk_messages.");
-  if (!/create table(?: if not exists)? public\\.sk_inbox_messages\\b/i.test(platformSql)) errors.push("SK Mail migration must create public.sk_inbox_messages.");
-  if (!/create table(?: if not exists)? public\\.sk_messages\\b/i.test(messengerSql)) errors.push("Private Messenger migration must retain public.sk_messages.");
+  if (/create table(?: if not exists)? public\.sk_messages\b/i.test(platformSql)) errors.push("SK Mail must not create the private Messenger table name public.sk_messages.");
+  if (!/create table(?: if not exists)? public\.sk_inbox_messages\b/i.test(platformSql)) errors.push("SK Mail migration must create public.sk_inbox_messages.");
+  if (!/create table(?: if not exists)? public\.sk_messages\b/i.test(messengerSql)) errors.push("Private Messenger migration must retain public.sk_messages.");
 }
 
 const jsAssets = [
