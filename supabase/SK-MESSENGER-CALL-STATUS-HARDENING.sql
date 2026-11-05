@@ -44,6 +44,14 @@ begin
     return new;
   end if;
 
+  if old.status = 'ringing' and new.status = 'missed' then
+    if v_actor <> old.callee_id then
+      raise exception 'Only the invited member can mark a ringing call missed.';
+    end if;
+    new.ended_at := now();
+    return new;
+  end if;
+
   if old.status = 'ringing' and new.status = 'ended' then
     if v_actor not in (old.caller_id, old.callee_id) then
       raise exception 'Only call participants can end this call.';
