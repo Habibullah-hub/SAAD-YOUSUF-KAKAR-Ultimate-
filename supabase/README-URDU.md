@@ -66,11 +66,28 @@ WHERE role = 'admin';
 - کوئی بھی external APK، software یا earning link شائع کرنے سے پہلے اصل publisher/source، HTTPS، terms، خطرات اور affiliate/sponsored disclosure چیک کریں۔
 
 
+## Private Messenger اور SK Mail
+
+یہ دونوں الگ نظام ہیں اور ان کے ڈیٹا ٹیبل ایک جیسے نہیں ہیں:
+
+- **Private Messenger** صرف `public.sk_messages` استعمال کرتا ہے، جس میں `conversation_id` ہوتا ہے۔
+- **SK Mail** صرف `public.sk_inbox_messages` استعمال کرتا ہے۔ یہ SK ممبرز کا اندرونی inbox ہے، Gmail یا بیرونی ای میل نہیں۔
+
+درست ترتیب:
+
+1. `SK-CYBER-HUB-SETUP.sql` اور `SK-CYBER-HUB-COMMUNITY.sql` مکمل ہونے چاہییں۔
+2. اگر پرانے SK Mail کی وجہ سے `sk_messages` ٹیبل میں `recipient_email` موجود ہے اور `conversation_id` نہیں، تو پہلے backup لے کر `SK-PLATFORM-MESSAGING-REPAIR.sql` چلائیں۔ یہ پرانا inbox محفوظ رکھتے ہوئے اسے `sk_inbox_messages` بناتا ہے۔
+3. پھر `SK-MESSENGER-CALLS-FOUNDATION.sql` چلائیں۔ اگر یہ پہلے collision کی وجہ سے ناکام ہوا تھا تو repair کے بعد اسے دوبارہ چلائیں۔
+4. `SK-SECURITY-HARDENING-2026-11.sql` چلائیں تاکہ call participants اور status transitions محفوظ رہیں۔
+5. آخر میں `SK-PLATFORM-MESSAGING.sql` چلائیں۔ یہ SK Mail کی الگ inbox table بناتا/اپڈیٹ کرتا ہے۔
+
+اگر live database کی موجودہ table structure معلوم نہیں تو اندازہ لگا کر SQL نہ چلائیں؛ پہلے columns دیکھیں اور backup لیں۔ Messenger اس وقت end-to-end encrypted نہیں ہے۔ کسی انتہائی حساس راز کے لیے اسے استعمال نہ کریں۔ مکمل تفصیل `SK-FREE-FIRST-DEPLOYMENT-GUIDE.md` میں ہے۔
+
 ## ویب سائٹ کو موبائل ایپ کی طرح انسٹال کرنا (PWA)
 
 - main برانچ میں manifest.webmanifest، ایپ آئیکن اور sw.js شامل ہیں۔ HTTPS پر ویب سائٹ کھلنے کے بعد براؤزر دستیاب ہونے پر Service Worker رجسٹر کرے گا۔
 - Android پر Chrome میں ویب سائٹ کھولیں، براؤزر کے مینو میں **Install app** یا **Add to Home screen** آئے تو اسے منتخب کریں۔ یہ آپشن براؤزر/ڈیوائس کے مطابق مختلف ہوسکتا ہے۔
-- Offline cache صرف بنیادی ویب صفحہ محفوظ کرتا ہے۔ Supabase ڈیٹابیس، لاگ اِن، تازہ خبریں، ویڈیوز اور بیرونی لنکس انٹرنیٹ کے بغیر کام کرنے کی ضمانت نہیں رکھتے۔
+- Offline cache بنیادی ویب صفحے کے ساتھ allowlist میں موجود عوامی CSS/JavaScript اور PWA icons بھی محفوظ کرتا ہے۔ Supabase ڈیٹابیس، لاگ اِن، تازہ خبریں، ویڈیوز اور بیرونی لنکس انٹرنیٹ کے بغیر کام کرنے کی ضمانت نہیں رکھتے۔
 - Service Worker بیرونی API، ممبر ڈیٹا یا نجی معلومات کو cache نہیں کرتا۔ اسے Native Android APK نہ سمجھیں؛ یہ انسٹال ہونے والی ویب ایپ ہے۔
 - GitHub Pages پر نئی فائلیں اسی وقت صارفین کو ملیں گی جب یہ برانچ منظور ہوکر main میں شامل ہو اور Pages deployment کامیاب ہو۔
 
