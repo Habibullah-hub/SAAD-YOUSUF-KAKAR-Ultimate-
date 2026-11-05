@@ -33,7 +33,7 @@ android {
     buildTypes {
         release {
             // Without owner-provided signing secrets, release output stays unsigned.
-            // The existing debug beta workflow is intentionally unchanged.
+            // The debug workflow builds test artifacts only; it does not publish a public release.
             if (releaseSigningReady) {
                 signingConfig signingConfigs.release
             }
