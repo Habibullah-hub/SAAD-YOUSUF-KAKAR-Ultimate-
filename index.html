@@ -3336,39 +3336,41 @@ if (!validDownloadUrl) {
 
         async function handleAdminLogin(e) {
             e.preventDefault();
-            if (!supabaseClient) return alert('Supabase error');
-            const { data, error } = await supabaseClient.auth.signInWithPassword({
-                email: document.getElementById('adminEmail').value,
-                password: document.getElementById('adminPass').value
-            });
-            if (error) {
-                alert(error.message);
-                return;
+            const form=e.currentTarget,submit=form?.querySelector('button[type="submit"]');
+            if(submit)submit.disabled=true;
+            try {
+                if (!supabaseClient) await initializeSKDatabase();
+                if (!supabaseClient) {
+                    alert('Database ابھی connect نہیں ہے۔ Configure Database کھول کر درست Supabase Project URL اور anon/publishable key محفوظ کریں، پھر دوبارہ Admin Login کریں۔');
+                    return;
+                }
+                const email=document.getElementById('adminEmail').value.trim();
+                const password=document.getElementById('adminPass').value;
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                const user = data?.user;
+                if (!user) throw new Error('Login session confirm نہیں ہوسکا۔ دوبارہ کوشش کریں۔');
+                const { data: profile, error: profileError } = await supabaseClient
+                    .from('sk_profiles').select('role').eq('id', user.id).maybeSingle();
+                if (profileError) {
+                    await supabaseClient.auth.signOut();
+                    throw new Error('Login ہو گیا، لیکن sk_profiles سے Admin role verify نہیں ہوا: '+profileError.message+'۔ پہلے درست Supabase project اور base SQL چیک کریں۔');
+                }
+                if (profile?.role !== 'admin') {
+                    await supabaseClient.auth.signOut();
+                    currentUser = null; updateAuthUI();
+                    throw new Error('یہ اکاؤنٹ Member ہے، Owner Admin نہیں۔ صرف پہلے سے مقرر Owner Admin ہی ڈیش بورڈ کھول سکتا ہے۔');
+                }
+                currentUser = user;
+                document.getElementById('adminPass').value = '';
+                closeAuthModal(); updateAuthUI(); switchTab('admin');
+                await fetchApps();
+                window.dispatchEvent(new Event('sk:database-ready'));
+            } catch (error) {
+                alert('Admin Login ناکام: '+(error?.message||'نامعلوم خرابی'));
+            } finally {
+                if(submit)submit.disabled=false;
             }
-            const user = data?.user;
-            if (!user) {
-                alert('Login session could not be confirmed. Please try again.');
-                return;
-            }
-            const { data: profile, error: profileError } = await supabaseClient
-                .from('sk_profiles')
-                .select('role')
-                .eq('id', user.id)
-                .maybeSingle();
-            if (profileError || profile?.role !== 'admin') {
-                await supabaseClient.auth.signOut();
-                currentUser = null;
-                updateAuthUI();
-                alert('This account does not have administrator permission.');
-                return;
-            }
-            currentUser = user;
-            document.getElementById('adminPass').value = '';
-            closeAuthModal();
-            updateAuthUI();
-            switchTab('admin');
-            await fetchApps();
-            window.dispatchEvent(new Event('sk:database-ready'));
         }
 
         async function logoutAdmin() {
