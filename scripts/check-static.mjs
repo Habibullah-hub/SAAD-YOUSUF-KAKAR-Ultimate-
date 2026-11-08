@@ -95,7 +95,8 @@ const jsAssets = [
   "assets/sk-creator-monetization.js",
   "assets/sk-easy-mode.js",
   "assets/sk-theme-mode.js",
-  "assets/sk-creator-hub.js"
+  "assets/sk-creator-hub.js",
+  "assets/sk-browser-video-hub.js"
 ];
 for (const assetPath of jsAssets) {
   if (!fs.existsSync(assetPath)) {
@@ -153,7 +154,7 @@ const browserHtml = fs.existsSync("browser.html") ? fs.readFileSync("browser.htm
 if (!browserHtml.includes('id="searchForm"') || !browserHtml.includes('id="searchForm3"')) {
   errors.push("SK Browser is missing its global or SK-directory search form.");
 }
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v15"')) {
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v16"')) {
   errors.push("Service worker cache version was not advanced for the updated public shell.");
 }
 for (const assetPath of ["assets/sk-motion-performance.css", "assets/sk-browser-experience.css"]) {
@@ -177,12 +178,17 @@ if (!fs.existsSync("assets/sk-theme-mode.js") || !html.includes("assets/sk-theme
 if (!html.includes('id="skAdminButton"') || !html.includes('>SYK</button>')) errors.push("Visible homepage admin logo must use the SYK mark.");
 if (!html.includes("YouTube Only") || !html.includes("const mode=forcedMode||modeInput.value||'all';")) errors.push("Related-video search must honor the selected YouTube-only filter.");
 if (!html.includes("await initializeSKDatabase()")) errors.push("Admin login must retry database initialization before reporting a connection failure.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v15"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v16"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
 for (const assetPath of ["assets/sk-theme-mode.css","assets/sk-theme-mode.js","assets/sk-news-premium.css","assets/syk-neon-refresh.css"]) {
   if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 }
 const browserExperience = fs.readFileSync("browser.html", "utf8");
 if (!browserExperience.includes("SYK Browser stays open") || !browserExperience.includes("target='_blank'")) errors.push("External web search must preserve the SK Browser page in its own tab.");
+
+if (!browserHtml.includes('id="sykVideoHub"') || !browserHtml.includes('id="sykVideoForm"')) errors.push("SYK Browser home is missing its video-only Creator Hub.");
+if (!browserHtml.includes('id="sykAdminMediaForm"') || !browserHtml.includes('id="sykVideoDialog"')) errors.push("SYK Browser is missing owner media publishing or the video popup player.");
+if (!browserHtml.includes('sk-browser-video-hub.js')) errors.push("SYK Browser video hub controller is not loaded.");
+if (!fs.existsSync("supabase/SK-BROWSER-VIDEO-HUB.sql")) errors.push("Owner-managed video/image/channel media migration is missing.");
 const communityExperience = fs.readFileSync("assets/sk-community.js", "utf8");
 if (!communityExperience.includes("SK Community Trending") || !communityExperience.includes("Rank ")) errors.push("Community trending ranks and truthful scope label are missing.");
 
@@ -197,7 +203,7 @@ if (!html.includes('id="skCreatorOwnerPlayer"') || !html.includes('id="skCreator
 if (!html.includes('id="skCreatorSubmitToggle"') || !html.includes('id="skCreatorMySubmissions"')) errors.push("Video-only member submit control or submission status panel is missing.");
 if (!html.includes('id="skCreatorSaveFeatured"')) errors.push("Owner featured-video-only setting is missing.");
 if (!html.includes('id="skCreatorRegisteredMembers"')) errors.push("Owner-only registered members panel is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v15"')) errors.push("Service worker cache was not advanced for Creator Hub.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v16"')) errors.push("Service worker cache was not advanced for Creator Hub.");
 for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]) if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 
 if (errors.length) {
