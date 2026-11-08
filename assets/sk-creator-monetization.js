@@ -16,7 +16,7 @@ async function start(){
  if(!authBound){db.auth.onAuthStateChange(()=>setTimeout(()=>start().catch(e=>{setStatus('Creator center: '+(e.message||'Database error'));starting=false;}),0));authBound=true;}
  const {data,error}=await db.auth.getSession();if(error)throw error;
  user=data?.session?.user||null;
- if(!user){setStatus('Apply کرنے، creator status دیکھنے اور اپنی confirmed earnings دیکھنے کے لیے مفت Member Login کریں۔');show($('skCreatorApplicationForm'),false);show($('skCreatorLedger'),false);starting=false;return;}
+ if(!user){setStatus('Apply کرنے، creator status دیکھنے اور اپنی confirmed earnings دیکھنے کے لیے مفت Login کریں۔');show($('skCreatorApplicationForm'),false);show($('skCreatorLedger'),false);starting=false;return;}
  const profile=await db.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();
  if(profile.error)throw profile.error;
  isAdmin=profile.data?.role==='admin';

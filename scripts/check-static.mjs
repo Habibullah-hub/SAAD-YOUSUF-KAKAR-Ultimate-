@@ -154,7 +154,7 @@ const browserHtml = fs.existsSync("browser.html") ? fs.readFileSync("browser.htm
 if (!browserHtml.includes('id="searchForm"') || !browserHtml.includes('id="searchForm3"')) {
   errors.push("SK Browser is missing its global or SK-directory search form.");
 }
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v16"')) {
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v18"')) {
   errors.push("Service worker cache version was not advanced for the updated public shell.");
 }
 for (const assetPath of ["assets/sk-motion-performance.css", "assets/sk-browser-experience.css"]) {
@@ -175,10 +175,10 @@ for (const [assetPath, page, label] of [
   else if (!page.includes(assetPath)) errors.push(`Homepage does not load ${assetPath}.`);
 }
 if (!fs.existsSync("assets/sk-theme-mode.js") || !html.includes("assets/sk-theme-mode.js")) errors.push("Persistent homepage day/night toggle is missing.");
-if (!html.includes('id="skAdminButton"') || !html.includes('>SYK</button>')) errors.push("Visible homepage admin logo must use the SYK mark.");
+if (!html.includes('id="skAdminButton"') || !html.includes('alt="SYK"')) errors.push("Visible homepage admin logo must use the SYK mark.");
 if (!html.includes("YouTube Only") || !html.includes("const mode=forcedMode||modeInput.value||'all';")) errors.push("Related-video search must honor the selected YouTube-only filter.");
 if (!html.includes("await initializeSKDatabase()")) errors.push("Admin login must retry database initialization before reporting a connection failure.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v16"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v18"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
 for (const assetPath of ["assets/sk-theme-mode.css","assets/sk-theme-mode.js","assets/sk-news-premium.css","assets/syk-neon-refresh.css"]) {
   if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 }
@@ -211,3 +211,8 @@ if (errors.length) {
   process.exit(1);
 }
 console.log(`Static checks passed: HTML basics verified; ${checked} inline JavaScript block(s) syntax-checked; no obvious service-role assignment or dynamic-code execution found.`);
+
+const browser = fs.readFileSync("browser.html","utf8");
+if (!html.includes("SYK Browser is the default public landing page")) errors.push("SYK Browser default homepage redirect is missing.");
+if (!browser.includes('id="sykVideoHub"')) errors.push("SYK Browser video feed is missing.");
+if (!browser.includes('id="sykVideoSearch"')) errors.push("SYK Browser video search control is missing.");

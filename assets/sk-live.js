@@ -45,7 +45,7 @@ async function loadRooms(){
  });
 }
 async function startLive(e){
- e.preventDefault();if(!user){say('Live شروع کرنے کے لیے Member Login کریں۔');return;}
+ e.preventDefault();if(!user){say('Live شروع کرنے کے لیے Login کریں۔');return;}
  if(!navigator.mediaDevices?.getUserMedia){say('اس browser میں camera/microphone دستیاب نہیں۔');return;}
  if(!window.LivekitClient){say('LiveKit client library ابھی لوڈ نہیں ہوئی۔');return;}
  const title=$('skLiveTitle').value.trim(),description=$('skLiveDescription').value.trim();
@@ -57,7 +57,7 @@ async function startLive(e){
  catch(err){await db.from('sk_live_rooms').update({status:'ended',ended_at:new Date().toISOString()}).eq('id',r.data.id);if(room){room.disconnect();room=null;}activeRoom=null;showStage(false);say('Live شروع نہیں ہوئی: '+(err.message||'Setup incomplete'));}
 }
 async function joinRoom(item){
- if(!user){say('Live دیکھنے کے لیے مفت Member Login کریں۔');return;}
+ if(!user){say('Live دیکھنے کے لیے مفت Login کریں۔');return;}
  if(room){say('پہلے موجودہ Live سے نکلیں۔');return;}
  try{say('Live سے جڑ رہے ہیں…');await connectRoom(item,item.host_id===user.id);}
  catch(e){if(room){room.disconnect();room=null;}activeRoom=null;showStage(false);clearMedia();say('Live join نہیں ہوئی: '+(e.message||'Check LiveKit setup and free quota'));}
