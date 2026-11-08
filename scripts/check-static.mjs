@@ -211,3 +211,8 @@ if (errors.length) {
   process.exit(1);
 }
 console.log(`Static checks passed: HTML basics verified; ${checked} inline JavaScript block(s) syntax-checked; no obvious service-role assignment or dynamic-code execution found.`);
+
+const browser = fs.readFileSync("browser.html","utf8");
+if (!html.includes("SYK Browser is the default public landing page")) errors.push("SYK Browser default homepage redirect is missing.");
+if (!browser.includes('id="sykVideoHub"')) errors.push("SYK Browser video feed is missing.");
+if (!browser.includes('id="sykVideoSearch"')) errors.push("SYK Browser video search control is missing.");
