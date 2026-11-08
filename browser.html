@@ -104,5 +104,7 @@ $('shuffle').addEventListener('click',drawDiscover);$('historyBtn').addEventList
 $('clearHistory').addEventListener('click',()=>{history=[];localStorage.removeItem('sk-browser-history');toast('Recent searches cleared');});
 drawDiscover();const initial=new URLSearchParams(location.search).get('q');if(initial){$('q').value=initial;submit(initial)}if(location.hash==='#searchView')show('searchView');
 })();
-</script><script src="./pwa-register.js" defer></script>
+</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js" crossorigin="anonymous"></script>
+<script src="./assets/sk-account-presence.js?v=1" defer></script>
+<script src="./pwa-register.js" defer></script>
 </body></html>
