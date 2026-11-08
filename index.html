@@ -4724,9 +4724,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
  }
  async function search(q,forcedMode){
   const seq=++requestNo;activeQuery=String(q||'').trim();if(!activeQuery)return;
-  const wantsYouTube=/\b(youtube|you\s*tube|yt)\b/i.test(activeQuery);
-  const cleanQuery=activeQuery.replace(/\b(youtube|you\s*tube|yt)\b/ig,' ').replace(/\s+/g,' ').trim()||activeQuery;
-  const mode=wantsYouTube?'youtube':(forcedMode||modeInput.value);
+  const cleanQuery=activeQuery;
+  const mode=forcedMode||modeInput.value||'all';
   modeInput.value=mode;
   searches.replaceChildren();results.replaceChildren();appendYoutubeFallback(cleanQuery);
   if(mode!=='youtube')providers.forEach(([label,base])=>searches.append(makeLink(label,base,cleanQuery)));
