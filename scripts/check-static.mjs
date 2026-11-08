@@ -203,16 +203,17 @@ if (!html.includes('id="skCreatorOwnerPlayer"') || !html.includes('id="skCreator
 if (!html.includes('id="skCreatorSubmitToggle"') || !html.includes('id="skCreatorMySubmissions"')) errors.push("Video-only member submit control or submission status panel is missing.");
 if (!html.includes('id="skCreatorSaveFeatured"')) errors.push("Owner featured-video-only setting is missing.");
 if (!html.includes('id="skCreatorRegisteredMembers"')) errors.push("Owner-only registered members panel is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v16"')) errors.push("Service worker cache was not advanced for Creator Hub.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v18"')) errors.push("Service worker cache was not advanced for Creator Hub.");
 for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]) if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
+
+
+const browser = fs.readFileSync("browser.html","utf8");
+if (!html.includes("SYK Browser is the default public landing page")) errors.push("SYK Browser default homepage redirect is missing.");
+if (!browser.includes('id="sykVideoHub"')) errors.push("SYK Browser video feed is missing.");
+if (!browser.includes('id="sykVideoSearch"')) errors.push("SYK Browser video search control is missing.");
 
 if (errors.length) {
   console.error(errors.join("\n\n"));
   process.exit(1);
 }
 console.log(`Static checks passed: HTML basics verified; ${checked} inline JavaScript block(s) syntax-checked; no obvious service-role assignment or dynamic-code execution found.`);
-
-const browser = fs.readFileSync("browser.html","utf8");
-if (!html.includes("SYK Browser is the default public landing page")) errors.push("SYK Browser default homepage redirect is missing.");
-if (!browser.includes('id="sykVideoHub"')) errors.push("SYK Browser video feed is missing.");
-if (!browser.includes('id="sykVideoSearch"')) errors.push("SYK Browser video search control is missing.");
