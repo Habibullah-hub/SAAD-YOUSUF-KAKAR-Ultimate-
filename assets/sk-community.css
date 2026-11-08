@@ -50,3 +50,12 @@
 #skCommunityPanel .sk-social-anticipation{margin:9px 0 12px;padding:10px 13px;border:1px solid #31516a;border-radius:11px;background:linear-gradient(110deg,#10263a,#122d3b);color:#bfe9e4;font-size:12px;line-height:1.6}
 #skCommunityPanel .sk-social-anticipation[aria-live]{min-height:38px}
 @media(prefers-reduced-motion:reduce){#skCommunityPanel .sk-social-anticipation{scroll-behavior:auto}}
+
+/* Global member notification bell */
+.sk-global-notification-wrap{position:relative;display:flex;justify-content:flex-end;margin:8px 0 14px;z-index:40}
+.sk-global-notification-wrap[hidden]{display:none!important}
+.sk-global-notification-button{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;padding:9px 14px;border:1px solid #69404d;border-radius:14px;background:linear-gradient(135deg,#24151e,#111b2b);color:#f7fbff;font-weight:850;box-shadow:0 5px 20px #0005;cursor:pointer}
+.sk-global-bell{font-size:23px;line-height:1;color:#f4f7ff}
+.sk-global-notification-button .sk-social-red-badge{display:inline-grid;place-items:center;min-width:21px;height:21px;padding:0 5px;border-radius:999px;background:#ef233c;color:#fff;font-size:11px;font-weight:950;box-shadow:0 0 0 2px #15121c,0 0 12px #ef233c88}
+#skCommunityNotifications.is-global{position:absolute;top:calc(100% + 8px);right:0;left:auto;width:min(360px,calc(100vw - 28px));max-height:65vh;overflow:auto;z-index:100;background:#101923;border:1px solid #74404a;border-radius:14px;box-shadow:0 14px 40px #000b}
+@media(max-width:600px){.sk-global-notification-wrap{justify-content:flex-end}.sk-global-notification-label{font-size:13px}}
