@@ -1655,7 +1655,13 @@ body.sk-day-mode .top .sk-header-login{background:#e5f3fb!important;color:#075b9
 #skLiveChatForm{display:flex;gap:7px;padding:10px}
 #skLiveChatForm input{flex:1;min-width:0;border:1px solid #36546d;border-radius:9px;background:#0a1727;color:white;padding:9px}
 @media(max-width:700px){#skLiveStage:not([hidden]){grid-template-columns:minmax(0,1fr)}#skLiveMedia{min-height:54vh;max-height:68vh}#skLiveMedia video{max-height:68vh}#skLiveStage .sk-live-controls,#skLiveStage .sk-live-chat,#skLiveChatForm{grid-column:1}#skLiveChat{height:190px}.syk-live-login-gate{align-items:flex-start}.syk-live-login-gate button{width:100%}}
-</style></head>
+</style>
+<style id="SYK_MOBILE_HEADER_NAV_RESTORE">
+/* Restore all header actions on phones: wrap onto a second row instead of squeezing labels into icons. */
+@media(max-width:760px){.top .nav{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:7px!important}.top .brand{flex:1 1 100%!important;max-width:100%!important}.top .nav-actions{display:flex!important;flex:1 1 100%!important;width:100%!important;min-width:0!important;flex-wrap:wrap!important;justify-content:flex-start!important;gap:7px!important;padding:0 0 0 43px!important}.top .nav-actions>*{display:inline-flex!important;visibility:visible!important;flex:0 0 auto!important;min-height:38px!important}.top .nav-actions .sk-header-login{display:inline-flex!important}}
+@media(max-width:390px){.top .nav-actions{gap:5px!important;padding-left:40px!important}.top .nav-actions>*{min-height:36px!important;font-size:10px!important;padding-inline:8px!important}}
+</style>
+</head>
 <body>
 <a class="skip-to-content" href="#tab-home">Skip to main content</a>
 <div id="google_translate_element" aria-hidden="true"></div><div id="configAlert" class="config-alert"><span>SYK Cyber Hub database is not connected. Set up its separate database tables to manage listings.</span><button type="button" onclick="openSupabaseModal()">Configure</button></div>

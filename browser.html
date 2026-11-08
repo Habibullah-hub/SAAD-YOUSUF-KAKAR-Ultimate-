@@ -7,7 +7,7 @@
 <link rel="canonical" href="https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/browser.html">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="stylesheet" href="./assets/sk-browser-experience.css?v=20261108-1">
-<link rel="stylesheet" href="./assets/sk-browser-video-hub.css?v=20261108-3">
+<link rel="stylesheet" href="./assets/sk-browser-video-hub.css?v=20261108-4">
 <title>SYK Browser — Watch, Discover & Search</title>
 <link rel="icon" type="image/svg+xml" href="./assets/syk-cyber-hub-logo.svg">
 <style>
@@ -136,6 +136,8 @@ button,.iconbtn,.chip,.navbtn{min-height:42px}
 .syk-video-form input,.syk-video-form select,.syk-video-form textarea{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:9px;background:var(--panel2);color:var(--text)}
 .syk-video-form button,.syk-video-action,.syk-video-open{min-height:44px;border:1px solid var(--accent);border-radius:11px;padding:9px 14px;background:var(--panel2);color:var(--text);font-weight:750}
 @media(max-width:600px){#sykVideoDialog{padding:7px}#sykVideoStage{max-height:72dvh}.top{height:60px}}
+
+.syk-video-discovery{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}.syk-video-discovery strong{width:100%;font-size:12px}.syk-video-discovery a{padding:8px 11px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--accent);font-size:11px;font-weight:800}.syk-video-discovery small{flex-basis:100%;color:var(--muted);font-size:10px;line-height:1.5}
 </style>
 </head>
 <body>
@@ -148,6 +150,7 @@ button,.iconbtn,.chip,.navbtn{min-height:42px}
 </div>
 <section class="section" id="sykVideoHub" aria-labelledby="sykVideoTitle">
  <div class="sectionhead"><div><div class="eyebrow">SYK CREATOR VIDEO HUB</div><h2 id="sykVideoTitle">منظور شدہ ویڈیوز</h2><p>ہر ویڈیو Admin کی منظوری کے بعد سب کو نظر آتی ہے۔</p></div></div>
+ <div class="syk-video-discovery" aria-label="Explore popular public videos"><strong>مقبول ویڈیوز دریافت کریں</strong><a href="https://www.youtube.com/feed/explore" target="_blank" rel="noopener noreferrer">YouTube مقبول ویڈیوز ↗</a><a href="https://www.tiktok.com/discover" target="_blank" rel="noopener noreferrer">TikTok Discover ↗</a><a href="https://www.facebook.com/watch/" target="_blank" rel="noopener noreferrer">Facebook Watch ↗</a><small>یہ آفیشل پلیٹ فارم لنکس ہیں؛ ویڈیو کارڈز میں صرف منظور شدہ Creator ویڈیوز دکھائی جاتی ہیں۔</small></div>
  <div id="sykVideoFeed" class="syk-video-feed"><p class="syk-video-muted">منظور شدہ ویڈیوز لوڈ ہو رہی ہیں…</p></div>
  <div id="sykMemberSubmit" class="syk-video-submit" hidden><h3>اپنی ویڈیو بھیجیں</h3><p class="syk-video-muted">صرف ایک مخصوص ویڈیو کا لنک دیں، پورے چینل کا لنک نہیں۔</p><button class="chip" id="sykVideoSubmitToggle" type="button">＋ ویڈیو لنک بھیجیں</button><form id="sykVideoForm" class="syk-video-form" hidden>
   <label>پلیٹ فارم<select id="sykMemberPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
@@ -199,7 +202,7 @@ $('clearHistory').addEventListener('click',()=>{history=[];localStorage.removeIt
 drawDiscover();const initial=new URLSearchParams(location.search).get('q');if(initial){$('q').value=initial;submit(initial)}if(location.hash==='#searchView')show('searchView');
 })();
 </script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js" crossorigin="anonymous"></script>
-<script src="./assets/sk-browser-video-hub.js?v=20261108-3" defer></script>
+<script src="./assets/sk-browser-video-hub.js?v=20261108-4" defer></script>
 <script src="./assets/sk-account-presence.js?v=3" defer></script>
 <script src="./pwa-register.js" defer></script>
 </body></html>

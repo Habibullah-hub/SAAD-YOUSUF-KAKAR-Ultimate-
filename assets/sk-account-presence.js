@@ -20,7 +20,7 @@ function addStyle(){
  .sk-account-role{display:inline-block;margin:0 0 10px;padding:4px 8px;border:1px solid #2e746f;border-radius:99px;background:#123b3c;color:#a6f4e7;font-size:10px;font-weight:850}
  .sk-account-pop a,.sk-account-pop button{display:block;width:100%;margin-top:7px;padding:9px 10px;border:1px solid #3a5875;border-radius:9px;background:#142a43;color:#eaf5ff;text-align:center;text-decoration:none;font-size:11px;font-weight:800;cursor:pointer}
  .sk-account-pop button{border-color:#7b4651;background:#3a202c;color:#ffdce2}
- @media(max-width:600px){.sk-account-trigger{min-height:36px;gap:6px;padding-right:8px}.sk-account-copy b{max-width:78px;font-size:10px}.sk-account-copy small{font-size:8px}.sk-account-avatar{width:27px;height:27px;flex-basis:27px}}
+ @media(max-width:600px){.sk-account-trigger{min-height:36px;gap:6px;padding-right:8px}.sk-account-copy{display:grid!important}.sk-account-copy b{max-width:78px;font-size:10px}.sk-account-copy small{display:block!important;font-size:8px}.sk-account-avatar{width:27px;height:27px;flex-basis:27px}}
  @media(prefers-reduced-motion:no-preference){.sk-account-trigger,.sk-account-pop{transition:transform .18s ease,opacity .18s ease}.sk-account-trigger:active{transform:scale(.97)}}
  @media(prefers-reduced-motion:reduce){.sk-account-trigger,.sk-account-pop{transition:none}}
  body.sk-day-mode .sk-account-trigger,html[data-theme=light] .sk-account-trigger{background:#fff!important;border-color:#bfd1e1!important;color:#17324a!important}
@@ -64,7 +64,7 @@ async function paintUser(user){
  const seq=++renderSeq,t=$('skAccountTitle'),s=$('skAccountSubtitle'),a=$('skAccountAvatar'),p=$('skAccountPopover'),b=$('skAccountTrigger');
  if(!t||!s||!a||!p||!b)return;
  const name=nameOf(user);let role='member';
- try{const result=await client.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();if(seq!==renderSeq)return;if(!result.error&&result.data?.role==='admin')role='admin';}
+ try{const result=await client.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();if(seq!==renderSeq)return;if(!result.error&&result.data?.role==='admin')role='admin';else{try{const adminCheck=await client.rpc('sk_is_admin');if(seq!==renderSeq)return;if(!adminCheck.error&&adminCheck.data===true)role='admin';}catch(_){}}}
  catch(_){}
  t.textContent=name;s.textContent=role==='admin'?'Owner Admin':'Signed in';const headerLogin=document.querySelector('.top .sk-header-login');if(headerLogin)headerLogin.hidden=true;a.replaceChildren();a.textContent=initials(name);const photo=avatarUrl(user);if(photo){const img=document.createElement('img');img.src=photo;img.alt='';img.loading='lazy';img.referrerPolicy='no-referrer';img.addEventListener('error',()=>img.remove(),{once:true});a.append(img);}b.dataset.signedIn='1';
  p.replaceChildren();
