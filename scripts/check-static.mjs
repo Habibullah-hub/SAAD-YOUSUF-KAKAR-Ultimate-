@@ -174,6 +174,9 @@ for (const [assetPath, page, label] of [
   else if (!page.includes(assetPath)) errors.push(`Homepage does not load ${assetPath}.`);
 }
 if (!fs.existsSync("assets/sk-theme-mode.js") || !html.includes("assets/sk-theme-mode.js")) errors.push("Persistent homepage day/night toggle is missing.");
+if (!html.includes('id="skAdminButton"') || !html.includes('>SYK</button>')) errors.push("Visible homepage admin logo must use the SYK mark.");
+if (!html.includes("YouTube Only") || !html.includes("const mode=forcedMode||modeInput.value||'all';")) errors.push("Related-video search must honor the selected YouTube-only filter.");
+if (!html.includes("await initializeSKDatabase()")) errors.push("Admin login must retry database initialization before reporting a connection failure.");
 if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v12"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
 for (const assetPath of ["assets/sk-theme-mode.css","assets/sk-theme-mode.js","assets/sk-news-premium.css","assets/syk-neon-refresh.css"]) {
   if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
