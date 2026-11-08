@@ -212,6 +212,23 @@ if (!html.includes("SYK Browser is the default public landing page")) errors.pus
 if (!browser.includes('id="sykVideoHub"')) errors.push("SYK Browser video feed is missing.");
 if (!browser.includes('id="sykVideoSearch"')) errors.push("SYK Browser video search control is missing.");
 
+/* SYK Islamic reminder, Islam360 navigation and Live camera regressions. */
+if (!html.includes('data-sk-bottom="islam360"') || !html.includes('https://webapp.theislam360.com/')) errors.push("Islam360 direct launch is missing from the fixed bottom navigation.");
+if (!html.includes('id="sykDailyNaseeha"') || !html.includes('id="sykDailyTranslationToggle"')) errors.push("Public daily Quran reminder or Urdu translation toggle is missing.");
+for (const assetPath of ["assets/syk-daily-islamic.css","assets/syk-daily-islamic.js"]) {
+  if (!fs.existsSync(assetPath)) errors.push(`Daily Quran reminder asset is missing: ${assetPath}`);
+  else if (!html.includes(assetPath)) errors.push(`Homepage does not load daily Quran reminder asset ${assetPath}.`);
+  if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist daily Quran reminder asset ${assetPath}.`);
+}
+const dailyQuran = fs.readFileSync("assets/syk-daily-islamic.js","utf8");
+if (!dailyQuran.includes("quranenc.com/api/v1/translation/aya/urdu_junagarhi") || !dailyQuran.includes("quran-uthmani")) errors.push("Daily Quran reminder must use the attributed Urdu QuranEnc translation and Uthmani Arabic fallback.");
+if (!html.includes('id="skLivePreviewCanvas"') || !html.includes('id="skLiveGoLive"')) errors.push("SYK Live camera preview and explicit Go Live control are missing.");
+if (!html.includes('data-syk-filter="soft"') || !html.includes('id="skLiveSwitchCamera"')) errors.push("SYK Live camera filters or front/back camera switch are missing.");
+const liveExperience = fs.readFileSync("assets/sk-live.js","utf8");
+if (!liveExperience.includes("captureStream(24)") || !liveExperience.includes("publishTrack(videoTrack")) errors.push("SYK Live camera filters are not included in the broadcast stream.");
+if (!liveExperience.includes("skLiveLoginGate")) errors.push("SYK Live login gate is missing.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v23"')) errors.push("Service worker cache was not advanced for the new SYK features.");
+
 if (errors.length) {
   console.error(errors.join("\n\n"));
   process.exit(1);

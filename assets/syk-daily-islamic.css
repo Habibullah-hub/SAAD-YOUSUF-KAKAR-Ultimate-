@@ -1,0 +1,29 @@
+.syk-daily-naseeha{position:relative;isolation:isolate;margin:22px auto 26px;padding:clamp(17px,3vw,25px);overflow:hidden;border:1px solid rgba(107,224,213,.28);border-radius:22px;background:radial-gradient(circle at 8% 0%,rgba(0,220,210,.13),transparent 35%),linear-gradient(135deg,#10283b,#0b1a2d 65%,#16213a);box-shadow:0 18px 44px rgba(0,0,0,.18);color:#eef9fc}
+.syk-daily-naseeha:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.2;background-image:radial-gradient(rgba(140,245,226,.35) .7px,transparent .7px);background-size:16px 16px;mask-image:linear-gradient(110deg,black,transparent 70%)}
+.syk-daily-head{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+.syk-daily-mark{display:grid;place-items:center;width:43px;height:43px;flex:none;border:1px solid #68dfc977;border-radius:14px;background:#1c5b5a55;color:#9bffea;font-size:27px}
+.syk-daily-head>div{flex:1}
+.syk-daily-kicker{color:#9cebdc;font-size:10px;font-weight:850;letter-spacing:.12em}
+.syk-daily-head h2{margin:3px 0 0;color:#f4fbff;font-size:clamp(18px,2.4vw,23px)}
+.syk-daily-badge{padding:6px 9px;border:1px solid #68dfc955;border-radius:999px;color:#a9f7e9;font-size:10px;white-space:nowrap}
+.syk-daily-loading{margin:12px 0;color:#c3d6e2;font-size:13px}
+.syk-daily-arabic{margin:18px 0 10px;color:#f8f5e9;text-align:center;font-family:"Noto Naskh Arabic","Noto Sans Arabic","Amiri",serif;font-size:clamp(25px,4.3vw,37px);line-height:2.05;letter-spacing:0;word-spacing:3px}
+.syk-daily-reference{margin:0 0 13px;color:#91c9d4;text-align:center;font-size:11px;font-weight:800}
+.syk-daily-translation-wrap{display:flex;align-items:flex-start;gap:12px;justify-content:space-between;padding:14px 15px;border:1px solid rgba(149,201,216,.16);border-radius:15px;background:rgba(255,255,255,.045)}
+.syk-daily-translation{flex:1;margin:0;color:#e8f3f7;font-size:15px;line-height:1.95}
+.syk-daily-translation-wrap button,.syk-daily-footer button{flex:none;min-height:31px;padding:5px 10px;border:1px solid #6acabb66;border-radius:9px;background:#164b50;color:#b8fff0;font-size:10px;font-weight:800}
+.syk-daily-footnote{margin:11px 0 0;padding:10px 13px;border-right:2px solid #69d7c5;border-radius:8px;background:#0b1c2a;color:#c6d6df;font-size:12px;line-height:1.8}
+.syk-daily-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:13px;color:#90aebf;font-size:10px}
+.syk-daily-footer a{color:#9cebdd;text-decoration:none}
+.syk-daily-note{margin:12px 0 0;color:#8da8b8;font-size:10px;line-height:1.7}
+.sk-bottom-nav{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+.sk-bottom-nav a[data-sk-bottom="islam360"]{color:#c5e6cf}
+.sk-bottom-nav a[data-sk-bottom="islam360"] span{color:#a6e6b9}
+@media(max-width:620px){.syk-daily-naseeha{margin:13px auto 18px;padding:15px;border-radius:17px}.syk-daily-arabic{font-size:27px;line-height:2}.syk-daily-translation{font-size:13px}.syk-daily-footer{font-size:9px}.sk-bottom-nav{gap:1px;padding-left:4px;padding-right:4px}.sk-bottom-nav a,.sk-bottom-nav button{min-height:48px;font-size:8px}.sk-bottom-nav a span,.sk-bottom-nav button span{font-size:17px}}
+@media(max-width:370px){.sk-bottom-nav a,.sk-bottom-nav button{font-size:7px}.sk-bottom-nav a span,.sk-bottom-nav button span{font-size:15px}}
+body.sk-day-mode .syk-daily-naseeha{background:linear-gradient(135deg,#f1fbf8,#eaf4fa)!important;border-color:#a7d6cc!important;color:#193449!important}
+body.sk-day-mode .syk-daily-head h2,body.sk-day-mode .syk-daily-translation{color:#193449!important}
+body.sk-day-mode .syk-daily-arabic{color:#102d36!important}
+body.sk-day-mode .syk-daily-translation-wrap{background:#ffffffaa;border-color:#c4d9df}
+body.sk-day-mode .syk-daily-note,body.sk-day-mode .syk-daily-footer{color:#526e7d}
+@media(prefers-reduced-motion:reduce){.syk-daily-naseeha{scroll-behavior:auto}}
