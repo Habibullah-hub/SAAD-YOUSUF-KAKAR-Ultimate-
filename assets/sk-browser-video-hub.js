@@ -27,14 +27,13 @@ const localizedTerms={
  ko:{trending:'인기 급상승 동영상',islamic:'이슬람 영상 꾸란 낭송',health:'건강 교육 및 의료 정보 영상',news:'최신 국내 및 세계 뉴스',education:'교육 및 학습 동영상',quran:'한국어 번역 아랍어 꾸란 낭송'}
 };
 function deviceRegion(){
- const locale=(navigator.language||'en').split('-');if(locale[1]&&/^[A-Za-z]{2}$/.test(locale[1]))return locale[1].toUpperCase();
  const zone=Intl.DateTimeFormat().resolvedOptions().timeZone||'';
  const regions={'Asia/Riyadh':'SA','Asia/Karachi':'PK','Asia/Kabul':'AF','Asia/Dubai':'AE','Asia/Qatar':'QA','Asia/Kuwait':'KW','Asia/Dhaka':'BD','Asia/Kolkata':'IN','Asia/Jakarta':'ID','Asia/Kuala_Lumpur':'MY','Europe/Bucharest':'RO','Europe/London':'GB','Europe/Paris':'FR','Europe/Berlin':'DE','Europe/Madrid':'ES','Europe/Istanbul':'TR','America/New_York':'US','America/Los_Angeles':'US','America/Toronto':'CA','Africa/Nairobi':'KE'};
- return regions[zone]||'';
+ if(regions[zone])return regions[zone];const locale=(navigator.language||'en').split('-');return locale[1]&&/^[A-Za-z]{2}$/.test(locale[1])?locale[1].toUpperCase():'';
 }
 function updateLocalizedVideoLinks(){
  const select=$('sykVideoLanguage'),host=$('sykLocalizedVideoLinks');if(!select||!host)return;
- const selected=select.value||'auto',raw=selected==='auto'?(navigator.language||'en'):selected,parts=raw.split('-'),lang=(parts[0]||'en').toLowerCase(),region=(parts[1]||deviceRegion()).toUpperCase(),terms=localizedTerms[lang]||localizedTerms.en;
+ const selected=select.value||'auto',raw=selected==='auto'?(navigator.language||'en'):selected,parts=raw.split('-'),lang=(parts[0]||'en').toLowerCase(),region=(parts[1]||deviceRegion()).toUpperCase(),terms=localizedTerms[lang]||Object.fromEntries(Object.entries(localizedTerms.en).map(([k,v])=>[k,v+' '+(languageNames[lang]||lang)+' language']));
  const topicLabels={trending:'🔥 عالمی ٹرینڈنگ',islamic:'🕌 اسلامی ویڈیوز',health:'🩺 صحت',news:'🌍 خبریں',education:'📚 تعلیم',quran:'📖 قرآن تلاوت + ترجمہ'};
  host.querySelectorAll('a[data-syk-topic]').forEach(a=>{const topic=a.dataset.sykTopic,query=terms[topic]||localizedTerms.en[topic];const params=new URLSearchParams({search_query:query,hl:lang});if(region)params.set('gl',region);a.href='https://www.youtube.com/results?'+params.toString();a.textContent=topicLabels[topic]||a.textContent;});
  const note=$('sykLanguageStatus');if(note)note.textContent='منتخب زبان: '+(languageNames[lang]||lang.toUpperCase())+(region?' · علاقائی نتائج: '+region:'');
