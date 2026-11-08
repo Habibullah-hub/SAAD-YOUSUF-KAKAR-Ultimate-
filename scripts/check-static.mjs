@@ -221,6 +221,7 @@ for (const assetPath of ["assets/syk-daily-islamic.css","assets/syk-daily-islami
   if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist daily Quran reminder asset ${assetPath}.`);
 }
 const dailyQuran = fs.readFileSync("assets/syk-daily-islamic.js","utf8");
+if (!dailyQuran.includes("setAttribute('dir','rtl')") || !dailyQuran.includes("setAttribute('lang','ar')")) errors.push("Daily Quran Arabic text must explicitly declare RTL direction and Arabic language for correct shaping.");
 if (!dailyQuran.includes("quranenc.com/api/v1/translation/aya/urdu_junagarhi") || !dailyQuran.includes("quran-uthmani")) errors.push("Daily Quran reminder must use the attributed Urdu QuranEnc translation and Uthmani Arabic fallback.");
 if (!html.includes('id="skLivePreviewCanvas"') || !html.includes('id="skLiveGoLive"')) errors.push("SYK Live camera preview and explicit Go Live control are missing.");
 if (!html.includes('data-syk-filter="soft"') || !html.includes('id="skLiveSwitchCamera"')) errors.push("SYK Live camera filters or front/back camera switch are missing.");
