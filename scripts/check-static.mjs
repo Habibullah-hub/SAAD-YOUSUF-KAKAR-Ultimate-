@@ -93,7 +93,8 @@ const jsAssets = [
   "assets/sk-messenger.js",
   "assets/sk-live.js",
   "assets/sk-creator-monetization.js",
-  "assets/sk-easy-mode.js"
+  "assets/sk-easy-mode.js",
+  "assets/sk-theme-mode.js"
 ];
 for (const assetPath of jsAssets) {
   if (!fs.existsSync(assetPath)) {
