@@ -1,7 +1,7 @@
 {
-  "name": "Saad Yousuf Kakar Ultimate — SK Cyber Hub",
-  "short_name": "SK Cyber Hub",
-  "description": "SK Cyber Hub premium home with integrated SK Browser search, apps, AI tools, learning, games, creator resources and world news.",
+  "name": "Saad Yousuf Kakar Ultimate — SYK Cyber Hub",
+  "short_name": "SYK Cyber Hub",
+  "description": "SYK Cyber Hub premium home with integrated SYK Browser search, apps, AI tools, learning, games, creator resources and world news.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -29,7 +29,7 @@
   ],
   "shortcuts": [
     {
-      "name": "Search SK",
+      "name": "Search SYK",
       "short_name": "Search",
       "url": "./browser.html#searchView",
       "icons": [
@@ -41,8 +41,8 @@
       ]
     },
     {
-      "name": "Open SK Hub",
-      "short_name": "SK Hub",
+      "name": "Open SYK Hub",
+      "short_name": "SYK Hub",
       "url": "./",
       "icons": [
         {
