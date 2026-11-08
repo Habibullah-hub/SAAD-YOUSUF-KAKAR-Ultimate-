@@ -57,7 +57,6 @@ async function loadPublic(db){
 async function checkAdmin(db){
  const r=await db.rpc('sk_is_admin');state.isAdmin=!r.error&&r.data===true;
  $('skCreatorAdmin').hidden=!state.isAdmin;
- $('skCreatorOwnerSettings').hidden=!state.isAdmin;
  $('skCreatorMemberSubmit').hidden=!state.user;
  $('skCreatorLoginHint').hidden=!!state.user;
  if(state.isAdmin)await loadAdmin(db);
