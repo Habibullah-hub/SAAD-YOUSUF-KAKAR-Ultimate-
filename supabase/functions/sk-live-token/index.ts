@@ -29,11 +29,11 @@ Deno.serve(async (req: Request) => {
   const livekitUrl = Deno.env.get("LIVEKIT_URL");
   const livekitApiKey = Deno.env.get("LIVEKIT_API_KEY");
   const livekitApiSecret = Deno.env.get("LIVEKIT_API_SECRET");
-  if (!supabaseUrl || !supabaseAnonKey || !livekitUrl || !livekitApiKey || !livekitApiSecret) {
-    return reply(503, { error: "Live service is not configured. No media session was started." });
-  }
-
+  if (!supabaseUrl || !supabaseAnonKey) return reply(503, { error: "Supabase Edge Function configuration is incomplete." });
+  if (!livekitUrl || !livekitApiKey || !livekitApiSecret) return reply(503, { configured: false, error: "LiveKit secrets are missing. Add LIVEKIT_URL, LIVEKIT_API_KEY and LIVEKIT_API_SECRET in Supabase Edge Function Secrets. No paid upgrade is required to add secrets." });
   try {
+    const body = await req.json().catch(() => ({}));
+    if (body?.action === "check") return reply(200, { configured: true });
     const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       global: { headers: { Authorization: `Bearer ${jwt}` } },
       auth: { persistSession: false, autoRefreshToken: false },
@@ -41,7 +41,6 @@ Deno.serve(async (req: Request) => {
     const { data: auth, error: authError } = await supabase.auth.getUser(jwt);
     if (authError || !auth.user) return reply(401, { error: "Session is invalid. Sign in again." });
 
-    const body = await req.json().catch(() => ({}));
     const roomName = String(body?.room || "");
     if (!/^[a-zA-Z0-9_-]{8,80}$/.test(roomName)) return reply(400, { error: "Invalid live room." });
 
