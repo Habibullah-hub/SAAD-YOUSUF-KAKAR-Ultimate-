@@ -56,7 +56,7 @@ async function openConversation(id,profile){
  const host=$('skConnectMessages');host.replaceChildren();
  if(q.error){host.append(el('p','sk-connect-muted',q.error.message));return;}
  (q.data||[]).forEach(addMessage);
- messageChannel=db.channel('sk-messages-'+id).on('postgres_changes',{event:'INSERT',schema:'public',table:'sk_messages',filter:'conversation_id=eq.'+id},payload=>addMessage(payload.new)).subscribe();
+ messageChannel=db.channel('sk-messages-'+id).on('postgres_changes',{event:'INSERT',schema:'public',table:'sk_messages',filter:'conversation_id=eq.'+id},payload=>addMessage(payload.new)).subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')say('Realtime connection failed. Check Supabase Realtime and the Messenger SQL migration.');});
  say('Conversation ready. Private messages are not end-to-end encrypted in this version.');
 }
 function addMessage(msg){
@@ -74,7 +74,7 @@ async function sendMessage(e){
 }
 async function watchIncomingCalls(){
  if(incomingChannel){await db.removeChannel(incomingChannel);incomingChannel=null;}
- incomingChannel=db.channel('sk-incoming-calls-'+user.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'sk_call_sessions',filter:'callee_id=eq.'+user.id},payload=>{if(payload.new.status==='ringing')showIncoming(payload.new);}).subscribe();
+ incomingChannel=db.channel('sk-incoming-calls-'+user.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'sk_call_sessions',filter:'callee_id=eq.'+user.id},payload=>{if(payload.new.status==='ringing')showIncoming(payload.new);}).subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')say('Realtime connection failed. Check Supabase Realtime and the Messenger SQL migration.');});
  const r=await db.from('sk_call_sessions').select('*').eq('callee_id',user.id).eq('status','ringing').order('created_at',{ascending:false}).limit(1);
  if(r.data?.[0])showIncoming(r.data[0]);
 }
@@ -83,7 +83,7 @@ async function showIncoming(call){
  activeCall=call;const p=await db.from('sk_public_profiles').select('display_name').eq('id',call.caller_id).maybeSingle();
  $('skConnectIncomingText').textContent=(p.data?.display_name||'A member')+' is calling ('+call.call_type+').';
  if(callChannel)await db.removeChannel(callChannel);
- callChannel=db.channel('sk-incoming-status-'+call.id).on('postgres_changes',{event:'UPDATE',schema:'public',table:'sk_call_sessions',filter:'id=eq.'+call.id},payload=>{if(['ended','declined','missed'].includes(payload.new.status)){show($('skConnectIncoming'),false);activeCall=null;say('کال ختم ہو چکی ہے۔');if(callChannel){db.removeChannel(callChannel);callChannel=null;}}}).subscribe();
+ callChannel=db.channel('sk-incoming-status-'+call.id).on('postgres_changes',{event:'UPDATE',schema:'public',table:'sk_call_sessions',filter:'id=eq.'+call.id},payload=>{if(['ended','declined','missed'].includes(payload.new.status)){show($('skConnectIncoming'),false);activeCall=null;say('کال ختم ہو چکی ہے۔');if(callChannel){db.removeChannel(callChannel);callChannel=null;}}}).subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')say('Realtime connection failed. Check Supabase Realtime and the Messenger SQL migration.');});
  show($('skConnectIncoming'),true);
 }
 async function sendSignal(recipient,payload){
@@ -98,8 +98,8 @@ async function setupPeer(call,initiator,screenPromise=null){
  pc.onicecandidate=e=>{if(e.candidate&&activeCall)sendSignal(initiator?activeCall.callee_id:activeCall.caller_id,{type:'candidate',candidate:e.candidate.toJSON()}).catch(err=>say('Network signal: '+err.message));};
  pc.ontrack=e=>{const remote=$('skConnectRemoteMedia');if(remote.srcObject!==e.streams[0])remote.srcObject=e.streams[0];show(remote,true);};
  pc.onconnectionstatechange=()=>{const state=pc?.connectionState;if(state==='connected')say('Call connected. Media is exchanged through WebRTC.');if(state==='failed')say('Call connection failed. This network may require a TURN relay, which is not configured in the free setup.');};
- signalChannel=db.channel('sk-call-signal-'+call.id+'-'+user.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'sk_call_signals',filter:'recipient_id=eq.'+user.id},payload=>{const row=payload.new;if(row.call_id===call.id)processSignal(row).catch(e=>say(e.message));}).subscribe();
- callChannel=db.channel('sk-call-status-'+call.id+'-'+user.id).on('postgres_changes',{event:'UPDATE',schema:'public',table:'sk_call_sessions',filter:'id=eq.'+call.id},payload=>{if(payload.new.status==='accepted')say('Call accepted. Connecting…');if(['ended','declined','missed'].includes(payload.new.status)){say('دوسرے ممبر نے کال ختم کر دی۔');cleanupCall();}}).subscribe();
+ signalChannel=db.channel('sk-call-signal-'+call.id+'-'+user.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'sk_call_signals',filter:'recipient_id=eq.'+user.id},payload=>{const row=payload.new;if(row.call_id===call.id)processSignal(row).catch(e=>say(e.message));}).subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')say('Realtime connection failed. Check Supabase Realtime and the Messenger SQL migration.');});
+ callChannel=db.channel('sk-call-status-'+call.id+'-'+user.id).on('postgres_changes',{event:'UPDATE',schema:'public',table:'sk_call_sessions',filter:'id=eq.'+call.id},payload=>{if(payload.new.status==='accepted')say('Call accepted. Connecting…');if(['ended','declined','missed'].includes(payload.new.status)){say('دوسرے ممبر نے کال ختم کر دی۔');cleanupCall();}}).subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')say('Realtime connection failed. Check Supabase Realtime and the Messenger SQL migration.');});
  const media=call.call_type==='video'?await navigator.mediaDevices.getUserMedia({audio:true,video:true}):call.call_type==='screen'&&initiator?await navigator.mediaDevices.getUserMedia({audio:true}):await navigator.mediaDevices.getUserMedia({audio:true});
  localStream=media;
  if(call.call_type==='screen'&&initiator){
