@@ -8,6 +8,7 @@ create table if not exists public.sk_creator_channels (
   platform text not null check (platform in ('youtube','tiktok','facebook')),
   title text not null check (char_length(trim(title)) between 1 and 100),
   channel_url text not null check (channel_url ~* '^https://'),
+  featured_video_url text,
   enabled boolean not null default true,
   updated_at timestamptz not null default now(),
   unique(platform)
@@ -26,6 +27,17 @@ create table if not exists public.sk_creator_submissions (
   reviewed_at timestamptz,
   created_at timestamptz not null default now()
 );
+alter table public.sk_creator_channels add column if not exists featured_video_url text;
+do $featured$
+begin
+  if not exists (select 1 from pg_constraint where conname='sk_creator_channels_featured_video_youtube_check' and conrelid='public.sk_creator_channels'::regclass) then
+    alter table public.sk_creator_channels add constraint sk_creator_channels_featured_video_youtube_check check (
+      featured_video_url is null or (platform='youtube' and featured_video_url ~* '^https://([a-z0-9-]+[.])*(youtube[.]com|youtu[.]be)([:/]|$)')
+    ) not valid;
+  end if;
+end;
+$featured$;
+
 create index if not exists sk_creator_submissions_public_idx
   on public.sk_creator_submissions(is_trending desc,trend_order asc,created_at desc)
   where status='approved';
