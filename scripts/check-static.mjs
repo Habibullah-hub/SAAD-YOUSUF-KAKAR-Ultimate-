@@ -38,12 +38,13 @@ if (/\beval\s*\(|\bnew\s+Function\s*\(/.test(html)) {
 }
 
 
+let manifest = null;
 const manifestPath = "manifest.webmanifest";
 const workerPath = "sw.js";
 if (!fs.existsSync(manifestPath)) errors.push("PWA manifest is missing.");
 else {
   try {
-    const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+    manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
     if (!manifest.name || !manifest.start_url || !manifest.scope || manifest.display !== "standalone") {
       errors.push("PWA manifest is missing required install metadata.");
     }
@@ -154,7 +155,7 @@ const browserHtml = fs.existsSync("browser.html") ? fs.readFileSync("browser.htm
 if (!browserHtml.includes('id="searchForm"') || !browserHtml.includes('id="searchForm3"')) {
   errors.push("SK Browser is missing its global or SK-directory search form.");
 }
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v24"')) {
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v26"')) {
   errors.push("Service worker cache version was not advanced for the updated public shell.");
 }
 for (const assetPath of ["assets/sk-motion-performance.css", "assets/sk-browser-experience.css"]) {
@@ -178,7 +179,7 @@ if (!fs.existsSync("assets/sk-theme-mode.js") || !html.includes("assets/sk-theme
 if (!html.includes('id="skAdminButton"') || !html.includes('alt="SYK"')) errors.push("Visible homepage admin logo must use the SYK mark.");
 if (!html.includes("YouTube Only") || !html.includes("const mode=forcedMode||modeInput.value||'all';")) errors.push("Related-video search must honor the selected YouTube-only filter.");
 if (!html.includes("await initializeSKDatabase()")) errors.push("Admin login must retry database initialization before reporting a connection failure.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v24"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v26"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
 for (const assetPath of ["assets/sk-theme-mode.css","assets/sk-theme-mode.js","assets/sk-news-premium.css","assets/syk-neon-refresh.css"]) {
   if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 }
@@ -189,6 +190,22 @@ if (!browserHtml.includes('id="sykVideoHub"') || !browserHtml.includes('id="sykV
 if (!browserHtml.includes('id="sykAdminMediaForm"') || !browserHtml.includes('id="sykVideoDialog"')) errors.push("SYK Browser is missing owner media publishing or the video popup player.");
 if (!browserHtml.includes('sk-browser-video-hub.js')) errors.push("SYK Browser video hub controller is not loaded.");
 if (!fs.existsSync("supabase/SK-BROWSER-VIDEO-HUB.sql")) errors.push("Owner-managed video/image/channel media migration is missing.");
+
+/* SYK Browser sticky discovery, owner-first ads, and video categories. */
+if (!browserHtml.includes('class="top"') || !browserHtml.includes('browser-sticky-search')) errors.push("SYK Browser logo and search must remain in the sticky header.");
+if (!browserHtml.includes('id="sykVideoShuffle"') || !browserHtml.includes('data-video-category="islamic"') || !browserHtml.includes('data-video-category="news"') || !browserHtml.includes('data-video-category="education"')) errors.push("SYK Browser must expose the Islamic, news and education video filters and shuffle control.");
+if (!browserHtml.includes('id="sykMemberCategory"') || !browserHtml.includes('id="sykAdminCategory"')) errors.push("Member and Owner Admin video forms must support explicit content categories.");
+if (!fs.existsSync("supabase/SYK-BROWSER-VIDEO-CATEGORIES.sql")) errors.push("Video category migration is missing.");
+const browserVideoJsPath = "assets/sk-browser-video-hub.js";
+const browserVideoCssPath = "assets/sk-browser-video-hub.css";
+if (fs.existsSync(browserVideoJsPath)) {
+  const videoJs = fs.readFileSync(browserVideoJsPath, "utf8");
+  if (!videoJs.includes("function shuffleList") || !videoJs.includes("is_owner_ad") || !videoJs.includes("data-video-category")) errors.push("Video feed must shuffle trending/approved videos while pinning owner featured ads first.");
+  const videoSyntax = spawnSync(process.execPath, ["--check", browserVideoJsPath], { encoding: "utf8" });
+  if (videoSyntax.status !== 0) errors.push(`SYK Browser video controller has a syntax error:\\n${videoSyntax.stderr || videoSyntax.stdout}`);
+}
+if (fs.existsSync(browserVideoCssPath) && !fs.readFileSync(browserVideoCssPath, "utf8").includes(".syk-video-filter.active")) errors.push("Video category filters are missing their active state styling.");
+
 const communityExperience = fs.readFileSync("assets/sk-community.js", "utf8");
 if (!communityExperience.includes("SK Community Trending") || !communityExperience.includes("Rank ")) errors.push("Community trending ranks and truthful scope label are missing.");
 
@@ -203,12 +220,16 @@ if (!html.includes('id="skCreatorOwnerPlayer"') || !html.includes('id="skCreator
 if (!html.includes('id="skCreatorSubmitToggle"') || !html.includes('id="skCreatorMySubmissions"')) errors.push("Video-only member submit control or submission status panel is missing.");
 if (!html.includes('id="skCreatorSaveFeatured"')) errors.push("Owner featured-video-only setting is missing.");
 if (!html.includes('id="skCreatorRegisteredMembers"')) errors.push("Owner-only registered members panel is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v24"')) errors.push("Service worker cache was not advanced for Creator Hub.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v26"')) errors.push("Service worker cache was not advanced for Creator Hub.");
 for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]) if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 
 
 const browser = fs.readFileSync("browser.html","utf8");
 if (!html.includes("SYK Browser is the default public landing page")) errors.push("SYK Browser default homepage redirect is missing.");
+const manifest = JSON.parse(fs.readFileSync("manifest.webmanifest", "utf8"));
+if (manifest.start_url !== "./browser.html") errors.push("Installed SYK app must launch directly into SYK Browser.");
+if (!html.includes('location.replace(new URL("browser.html"+location.search,location.href).href)')) errors.push("Website root must redirect visitors to SYK Browser while preserving search queries.");
+if (fs.readFileSync(pwaRegisterPath, "utf8").includes("SK Cyber Hub") || fs.readFileSync(pwaRegisterPath, "utf8").includes("SK App")) errors.push("Visible PWA branding must use SYK, not SK.");
 if (!browser.includes('id="sykVideoHub"')) errors.push("SYK Browser video feed is missing.");
 if (!browser.includes('id="sykVideoSearch"')) errors.push("SYK Browser video search control is missing.");
 
@@ -227,7 +248,7 @@ if (!html.includes('data-syk-filter="soft"') || !html.includes('id="skLiveSwitch
 const liveExperience = fs.readFileSync("assets/sk-live.js","utf8");
 if (!liveExperience.includes("captureStream(24)") || !liveExperience.includes("publishTrack(videoTrack")) errors.push("SYK Live camera filters are not included in the broadcast stream.");
 if (!liveExperience.includes("skLiveLoginGate")) errors.push("SYK Live login gate is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v24"')) errors.push("Service worker cache was not advanced for the new SYK features.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v26"')) errors.push("Service worker cache was not advanced for the new SYK features.");
 
 
 /* Premium profile, header, triple-tap admin and Quran typography regressions. */
@@ -239,6 +260,16 @@ if (!premiumJs.includes("1250") || !premiumJs.includes("skAccountUnreadBadge") |
 
 if (!premiumJs.includes("onAuthStateChange") || !premiumJs.includes("sk_creator_admin_alerts")) errors.push("Profile notification refresh or owner alert integration is missing.");
 if (!fs.readFileSync("assets/sk-premium-interactions.css", "utf8").includes("Noto Naskh Arabic")) errors.push("Quran Arabic typography fallback stack is missing.");
+
+
+/* SEO identity and crawlability regression checks. */
+if (!html.includes('rel="canonical" href="https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/"')) errors.push("Homepage canonical URL must match the currently deployed GitHub Pages project URL.");
+if (!html.includes('rel="icon" type="image/png" sizes="192x192"')) errors.push("Homepage must expose a crawlable square PNG favicon candidate.");
+if (!html.includes('rel="apple-touch-icon" sizes="192x192" href="./assets/sk-cyber-hub-icon-192.png"')) errors.push("Apple touch icon must use the existing PNG app icon.");
+if (!html.includes('property="og:image"') || !html.includes('name="twitter:image"')) errors.push("Homepage social metadata must include the public preview image.");
+if (!html.includes('"@type":"Organization"') || !html.includes('"logo":{"@type":"ImageObject"')) errors.push("Homepage Organization JSON-LD must include the actual public logo.");
+if (!fs.existsSync("robots.txt") || !fs.readFileSync("robots.txt","utf8").includes("Sitemap:")) errors.push("Root robots.txt must advertise the sitemap.");
+if (!fs.existsSync("sitemap.xml") || !fs.readFileSync("sitemap.xml","utf8").includes("<urlset")) errors.push("A valid root sitemap.xml must exist.");
 
 if (errors.length) {
   console.error(errors.join("\n\n"));
