@@ -6,13 +6,14 @@ const $=id=>document.getElementById(id);
 let client=null,bound=false,renderSeq=0;
 const nameOf=user=>String(user?.user_metadata?.first_name||user?.user_metadata?.full_name||user?.email?.split('@')[0]||'Member').trim().slice(0,40)||'Member';
 const initials=name=>name.split(/[\s._-]+/).filter(Boolean).slice(0,2).map(x=>x[0]?.toUpperCase()||'').join('')||'U';
+function avatarUrl(user){const candidates=[user?.user_metadata?.avatar_url,user?.user_metadata?.picture,...(user?.identities||[]).flatMap(x=>[x?.identity_data?.avatar_url,x?.identity_data?.picture])];for(const value of candidates){try{const url=new URL(String(value||''));if(url.protocol==='https:')return url.href;}catch(_){}}return '';}
 function addStyle(){
  if($('skAccountPresenceStyle'))return;
  const style=document.createElement('style');style.id='skAccountPresenceStyle';
  style.textContent=`
  .sk-account-presence{position:relative;display:inline-flex;align-items:center;z-index:80;font:inherit}
  .sk-account-trigger{display:flex;align-items:center;gap:8px;max-width:220px;min-height:40px;padding:4px 10px 4px 5px;border:1px solid #385675;border-radius:999px;background:linear-gradient(135deg,#122a43,#111b31);color:#f1f7ff;cursor:pointer;text-align:left}
- .sk-account-avatar{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#53e0c1,#8a9dff);color:#071522;font-size:11px;font-weight:950}
+ .sk-account-avatar{position:relative;overflow:hidden;width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#53e0c1,#8a9dff);color:#071522;font-size:11px;font-weight:950}.sk-account-avatar img{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:50%;object-fit:cover;background:#122a43}
  .sk-account-copy{min-width:0;display:grid;line-height:1.2}.sk-account-copy b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}.sk-account-copy small{color:#a9bdd4;font-size:9px}
  .sk-account-pop{position:absolute;right:0;top:calc(100% + 9px);width:min(280px,calc(100vw - 28px));padding:13px;border:1px solid #365674;border-radius:15px;background:#0d1a2c;color:#eff6ff;box-shadow:0 18px 48px #0009}
  .sk-account-pop[hidden]{display:none}.sk-account-pop strong{display:block;overflow-wrap:anywhere;font-size:13px}.sk-account-pop p{margin:5px 0 10px;color:#a9bdd4;font-size:11px;overflow-wrap:anywhere}
@@ -63,7 +64,7 @@ async function paintUser(user){
  const name=nameOf(user);let role='member';
  try{const result=await client.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();if(seq!==renderSeq)return;if(!result.error&&result.data?.role==='admin')role='admin';}
  catch(_){}
- t.textContent=name;s.textContent=role==='admin'?'Owner Admin':'Signed in';a.textContent=initials(name);b.dataset.signedIn='1';
+ t.textContent=name;s.textContent=role==='admin'?'Owner Admin':'Signed in';a.replaceChildren();a.textContent=initials(name);const photo=avatarUrl(user);if(photo){const img=document.createElement('img');img.src=photo;img.alt='';img.loading='lazy';img.referrerPolicy='no-referrer';img.addEventListener('error',()=>img.remove(),{once:true});a.append(img);}b.dataset.signedIn='1';
  p.replaceChildren();
  const strong=document.createElement('strong');strong.textContent=name;
  const email=document.createElement('p');email.textContent=user.email||'Signed-in account';
