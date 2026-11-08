@@ -44,12 +44,14 @@ function mount(){
  const copy=document.createElement('span');copy.className='sk-account-copy';const title=document.createElement('b');title.id='skAccountTitle';title.textContent='Account';const sub=document.createElement('small');sub.id='skAccountSubtitle';sub.textContent='Guest';
  copy.append(title,sub);trigger.append(avatar,copy);
  const pop=document.createElement('div');pop.className='sk-account-pop';pop.id='skAccountPopover';pop.hidden=true;
+ let closeTimer=0;
+ const closePopover=()=>{if(pop.hidden)return;clearTimeout(closeTimer);pop.classList.add('sk-pop-closing');trigger.setAttribute('aria-expanded','false');closeTimer=setTimeout(()=>{pop.hidden=true;pop.classList.remove('sk-pop-closing');},170);};
  wrap.append(trigger,pop);host.append(wrap);
  trigger.addEventListener('click',()=>{
   if(!client||!trigger.dataset.signedIn){if(location.pathname.endsWith('/browser.html'))location.href='./#community';else if(typeof window.openMemberAuthModal==='function')window.openMemberAuthModal('login');else location.href='./#community';return;}
-  pop.hidden=!pop.hidden;trigger.setAttribute('aria-expanded',String(!pop.hidden));
+  if(pop.hidden){clearTimeout(closeTimer);pop.classList.remove('sk-pop-closing');pop.hidden=false;trigger.setAttribute('aria-expanded','true');}else closePopover();
  });
- document.addEventListener('click',e=>{if(!wrap.contains(e.target)){pop.hidden=true;trigger.setAttribute('aria-expanded','false');}});
+ document.addEventListener('click',e=>{if(!wrap.contains(e.target))closePopover();});
  return true;
 }
 function paintGuest(){
