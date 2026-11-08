@@ -8,7 +8,7 @@ if (!/<meta\s+name=["']viewport["']/i.test(html)) errors.push("index.html is mis
 if (!/<title>[^<]+<\/title>/i.test(html)) errors.push("index.html is missing a page title.");
 if (html.includes("\\n</style>\\n")) errors.push("index.html contains literal escaped newline markers around a style block; use real line breaks.");
 if (!html.includes("window.skRunDirectorySearch=()=>{runSearch();filterApps();}")) errors.push("Header search is missing the unified directory-search entry point.");
-if (!html.includes('id="search"') || html.includes('id="searchBtn"')) errors.push("Header search should be input-only without a separate search button.");
+if (!html.includes('id="search"') || !html.includes('id="searchBtn"') || !html.includes('class="searchbox syk-home-header-search"')) errors.push("Homepage header must include its visible unified search field and Search button.");
 if (html.includes("headerSearch.addEventListener('input'")) errors.push("A legacy header search input handler is still present.");
 
 const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)];
@@ -154,7 +154,7 @@ const browserHtml = fs.existsSync("browser.html") ? fs.readFileSync("browser.htm
 if (!browserHtml.includes('id="searchForm"') || !browserHtml.includes('id="searchForm3"')) {
   errors.push("SK Browser is missing its global or SK-directory search form.");
 }
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v20"')) {
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v21"')) {
   errors.push("Service worker cache version was not advanced for the updated public shell.");
 }
 for (const assetPath of ["assets/sk-motion-performance.css", "assets/sk-browser-experience.css"]) {
@@ -178,7 +178,7 @@ if (!fs.existsSync("assets/sk-theme-mode.js") || !html.includes("assets/sk-theme
 if (!html.includes('id="skAdminButton"') || !html.includes('alt="SYK"')) errors.push("Visible homepage admin logo must use the SYK mark.");
 if (!html.includes("YouTube Only") || !html.includes("const mode=forcedMode||modeInput.value||'all';")) errors.push("Related-video search must honor the selected YouTube-only filter.");
 if (!html.includes("await initializeSKDatabase()")) errors.push("Admin login must retry database initialization before reporting a connection failure.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v20"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v21"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
 for (const assetPath of ["assets/sk-theme-mode.css","assets/sk-theme-mode.js","assets/sk-news-premium.css","assets/syk-neon-refresh.css"]) {
   if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 }
@@ -203,7 +203,7 @@ if (!html.includes('id="skCreatorOwnerPlayer"') || !html.includes('id="skCreator
 if (!html.includes('id="skCreatorSubmitToggle"') || !html.includes('id="skCreatorMySubmissions"')) errors.push("Video-only member submit control or submission status panel is missing.");
 if (!html.includes('id="skCreatorSaveFeatured"')) errors.push("Owner featured-video-only setting is missing.");
 if (!html.includes('id="skCreatorRegisteredMembers"')) errors.push("Owner-only registered members panel is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v20"')) errors.push("Service worker cache was not advanced for Creator Hub.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v21"')) errors.push("Service worker cache was not advanced for Creator Hub.");
 for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]) if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 
 

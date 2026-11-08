@@ -9,7 +9,7 @@ function clearMedia(){const host=$('skLiveMedia');host.replaceChildren();}
 function attachTrack(track){const media=track.attach();media.autoplay=true;media.playsInline=true;if(track.kind==='audio'){media.style.display='none';} $('skLiveMedia').append(media);}
 async function tokenFor(roomName){
  const r=await db.functions.invoke('sk-live-token',{body:{room:roomName}});
- if(r.error)throw new Error(r.error.message||'Live token service is not deployed or configured.');
+ if(r.error){const status=r.error.context?.status;const detail=r.data?.error||'';if(status===503||/not configured/i.test(detail))throw new Error('LiveKit ابھی مکمل configure نہیں۔ Supabase → Edge Functions → Secrets میں LIVEKIT_URL، LIVEKIT_API_KEY اور LIVEKIT_API_SECRET شامل کریں۔ کوئی paid upgrade یا card درکار نہیں۔');throw new Error(detail||r.error.message||'Live token service is unavailable.');}
  if(r.data?.error)throw new Error(r.data.error);
  if(!r.data?.serverUrl||!r.data?.token)throw new Error('Live token response is incomplete.');
  return r.data;
