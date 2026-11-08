@@ -163,6 +163,24 @@ if (!serviceWorkerSource.includes('new URL("browser.html", APP_ROOT).href')) {
   errors.push("SK Browser is not included in the offline public shell allowlist.");
 }
 
+/* SK appearance, news, community trend and branded search regressions. */
+for (const [assetPath, page, label] of [
+  ["assets/sk-theme-mode.css", html, "day/night theme"],
+  ["assets/sk-news-premium.css", html, "news layout"]
+]) {
+  if (!fs.existsSync(assetPath)) errors.push(`Missing ${label} stylesheet: ${assetPath}`);
+  else if (!page.includes(assetPath)) errors.push(`Homepage does not load ${assetPath}.`);
+}
+if (!fs.existsSync("assets/sk-theme-mode.js") || !html.includes("assets/sk-theme-mode.js")) errors.push("Persistent homepage day/night toggle is missing.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v10"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
+for (const assetPath of ["assets/sk-theme-mode.css","assets/sk-theme-mode.js","assets/sk-news-premium.css"]) {
+  if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
+}
+const browserExperience = fs.readFileSync("browser.html", "utf8");
+if (!browserExperience.includes("SK Browser stays open") || !browserExperience.includes("target='_blank'")) errors.push("External web search must preserve the SK Browser page in its own tab.");
+const communityExperience = fs.readFileSync("assets/sk-community.js", "utf8");
+if (!communityExperience.includes("SK Community Trending") || !communityExperience.includes("Rank ")) errors.push("Community trending ranks and truthful scope label are missing.");
+
 if (errors.length) {
   console.error(errors.join("\n\n"));
   process.exit(1);
