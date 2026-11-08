@@ -101,3 +101,8 @@ body.sk-day-mode .syk-daily-fold-toggle{background:#e7f5f4;color:#14504e;border-
 
 .sk-account-pop.sk-pop-closing{animation:sk-profile-close .16s ease-in forwards!important;pointer-events:none}
 @keyframes sk-profile-close{to{opacity:0;transform:translateY(-7px) scale(.97);filter:blur(2px)}}
+
+/* Keep the unread marker outside the cropped avatar image circle. */
+.sk-account-trigger{position:relative!important;overflow:visible!important}
+.sk-account-unread-badge{position:absolute;z-index:8;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 4px;display:inline-flex;align-items:center;justify-content:center;border:2px solid #0b1628;border-radius:999px;background:linear-gradient(135deg,#ff4d78,#ff1744);color:#fff;font:900 9px/1 system-ui;box-shadow:0 0 12px rgba(255,23,68,.55);pointer-events:none}
+.sk-account-unread-badge[hidden]{display:none!important}
