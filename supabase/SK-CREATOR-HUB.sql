@@ -28,6 +28,7 @@ create table if not exists public.sk_creator_submissions (
   created_at timestamptz not null default now()
 );
 alter table public.sk_creator_channels add column if not exists featured_video_url text;
+alter table public.sk_creator_submissions add column if not exists review_message text;
 do $featured$
 begin
   if not exists (select 1 from pg_constraint where conname='sk_creator_channels_featured_video_youtube_check' and conrelid='public.sk_creator_channels'::regclass) then
@@ -87,7 +88,7 @@ for all to authenticated using (public.sk_is_admin()) with check (public.sk_is_a
 
 drop policy if exists sk_creator_submissions_public_approved on public.sk_creator_submissions;
 create policy sk_creator_submissions_public_approved on public.sk_creator_submissions
-for select to anon,authenticated using (status='approved' or public.sk_is_admin());
+for select to anon,authenticated using (status='approved' or user_id=(select auth.uid()) or public.sk_is_admin());
 drop policy if exists sk_creator_submissions_member_insert on public.sk_creator_submissions;
 create policy sk_creator_submissions_member_insert on public.sk_creator_submissions
 for insert to authenticated with check (
