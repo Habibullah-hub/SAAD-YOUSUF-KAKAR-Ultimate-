@@ -240,6 +240,16 @@ if (!premiumJs.includes("1250") || !premiumJs.includes("skAccountUnreadBadge") |
 if (!premiumJs.includes("onAuthStateChange") || !premiumJs.includes("sk_creator_admin_alerts")) errors.push("Profile notification refresh or owner alert integration is missing.");
 if (!fs.readFileSync("assets/sk-premium-interactions.css", "utf8").includes("Noto Naskh Arabic")) errors.push("Quran Arabic typography fallback stack is missing.");
 
+
+/* SEO identity and crawlability regression checks. */
+if (!html.includes('rel="canonical" href="https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/"')) errors.push("Homepage canonical URL must match the currently deployed GitHub Pages project URL.");
+if (!html.includes('rel="icon" type="image/png" sizes="192x192"')) errors.push("Homepage must expose a crawlable square PNG favicon candidate.");
+if (!html.includes('rel="apple-touch-icon" sizes="192x192" href="./assets/sk-cyber-hub-icon-192.png"')) errors.push("Apple touch icon must use the existing PNG app icon.");
+if (!html.includes('property="og:image"') || !html.includes('name="twitter:image"')) errors.push("Homepage social metadata must include the public preview image.");
+if (!html.includes('"@type":"Organization"') || !html.includes('"logo":{"@type":"ImageObject"')) errors.push("Homepage Organization JSON-LD must include the actual public logo.");
+if (!fs.existsSync("robots.txt") || !fs.readFileSync("robots.txt","utf8").includes("Sitemap:")) errors.push("Root robots.txt must advertise the sitemap.");
+if (!fs.existsSync("sitemap.xml") || !fs.readFileSync("sitemap.xml","utf8").includes("<urlset")) errors.push("A valid root sitemap.xml must exist.");
+
 if (errors.length) {
   console.error(errors.join("\n\n"));
   process.exit(1);
