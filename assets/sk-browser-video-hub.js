@@ -33,7 +33,7 @@ function deviceRegion(){
 }
 function updateLocalizedVideoLinks(){
  const select=$('sykVideoLanguage'),host=$('sykLocalizedVideoLinks');if(!select||!host)return;
- const selected=select.value||'auto',raw=selected==='auto'?(navigator.language||'en'):selected,parts=raw.split('-'),lang=(parts[0]||'en').toLowerCase(),region=(parts[1]||deviceRegion()).toUpperCase(),terms=localizedTerms[lang]||Object.fromEntries(Object.entries(localizedTerms.en).map(([k,v])=>[k,v+' '+(languageNames[lang]||lang)+' language']));
+ const selected=select.value||'auto',raw=selected==='auto'?(navigator.language||'en'):selected,parts=raw.split('-'),lang=(parts[0]||'en').toLowerCase(),region=(selected==='auto'?(deviceRegion()||parts[1]):(parts[1]||deviceRegion())).toUpperCase(),terms=localizedTerms[lang]||Object.fromEntries(Object.entries(localizedTerms.en).map(([k,v])=>[k,v+' '+(languageNames[lang]||lang)+' language']));
  const topicLabels={trending:'🔥 عالمی ٹرینڈنگ',islamic:'🕌 اسلامی ویڈیوز',health:'🩺 صحت',news:'🌍 خبریں',education:'📚 تعلیم',quran:'📖 قرآن تلاوت + ترجمہ'};
  host.querySelectorAll('a[data-syk-topic]').forEach(a=>{const topic=a.dataset.sykTopic,query=terms[topic]||localizedTerms.en[topic];const params=new URLSearchParams({search_query:query,hl:lang});if(region)params.set('gl',region);a.href='https://www.youtube.com/results?'+params.toString();a.textContent=topicLabels[topic]||a.textContent;});
  const note=$('sykLanguageStatus');if(note)note.textContent='منتخب زبان: '+(languageNames[lang]||lang.toUpperCase())+(region?' · علاقائی نتائج: '+region:'');
