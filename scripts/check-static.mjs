@@ -204,7 +204,8 @@ if (fs.existsSync(browserVideoJsPath)) {
   if (videoSyntax.status !== 0) errors.push(`SYK Browser video controller has a syntax error:\\n${videoSyntax.stderr || videoSyntax.stdout}`);
 }
 if (fs.existsSync(browserVideoCssPath) && !fs.readFileSync(browserVideoCssPath, "utf8").includes(".syk-video-filter.active")) errors.push("Video category filters are missing their active state styling.");
-\nconst communityExperience = fs.readFileSync("assets/sk-community.js", "utf8");
+
+const communityExperience = fs.readFileSync("assets/sk-community.js", "utf8");
 if (!communityExperience.includes("SK Community Trending") || !communityExperience.includes("Rank ")) errors.push("Community trending ranks and truthful scope label are missing.");
 
 /* SK Creator Hub owner permission and embed regressions. */
