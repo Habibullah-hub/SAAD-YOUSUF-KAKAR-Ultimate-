@@ -1598,11 +1598,27 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 <div class="category-group"><strong>Work & Connect</strong><a href="#jobs" data-sk-view="jobs">💼 Jobs & Opportunities</a><a href="#earnings-model" data-sk-view="earnings-model">💰 Earning & Rewards</a><a href="#community" data-sk-view="community">👥 Community</a><a href="#sk-connect" data-sk-view="sk-connect">💬 Messenger & Calls</a><a href="#sk-live" data-sk-view="sk-live">🔴 SK Live</a></div>
 <div class="category-group"><strong>More</strong><a href="#deals" data-sk-view="deals">🎁 Deals & Freebies</a><a href="#security-privacy" data-sk-view="security-privacy">🛡 Security & Privacy</a><a href="#quick-tools" data-sk-view="quick-tools">⚙ Instant Tools</a><a href="#sk-world-network" data-sk-view="sk-world-network">◎ SK World Network</a><a href="#global-growth" data-sk-view="global-growth">↗ Global Growth</a></div>
 </div>
-</div><div class="searchbox"><input id="search" type="search" placeholder="Search apps, AI, online tools, software and news..." aria-label="Search the SYK Cyber Hub directory"><button id="searchBtn" class="search-icon-button" type="button" aria-label="Search" title="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg></button></div></div></div>
+</div><div class="searchbox"><input id="search" type="search" placeholder="Search apps, AI, online tools, software and news..." aria-label="Search the SYK Cyber Hub directory"></div></div></div>
 </header>
 
 <p id="empty" class="empty hidden">No matching category found. Try another search.</p>
 <main id="tab-home">
+<section class="section wrap sk-creator-hub" id="skCreatorHub">
+ <div class="sk-creator-head"><div><span class="sk-kicker">SYK CREATOR HUB · OWNER FIRST</span><h2>Official Channels & Creator Videos</h2><p>سب سے پہلے مالک کے Official channels اور ویڈیو، اس کے بعد ممبرز کی منظور شدہ ویڈیوز اور چینلز۔</p></div><span class="sk-live-pill"><i></i> Admin approved</span></div>
+ <div class="sk-creator-owner-block"><h3>My Official Channels</h3><div id="skCreatorOwnerLinks" class="sk-creator-owner-links"><span class="sk-creator-muted">Loading official channels…</span></div><div id="skCreatorOwnerFeatured" class="sk-creator-owner-featured" hidden><h3>My Featured YouTube Video</h3><div id="skCreatorOwnerPlayer"></div></div></div>
+ <div class="sk-creator-member-block"><h3>Member Videos · Below Owner</h3><p class="sk-creator-muted">ممبرز کی ویڈیوز صرف آپ کی منظوری کے بعد یہاں آئیں گی۔ ویڈیو چلانے کے لیے Play دبائیں۔</p><div id="skCreatorMemberVideos" class="sk-creator-grid"></div></div>
+ <div class="sk-creator-member-block"><h3>Approved Member Channels</h3><div id="skCreatorMemberChannels" class="sk-creator-owner-links"></div></div>
+ <div class="sk-creator-submit" id="skCreatorMemberSubmit" hidden><h3>Share your channel or video</h3><p class="sk-creator-muted">Member login ضروری ہے۔ آپ کا لنک منظوری سے پہلے کسی کو نظر نہیں آئے گا۔</p><form id="skCreatorForm" class="sk-creator-form">
+ <label>Link type<select id="skCreatorType"><option value="video">Video</option><option value="channel">Channel / Page</option></select></label><label>Platform<select id="skCreatorPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
+ <label style="grid-column:1/-1">Title<input id="skCreatorTitle" required maxlength="120" placeholder="Your video or channel name"></label><label style="grid-column:1/-1">Public link<input id="skCreatorUrl" type="url" required placeholder="https://…" autocomplete="url"></label><button class="sk-creator-btn" type="submit">Submit for Admin approval</button></form></div>
+ <p id="skCreatorLoginHint" class="sk-creator-muted">اپنا لنک بھیجنے کے لیے پہلے <button type="button" class="sk-creator-btn" onclick="openMemberAuthModal('login')">Member Login</button> کریں۔</p>
+ <p id="skCreatorStatus" class="sk-creator-status" role="status" aria-live="polite">Creator Hub database connection کا انتظار ہے۔</p>
+ <div id="skCreatorAdmin" class="sk-creator-admin" hidden><h3>Owner Admin · Review & Channel Settings</h3><p class="sk-creator-muted">صرف Admin آپ کے Official links، Featured YouTube video اور ممبرز کی درخواستیں manage کرسکتا ہے۔</p>
+ <h3>My official channels</h3><p class="sk-creator-muted">YouTube channel link کے ساتھ ایک مخصوص YouTube video URL بھی دیں تاکہ وہ اسی صفحے پر Play ہو۔</p><div id="skCreatorChannelSettings" class="sk-creator-form"></div><button type="button" class="sk-creator-btn" id="skCreatorSaveChannels">Save my channel links</button>
+ <h3 style="margin-top:18px">Member approval queue</h3><button type="button" class="sk-creator-btn" id="skCreatorRefresh">Refresh requests</button><div id="skCreatorQueue"></div>
+ <h3 style="margin-top:18px">Registered Members</h3><p class="sk-creator-muted">یہ فہرست صرف Owner Admin دیکھ سکتا ہے۔</p><button type="button" class="sk-creator-btn" id="skCreatorMembersToggle" aria-expanded="false">Open registered members</button><div id="skCreatorRegisteredMembers" hidden></div></div>
+ <p class="sk-creator-note">Owner links are displayed first. Member videos and channels appear below only after Admin approval. YouTube featured video playback is embedded on this page; some videos may have embedding disabled by their publisher.</p>
+</section>
 <section class="hero wrap store-hero sk-ultimate-hero" aria-labelledby="skUltimateTitle">
  <div class="sk-hero-copy">
   <span class="sk-hero-kicker"><i aria-hidden="true"></i> THE DIGITAL UNIVERSE BY SK</span>
@@ -1679,32 +1695,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
  <div class="sk-home-shortcuts"><button type="button" data-sk-home-search="free AI video">Find free AI video tools</button><button type="button" data-sk-home-search="Android apps">Browse Android apps</button><button type="button" data-sk-home-search="Saudi survey rewards">Saudi survey opportunities</button></div>
 </section>
 ;
-<section class="section wrap sk-creator-hub" id="skCreatorHub">
- <div class="sk-creator-head"><div><span class="sk-kicker">SK CREATOR HUB · OWNER APPROVED</span><h2>My Channels & Trending Videos</h2><p>Official owner channels first. Member videos appear only after Admin permission.</p></div><span class="sk-live-pill"><i></i> Permission-based</span></div>
- <div id="skCreatorOwnerLinks" class="sk-creator-owner-links" aria-label="Official owner social channels"><span class="sk-creator-muted">Loading official channels…</span></div>
- <div class="sk-creator-tabs"><button type="button" aria-pressed="true" data-sk-creator-tab="trending">🔥 Trending now</button><button type="button" aria-pressed="false" data-sk-creator-tab="more">▶ More videos</button><button type="button" aria-pressed="false" data-sk-creator-tab="channels">👤 Member channels</button></div>
- <div id="skCreatorTrendingBlock"><h3>🔥 Trending videos</h3><p class="sk-creator-muted">صرف Admin کی منتخب کردہ منظور شدہ ویڈیوز؛ کوئی جعلی live views یا popularity numbers نہیں۔</p><div id="skCreatorTrending" class="sk-creator-grid"></div></div>
- <div id="skCreatorMoreBlock" hidden><h3 style="margin-top:22px">▶ More approved videos</h3><div id="skCreatorMore" class="sk-creator-grid"></div></div>
- <div id="skCreatorChannelsBlock" hidden><h3 style="margin-top:22px">👤 Approved member channels</h3><div id="skCreatorMemberChannels" class="sk-creator-owner-links"></div></div>
- <div class="sk-creator-submit" id="skCreatorMemberSubmit" hidden><h3>Share your channel or video</h3><p class="sk-creator-muted">Member login ضروری ہے۔ آپ کا لنک منظوری سے پہلے کسی کو نظر نہیں آئے گا۔</p>
-  <form id="skCreatorForm" class="sk-creator-form">
-   <label>Link type<select id="skCreatorType"><option value="video">Video</option><option value="channel">Channel / Page</option></select></label>
-   <label>Platform<select id="skCreatorPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
-   <label style="grid-column:1/-1">Title<input id="skCreatorTitle" required maxlength="120" placeholder="Your video or channel name"></label>
-   <label style="grid-column:1/-1">Public link<input id="skCreatorUrl" type="url" required placeholder="https://…" autocomplete="url"></label>
-   <button class="sk-creator-btn" type="submit">Submit for Admin approval</button>
-  </form>
- </div>
- <p id="skCreatorLoginHint" class="sk-creator-muted">اپنا لنک بھیجنے کے لیے پہلے <button type="button" class="sk-creator-btn" onclick="openMemberAuthModal('login')">Member Login</button> کریں۔</p>
- <p id="skCreatorStatus" class="sk-creator-status" role="status" aria-live="polite">Creator Hub database connection کا انتظار ہے۔</p>
- <div id="skCreatorAdmin" class="sk-creator-admin" hidden>
-  <h3>Owner Admin · Review & Channel Settings <span id="skCreatorPendingBadge" class="sk-creator-tag" hidden>0</span></h3>
-  <p class="sk-creator-muted">صرف Admin آپ کے Official links محفوظ اور ممبرز کے لنکس approve/reject کرسکتا ہے۔</p>
-  <h3>My official channels</h3><div id="skCreatorChannelSettings" class="sk-creator-form"></div><button type="button" class="sk-creator-btn" id="skCreatorSaveChannels">Save my channel links</button>
-  <h3 style="margin-top:18px">Member approval queue</h3><button type="button" class="sk-creator-btn" id="skCreatorRefresh">Refresh requests</button><div id="skCreatorQueue"></div>
- </div>
- <p class="sk-creator-note">Playback is click-to-play and uses each platform's official embed where available. Some videos/pages block embedding; use the original-platform link in that case. “Trending” here means owner-curated priority, not a verified global TikTok/YouTube/Facebook ranking. Member links are private until approved.</p>
-</section>
+
 
 <section class="section wrap sk-featured-section" id="skFeaturedFeed">
  <div class="section-head"><div><h2>Featured discoveries</h2><p>A quick starting point. Open a category to see its full collection.</p></div><span class="section-count">UPDATED HUB</span></div>
