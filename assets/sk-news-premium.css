@@ -1,0 +1,26 @@
+/* SK Cyber Hub — refreshed editorial news layout */
+.news-section{padding:clamp(18px,3vw,30px)!important;border:1px solid #27445e;border-radius:24px;background:radial-gradient(ellipse at 95% 0,#1d56704d,transparent 38%),linear-gradient(145deg,#101f35,#0b1728)!important;box-shadow:0 18px 50px #0003}
+.news-section>.section-head{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #ffffff20}
+.news-section>.section-head h2{font-size:clamp(24px,3vw,32px)!important;letter-spacing:-.6px}
+.news-search-panel{padding:clamp(14px,2.5vw,22px)!important;border:1px solid #355775!important;border-radius:19px!important;background:linear-gradient(145deg,#f7fbff,#eaf3fa)!important;box-shadow:0 12px 30px #0002!important}
+.news-language-row{border-radius:13px!important}
+.news-topic-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
+.news-topic-chips button{min-height:38px;padding:7px 13px;border:1px solid #bad0e1;border-radius:999px;background:#fff;color:#17405d;font-weight:750;cursor:pointer}
+.news-topic-chips button:hover{border-color:#0879c9;background:#e8f5ff}
+.news-status{margin:15px 0;padding:12px 15px;border-radius:13px!important}
+.news-result-group{margin-top:24px!important}
+.news-result-group h3{font-size:18px!important}
+.news-results{grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))!important;gap:14px!important}
+.news-result-card{position:relative;overflow:hidden;min-width:0;padding:15px!important;border:1px solid #35536e!important;border-radius:17px!important;background:linear-gradient(155deg,#172d47,#102138)!important;color:#f4f8ff!important;box-shadow:0 9px 24px #0002!important;transition:transform .2s,border-color .2s,box-shadow .2s!important}
+.news-result-card:hover{transform:translateY(-3px);border-color:#65d9d0!important;box-shadow:0 15px 30px #0003!important}
+.news-result-card strong{color:#f4f8ff!important;font-size:15px!important;line-height:1.5!important}
+.news-result-card p{color:#c1d0df!important;font-size:12px!important;line-height:1.65!important}
+.news-result-card small{color:#8ce9e0!important;font-size:11px!important}
+.news-card-image,.news-card-image-fallback{width:calc(100% + 30px)!important;height:clamp(150px,22vw,205px)!important;margin:-15px -15px 13px!important;border-radius:16px 16px 0 0!important}
+.news-card-actions{flex-wrap:wrap}
+.news-card-share{border-radius:10px!important}
+.news-reader{padding:clamp(16px,3vw,26px)!important;border:1px solid #43627f!important;border-radius:20px!important;background:#f4f9ff!important;box-shadow:0 15px 38px #0003}
+.news-reader-top{gap:10px;flex-wrap:wrap}
+.news-reader h3{font-size:clamp(21px,3vw,29px);line-height:1.35}
+@media(max-width:600px){.news-section{margin:14px 0!important;padding:15px!important;border-radius:18px!important}.news-results{grid-template-columns:1fr!important}.news-result-card{border-radius:15px!important}.news-search-panel{border-radius:15px!important}.news-card-image,.news-card-image-fallback{height:185px!important}}
+@media(prefers-reduced-motion:reduce){.news-result-card{transition:none!important}}
