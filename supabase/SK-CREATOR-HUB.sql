@@ -97,4 +97,17 @@ create trigger sk_creator_submission_alert_trigger
 after insert on public.sk_creator_submissions
 for each row execute function public.sk_creator_submission_alert();
 
+-- Enable database-change notifications for the owner approval queue when the
+-- standard Supabase Realtime publication is available.
+do $
+begin
+  if exists (select 1 from pg_publication where pubname='supabase_realtime')
+     and not exists (
+       select 1 from pg_publication_tables
+       where pubname='supabase_realtime' and schemaname='public' and tablename='sk_creator_submissions'
+     ) then
+    alter publication supabase_realtime add table public.sk_creator_submissions;
+  end if;
+end $;
+
 commit;
