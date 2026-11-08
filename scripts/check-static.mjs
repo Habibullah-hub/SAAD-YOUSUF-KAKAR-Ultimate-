@@ -226,7 +226,7 @@ if (!html.includes('id="skLivePreviewCanvas"') || !html.includes('id="skLiveGoLi
 if (!html.includes('data-syk-filter="soft"') || !html.includes('id="skLiveSwitchCamera"')) errors.push("SYK Live camera filters or front/back camera switch are missing.");
 const liveExperience = fs.readFileSync("assets/sk-live.js","utf8");
 if (!liveExperience.includes("captureStream(24)") || !liveExperience.includes("publishTrack(videoTrack")) errors.push("SYK Live camera filters are not included in the broadcast stream.");
-if (!liveExperience.includes("skLiveLoginGate").toString()) errors.push("SYK Live login gate is missing.");
+if (!liveExperience.includes("skLiveLoginGate")) errors.push("SYK Live login gate is missing.");
 if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v23"')) errors.push("Service worker cache was not advanced for the new SYK features.");
 
 if (errors.length) {
