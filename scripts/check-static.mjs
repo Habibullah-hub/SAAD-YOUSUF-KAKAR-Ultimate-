@@ -182,6 +182,16 @@ if (!browserExperience.includes("SK Browser stays open") || !browserExperience.i
 const communityExperience = fs.readFileSync("assets/sk-community.js", "utf8");
 if (!communityExperience.includes("SK Community Trending") || !communityExperience.includes("Rank ")) errors.push("Community trending ranks and truthful scope label are missing.");
 
+/* SK Creator Hub owner permission and embed regressions. */
+for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]) {
+  if (!fs.existsSync(assetPath)) errors.push(`Creator Hub asset is missing: ${assetPath}`);
+  else if (!html.includes(assetPath)) errors.push(`Homepage does not load Creator Hub asset ${assetPath}.`);
+}
+if (!fs.existsSync("supabase/SK-CREATOR-HUB.sql")) errors.push("Creator Hub approval migration is missing.");
+if (!html.includes('id="skCreatorHub"') || !html.includes('id="skCreatorForm"')) errors.push("Creator Hub homepage or member submission form is missing.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v11"')) errors.push("Service worker cache was not advanced for Creator Hub.");
+for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]) if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
+
 if (errors.length) {
   console.error(errors.join("\n\n"));
   process.exit(1);
