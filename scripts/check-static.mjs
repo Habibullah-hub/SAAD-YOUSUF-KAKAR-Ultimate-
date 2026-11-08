@@ -229,6 +229,14 @@ if (!liveExperience.includes("captureStream(24)") || !liveExperience.includes("p
 if (!liveExperience.includes("skLiveLoginGate")) errors.push("SYK Live login gate is missing.");
 if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v23"')) errors.push("Service worker cache was not advanced for the new SYK features.");
 
+
+/* Premium profile, header, triple-tap admin and Quran typography regressions. */
+if (!html.includes('assets/sk-premium-interactions.css') || !html.includes('assets/sk-premium-interactions.js')) errors.push("Premium interaction assets are not loaded.");
+if (!html.includes('data-sk-admin-gesture="triple"') || /id="skAdminButton"[^>]*onclick=/.test(html)) errors.push("Admin logo must not open login on a single click.");
+if (!html.includes('id="sykDailyFoldToggle"') || !html.includes('class="syk-daily-content"')) errors.push("Quran fold/unfold control is missing.");
+const premiumJs = fs.readFileSync("assets/sk-premium-interactions.js", "utf8");
+if (!premiumJs.includes("1250") || !premiumJs.includes("skAccountUnreadBadge") || !premiumJs.includes("sk_inbox_messages")) errors.push("Triple-tap admin or real notification badge behavior is missing.");
+
 if (errors.length) {
   console.error(errors.join("\n\n"));
   process.exit(1);
