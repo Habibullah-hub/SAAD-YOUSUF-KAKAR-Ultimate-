@@ -1,0 +1,102 @@
+/* SK Cyber Hub — lightweight motion layer
+   CSS-only, no animation libraries, no network assets, and reduced-motion aware. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes sk-enter {
+    from { opacity: 0; translate: 0 12px; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+  @keyframes sk-glow-breathe {
+    0%, 100% { opacity: .72; }
+    50%      { opacity: 1; }
+  }
+  @keyframes sk-float-a {
+    0%, 100% { translate: 0 0; }
+    50%      { translate: 0 -7px; }
+  }
+  @keyframes sk-float-b {
+    0%, 100% { translate: 0 0; }
+    50%      { translate: 0 6px; }
+  }
+
+  body .store-hero {
+    animation: sk-enter .65s cubic-bezier(.2,.75,.25,1) both;
+  }
+  body .store-hero-art .art-orbit {
+    animation: sk-glow-breathe 5.5s ease-in-out infinite;
+  }
+  body .store-hero-art .tile-main {
+    animation: sk-float-a 6s ease-in-out 1s infinite;
+  }
+  body .store-hero-art .tile-a,
+  body .store-hero-art .tile-c {
+    animation: sk-float-b 7s ease-in-out 1.4s infinite;
+  }
+  body .store-hero-art .tile-b {
+    animation: sk-float-a 7.5s ease-in-out 1.8s infinite;
+  }
+  body .sk-start-link,
+  body .sk-category-card,
+  body .resource.tile,
+  body .tile.resource {
+    transition:
+      translate .22s ease,
+      border-color .22s ease,
+      box-shadow .22s ease,
+      background-color .22s ease;
+  }
+  body .sk-start-link:hover,
+  body .sk-category-card:hover,
+  body .resource.tile:hover,
+  body .tile.resource:hover {
+    translate: 0 -4px;
+    border-color: rgba(104,234,213,.62) !important;
+    box-shadow: 0 16px 34px rgba(0,0,0,.24), 0 0 18px rgba(104,234,213,.08) !important;
+  }
+  body .hero-actions a,
+  body .primary,
+  body .secondary,
+  body .category-toggle,
+  body .quick-nav a {
+    transition: translate .18s ease, filter .18s ease, border-color .18s ease, background-color .18s ease;
+  }
+  body .hero-actions a:hover,
+  body .primary:hover,
+  body .secondary:hover {
+    translate: 0 -2px;
+    filter: brightness(1.09);
+  }
+  body .quick-nav a:hover {
+    translate: 0 -1px;
+  }
+  body .section-head h2:before {
+    transition: height .22s ease, box-shadow .22s ease;
+  }
+  body .section-head:hover h2:before {
+    height: 27px;
+    box-shadow: 0 0 12px rgba(104,234,213,.48);
+  }
+}
+
+/* Keep interaction and rendering light on small devices. */
+@media (max-width: 620px) {
+  body .store-hero { animation-duration: .45s; }
+  body .store-hero-art .art-orbit { animation-duration: 7s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body .store-hero,
+  body .store-hero-art .art-orbit,
+  body .store-hero-art .art-tile {
+    animation: none !important;
+  }
+  body .sk-start-link,
+  body .sk-category-card,
+  body .resource.tile,
+  body .tile.resource,
+  body .hero-actions a,
+  body .primary,
+  body .secondary,
+  body .category-toggle,
+  body .quick-nav a {
+    transition: none !important;
+  }
+}
