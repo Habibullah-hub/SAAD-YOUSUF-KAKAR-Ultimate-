@@ -92,7 +92,7 @@ for select to anon,authenticated using (status='approved' or user_id=(select aut
 drop policy if exists sk_creator_submissions_member_insert on public.sk_creator_submissions;
 create policy sk_creator_submissions_member_insert on public.sk_creator_submissions
 for insert to authenticated with check (
-  user_id=(select auth.uid()) and status='pending' and is_trending=false
+  user_id=(select auth.uid()) and content_type='video' and status='pending' and is_trending=false
 );
 drop policy if exists sk_creator_submissions_admin_update on public.sk_creator_submissions;
 create policy sk_creator_submissions_admin_update on public.sk_creator_submissions
