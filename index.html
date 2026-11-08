@@ -2188,6 +2188,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
             <button type="button" onclick="closeAuthModal()" aria-label="Close Admin Login" title="Close" class="absolute top-3 right-3 w-9 h-9 rounded-full border border-emerald-800 bg-[#10251a] text-white text-2xl leading-none flex items-center justify-center">×</button>
             <h3 class="text-lg font-bold text-white text-center">Admin Login</h3>
             <form onsubmit="handleAdminLogin(event)" class="space-y-3">
+                <p id="adminAuthStatus" class="text-xs text-amber-200 leading-relaxed" role="status" aria-live="polite">صرف Owner Admin یہاں لاگ اِن کرسکتا ہے۔</p>
                 <label for="adminEmail" class="block text-xs font-semibold text-emerald-200">Admin Email</label>
                 <input type="email" id="adminEmail" required placeholder="Enter admin email" class="w-full px-3 py-2 bg-[#021812] border border-emerald-950 rounded-xl text-xs text-white">
                 <label for="adminPass" class="block text-xs font-semibold text-emerald-200">Password</label>
@@ -3336,40 +3337,49 @@ if (!validDownloadUrl) {
 
         async function handleAdminLogin(e) {
             e.preventDefault();
-            const form=e.currentTarget,submit=form?.querySelector('button[type="submit"]');
-            if(submit)submit.disabled=true;
+            const status = document.getElementById('adminAuthStatus');
+            const button = e.currentTarget?.querySelector('button[type="submit"]');
+            const say = message => { if (status) status.textContent = message; };
+            if (!supabaseClient) { say('Database connected نہیں۔ پہلے Configure میں درست project URL اور public key چیک کریں۔'); return; }
+            if (button) { button.disabled = true; button.textContent = 'Checking…'; }
+            say('محفوظ طریقے سے Admin account چیک ہو رہا ہے…');
             try {
-                if (!supabaseClient) await initializeSKDatabase();
-                if (!supabaseClient) {
-                    alert('Database ابھی connect نہیں ہے۔ Configure Database کھول کر درست Supabase Project URL اور anon/publishable key محفوظ کریں، پھر دوبارہ Admin Login کریں۔');
+                const email = document.getElementById('adminEmail').value.trim();
+                const password = document.getElementById('adminPass').value;
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (error) {
+                    console.error('SYK admin sign-in failed:', error);
+                    const code = error.code ? ' (' + error.code + ')' : '';
+                    say('لاگ اِن ناکام: ' + error.message + code + '۔ ای میل کی تصدیق اور پاس ورڈ چیک کریں۔');
                     return;
                 }
-                const email=document.getElementById('adminEmail').value.trim();
-                const password=document.getElementById('adminPass').value;
-                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (error) throw error;
                 const user = data?.user;
-                if (!user) throw new Error('Login session confirm نہیں ہوسکا۔ دوبارہ کوشش کریں۔');
-                const { data: profile, error: profileError } = await supabaseClient
-                    .from('sk_profiles').select('role').eq('id', user.id).maybeSingle();
+                if (!user) { say('لاگ اِن سیشن کی تصدیق نہیں ہوئی۔ دوبارہ کوشش کریں۔'); return; }
+                const { data: profile, error: profileError } = await supabaseClient.from('sk_profiles').select('role').eq('id', user.id).maybeSingle();
                 if (profileError) {
+                    console.error('SYK admin role verification failed:', profileError);
                     await supabaseClient.auth.signOut();
-                    throw new Error('Login ہو گیا، لیکن sk_profiles سے Admin role verify نہیں ہوا: '+profileError.message+'۔ پہلے درست Supabase project اور base SQL چیک کریں۔');
+                    currentUser = null; updateAuthUI();
+                    say('لاگ اِن ہوگیا، مگر Admin اجازت کی تصدیق نہیں ہوئی: ' + profileError.message + '۔ کوئی اجازت خودکار طور پر نہیں دی گئی۔');
+                    return;
                 }
                 if (profile?.role !== 'admin') {
                     await supabaseClient.auth.signOut();
                     currentUser = null; updateAuthUI();
-                    throw new Error('یہ اکاؤنٹ Member ہے، Owner Admin نہیں۔ صرف پہلے سے مقرر Owner Admin ہی ڈیش بورڈ کھول سکتا ہے۔');
+                    say('یہ اکاؤنٹ Admin نہیں ہے۔ صرف پہلے سے منظور شدہ Owner Admin ہی داخل ہوسکتا ہے۔');
+                    return;
                 }
                 currentUser = user;
                 document.getElementById('adminPass').value = '';
+                say('Admin کی تصدیق ہوگئی۔ ڈیش بورڈ کھل رہا ہے…');
                 closeAuthModal(); updateAuthUI(); switchTab('admin');
                 await fetchApps();
                 window.dispatchEvent(new Event('sk:database-ready'));
             } catch (error) {
-                alert('Admin Login ناکام: '+(error?.message||'نامعلوم خرابی'));
+                console.error('SYK admin login exception:', error);
+                say('لاگ اِن میں مسئلہ: ' + (error?.message || 'نامعلوم خرابی'));
             } finally {
-                if(submit)submit.disabled=false;
+                if (button) { button.disabled = false; button.textContent = 'Sign In'; }
             }
         }
 
@@ -4617,7 +4627,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 <button id="skNewsVideoLauncherV1" type="button" aria-label="ویڈیو سرچ کھولیں؛ بٹن کو گھسیٹ کر جگہ بدلیں" title="ویڈیو سرچ — گھسیٹ کر جگہ بدلیں" aria-haspopup="dialog" aria-controls="skNewsVideoModalV1"></button>
 <div id="skNewsVideoModalV1" aria-hidden="true">
  <section class="sk-video-dialog" role="dialog" aria-modal="true" aria-labelledby="skNewsVideoTitleV1">
-  <header class="sk-video-head"><strong id="skNewsVideoTitleV1">Related news videos</strong><button class="sk-video-close" id="skNewsVideoCloseV1" type="button" aria-label="Close video window">×</button></header>
+  <header class="sk-video-head"><strong id="skNewsVideoTitleV1">متعلقہ خبروں کی ویڈیوز</strong><button class="sk-video-close" id="skNewsVideoCloseV1" type="button" aria-label="Close video window">×</button></header>
   <div class="sk-video-content">
    <p class="sk-video-topic" id="skNewsVideoTopicV1"></p>
    <form class="sk-video-search-row" id="skNewsVideoSearchFormV1" role="search">
@@ -4625,7 +4635,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     <select id="skNewsVideoModeV2" aria-label="Video search scope"><option value="all">All platforms</option><option value="youtube">YouTube Only</option></select>
     <button id="skNewsVideoSearchV2" type="submit">Search</button>
    </form>
-   <p class="sk-video-search-note" id="skNewsVideoSearchNoteV2" role="status" aria-live="polite">YouTube لکھیں یا YouTube Only منتخب کریں تو نتائج صرف YouTube کے ہوں گے۔ عام تلاش میں دوسرے پلیٹ فارمز کے سرچ لنکس بھی دکھیں گے۔</p>
+   <p class="sk-video-search-note" id="skNewsVideoSearchNoteV2" role="status" aria-live="polite">YouTube منتخب کریں تو صرف YouTube ویڈیوز دکھائی جائیں گی۔ عام تلاش میں YouTube، Vimeo، Dailymotion اور دوسرے پلیٹ فارمز کے سرچ لنکس بھی آئیں گے۔</p>
    <div class="sk-video-searches" id="skNewsVideoSearchesV1"></div>
    <div class="sk-video-results" id="skNewsVideoResultsV2"></div>
    <div class="sk-video-player" id="skNewsVideoPlayerV1"><div style="height:100%;min-height:180px;display:grid;place-items:center;padding:20px;color:#d7e8f7;text-align:center">تلاش کے نتائج میں ویڈیو منتخب کریں؛ دستیاب YouTube ویڈیو اسی جگہ چلے گی۔</div></div>
@@ -5106,8 +5116,8 @@ body :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px
 </style>
 <link rel="stylesheet" href="./assets/sk-ultimate-experience-v2.css?v=20261106-4">
 <link rel="stylesheet" href="./assets/sk-motion-performance.css?v=20261108-1">
-<link rel="stylesheet" href="./assets/sk-theme-mode.css?v=20261108-1"><link rel="stylesheet" href="./assets/sk-news-premium.css?v=20261108-1">
+<link rel="stylesheet" href="./assets/sk-theme-mode.css?v=20261108-2"><link rel="stylesheet" href="./assets/sk-news-premium.css?v=20261108-1">
 <link rel="stylesheet" href="./assets/sk-creator-hub.css?v=20261108-1"><link rel="stylesheet" href="./assets/syk-neon-refresh.css?v=1">
 <script src="./assets/sk-share.js?v=1" defer></script>
-<script src="./assets/sk-theme-mode.js?v=20261108-1" defer></script>
+<script src="./assets/sk-theme-mode.js?v=20261108-2" defer></script>
 </body></html>
