@@ -1,0 +1,20 @@
+/* SK Cyber Hub — accessible day/night appearance */
+#skThemeModeToggle{min-height:40px;padding:8px 12px;border:1px solid #4b8296;border-radius:12px;background:linear-gradient(135deg,#173b52,#14243d);color:#f3fbff;font-size:12px;font-weight:850;cursor:pointer;white-space:nowrap}
+#skThemeModeToggle:focus-visible{outline:3px solid #67e6d0;outline-offset:3px}
+body.sk-day-mode{background:#edf3f8!important;color:#172b40!important;color-scheme:light}
+body.sk-day-mode .top,body.sk-day-mode .category-dock{background:#f7fbfff2!important;border-color:#cbd8e4!important;color:#172b40!important}
+body.sk-day-mode .top .brand,body.sk-day-mode .nav-actions,body.sk-day-mode .category-toggle{color:#172b40!important}
+body.sk-day-mode .category-menu,body.sk-day-mode .site-language-panel{background:#fff!important;border-color:#cbd8e4!important;color:#172b40!important;box-shadow:0 16px 42px #17324d22}
+body.sk-day-mode .category-menu a,body.sk-day-mode .category-menu strong{color:#203a54!important}
+body.sk-day-mode .section:not(.news-section),body.sk-day-mode .sk-discovery,body.sk-day-mode .sk-interest-mix,body.sk-day-mode .sk-community-panel,body.sk-day-mode .sk-connect-sidebar,body.sk-day-mode .sk-connect-chat,body.sk-day-mode .sk-live-stage,body.sk-day-mode .bulk-panel{background:#fff!important;border-color:#d2deea!important;color:#1a3046!important;box-shadow:0 8px 26px #17324d0c}
+body.sk-day-mode .section h2,body.sk-day-mode .section h3,body.sk-day-mode .section p,body.sk-day-mode .section label,body.sk-day-mode .section strong,body.sk-day-mode .section b{color:inherit}
+body.sk-day-mode .tile,body.sk-day-mode .resource,body.sk-day-mode .sk-category-card,body.sk-day-mode .sk-next-card,body.sk-day-mode .sk-connect-person,body.sk-day-mode .sk-connect-conversation,body.sk-day-mode .sk-connect-message,body.sk-day-mode .sk-social-post,body.sk-day-mode .sk-live-room-card{background:#f5f9fc!important;border-color:#d4e0eb!important;color:#19324a!important}
+body.sk-day-mode .tile p,body.sk-day-mode .tile small,body.sk-day-mode .section .sk-connect-muted,body.sk-day-mode .section .sk-social-muted,body.sk-day-mode .section .section-head p{color:#536a80!important}
+body.sk-day-mode input,body.sk-day-mode textarea,body.sk-day-mode select{background:#fff!important;color:#172b40!important;border-color:#bdcddd!important}
+body.sk-day-mode .news-section{background:linear-gradient(145deg,#f8fbff,#eaf2f9)!important;border-color:#cbd9e7!important}
+body.sk-day-mode .news-section .section-head h2,body.sk-day-mode .news-section .section-head p{color:#172b40!important}
+body.sk-day-mode .sk-bottom-nav{background:#f8fbfff2!important;border-color:#ccd9e5!important}
+body.sk-day-mode .sk-bottom-nav a,body.sk-day-mode .sk-bottom-nav button{color:#233c54!important}
+body.sk-day-mode #skThemeModeToggle{background:linear-gradient(135deg,#fff,#e5eff7)!important;color:#17324a!important;border-color:#b7c9d9!important}
+@media(max-width:600px){#skThemeModeToggle{min-height:38px;padding:7px 9px;font-size:11px}}
+@media(prefers-reduced-motion:reduce){#skThemeModeToggle{transition:none!important}}
