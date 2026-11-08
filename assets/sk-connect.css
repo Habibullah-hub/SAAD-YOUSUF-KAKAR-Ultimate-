@@ -29,3 +29,44 @@
 #skLivePanel .sk-live-chat p{margin:5px 0;font-size:12px;overflow-wrap:anywhere}
 #skLivePanel .sk-live-controls{display:flex;gap:8px;flex-wrap:wrap}
 @media(max-width:650px){.sk-connect-layout{grid-template-columns:1fr}.sk-connect-messages{height:220px}.sk-connect-composer{flex-direction:column}}
+
+/* SYK LIVE — portrait camera studio and broadcast filters */
+#skLivePanel .sk-live-setup{display:grid;gap:12px;margin-top:12px;padding:13px;border:1px solid #34536c;border-radius:18px;background:linear-gradient(145deg,#0b1a2c,#101f35);box-shadow:0 16px 38px #0005}
+#skLivePanel .sk-live-setup[hidden]{display:none!important}
+.sk-live-preview-wrap{position:relative;display:grid;place-items:center;width:min(100%,420px);margin:0 auto;overflow:hidden;border:1px solid #3c5d78;border-radius:20px;background:#020711;aspect-ratio:9/16;max-height:68vh}
+.sk-live-preview-wrap video{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.sk-live-preview-wrap canvas{display:block;width:100%;height:100%;max-height:68vh;object-fit:contain;background:#020711}
+.sk-live-preview-badge{position:absolute;top:12px;left:12px;padding:6px 9px;border:1px solid #ff5b7a;border-radius:8px;background:#a61e3d;color:#fff;font-size:9px;font-weight:950;letter-spacing:.08em}
+.sk-live-camera-toolbar{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.sk-live-camera-toolbar button{min-height:39px;padding:0 13px;border:1px solid #3c5c77;border-radius:11px;background:#142a40;color:#e9f5fc;font-size:12px;font-weight:800}
+.sk-live-camera-toolbar button[aria-pressed=false]{border-color:#9b5062;background:#3a1b2b;color:#ffd5df}
+.sk-live-filter-panel{padding:12px;border:1px solid #2c4a64;border-radius:13px;background:#0a1728}
+.sk-live-filter-panel>strong{display:block;margin-bottom:9px;color:#f0f8ff;font-size:13px}
+.sk-live-filter-list{display:flex;gap:7px;flex-wrap:wrap}
+.sk-live-filter-list button{min-height:34px;padding:0 11px;border:1px solid #395a72;border-radius:999px;background:#142a40;color:#d4e5ef;font-size:11px;font-weight:800}
+.sk-live-filter-list button[aria-pressed=true]{border-color:#66e6d1;background:#174b4c;color:#c5fff4;box-shadow:0 0 0 2px #66e6d122}
+.sk-live-filter-panel small{display:block;margin-top:10px;color:#9bb2c4;font-size:10px;line-height:1.7}
+#skLivePanel .sk-live-go-live{min-height:49px;border:0;border-radius:13px;background:linear-gradient(110deg,#ff315f,#ff744d);color:#fff;font-size:14px;font-weight:950;box-shadow:0 9px 25px #ff315f33}
+#skLivePanel .sk-live-stage{grid-template-columns:minmax(0,1fr) minmax(230px,32%);align-items:start;padding:10px;border:1px solid #34516b;border-radius:19px;background:#050d19}
+#skLivePanel .sk-live-stage[hidden]{display:none!important}
+#skLivePanel #skLiveMedia{grid-column:1;grid-row:1/4;display:grid;place-items:center;min-height:390px;max-height:76vh;overflow:hidden;border-radius:13px;background:#020711}
+#skLivePanel #skLiveMedia video,#skLivePanel #skLiveMedia canvas{width:100%;max-height:76vh;object-fit:contain;background:#020711}
+#skLivePanel .sk-live-controls{grid-column:2;grid-row:1;display:flex;flex-wrap:wrap;gap:7px}
+#skLivePanel .sk-live-chat{grid-column:2;grid-row:2;min-height:180px;max-height:42vh}
+#skLivePanel #skLiveChatForm{grid-column:2;grid-row:3;display:flex;gap:7px}
+#skLivePanel #skLiveChatForm input{flex:1;min-width:0}
+@media(max-width:720px){
+ #skLivePanel .sk-live-stage{grid-template-columns:minmax(0,1fr)}
+ #skLivePanel #skLiveMedia{grid-column:1;grid-row:1;min-height:52vh;max-height:65vh}
+ #skLivePanel .sk-live-controls{grid-column:1;grid-row:2}
+ #skLivePanel .sk-live-chat{grid-column:1;grid-row:3;max-height:24vh}
+ #skLivePanel #skLiveChatForm{grid-column:1;grid-row:4}
+ .sk-live-preview-wrap{width:min(100%,360px);max-height:62vh}
+ .sk-live-preview-wrap canvas{max-height:62vh}
+}
+body.sk-day-mode #skLivePanel .sk-live-setup{background:#f2f8fc;border-color:#bdd1df}
+body.sk-day-mode .sk-live-filter-panel{background:#e8f2f7;border-color:#c3d5df}
+body.sk-day-mode .sk-live-filter-panel>strong{color:#18364a}
+body.sk-day-mode .sk-live-filter-list button,body.sk-day-mode .sk-live-camera-toolbar button{background:#e3eef5;color:#17364b;border-color:#b6cad8}
+body.sk-day-mode .sk-live-filter-list button[aria-pressed=true]{background:#d5f4ec;color:#075c52;border-color:#60cbb9}
+body.sk-day-mode .sk-live-filter-panel small{color:#587283}
