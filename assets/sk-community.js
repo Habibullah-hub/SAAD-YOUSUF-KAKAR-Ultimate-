@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
 const root=$('skCommunityPanel');if(!root)return;
-let db=null,user=null,isAdmin=false,activeTab='for-you',busy=false,feedOffset=0,feedExhausted=false,feedLoading=false,activeTag='',photoPreviewUrl=null,hideCounts=false;
+let db=null,user=null,isAdmin=false,activeTab='for-you',busy=false,feedOffset=0,feedExhausted=false,feedLoading=false,activeTag='',buzzPosts=[],photoPreviewUrl=null,hideCounts=false;
 const say=t=>{const n=$('skCommunityStatus');if(n)n.textContent=t;};
 const anticipate=t=>{const n=$('skCommunityAnticipation');if(n)n.textContent=t;};
 const el=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n;};
@@ -71,7 +71,7 @@ async function loadFeed(append=false){
  if(!db){$('skCommunityFeed').replaceChildren(el('div','sk-social-empty','Database connect کرنے کے بعد یہاں حقیقی ممبرز کی پوسٹس نظر آئیں گی۔'));return;}
  if(feedLoading|| (append&&feedExhausted))return;
  const feed=$('skCommunityFeed');feedLoading=true;
- if(!append){feedOffset=0;feedExhausted=false;feed.replaceChildren(el('div','sk-social-muted','Feed لوڈ ہو رہی ہے…'));anticipate(activeTab==='for-you'?'آپ کی دلچسپی اور حقیقی کمیونٹی سرگرمی کے مطابق پوسٹس ترتیب دی جا رہی ہیں…':'آپ کا منتخب کردہ فیڈ فلٹر لوڈ ہو رہا ہے…');}
+ if(!append){feedOffset=0;feedExhausted=false;buzzPosts=[];feed.replaceChildren(el('div','sk-social-muted','Feed لوڈ ہو رہی ہے…'));anticipate(activeTab==='for-you'?'آپ کی دلچسپی اور حقیقی کمیونٹی سرگرمی کے مطابق پوسٹس ترتیب دی جا رہی ہیں…':'آپ کا منتخب کردہ فیڈ فلٹر لوڈ ہو رہا ہے…');}
  try{
   let followed=[];
   if(user){const f=await db.from('sk_follows').select('following_id').eq('follower_id',user.id);if(!f.error)followed=(f.data||[]).map(x=>x.following_id);}
@@ -102,7 +102,7 @@ async function loadFeed(append=false){
   const mediaUrls=new Map(signed);
   if(!append)feed.replaceChildren();
   feed.append(...posts.map(post=>makePost(post,pm.get(post.author_id),count(post.id,'like_count'),count(post.id,'comment_count'),liked.has(post.id),saved.has(post.id),followSet.has(post.author_id),mediaUrls.get(post.id),followerCounts.get(post.author_id)||0)));
-  renderBuzz(posts);anticipate(feedExhausted?'آپ تازہ پوسٹس تک پہنچ گئے ہیں۔ نئی پوسٹس آنے پر یہاں نظر آئیں گی۔':'مزید متعلقہ پوسٹس نیچے خودکار طور پر لوڈ ہوں گی؛ آپ چاہیں تو بٹن بھی دبا سکتے ہیں۔');
+  buzzPosts.push(...posts);renderBuzz(buzzPosts);anticipate(feedExhausted?'آپ تازہ پوسٹس تک پہنچ گئے ہیں۔ نئی پوسٹس آنے پر یہاں نظر آئیں گی۔':'مزید متعلقہ پوسٹس نیچے خودکار طور پر لوڈ ہوں گی؛ آپ چاہیں تو بٹن بھی دبا سکتے ہیں۔');
   feed.querySelector('#skCommunityMore')?.remove();
   if(!feedExhausted){const more=el('button','sk-social-load-more','مزید پوسٹس دیکھیں ↓');more.id='skCommunityMore';more.type='button';more.addEventListener('click',()=>loadFeed(true));feed.append(more);if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>{if(entries.some(x=>x.isIntersecting)){observer.disconnect();loadFeed(true);}},{rootMargin:'180px'});observer.observe(more);}}
   else feed.append(el('div','sk-social-muted','آپ تازہ پوسٹس تک پہنچ گئے ہیں۔ جب نئی پوسٹس آئیں گی تو یہاں نظر آئیں گی۔'));
