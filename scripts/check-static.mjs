@@ -153,7 +153,7 @@ const browserHtml = fs.existsSync("browser.html") ? fs.readFileSync("browser.htm
 if (!browserHtml.includes('id="searchForm"') || !browserHtml.includes('id="searchForm3"')) {
   errors.push("SK Browser is missing its global or SK-directory search form.");
 }
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v14"')) {
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v15"')) {
   errors.push("Service worker cache version was not advanced for the updated public shell.");
 }
 for (const assetPath of ["assets/sk-motion-performance.css", "assets/sk-browser-experience.css"]) {
@@ -177,7 +177,7 @@ if (!fs.existsSync("assets/sk-theme-mode.js") || !html.includes("assets/sk-theme
 if (!html.includes('id="skAdminButton"') || !html.includes('>SYK</button>')) errors.push("Visible homepage admin logo must use the SYK mark.");
 if (!html.includes("YouTube Only") || !html.includes("const mode=forcedMode||modeInput.value||'all';")) errors.push("Related-video search must honor the selected YouTube-only filter.");
 if (!html.includes("await initializeSKDatabase()")) errors.push("Admin login must retry database initialization before reporting a connection failure.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v14"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v15"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
 for (const assetPath of ["assets/sk-theme-mode.css","assets/sk-theme-mode.js","assets/sk-news-premium.css","assets/syk-neon-refresh.css"]) {
   if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 }
@@ -193,7 +193,9 @@ for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]
 }
 if (!fs.existsSync("supabase/SK-CREATOR-HUB.sql")) errors.push("Creator Hub approval migration is missing.");
 if (!html.includes('id="skCreatorHub"') || !html.includes('id="skCreatorForm"')) errors.push("Creator Hub homepage or member submission form is missing.");
-if (!html.includes('id="skCreatorOwnerPlayer"') || !html.includes('id="skCreatorMemberVideos"')) errors.push("Owner-first featured YouTube playback or member video feed is missing.");
+if (!html.includes('id="skCreatorOwnerPlayer"') || !html.includes('id="skCreatorMemberVideos"')) errors.push("Owner-first featured video playback or member video feed is missing.");
+if (!html.includes('id="skCreatorSubmitToggle"') || !html.includes('id="skCreatorMySubmissions"')) errors.push("Video-only member submit control or submission status panel is missing.");
+if (!html.includes('id="skCreatorSaveFeatured"')) errors.push("Owner featured-video-only setting is missing.");
 if (!html.includes('id="skCreatorRegisteredMembers"')) errors.push("Owner-only registered members panel is missing.");
 if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v14"')) errors.push("Service worker cache was not advanced for Creator Hub.");
 for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]) if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
