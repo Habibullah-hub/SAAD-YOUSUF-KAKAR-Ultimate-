@@ -38,12 +38,13 @@ if (/\beval\s*\(|\bnew\s+Function\s*\(/.test(html)) {
 }
 
 
+let manifest = null;
 const manifestPath = "manifest.webmanifest";
 const workerPath = "sw.js";
 if (!fs.existsSync(manifestPath)) errors.push("PWA manifest is missing.");
 else {
   try {
-    const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+    manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
     if (!manifest.name || !manifest.start_url || !manifest.scope || manifest.display !== "standalone") {
       errors.push("PWA manifest is missing required install metadata.");
     }
