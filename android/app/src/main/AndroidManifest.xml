@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
     <application
         android:theme="@style/SKTheme"
-        android:label="SK Cyber Hub"
+        android:label="SYK Cyber Hub"
         android:icon="@drawable/ic_sk_launcher"
         android:roundIcon="@drawable/ic_sk_launcher"
         android:usesCleartextTraffic="false"
