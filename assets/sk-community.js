@@ -159,7 +159,9 @@ function init(){
  $('skCommunityProfileSave')?.addEventListener('click',saveProfile);
  $('skCommunityPhoto')?.addEventListener('change',updatePhotoPreview);
  $('skCommunityFilter')?.addEventListener('change',updatePhotoPreview);
- const globalBell=$('skGlobalNotificationsButton'),globalWrap=$('skGlobalNotificationWrap'),communityBell=$('skCommunityNotificationsButton'),notificationPanel=$('skCommunityNotifications');\n globalBell?.addEventListener('click',()=>{if(notificationPanel){globalWrap?.append(notificationPanel);notificationPanel.classList.add('is-global');}toggleNotifications();globalBell.setAttribute('aria-expanded',String(notificationPanel?!notificationPanel.hidden:false));});\n communityBell?.addEventListener('click',()=>{if(notificationPanel){communityBell.parentElement?.append(notificationPanel);notificationPanel.classList.remove('is-global');}toggleNotifications();});
+ const globalBell=$('skGlobalNotificationsButton'),globalWrap=$('skGlobalNotificationWrap'),communityBell=$('skCommunityNotificationsButton'),notificationPanel=$('skCommunityNotifications');
+  globalBell?.addEventListener('click',()=>{if(notificationPanel){globalWrap?.append(notificationPanel);notificationPanel.classList.add('is-global');}toggleNotifications();globalBell.setAttribute('aria-expanded',String(notificationPanel?!notificationPanel.hidden:false));});
+  communityBell?.addEventListener('click',()=>{if(notificationPanel){communityBell.parentElement?.append(notificationPanel);notificationPanel.classList.remove('is-global');}toggleNotifications();});
  $('skCommunityHideCounts')?.addEventListener('change',e=>{hideCounts=e.target.checked;try{localStorage.setItem('skHideLikeCounts',hideCounts?'1':'0');}catch(_){}loadFeed();});
  root.querySelectorAll('[data-sk-social-tab]').forEach(b=>b.addEventListener('click',()=>{activeTab=b.dataset.skSocialTab;root.querySelectorAll('[data-sk-social-tab]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));loadFeed();}));
  try{hideCounts=localStorage.getItem('skHideLikeCounts')==='1';if($('skCommunityHideCounts'))$('skCommunityHideCounts').checked=hideCounts;}catch(_){}
