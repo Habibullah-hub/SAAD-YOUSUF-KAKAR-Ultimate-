@@ -22,11 +22,11 @@ function addStyle(){
  @media(max-width:600px){.sk-account-trigger{min-height:36px;gap:6px;padding-right:8px}.sk-account-copy b{max-width:78px;font-size:10px}.sk-account-copy small{font-size:8px}.sk-account-avatar{width:27px;height:27px;flex-basis:27px}}
  @media(prefers-reduced-motion:no-preference){.sk-account-trigger,.sk-account-pop{transition:transform .18s ease,opacity .18s ease}.sk-account-trigger:active{transform:scale(.97)}}
  @media(prefers-reduced-motion:reduce){.sk-account-trigger,.sk-account-pop{transition:none}}
- body.sk-day-mode .sk-account-trigger{background:#fff!important;border-color:#bfd1e1!important;color:#17324a!important}
- body.sk-day-mode .sk-account-copy small{color:#526b82!important}
- body.sk-day-mode .sk-account-pop{background:#fff!important;border-color:#c7d8e6!important;color:#17324a!important}
- body.sk-day-mode .sk-account-pop p{color:#526b82!important}
- body.sk-day-mode .sk-account-pop a{background:#edf5fb!important;color:#075b91!important}
+ body.sk-day-mode .sk-account-trigger,html[data-theme=light] .sk-account-trigger{background:#fff!important;border-color:#bfd1e1!important;color:#17324a!important}
+ body.sk-day-mode .sk-account-copy small,html[data-theme=light] .sk-account-copy small{color:#526b82!important}
+ body.sk-day-mode .sk-account-pop,html[data-theme=light] .sk-account-pop{background:#fff!important;border-color:#c7d8e6!important;color:#17324a!important}
+ body.sk-day-mode .sk-account-pop p,html[data-theme=light] .sk-account-pop p{color:#526b82!important}
+ body.sk-day-mode .sk-account-pop a,html[data-theme=light] .sk-account-pop a{background:#edf5fb!important;color:#075b91!important}
  `;
  document.head.append(style);
 }
