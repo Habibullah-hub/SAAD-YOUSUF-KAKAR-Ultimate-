@@ -156,11 +156,15 @@ button,.iconbtn,.chip,.navbtn{min-height:42px}
  <p id="sykLoginHint" class="syk-video-muted">ویڈیو لنک بھیجنے کے لیے Login کریں۔</p>
  <div id="sykMyVideos" class="syk-video-submit" hidden><h3>میری درخواستیں</h3></div>
  <div id="sykVideoAdmin" class="syk-video-admin" hidden><h3>Owner Admin · ویڈیو منظوری</h3><div id="sykVideoQueue"></div>
-  <h3>Admin Media Publisher</h3><p class="syk-video-muted">Admin صرف ویڈیو لنک شائع کر سکتا ہے۔</p>
-  <form id="sykAdminMediaForm" class="syk-video-form">
+  <h3>Admin Featured Advertisement</h3><p class="syk-video-muted">یہ صرف Owner Admin کے لیے ہے۔ آپ کی تشہیری ویڈیو تمام منظور شدہ ویڈیوز سے اوپر دکھائی جائے گی۔</p>
+  <button id="sykAdminMediaToggle" class="syk-video-action" type="button">＋ اپنی SYK تشہیری ویڈیو شامل کریں</button>
+  <form id="sykAdminMediaForm" class="syk-video-form" hidden>
    <input id="sykAdminKind" type="hidden" value="video">
-   <label>پلیٹ فارم<select id="sykAdminPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
-   <label>عنوان<input id="sykAdminTitle" maxlength="120" required></label><label>ویڈیو لنک<input id="sykAdminUrl" type="url" required placeholder="https://…"></label><button type="submit">ویڈیو شائع کریں</button>
+   <label>ویڈیو پلیٹ فارم<select id="sykAdminPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
+   <label>عنوان<input id="sykAdminTitle" maxlength="120" required></label>
+   <label>ویڈیو لنک (یا نیچے فائل منتخب کریں)<input id="sykAdminUrl" type="url" placeholder="https://…"></label>
+   <label>یا ویڈیو فائل (MP4 / WebM / MOV، زیادہ سے زیادہ 50 MB)<input id="sykAdminFile" type="file" accept="video/mp4,video/webm,video/quicktime"></label>
+   <button type="submit">SYK Featured ویڈیو شائع کریں</button>
   </form>
  </div>
  <p id="sykVideoStatus" class="syk-video-muted" role="status" aria-live="polite">Creator Hub database سے رابطہ ہو رہا ہے…</p>
