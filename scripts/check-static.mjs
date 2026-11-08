@@ -236,6 +236,7 @@ if (!html.includes('data-sk-admin-gesture="triple"') || /id="skAdminButton"[^>]*
 if (!html.includes('id="sykDailyFoldToggle"') || !html.includes('class="syk-daily-content"')) errors.push("Quran fold/unfold control is missing.");
 const premiumJs = fs.readFileSync("assets/sk-premium-interactions.js", "utf8");
 if (!premiumJs.includes("1250") || !premiumJs.includes("skAccountUnreadBadge") || !premiumJs.includes("sk_inbox_messages")) errors.push("Triple-tap admin or real notification badge behavior is missing.");
+if (!premiumJs.includes("trigger.append(badge)") || !fs.readFileSync("assets/sk-premium-interactions.css","utf8").includes(".sk-account-trigger{position:relative!important;overflow:visible!important}")) errors.push("Unread notification badge must remain visible outside the clipped avatar.");
 
 if (!premiumJs.includes("onAuthStateChange") || !premiumJs.includes("sk_creator_admin_alerts")) errors.push("Profile notification refresh or owner alert integration is missing.");
 if (!fs.readFileSync("assets/sk-premium-interactions.css", "utf8").includes("Noto Naskh Arabic")) errors.push("Quran Arabic typography fallback stack is missing.");
