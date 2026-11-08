@@ -154,7 +154,7 @@ const browserHtml = fs.existsSync("browser.html") ? fs.readFileSync("browser.htm
 if (!browserHtml.includes('id="searchForm"') || !browserHtml.includes('id="searchForm3"')) {
   errors.push("SK Browser is missing its global or SK-directory search form.");
 }
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v16"')) {
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v17"')) {
   errors.push("Service worker cache version was not advanced for the updated public shell.");
 }
 for (const assetPath of ["assets/sk-motion-performance.css", "assets/sk-browser-experience.css"]) {
