@@ -55,7 +55,7 @@ function paintGuest(){
  const t=$('skAccountTitle'),s=$('skAccountSubtitle'),a=$('skAccountAvatar'),p=$('skAccountPopover'),b=$('skAccountTrigger');
  if(!t||!s||!a||!p||!b)return;
  t.textContent='Login';s.textContent='Sign in';a.textContent='+';b.dataset.signedIn='';
- const upload=document.getElementById('sykMemberSubmit'),mine=document.getElementById('sykMyVideos'),hub=document.getElementById('sykVideoHub');if(hub){if(upload)hub.append(upload);if(mine)hub.append(mine);}p.innerHTML='<strong>Welcome to SYK Browser</strong><p>Login once to submit a video for Admin review.</p><a href="./#community">Login</a>';
+ const upload=document.getElementById('sykMemberSubmit'),mine=document.getElementById('sykMyVideos'),admin=document.getElementById('sykVideoAdmin'),hub=document.getElementById('sykVideoHub');if(hub){if(upload)hub.append(upload);if(mine)hub.append(mine);if(admin)hub.append(admin);}p.innerHTML='<strong>Welcome to SYK Browser</strong><p>Login once to submit a video for Admin review.</p><a href="./#community">Login</a>';
 }
 async function paintUser(user){
  const seq=++renderSeq,t=$('skAccountTitle'),s=$('skAccountSubtitle'),a=$('skAccountAvatar'),p=$('skAccountPopover'),b=$('skAccountTrigger');
@@ -70,7 +70,7 @@ async function paintUser(user){
  const badge=document.createElement('span');badge.className='sk-account-role';badge.textContent=role==='admin'?'OWNER ADMIN':'MEMBER';
  const signout=document.createElement('button');signout.type='button';signout.textContent='Sign out';
  signout.addEventListener('click',async()=>{signout.disabled=true;const result=await client.auth.signOut();if(result.error){signout.disabled=false;email.textContent='Sign out failed. Please try again.';}else{p.hidden=true;b.setAttribute('aria-expanded','false');paintGuest();}});
- p.append(strong,email,badge,signout);const upload=document.getElementById('sykMemberSubmit'),mine=document.getElementById('sykMyVideos');if(upload)p.append(upload);if(mine)p.append(mine);
+ p.append(strong,email,badge,signout);const upload=document.getElementById('sykMemberSubmit'),mine=document.getElementById('sykMyVideos'),admin=document.getElementById('sykVideoAdmin'),hub=document.getElementById('sykVideoHub');if(upload)p.append(upload);if(mine)p.append(mine);if(role==='admin'&&admin)p.append(admin);else if(hub&&admin)hub.append(admin);
 }
 async function init(){
  if(!mount())return;
