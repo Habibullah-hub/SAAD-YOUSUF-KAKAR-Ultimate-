@@ -21,11 +21,9 @@ async function render(){
   const payload=await json('https://quranenc.com/api/v1/translation/aya/urdu_junagarhi/'+sura+'/'+aya);
   const item=Array.isArray(payload)?payload[0]:(payload.result?.[0]||payload.data?.[0]||payload.result||payload);
   const translation=String(item?.translation||'').trim();
-  let arabic=String(item?.arabic_text||item?.arabic||item?.text_uthmani||'').trim();
-  if(!arabic){
-   const q=await json('https://api.alquran.cloud/v1/ayah/'+sura+':'+aya+'/quran-uthmani');
-   arabic=String(q?.data?.text||'').trim();
-  }
+  let arabic='';
+  try{const q=await json('https://api.alquran.cloud/v1/ayah/'+sura+':'+aya+'/quran-uthmani');arabic=String(q?.data?.text||'').trim();}catch(_){}
+  if(!arabic)arabic=String(item?.arabic_text||item?.arabic||item?.text_uthmani||'').trim();
   if(!arabic||!translation)throw new Error('آیت کا مکمل مستند متن دستیاب نہیں ہوا۔');
   text('sykDailyArabic',arabic);
   text('sykDailyReference','سورۃ نمبر '+sura+' · آیت '+aya);
@@ -36,7 +34,7 @@ async function render(){
   $('sykDailyTranslation').hidden=false;
   $('sykDailyTranslationToggle').textContent='ترجمہ چھپائیں';
   $('sykDailyTranslationToggle').setAttribute('aria-expanded','true');
-  $('sykDailyLoading').hidden=true;$('sykDailyContent').hidden=false;
+  $('sykDailyLoading').hidden=true;const content=$('sykDailyContent');content.hidden=false;content.classList.remove('is-open');const fold=$('sykDailyFoldToggle');if(fold){fold.setAttribute('aria-expanded','false');fold.innerHTML='آیت کھولیں <span aria-hidden="true">⌄</span>';}
  }catch(error){
   status('آج کی نصیحت لوڈ نہیں ہو سکی۔ انٹرنیٹ چیک کرکے دوبارہ کوشش کریں۔');
  }finally{busy=false;}
@@ -48,6 +46,13 @@ function bindAuth(){
   if(event==='SIGNED_IN'||event==='SIGNED_OUT'||event==='USER_UPDATED')setTimeout(render,0);
  });
 }
+const foldButton=$('sykDailyFoldToggle');
+foldButton?.addEventListener('click',()=>{
+ const content=$('sykDailyContent');if(!content||content.hidden)return;
+ const open=!content.classList.contains('is-open');content.classList.toggle('is-open',open);
+ foldButton.setAttribute('aria-expanded',String(open));
+ foldButton.innerHTML=open?'آیت بند کریں <span aria-hidden="true">⌃</span>':'آیت کھولیں <span aria-hidden="true">⌄</span>';
+});
 $('sykDailyRefresh')?.addEventListener('click',render);
 $('sykDailyTranslationToggle')?.addEventListener('click',()=>{
  const n=$('sykDailyTranslation'),b=$('sykDailyTranslationToggle');n.hidden=!n.hidden;
