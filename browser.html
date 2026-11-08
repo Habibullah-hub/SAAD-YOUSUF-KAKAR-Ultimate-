@@ -152,7 +152,7 @@ button,.iconbtn,.chip,.navbtn{min-height:42px}
 .syk-language-picker select{max-width:190px;min-height:38px;padding:7px 10px;border:1px solid rgba(85,244,220,.45);border-radius:11px;background:#10152a;color:#effffc;font-size:12px;font-weight:800}
 .syk-language-note{margin:0;color:var(--muted);font-size:10px;line-height:1.6}
 @media(max-width:480px){.syk-language-row{align-items:stretch}.syk-language-picker{justify-content:space-between;width:100%}.syk-language-picker select{flex:1;max-width:70%}}
-</style></head>
+</style><style id="syk-youtube-video-source-style">.syk-video-source{display:inline-flex;width:max-content;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:4px 8px;border:1px solid rgba(255,0,128,.35);border-radius:999px;color:#ff9bc8;font-size:10px;font-weight:800}#sykVideoStage video{display:block;width:100%;height:100%;max-height:78dvh;background:#000;object-fit:contain}#sykVideoStage:fullscreen{width:100vw;height:100vh;max-height:none;background:#000;display:grid;place-items:center}#sykVideoStage:fullscreen iframe,#sykVideoStage:fullscreen video{width:100%;height:100%;max-height:100vh;object-fit:contain}</style></head>
 <body>
 <div class="wrap">
 <header class="top"><div class="top-main"><a class="brand" href="./browser.html"><span class="mark"><img src="./assets/syk-cyber-hub-logo.svg" alt=""></span><span>SYK BROWSER<small>YOUR DIGITAL WORLD</small></span></a><div class="top-actions"><a class="top-link" href="./" aria-label="Main hub and account login">Login / Hub</a><button class="top-admin" id="sykAdminQuick" type="button" hidden>Admin</button><button class="iconbtn" id="theme" aria-label="Toggle light and dark theme">☼</button><button class="iconbtn" id="historyBtn" aria-label="Open recent searches">◷</button></div></div><form class="searchbox browser-sticky-search" id="searchForm" role="search"><span class="glass" aria-hidden="true">⌕</span><input id="q" type="search" placeholder="Search the web or SYK…" autocomplete="off" aria-label="Search the whole internet with Google"><button>Search ↗</button></form></header>
@@ -232,7 +232,7 @@ $('clearHistory').addEventListener('click',()=>{history=[];localStorage.removeIt
 drawDiscover();const initial=new URLSearchParams(location.search).get('q');if(initial){$('q').value=initial;submit(initial)}if(location.hash==='#searchView')show('searchView');
 })();
 </script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js" crossorigin="anonymous"></script>
-<script src="./assets/sk-browser-video-hub.js?v=20261108-8" defer></script>
+<script src="./assets/sk-browser-video-hub.js?v=20261108-9" defer></script>
 <script src="./assets/sk-account-presence.js?v=3" defer></script>
 <script src="./pwa-register.js" defer></script>
 </body></html>
