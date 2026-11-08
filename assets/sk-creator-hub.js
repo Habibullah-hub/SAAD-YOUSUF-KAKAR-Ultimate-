@@ -4,7 +4,9 @@ const root=document.getElementById('skCreatorHub');if(!root)return;
 const $=id=>document.getElementById(id);
 const state={db:null,user:null,isAdmin:false,loaded:false,authBound:false,realtime:null};
 const say=t=>{const n=$('skCreatorStatus');if(n)n.textContent=t;};
-const safeUrl=value=>{try{const u=new URL(value);return u.protocol==='https:'?u.href:'';}catch(_){return '';}};
+const safeUrl=value=>{try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:'';}catch(_){return '';}};
+const platformHosts={youtube:['youtube.com','youtu.be'],tiktok:['tiktok.com'],facebook:['facebook.com','fb.watch']};
+const platformUrlAllowed=(platform,value)=>{const clean=safeUrl(value);if(!clean||!platformHosts[platform])return false;try{const host=new URL(clean).hostname.toLowerCase();return platformHosts[platform].some(domain=>host===domain||host.endsWith('.'+domain));}catch(_){return false;}};
 const platformLabel=p=>({youtube:'YouTube',tiktok:'TikTok',facebook:'Facebook'}[p]||p);
 function videoEmbed(platform,url){
  const u=safeUrl(url);if(!u)return '';
@@ -93,7 +95,7 @@ async function saveChannels(){
  const db=state.db;if(!state.isAdmin||!db)return;
  const rows=[...$('skCreatorChannelSettings').querySelectorAll('input[data-platform]')];
  const payload=[],remove=[];
- for(const input of rows){const url=input.value.trim();if(!url){remove.push(input.dataset.platform);continue;}if(!safeUrl(url)){say('براہِ کرم ہر چینل کے لیے درست HTTPS لنک دیں۔');return;}payload.push({platform:input.dataset.platform,title:platformLabel(input.dataset.platform)+' · Official',channel_url:url,enabled:true,updated_at:new Date().toISOString()});}
+ for(const input of rows){const url=input.value.trim();if(!url){remove.push(input.dataset.platform);continue;}if(!platformUrlAllowed(input.dataset.platform,url)){say('ہر چینل کے لیے اسی پلیٹ فارم کا درست HTTPS لنک دیں۔');return;}payload.push({platform:input.dataset.platform,title:platformLabel(input.dataset.platform)+' · Official',channel_url:url,enabled:true,updated_at:new Date().toISOString()});}
  if(payload.length){const r=await db.from('sk_creator_channels').upsert(payload,{onConflict:'platform'});if(r.error){say('Channel links محفوظ نہیں ہوئے: '+r.error.message);return;}}
  for(const platform of remove){const r=await db.from('sk_creator_channels').delete().eq('platform',platform);if(r.error){say('Channel link حذف نہیں ہوا: '+r.error.message);return;}}
  say('آپ کے official channel links محفوظ ہوگئے۔');await loadPublic(db);
@@ -104,9 +106,7 @@ async function submit(event){
  try{
   const platform=$('skCreatorPlatform').value,type=$('skCreatorType').value,url=safeUrl($('skCreatorUrl').value.trim()),title=$('skCreatorTitle').value.trim();
   if(!url)throw new Error('درست HTTPS لنک درج کریں۔');
-  const parsed=new URL(url),host=parsed.hostname.toLowerCase();
-  const allowed={youtube:['youtube.com','www.youtube.com','youtu.be','m.youtube.com'],tiktok:['tiktok.com','www.tiktok.com','vm.tiktok.com'],facebook:['facebook.com','www.facebook.com','m.facebook.com','fb.watch']};
-  if(!allowed[platform].some(x=>host===x||host.endsWith('.'+x)))throw new Error('منتخب پلیٹ فارم اور لنک آپس میں مطابقت نہیں رکھتے۔');
+  if(!platformUrlAllowed(platform,url))throw new Error('منتخب پلیٹ فارم اور لنک آپس میں مطابقت نہیں رکھتے۔');
   const r=await state.db.from('sk_creator_submissions').insert({user_id:state.user.id,content_type:type,platform,title,url,status:'pending',is_trending:false});
   if(r.error)throw r.error;form.reset();say('آپ کا لنک Admin کو بھیج دیا گیا ہے۔ منظوری سے پہلے ہوم پیج پر نظر نہیں آئے گا۔');
  }catch(e){say(e.message||'لنک جمع نہیں ہوسکا۔ SQL migration چیک کریں۔');}
