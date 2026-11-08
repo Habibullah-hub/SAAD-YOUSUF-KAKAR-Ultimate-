@@ -45,15 +45,16 @@ async function loadRooms(){
  });
 }
 async function startLive(e){
- e.preventDefault();if(!user){say('Live شروع کرنے کے لیے Login کریں۔');return;}
+ e.preventDefault();if(!user){say('LIVE شروع کرنے کے لیے پہلے Login کریں۔');$('skLiveLoginGate').hidden=false;return;}
  if(!navigator.mediaDevices?.getUserMedia){say('اس browser میں camera/microphone دستیاب نہیں۔');return;}
  if(!window.LivekitClient){say('LiveKit client library ابھی لوڈ نہیں ہوئی۔');return;}
+ say('Live service کی تیاری چیک ہو رہی ہے…');const check=await db.functions.invoke('sk-live-token',{body:{action:'check'}});if(check.error||check.data?.configured!==true){const detail=check.data?.error||check.error?.message||'LiveKit configuration missing';say('ابھی Live شروع نہیں ہو سکتی: '+detail+'۔ Supabase → Edge Functions → Secrets میں LIVEKIT_URL، LIVEKIT_API_KEY اور LIVEKIT_API_SECRET درکار ہیں۔ اس وقت کوئی Live room محفوظ نہیں کیا گیا۔');return;}
  const title=$('skLiveTitle').value.trim(),description=$('skLiveDescription').value.trim();
  if(title.length<3){say('Live کا عنوان کم از کم 3 حروف کا ہو۔');return;}
  const roomName='sklive_'+user.id.slice(0,8)+'_'+crypto.randomUUID().replace(/-/g,'').slice(0,12);
  const r=await db.from('sk_live_rooms').insert({room_name:roomName,host_id:user.id,title,description,status:'live'}).select('*').single();
  if(r.error){say('Live room محفوظ نہیں ہوا: '+r.error.message);return;}
- try{await connectRoom(r.data,true);$('skLiveStartForm').hidden=true;await loadRooms();}
+ try{await connectRoom(r.data,true);$('skLiveStartForm').hidden=true;$('skLiveLoginGate').hidden=true;await loadRooms();}
  catch(err){await db.from('sk_live_rooms').update({status:'ended',ended_at:new Date().toISOString()}).eq('id',r.data.id);if(room){room.disconnect();room=null;}activeRoom=null;showStage(false);say('Live شروع نہیں ہوئی: '+(err.message||'Setup incomplete'));}
 }
 async function joinRoom(item){
@@ -64,7 +65,7 @@ async function joinRoom(item){
 }
 async function endLive(){
  if(activeRoom?.host_id===user?.id)await db.from('sk_live_rooms').update({status:'ended',ended_at:new Date().toISOString()}).eq('id',activeRoom.id);
- await leaveLive();$('skLiveStartForm').hidden=!user;await loadRooms();
+ await leaveLive();$('skLiveStartForm').hidden=!user;$('skLiveLoginGate').hidden=!!user;await loadRooms();
 }
 async function leaveLive(){
  const wasHost=activeRoom?.host_id===user?.id;
@@ -106,6 +107,7 @@ async function init(){
  roomsChannel=db.channel('sk-live-room-updates').on('postgres_changes',{event:'*',schema:'public',table:'sk_live_rooms'},()=>loadRooms()).subscribe();
 }
 $('skLiveStartForm')?.addEventListener('submit',startLive);
+$('skLiveLoginButton')?.addEventListener('click',()=>{if(typeof window.openAuthModal==='function')window.openAuthModal();else say('اوپر Login بٹن سے پہلے اپنے SYK اکاؤنٹ میں داخل ہوں۔');});
 $('skLiveLeave')?.addEventListener('click',leaveLive);
 $('skLiveEnd')?.addEventListener('click',endLive);
 $('skLiveShareScreen')?.addEventListener('click',shareScreen);
