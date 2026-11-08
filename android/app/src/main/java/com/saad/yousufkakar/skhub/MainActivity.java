@@ -54,7 +54,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    private static final String HOME = "https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/";
+    private static final String HOME = "https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/browser.html";
     private static final String PREFS = "sk_browser_data";
     private static final String HISTORY = "history";
     private static final int FILE_CHOOSER_REQUEST = 901;
