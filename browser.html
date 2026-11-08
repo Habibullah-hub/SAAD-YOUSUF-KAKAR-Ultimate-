@@ -7,6 +7,7 @@
 <link rel="canonical" href="https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/browser.html">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="stylesheet" href="./assets/sk-browser-experience.css?v=20261108-1">
+<link rel="stylesheet" href="./assets/sk-browser-video-hub.css?v=20261108-1">
 <title>SYK Browser — Your Digital World</title>
 <style>
 :root{color-scheme:dark;--bg:#071421;--panel:#0e2033;--panel2:#142a40;--line:#29465f;--text:#f3f8ff;--muted:#9db2c9;--accent:#6be6d3;--accent2:#8bcaff;--shadow:0 18px 55px #0005}
@@ -74,6 +75,26 @@ h1{letter-spacing:-.055em}
 <div class="hero"><div class="eyebrow">ONE HUB · ENDLESS DISCOVERY</div><h1>Your world.<br><span style="color:var(--accent)">Your SK.</span></h1><p>A simpler way to discover apps, AI tools, software, learning, news and your community.</p>
 <form class="searchbox" id="searchForm"><span class="glass">⌕</span><input id="q" type="search" placeholder="Search anything on the web…" autocomplete="off" aria-label="Search the whole internet with Google"><button>Search Web ↗</button></form><div class="hint">Global search · Search websites, images, videos, news and more across the internet.</div><div style="max-width:720px;margin:12px auto 0;text-align:left"><button class="chip" id="skSearchToggle" type="button" aria-expanded="false" aria-controls="skSearchPanel">⌄ Explore SYK Apps &amp; Tools</button><div id="skSearchPanel" class="hidden" style="margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:15px;background:var(--panel)"><div style="font-size:12px;font-weight:800;margin:0 0 8px">Search inside SYK Cyber Hub</div><form class="searchbox" id="searchForm2" style="box-shadow:none;margin:0"><span class="glass">⌕</span><input id="q2" type="search" placeholder="Find apps, AI tools, software…"><button>Search SYK</button></form></div></div>
 <div class="chips"><button class="chip" data-q="AI video">AI video</button><button class="chip" data-q="Android apps">Android apps</button><button class="chip" data-q="PDF tools">PDF tools</button><button class="chip" data-q="learning">Learning</button></div></div>
+<section class="section" id="sykVideoHub" aria-labelledby="sykVideoTitle">
+ <div class="sectionhead"><div><div class="eyebrow">SYK CREATOR VIDEO HUB</div><h2 id="sykVideoTitle">منتخب ویڈیوز اور میڈیا</h2><p>ممبر صرف ایک ویڈیو بھیجیں گے؛ ہر ویڈیو Admin کی منظوری کے بعد ہی نظر آئے گی۔</p></div></div>
+ <div id="sykVideoFeed" class="syk-video-feed"><p class="syk-video-muted">منظور شدہ ویڈیوز لوڈ ہو رہی ہیں…</p></div>
+ <div id="sykMemberSubmit" class="syk-video-submit" hidden><h3>اپنی ویڈیو بھیجیں</h3><p class="syk-video-muted">صرف ایک مخصوص ویڈیو کا لنک دیں، پورے چینل کا لنک نہیں۔</p><button class="chip" id="sykVideoSubmitToggle" type="button">＋ ویڈیو لنک بھیجیں</button><form id="sykVideoForm" class="syk-video-form" hidden>
+  <label>پلیٹ فارم<select id="sykMemberPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
+  <label>ویڈیو کا عنوان (اختیاری)<input id="sykMemberTitle" maxlength="120" placeholder="ویڈیو کا نام"></label>
+  <label>صرف اسی ویڈیو کا لنک<input id="sykMemberUrl" type="url" required placeholder="https://…"></label><button type="submit">Admin کو بھیجیں</button></form></div>
+ <p id="sykLoginHint" class="syk-video-muted">ویڈیو بھیجنے کے لیے مرکزی SK Cyber Hub میں Member Login کریں۔</p>
+ <div id="sykMyVideos" class="syk-video-submit" hidden><h3>میری درخواستیں</h3></div>
+ <div id="sykVideoAdmin" class="syk-video-admin" hidden><h3>Owner Admin · ویڈیو منظوری</h3><div id="sykVideoQueue"></div>
+  <h3>Admin Media Publisher</h3><p class="syk-video-muted">Admin اپنی ویڈیو، تصویر یا چینل لنک شامل کر سکتا ہے۔ ممبر کے لیے صرف ویڈیو submission کھلی ہے۔</p>
+  <form id="sykAdminMediaForm" class="syk-video-form">
+   <label>مواد کی قسم<select id="sykAdminKind"><option value="video">ویڈیو</option><option value="image">تصویر (HTTPS image link)</option><option value="channel">چینل لنک (صرف Admin)</option></select></label>
+   <label>پلیٹ فارم<select id="sykAdminPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
+   <label>عنوان<input id="sykAdminTitle" maxlength="120" required></label><label>ویڈیو / تصویر / چینل لنک<input id="sykAdminUrl" type="url" required placeholder="https://…"></label><button type="submit">Publish to SYK Browser</button>
+  </form>
+ </div>
+ <p id="sykVideoStatus" class="syk-video-muted" role="status" aria-live="polite">Creator Hub database سے رابطہ ہو رہا ہے…</p>
+</section>
+<dialog id="sykVideoDialog"><button id="sykVideoDialogClose" type="button">بند کریں ✕</button><button id="sykVideoFullscreen" type="button">⛶ Full screen</button><div id="sykVideoStage"></div></dialog>
 <section class="section"><div class="sectionhead"><div><h2>Quick access</h2><p>Your everyday starting points</p></div><button class="textbtn" id="shuffle">Refresh ↻</button></div><div class="grid" id="discover"></div></section>
 <section class="section"><div class="sectionhead"><div><h2>Explore by interest</h2><p>Find the right place without hunting through menus</p></div></div><div class="quickbar"><a class="quick" href="./#apps"><span>📱</span>Apps</a><a class="quick" href="./#tools"><span>⚡</span>Tools</a><a class="quick" href="./#news"><span>🌍</span>News</a><a class="quick" href="./#community"><span>👥</span>Community</a></div></section>
 <section class="section"><div class="sectionhead"><div><h2>SK Game Center</h2><p>Play an original SK game, even offline</p></div></div><a class="tile" href="./games.html"><span class="emoji">🕹️</span><b>SK 2048 — Play now</b><small>Built into SK. Load once, then play offline with swipe controls.</small></a><a class="tile" href="https://play.google.com/store/apps/details?id=com.JindoBlu.OfflineGames" target="_blank" rel="noopener noreferrer"><span class="emoji">🎮</span><b>Offline Games by JindoBlu</b><small>Official Play Store listing. This installs separately as its own Android app.</small></a></section><section class="section"><div class="sectionhead"><div><h2>Made for your flow</h2><p>Keep exploring, learning and creating</p></div></div><div class="grid"><a class="tile" href="./#creator-studio"><span class="emoji">🎬</span><b>Creator Studio</b><small>Ideas, scripts and creator resources</small></a><a class="tile" href="./#smart-free-finder"><span class="emoji">✨</span><b>Free AI Finder</b><small>Explore AI tools and their free limits</small></a><a class="tile" href="./#documents"><span class="emoji">📚</span><b>Documents</b><small>Guides and useful learning material</small></a><a class="tile" href="./#security-privacy"><span class="emoji">🛡️</span><b>Safety Center</b><small>Privacy and account protection</small></a></div></section>
@@ -105,6 +126,7 @@ $('clearHistory').addEventListener('click',()=>{history=[];localStorage.removeIt
 drawDiscover();const initial=new URLSearchParams(location.search).get('q');if(initial){$('q').value=initial;submit(initial)}if(location.hash==='#searchView')show('searchView');
 })();
 </script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js" crossorigin="anonymous"></script>
+<script src="./assets/sk-browser-video-hub.js?v=20261108-1" defer></script>
 <script src="./assets/sk-account-presence.js?v=1" defer></script>
 <script src="./pwa-register.js" defer></script>
 </body></html>
