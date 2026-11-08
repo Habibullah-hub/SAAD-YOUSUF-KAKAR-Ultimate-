@@ -32,6 +32,27 @@ create index if not exists sk_creator_submissions_public_idx
 create index if not exists sk_creator_submissions_review_idx
   on public.sk_creator_submissions(status,created_at desc);
 
+-- Enforce platform/host matching in the database as well as in the browser.
+-- NOT VALID keeps pre-existing rows untouched while checking all new or changed rows.
+do $constraints$
+begin
+  if not exists (select 1 from pg_constraint where conname='sk_creator_channels_platform_host_check' and conrelid='public.sk_creator_channels'::regclass) then
+    alter table public.sk_creator_channels add constraint sk_creator_channels_platform_host_check check (
+      (platform='youtube' and channel_url ~* '^https://([a-z0-9-]+\\.)*(youtube\\.com|youtu\\.be)([:/]|$)') or
+      (platform='tiktok' and channel_url ~* '^https://([a-z0-9-]+\\.)*tiktok\\.com([:/]|$)') or
+      (platform='facebook' and channel_url ~* '^https://([a-z0-9-]+\\.)*(facebook\\.com|fb\\.watch)([:/]|$)')
+    ) not valid;
+  end if;
+  if not exists (select 1 from pg_constraint where conname='sk_creator_submissions_platform_host_check' and conrelid='public.sk_creator_submissions'::regclass) then
+    alter table public.sk_creator_submissions add constraint sk_creator_submissions_platform_host_check check (
+      (platform='youtube' and url ~* '^https://([a-z0-9-]+\\.)*(youtube\\.com|youtu\\.be)([:/]|$)') or
+      (platform='tiktok' and url ~* '^https://([a-z0-9-]+\\.)*tiktok\\.com([:/]|$)') or
+      (platform='facebook' and url ~* '^https://([a-z0-9-]+\\.)*(facebook\\.com|fb\\.watch)([:/]|$)')
+    ) not valid;
+  end if;
+end;
+$constraints$;
+
 create table if not exists public.sk_creator_admin_alerts (
   id bigint generated always as identity primary key,
   submission_id uuid not null references public.sk_creator_submissions(id) on delete cascade,
@@ -79,7 +100,7 @@ grant insert,update,delete on public.sk_creator_channels to authenticated;
 grant select,insert,update on public.sk_creator_submissions to authenticated;
 grant select on public.sk_creator_submissions to anon;
 grant select,update on public.sk_creator_admin_alerts to authenticated;
-grant usage,select on sequence public.sk_creator_admin_alerts_id_seq to authenticated;
+-- No direct sequence privileges are granted to browser clients.
 
 create or replace function public.sk_creator_submission_alert()
 returns trigger language plpgsql security definer set search_path=''
