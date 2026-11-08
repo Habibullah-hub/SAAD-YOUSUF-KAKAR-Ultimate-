@@ -63,7 +63,7 @@ async function paintUser(user){
  const name=nameOf(user);let role='member';
  try{const result=await client.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();if(seq!==renderSeq)return;if(!result.error&&result.data?.role==='admin')role='admin';}
  catch(_){}
- t.textContent=name;s.textContent=role==='admin'?'Owner Admin':'Member';a.textContent=initials(name);b.dataset.signedIn='1';
+ t.textContent=name;s.textContent=role==='admin'?'Owner Admin':'Signed in';a.textContent=initials(name);b.dataset.signedIn='1';
  p.replaceChildren();
  const strong=document.createElement('strong');strong.textContent=name;
  const email=document.createElement('p');email.textContent=user.email||'Signed-in account';
