@@ -8,7 +8,7 @@ if (!/<meta\s+name=["']viewport["']/i.test(html)) errors.push("index.html is mis
 if (!/<title>[^<]+<\/title>/i.test(html)) errors.push("index.html is missing a page title.");
 if (html.includes("\\n</style>\\n")) errors.push("index.html contains literal escaped newline markers around a style block; use real line breaks.");
 if (!html.includes("window.skRunDirectorySearch=()=>{runSearch();filterApps();}")) errors.push("Header search is missing the unified directory-search entry point.");
-if (!html.includes('id="search"') || html.includes('id="searchBtn"')) errors.push("Header search should be input-only without a separate search button.");
+if (!html.includes('id="search"') || !html.includes('id="searchBtn"') || !html.includes('class="searchbox syk-home-header-search"')) errors.push("Homepage header must include its visible unified search field and Search button.");
 if (html.includes("headerSearch.addEventListener('input'")) errors.push("A legacy header search input handler is still present.");
 
 const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)];
