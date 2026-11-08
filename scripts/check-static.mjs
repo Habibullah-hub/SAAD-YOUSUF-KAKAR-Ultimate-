@@ -228,7 +228,7 @@ if (!html.includes("SYK Browser is the default public landing page")) errors.pus
 const manifest = JSON.parse(fs.readFileSync("manifest.webmanifest", "utf8"));
 if (manifest.start_url !== "./browser.html") errors.push("Installed SYK app must launch directly into SYK Browser.");
 if (!html.includes('location.replace(new URL("browser.html"+location.search,location.href).href)')) errors.push("Website root must redirect visitors to SYK Browser while preserving search queries.");
-if (pwaRegister.includes("SK Cyber Hub") || pwaRegister.includes("SK App")) errors.push("Visible PWA branding must use SYK, not SK.");
+if (fs.readFileSync(pwaRegisterPath, "utf8").includes("SK Cyber Hub") || fs.readFileSync(pwaRegisterPath, "utf8").includes("SK App")) errors.push("Visible PWA branding must use SYK, not SK.");
 if (!browser.includes('id="sykVideoHub"')) errors.push("SYK Browser video feed is missing.");
 if (!browser.includes('id="sykVideoSearch"')) errors.push("SYK Browser video search control is missing.");
 
