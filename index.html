@@ -5219,4 +5219,17 @@ body :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px
 <script src="./assets/sk-account-presence.js?v=4" defer></script>
 <script src="./assets/sk-premium-interactions.js?v=1" defer></script>
 <script src="./assets/syk-daily-islamic.js?v=1" defer></script>
+<script id="sk-video-fullscreen-orientation">
+(()=>{'use strict';
+ const unlock=()=>{try{screen.orientation?.unlock?.();}catch(_){}};
+ const handle=async()=>{
+  const active=document.fullscreenElement||document.webkitFullscreenElement;
+  if(!active){unlock();return;}
+  const isVideo=active.tagName==='VIDEO'||active.tagName==='IFRAME'||!!active.querySelector?.('video,iframe');
+  if(isVideo){try{await screen.orientation?.lock?.('landscape');}catch(_){/* The browser or device may not permit orientation locking. */}}
+ };
+ document.addEventListener('fullscreenchange',handle);
+ document.addEventListener('webkitfullscreenchange',handle);
+})();
+</script>
 </body></html>
