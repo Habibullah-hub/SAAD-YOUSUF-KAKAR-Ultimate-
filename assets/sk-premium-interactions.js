@@ -5,9 +5,10 @@ let client=null,user=null,role='member',channel=null,refreshing=false,authBound=
 const escCount=n=>n>99?'99+':String(n);
 const safeDate=v=>{try{return new Date(v).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});}catch(_){return '';}};
 function ensureBadge(){
- const avatar=$('skAccountAvatar');if(!avatar)return null;
+ const trigger=$('skAccountTrigger');if(!trigger)return null;
  let badge=$('skAccountUnreadBadge');
- if(!badge){badge=document.createElement('span');badge.id='skAccountUnreadBadge';badge.className='sk-account-unread-badge';badge.hidden=true;badge.setAttribute('aria-label','Unread notifications');avatar.append(badge);}
+ if(!badge){badge=document.createElement('span');badge.id='skAccountUnreadBadge';badge.className='sk-account-unread-badge';badge.hidden=true;badge.setAttribute('aria-label','Unread notifications');}
+ if(badge.parentElement!==trigger)trigger.append(badge);
  return badge;
 }
 function ensurePanel(){
