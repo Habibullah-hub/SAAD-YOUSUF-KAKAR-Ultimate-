@@ -55,7 +55,7 @@ function mount(){
 function paintGuest(){
  const t=$('skAccountTitle'),s=$('skAccountSubtitle'),a=$('skAccountAvatar'),p=$('skAccountPopover'),b=$('skAccountTrigger');
  if(!t||!s||!a||!p||!b)return;
- t.textContent='Login';s.textContent='Sign in';a.textContent='+';b.dataset.signedIn='';
+ t.textContent='Login';s.textContent='Sign in';a.textContent='+';b.dataset.signedIn='';const headerLogin=document.querySelector('.top .sk-header-login');if(headerLogin)headerLogin.hidden=false;
  const upload=document.getElementById('sykMemberSubmit'),mine=document.getElementById('sykMyVideos'),admin=document.getElementById('sykVideoAdmin'),hub=document.getElementById('sykVideoHub');if(hub){if(upload)hub.append(upload);if(mine)hub.append(mine);if(admin)hub.append(admin);}p.innerHTML='<strong>Welcome to SYK Browser</strong><p>Login once to submit a video for Admin review.</p><a href="./#community">Login</a>';
 }
 async function paintUser(user){
@@ -64,7 +64,7 @@ async function paintUser(user){
  const name=nameOf(user);let role='member';
  try{const result=await client.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();if(seq!==renderSeq)return;if(!result.error&&result.data?.role==='admin')role='admin';}
  catch(_){}
- t.textContent=name;s.textContent=role==='admin'?'Owner Admin':'Signed in';a.replaceChildren();a.textContent=initials(name);const photo=avatarUrl(user);if(photo){const img=document.createElement('img');img.src=photo;img.alt='';img.loading='lazy';img.referrerPolicy='no-referrer';img.addEventListener('error',()=>img.remove(),{once:true});a.append(img);}b.dataset.signedIn='1';
+ t.textContent=name;s.textContent=role==='admin'?'Owner Admin':'Signed in';const headerLogin=document.querySelector('.top .sk-header-login');if(headerLogin)headerLogin.hidden=true;a.replaceChildren();a.textContent=initials(name);const photo=avatarUrl(user);if(photo){const img=document.createElement('img');img.src=photo;img.alt='';img.loading='lazy';img.referrerPolicy='no-referrer';img.addEventListener('error',()=>img.remove(),{once:true});a.append(img);}b.dataset.signedIn='1';
  p.replaceChildren();
  const strong=document.createElement('strong');strong.textContent=name;
  const email=document.createElement('p');email.textContent=user.email||'Signed-in account';
