@@ -21,8 +21,8 @@ async function init(){
 async function searchMembers(){
  if(!user)return;const q=$('skConnectSearch').value.trim();const host=$('skConnectSearchResults');host.replaceChildren();
  if(q.length<2){host.append(el('p','sk-connect-muted','کم از کم دو حروف لکھیں۔'));return;}
- const r=await db.from('sk_public_profiles').select('id,display_name,bio').ilike('display_name','%'+q.replace(/[%_]/g,'')+'%').neq('id',user.id).limit(12);
- if(r.error){host.append(el('p','sk-connect-muted',r.error.message));return;}
+ const r=await db.rpc('sk_find_members',{p_query:q});
+ if(r.error){host.append(el('p','sk-connect-muted','Member search: '+r.error.message));return;}
  if(!r.data?.length){host.append(el('p','sk-connect-muted','کوئی ممبر نہیں ملا۔'));return;}
  r.data.forEach(profile=>{const row=el('div','sk-connect-person');row.append(el('span','',safeName(profile)));const b=el('button','', 'Message');b.type='button';b.addEventListener('click',()=>openDirect(profile));row.append(b);host.append(row);});
 }
