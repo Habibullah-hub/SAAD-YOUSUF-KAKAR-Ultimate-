@@ -43,7 +43,7 @@ async function connectRoom(item,hostMode){
  room.on(LivekitClient.RoomEvent.TrackUnsubscribed,(track)=>{track.detach().forEach(n=>n.remove());});
  room.on(LivekitClient.RoomEvent.Disconnected,()=>{say('Live session disconnected.');});
  await room.connect(creds.serverUrl,creds.token);
- activeRoom=item;showStage(true);$('skLiveStartForm').hidden=!!hostMode;$('skLiveShareScreen').hidden=!hostMode;$('skLiveShareScreen').disabled=!navigator.mediaDevices?.getDisplayMedia;$('skLiveEnd').hidden=!hostMode;
+ activeRoom=item;showStage(true);$('skLiveStartForm').hidden=true;$('skLiveSetup').hidden=true;$('skLiveShareScreen').hidden=!hostMode;$('skLiveShareScreen').disabled=!navigator.mediaDevices?.getDisplayMedia;$('skLiveEnd').hidden=!hostMode;
  if(hostMode){
   if(!cameraStream||!$('skLivePreviewCanvas').captureStream)throw new Error('Camera preview unavailable. Re-open the camera and try again.');
   canvasStream=$('skLivePreviewCanvas').captureStream(24);const videoTrack=canvasStream.getVideoTracks()[0];
