@@ -1604,20 +1604,22 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 <p id="empty" class="empty hidden">No matching category found. Try another search.</p>
 <main id="tab-home">
 <section class="section wrap sk-creator-hub" id="skCreatorHub">
- <div class="sk-creator-head"><div><span class="sk-kicker">SYK CREATOR HUB · OWNER FIRST</span><h2>Official Channels & Creator Videos</h2><p>سب سے پہلے مالک کے Official channels اور ویڈیو، اس کے بعد ممبرز کی منظور شدہ ویڈیوز اور چینلز۔</p></div><span class="sk-live-pill"><i></i> Admin approved</span></div>
- <div class="sk-creator-owner-block"><h3>My Official Channels</h3><div id="skCreatorOwnerLinks" class="sk-creator-owner-links"><span class="sk-creator-muted">Loading official channels…</span></div><div id="skCreatorOwnerFeatured" class="sk-creator-owner-featured" hidden><h3>My Featured YouTube Video</h3><div id="skCreatorOwnerPlayer"></div></div></div>
- <div class="sk-creator-member-block"><h3>Member Videos · Below Owner</h3><p class="sk-creator-muted">ممبرز کی ویڈیوز صرف آپ کی منظوری کے بعد یہاں آئیں گی۔ ویڈیو چلانے کے لیے Play دبائیں۔</p><div id="skCreatorMemberVideos" class="sk-creator-grid"></div></div>
- <div class="sk-creator-member-block"><h3>Approved Member Channels</h3><div id="skCreatorMemberChannels" class="sk-creator-owner-links"></div></div>
- <div class="sk-creator-submit" id="skCreatorMemberSubmit" hidden><h3>Share your channel or video</h3><p class="sk-creator-muted">Member login ضروری ہے۔ آپ کا لنک منظوری سے پہلے کسی کو نظر نہیں آئے گا۔</p><form id="skCreatorForm" class="sk-creator-form">
- <label>Link type<select id="skCreatorType"><option value="video">Video</option><option value="channel">Channel / Page</option></select></label><label>Platform<select id="skCreatorPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
- <label style="grid-column:1/-1">Title<input id="skCreatorTitle" required maxlength="120" placeholder="Your video or channel name"></label><label style="grid-column:1/-1">Public link<input id="skCreatorUrl" type="url" required placeholder="https://…" autocomplete="url"></label><button class="sk-creator-btn" type="submit">Submit for Admin approval</button></form></div>
- <p id="skCreatorLoginHint" class="sk-creator-muted">اپنا لنک بھیجنے کے لیے پہلے <button type="button" class="sk-creator-btn" onclick="openMemberAuthModal('login')">Member Login</button> کریں۔</p>
+ <div class="sk-creator-head"><div><span class="sk-kicker">SYK VIDEO HUB</span><h2>SYK Videos</h2><p>یہاں صرف منتخب ویڈیوز دکھائی جائیں گی۔ ممبر کی ہر ویڈیو پہلے Owner Admin کی منظوری سے گزرے گی۔</p></div><span class="sk-live-pill"><i></i> Admin reviewed</span></div>
+ <div class="sk-creator-owner-block"><h3>SYK Featured Video</h3><div id="skCreatorOwnerFeatured" class="sk-creator-owner-featured" hidden><div id="skCreatorOwnerPlayer"></div></div><p id="skCreatorOwnerEmpty" class="sk-creator-muted">SYK کی ویڈیو جلد یہاں نظر آئے گی۔</p></div>
+ <div class="sk-creator-member-block"><h3>Approved Member Videos</h3><p class="sk-creator-muted">صرف وہ ویڈیوز جو Owner Admin نے چیک کرکے منظور کی ہوں۔</p><div id="skCreatorMemberVideos" class="sk-creator-grid"></div></div>
+ <div class="sk-creator-submit" id="skCreatorMemberSubmit" hidden><button type="button" class="sk-creator-submit-toggle" id="skCreatorSubmitToggle" aria-expanded="false">＋ اپنا ویڈیو لنک بھیجیں</button><p class="sk-creator-muted">صرف اپنی منتخب کردہ ایک ویڈیو کا لنک بھیجیں۔ پورا چینل یا چینل کی تمام ویڈیوز نہیں۔ ویڈیو منظوری سے پہلے عوام کو نظر نہیں آئے گی۔</p>
+ <form id="skCreatorForm" class="sk-creator-form" hidden>
+ <label>ویڈیو پلیٹ فارم<select id="skCreatorPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
+ <label>ویڈیو کا نام (اختیاری)<input id="skCreatorTitle" maxlength="120" placeholder="ویڈیو کا مختصر نام"></label>
+ <label style="grid-column:1/-1">صرف اس ویڈیو کا لنک<input id="skCreatorUrl" type="url" required placeholder="https://…" autocomplete="url"></label><button class="sk-creator-btn" type="submit">Admin کو ویڈیو بھیجیں</button></form></div>
+ <p id="skCreatorLoginHint" class="sk-creator-muted">ویڈیو بھیجنے کے لیے پہلے <button type="button" class="sk-creator-btn" onclick="openMemberAuthModal('login')">Member Login</button> کریں۔</p>
+ <div id="skCreatorMyPanel" class="sk-creator-my-panel" hidden><h3>میری بھیجی ہوئی ویڈیوز</h3><div id="skCreatorMySubmissions"></div></div>
  <p id="skCreatorStatus" class="sk-creator-status" role="status" aria-live="polite">Creator Hub database connection کا انتظار ہے۔</p>
- <div id="skCreatorAdmin" class="sk-creator-admin" hidden><h3>Owner Admin · Review & Channel Settings</h3><p class="sk-creator-muted">صرف Admin آپ کے Official links، Featured YouTube video اور ممبرز کی درخواستیں manage کرسکتا ہے۔</p>
- <h3>My official channels</h3><p class="sk-creator-muted">YouTube channel link کے ساتھ ایک مخصوص YouTube video URL بھی دیں تاکہ وہ اسی صفحے پر Play ہو۔</p><div id="skCreatorChannelSettings" class="sk-creator-form"></div><button type="button" class="sk-creator-btn" id="skCreatorSaveChannels">Save my channel links</button>
- <h3 style="margin-top:18px">Member approval queue</h3><button type="button" class="sk-creator-btn" id="skCreatorRefresh">Refresh requests</button><div id="skCreatorQueue"></div>
+ <div id="skCreatorAdmin" class="sk-creator-admin" hidden><h3>Owner Admin · Video Review</h3><p class="sk-creator-muted">ہر ویڈیو پہلے Preview کریں۔ Approve یا Reject کے ساتھ ممبر کے لیے پیغام بھی محفوظ ہوگا۔</p>
+ <h3>SYK ہوم پیج ویڈیو</h3><div id="skCreatorChannelSettings" class="sk-creator-form"></div><button type="button" class="sk-creator-btn" id="skCreatorSaveFeatured">SYK ویڈیو محفوظ کریں</button>
+ <h3 style="margin-top:18px">ممبر ویڈیوز کی منظوری</h3><button type="button" class="sk-creator-btn" id="skCreatorRefresh">درخواستیں Refresh کریں</button><div id="skCreatorQueue"></div>
  <h3 style="margin-top:18px">Registered Members</h3><p class="sk-creator-muted">یہ فہرست صرف Owner Admin دیکھ سکتا ہے۔</p><button type="button" class="sk-creator-btn" id="skCreatorMembersToggle" aria-expanded="false">Open registered members</button><div id="skCreatorRegisteredMembers" hidden></div></div>
- <p class="sk-creator-note">Owner links are displayed first. Member videos and channels appear below only after Admin approval. YouTube featured video playback is embedded on this page; some videos may have embedding disabled by their publisher.</p>
+ <p class="sk-creator-note">اس سیکشن میں چینل لنکس یا پورے چینل کی ویڈیوز نہیں ہوں گی۔ صرف SYK کی منتخب ویڈیو اور Admin-approved ممبر ویڈیوز دکھائی جائیں گی۔</p>
 </section>
 <section class="hero wrap store-hero sk-ultimate-hero" aria-labelledby="skUltimateTitle">
  <div class="sk-hero-copy">
@@ -4859,7 +4861,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 <script src="./assets/sk-messenger.js" defer></script>
 <script src="./assets/sk-live.js" defer></script>
 <script src="./assets/sk-creator-monetization.js" defer></script>
-<script src="./assets/sk-creator-hub.js?v=20261108-3" defer></script>
+<script src="./assets/sk-creator-hub.js??v=20261108-4" defer></script>
 <script src="./assets/sk-community.js" defer></script>
 <script src="./assets/sk-platforms.js" defer></script><script src="./assets/sk-discovery.js" defer></script>
 <script src="./assets/sk-easy-mode.js" defer></script>
@@ -5107,7 +5109,7 @@ body :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px
 <link rel="stylesheet" href="./assets/sk-ultimate-experience-v2.css?v=20261106-4">
 <link rel="stylesheet" href="./assets/sk-motion-performance.css?v=20261108-1">
 <link rel="stylesheet" href="./assets/sk-theme-mode.css?v=20261108-2"><link rel="stylesheet" href="./assets/sk-news-premium.css?v=20261108-1">
-<link rel="stylesheet" href="./assets/sk-creator-hub.css?v=20261108-3"><link rel="stylesheet" href="./assets/syk-neon-refresh.css?v=1">
+<link rel="stylesheet" href="./assets/sk-creator-hub.css??v=20261108-4"><link rel="stylesheet" href="./assets/syk-neon-refresh.css?v=1">
 <script src="./assets/sk-share.js?v=1" defer></script>
 <script src="./assets/sk-theme-mode.js?v=20261108-2" defer></script>
 <script src="./assets/sk-account-presence.js?v=1" defer></script>
