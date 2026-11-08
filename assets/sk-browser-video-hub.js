@@ -45,12 +45,39 @@ const valid=(p,v)=>{const u=safeUrl(v);if(!u||!hosts[p])return false;const h=new
 const node=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n;};
 function embed(p,v){const u=new URL(v);if(p==='youtube'){let id=u.hostname==='youtu.be'?u.pathname.slice(1):u.searchParams.get('v');if(!id)id=(u.pathname.match(/\/(?:shorts|embed)\/([^/?]+)/)||[])[1];return id&&/^[\w-]{6,20}$/.test(id)?'https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0':'';}if(p==='tiktok'){const id=(u.pathname.split('/video/')[1]||'').split('/')[0];return /^\d+$/.test(id)?'https://www.tiktok.com/player/v1/'+id+'?autoplay=1':'';}if(p==='facebook')return 'https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(v)+'&show_text=false';return '';}
 function openPlayer(item){const dlg=$('sykVideoDialog'),stage=$('sykVideoStage');stage.replaceChildren();if(item.kind==='image'){const im=node('img','syk-video-image');im.src=item.media_url;im.alt=item.title;stage.append(im);}else if(item.platform==='direct'||item.media_path){const video=node('video','syk-video-direct');video.src=item.media_url;video.controls=true;video.autoplay=true;video.playsInline=true;video.preload='metadata';stage.append(video);}else{const src=embed(item.platform,item.media_url);if(!src){say('اس پلیٹ فارم نے embed کی اجازت نہیں دی؛ اصل ویڈیو کھولیں۔');return;}const f=node('iframe','');f.src=src;f.title=item.title;f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.referrerPolicy='strict-origin-when-cross-origin';stage.append(f);}dlg.showModal();}
+
+function videoLocale(){
+ const selected=$('sykVideoLanguage')?.value||'auto';
+ const raw=(selected==='auto'||selected==='other')?(navigator.language||'en'):selected;
+ const parts=raw.split('-'),lang=(parts[0]||'en').toLowerCase();
+ const region=(selected==='auto'?(deviceRegion()||parts[1]||''):(parts[1]||deviceRegion()||'')).toUpperCase();
+ return {lang:/^[a-z]{2}$/.test(lang)?lang:'en',region:/^[A-Z]{2}$/.test(region)?region:''};
+}
+async function fetchYouTubeTopic(topic){
+ const cfg=videoLocale(),url=localStorage.getItem('skcyberhub_supabase_url'),key=localStorage.getItem('skcyberhub_supabase_anon_key');
+ if(!url||!key)return [];
+ const cacheKey='sk-yt-feed-v1:'+topic+':'+cfg.lang+':'+cfg.region,now=Date.now();
+ try{const saved=JSON.parse(localStorage.getItem(cacheKey)||'null');if(saved&&saved.expires>now&&Array.isArray(saved.items))return saved.items;}catch(_){}
+ const endpoint=url.replace(/\/+$/,'')+'/functions/v1/sk-youtube-feed?'+new URLSearchParams({topic:topic,lang:cfg.lang,region:cfg.region});
+ const response=await fetch(endpoint,{method:'GET',headers:{apikey:key,Accept:'application/json'},cache:'no-store'});
+ const payload=await response.json().catch(()=>({}));
+ if(!response.ok)throw new Error(payload.error||'YouTube feed unavailable');
+ const items=(Array.isArray(payload.items)?payload.items:[]).map(x=>({
+  id:'youtube-'+x.video_id,kind:'video',platform:'youtube',media_url:x.url,title:x.title||'YouTube video',
+  description:x.description||'',channel_title:x.channel_title||'YouTube',thumbnail_url:x.thumbnail_url||'',
+  category:x.category||'other',created_at:x.published_at||null,is_trending:topic==='trending',
+  is_youtube:true,is_owner_ad:false,is_sponsored:false
+ }));
+ try{localStorage.setItem(cacheKey,JSON.stringify({expires:now+15*60*1000,items:items}));}catch(_){}
+ return items;
+}
+
 function categoryName(value){return ({islamic:'اسلامی',news:'خبریں',education:'تعلیم',other:'دیگر'})[value]||'دیگر';}
 function youtubeId(value){try{const u=new URL(value),host=u.hostname.toLowerCase();if(!['youtube.com','www.youtube.com','m.youtube.com','youtu.be','www.youtu.be'].includes(host))return '';let id=host.includes('youtu.be')?u.pathname.split('/').filter(Boolean)[0]:u.searchParams.get('v');if(!id){const parts=u.pathname.split('/').filter(Boolean);if(['shorts','embed','live'].includes(parts[0]))id=parts[1];}return /^[A-Za-z0-9_-]{6,20}$/.test(id||'')?id:'';}catch(_){return '';}}
-function card(item){const c=node('article','syk-video-card'+(item.is_owner_ad?' is-owner-ad':'')+(item.is_sponsored?' is-sponsored':'')),poster=node('button','syk-video-poster','');poster.type='button';poster.setAttribute('aria-label',item.title+' — ویڈیو چلائیں');const id=youtubeId(item.media_url||'');if(id)poster.style.backgroundImage='linear-gradient(0deg,#07142166,#07142122),url("https://i.ytimg.com/vi/'+id+'/hqdefault.jpg")';poster.addEventListener('click',()=>openPlayer(item));c.append(poster,node('b','',item.title));if(item.is_owner_ad)c.append(node('span','syk-video-admin-tag',item.is_sponsored?'مالک کا اشتہار · نمایاں':'Owner Admin · نمایاں ویڈیو'));c.append(node('span','syk-video-category',categoryName(item.category)));if(item.is_trending)c.append(node('span','syk-video-trending','مقبول / ٹرینڈنگ'));if(item.created_at){const d=new Date(item.created_at);if(!Number.isNaN(d.getTime()))c.append(node('time','syk-video-date',new Intl.DateTimeFormat(navigator.language||'en',{dateStyle:'medium',timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone}).format(d)));}grid.append(c);}
+function card(item){const c=node('article','syk-video-card'+(item.is_owner_ad?' is-owner-ad':'')+(item.is_sponsored?' is-sponsored':'')),poster=node('button','syk-video-poster','');poster.type='button';poster.setAttribute('aria-label',item.title+' — ویڈیو چلائیں');const id=youtubeId(item.media_url||'');if(item.thumbnail_url&&item.thumbnail_url.startsWith('https://'))poster.style.backgroundImage='linear-gradient(0deg,#07142166,#07142122),url("'+item.thumbnail_url.replace(/["\\\\]/g,'')+'")';else if(id)poster.style.backgroundImage='linear-gradient(0deg,#07142166,#07142122),url("https://i.ytimg.com/vi/'+id+'/hqdefault.jpg")';poster.addEventListener('click',()=>openPlayer(item));c.append(poster,node('b','',item.title));if(item.is_youtube)c.append(node('span','syk-video-source','YouTube · '+(item.channel_title||'YouTube')));if(item.is_owner_ad)c.append(node('span','syk-video-admin-tag',item.is_sponsored?'مالک کا اشتہار · نمایاں':'Owner Admin · نمایاں ویڈیو'));c.append(node('span','syk-video-category',categoryName(item.category)));if(item.is_trending)c.append(node('span','syk-video-trending','مقبول / ٹرینڈنگ'));if(item.created_at){const d=new Date(item.created_at);if(!Number.isNaN(d.getTime()))c.append(node('time','syk-video-date',new Intl.DateTimeFormat(navigator.language||'en',{dateStyle:'medium',timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone}).format(d)));}grid.append(c);}
 function shuffleList(items){const ads=items.filter(x=>x.is_owner_ad&&x.is_sponsored).sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));const admin=items.filter(x=>x.is_owner_ad&&!x.is_sponsored).sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));const trending=items.filter(x=>!x.is_owner_ad&&x.is_trending);const normal=items.filter(x=>!x.is_owner_ad&&!x.is_trending);const mix=a=>{const out=[...a];for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]];}return out;};return [...ads,...admin,...mix(trending),...mix(normal)];}
 function renderFeed(){grid.replaceChildren();const visible=lastItems.filter(x=>currentCategory==='all'||x.category===currentCategory);if(!visible.length){grid.append(node('p','syk-video-muted','اس قسم میں ابھی کوئی منظور شدہ ویڈیو موجود نہیں۔ Admin کی منظور شدہ ویڈیوز یہاں نظر آئیں گی۔'));return;}visible.forEach(card);}
-function setCategory(value){currentCategory=value;document.querySelectorAll('[data-video-category]').forEach(b=>{const active=b.dataset.videoCategory===value;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});renderFeed();}
+async function setCategory(value){currentCategory=value;document.querySelectorAll('[data-video-category]').forEach(b=>{const active=b.dataset.videoCategory===value;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});renderFeed();if(value!=='all'){try{const fresh=await fetchYouTubeTopic(value);lastItems=[...lastItems.filter(x=>!x.is_youtube||x.category!==value),...fresh];renderFeed();if(fresh.length)say('YouTube کی متعلقہ ویڈیوز لوڈ ہوگئیں۔');}catch(e){say('YouTube ویڈیوز فی الحال دستیاب نہیں: '+(e.message||''));}}}
 
 async function load(){
  if(!db)return;
@@ -63,10 +90,11 @@ async function load(){
  const errors=[videos.error,owner.error].filter(Boolean),memberRows=videos.error?[]:(videos.data||[]),ownerRows=owner.error?[]:(owner.data||[]);
  const ads=ownerRows.map(x=>({...x,kind:'video',url:x.media_url,is_trending:false,is_owner_ad:true,is_sponsored:!!x.is_featured,category:x.category||'other'}));
  const members=memberRows.map(x=>({...x,kind:'video',is_owner_ad:false,category:x.category||'other'}));
- lastItems=shuffleList([...ads,...members].map(x=>({...x,media_url:x.url||x.media_url,media_path:x.media_path||null})));
+ let youtube=[];let youtubeError=null;try{youtube=await fetchYouTubeTopic('trending');}catch(e){youtubeError=e;}
+ lastItems=shuffleList([...ads,...members,...youtube].map(x=>({...x,media_url:x.url||x.media_url,media_path:x.media_path||null})));
  renderFeed();
  if(!lastItems.length)grid.append(node('p','syk-video-muted',errors.length?'ڈیٹابیس سے ویڈیوز نہیں مل سکیں۔ Admin سے کنکشن اور پالیسی چیک کروائیں۔':'ابھی کوئی منظور شدہ ویڈیو موجود نہیں۔'));
- say(errors.length?'Creator Hub جزوی طور پر دستیاب ہے: '+errors.map(e=>e.message||'Database error').join(' · '):(lastItems.length?'منظور شدہ ویڈیوز لوڈ ہوگئیں۔':'Creator Hub تیار ہے؛ ابھی کوئی منظور شدہ ویڈیو نہیں۔'));
+ say(errors.length?'Creator Hub جزوی طور پر دستیاب ہے: '+errors.map(e=>e.message||'Database error').join(' · '):(lastItems.length?'منظور شدہ اور YouTube ویڈیوز لوڈ ہوگئیں۔':'Creator Hub تیار ہے؛ ابھی کوئی ویڈیو نہیں۔'));if(youtubeError)say('YouTube فیڈ دستیاب نہیں: '+(youtubeError.message||'API connection error')+' — ممبرز اور Admin ویڈیوز برقرار ہیں۔');
 }
 
 async function auth(){
@@ -88,10 +116,13 @@ $('sykAdminMediaToggle').addEventListener('click',()=>{$('sykAdminMediaForm').hi
 $('sykAdminQuick')?.addEventListener('click',()=>{admin.hidden=false;admin.scrollIntoView({behavior:'smooth',block:'start'});});
 $('sykVideoSubmitToggle').onclick=()=>{$('sykVideoForm').hidden=!$('sykVideoForm').hidden;};
 $('sykVideoDialogClose').onclick=()=>{$('sykVideoDialog').close();$('sykVideoStage').replaceChildren();};
-$('sykVideoDialog').addEventListener('close',()=>{$('sykVideoStage').replaceChildren();});
-document.addEventListener('fullscreenchange',async()=>{if(!document.fullscreenElement)return;try{await screen.orientation?.lock?.('landscape');}catch(_){/* Android/browser may deny orientation lock; fullscreen still works. */}});
-$('sykVideoFullscreen').onclick=async()=>{const target=$('sykVideoStage').querySelector('iframe,img');if(!target)return;try{await (target.requestFullscreen?.()||$('sykVideoDialog').requestFullscreen?.());try{await screen.orientation?.lock?.('landscape');}catch(_){}}catch(e){say('اس browser میں fullscreen دستیاب نہیں۔');}};
-const languageSelect=$('sykVideoLanguage');if(languageSelect){const savedLanguage=localStorage.getItem('sk-video-language');if(savedLanguage&&Array.from(languageSelect.options).some(option=>option.value===savedLanguage))languageSelect.value=savedLanguage;languageSelect.addEventListener('change',()=>{localStorage.setItem('sk-video-language',languageSelect.value);updateLocalizedVideoLinks();say('ویڈیو سرچ کی زبان تبدیل ہوگئی۔');});updateLocalizedVideoLinks();}
+$('sykVideoDialog').addEventListener('close',()=>{if(document.fullscreenElement)document.exitFullscreen?.().catch?.(()=>{});unlockVideoOrientation();$('sykVideoStage').replaceChildren();});
+async function lockVideoLandscape(){try{await screen.orientation?.lock?.('landscape');}catch(_){/* Device/browser may deny orientation lock. */}}
+function unlockVideoOrientation(){try{screen.orientation?.unlock?.();}catch(_){}}
+document.addEventListener('fullscreenchange',()=>{const el=document.fullscreenElement;if(!el){unlockVideoOrientation();return;}const media=el.tagName==='VIDEO'||el.tagName==='IFRAME'||el.id==='sykVideoStage'||!!el.querySelector?.('video,iframe');if(media)lockVideoLandscape();});
+document.addEventListener('webkitfullscreenchange',()=>{if(!document.webkitFullscreenElement)unlockVideoOrientation();});
+$('sykVideoFullscreen').onclick=async()=>{const target=$('sykVideoStage').querySelector('video,iframe,img');if(!target)return;try{if(target.requestFullscreen)await target.requestFullscreen();else if(target.webkitRequestFullscreen)target.webkitRequestFullscreen();else await $('sykVideoDialog').requestFullscreen?.();await lockVideoLandscape();}catch(e){say('اس browser میں fullscreen دستیاب نہیں۔');}};
+const languageSelect=$('sykVideoLanguage');if(languageSelect){const savedLanguage=localStorage.getItem('sk-video-language');if(savedLanguage&&Array.from(languageSelect.options).some(option=>option.value===savedLanguage))languageSelect.value=savedLanguage;languageSelect.addEventListener('change',async()=>{localStorage.setItem('sk-video-language',languageSelect.value);updateLocalizedVideoLinks();try{const topic=currentCategory==='all'?'trending':currentCategory,fresh=await fetchYouTubeTopic(topic),targetCategory=topic==='trending'?'other':topic;lastItems=[...lastItems.filter(x=>!x.is_youtube||x.category!==targetCategory),...fresh];renderFeed();say('منتخب زبان کے مطابق YouTube ویڈیوز لوڈ ہوگئیں۔');}catch(e){say('زبان تبدیل ہوگئی؛ YouTube فیڈ فی الحال دستیاب نہیں۔');}});updateLocalizedVideoLinks();}
 document.querySelectorAll('[data-video-category]').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.videoCategory)));$('sykVideoShuffle')?.addEventListener('click',()=>{lastItems=shuffleList(lastItems);renderFeed();say('ویڈیوز کی ترتیب بدل دی گئی ہے۔');});
 async function init(){const url=localStorage.getItem('skcyberhub_supabase_url'),key=localStorage.getItem('skcyberhub_supabase_anon_key');if(!url||!key||!window.supabase?.createClient){say('پہلے SYK Cyber Hub پر Database Configure کریں، پھر SYK Browser دوبارہ کھولیں۔');return;}db=window.SK_SUPABASE_CLIENT||window.supabase.createClient(url,key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});window.SK_SUPABASE_CLIENT=db;await auth();await load();db.auth.onAuthStateChange(()=>setTimeout(async()=>{await auth();await load();},0));}
 init().catch(e=>say('Creator Hub: '+(e.message||'Database connection error')));
