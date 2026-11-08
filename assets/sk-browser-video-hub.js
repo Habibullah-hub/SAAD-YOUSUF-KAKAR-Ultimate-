@@ -4,6 +4,42 @@ const $=id=>document.getElementById(id),root=$('sykVideoHub');if(!root)return;
 const status=$('sykVideoStatus'),grid=$('sykVideoFeed'),queue=$('sykVideoQueue'),admin=$('sykVideoAdmin');
 let db=null,user=null,isAdmin=false,channel=null,currentCategory='all',lastItems=[];
 const say=s=>{status.textContent=s;};
+const languageNames={ur:'Urdu',ar:'Arabic',ps:'Pashto',en:'English',hi:'Hindi',pa:'Punjabi',bn:'Bengali',fa:'Persian',tr:'Turkish',id:'Indonesian',ms:'Malay',fr:'French',es:'Spanish',de:'German',pt:'Portuguese',ru:'Russian',zh:'Chinese',ja:'Japanese',ko:'Korean',it:'Italian',nl:'Dutch',sw:'Swahili',ta:'Tamil',te:'Telugu'};
+const localizedTerms={
+ ur:{trending:'مقبول اور ٹرینڈنگ ویڈیوز',islamic:'اسلامی ویڈیوز قرآن کی تلاوت',health:'صحت اور طبی آگاہی کی ویڈیوز',news:'تازہ مقامی اور عالمی خبریں',education:'تعلیمی اور سیکھنے کی ویڈیوز',quran:'قرآن کی عربی تلاوت اردو ترجمہ سب ٹائٹلز'},
+ ar:{trending:'فيديوهات رائجة ومشهورة',islamic:'فيديوهات إسلامية تلاوة القرآن الكريم',health:'فيديوهات التوعية الصحية والطبية',news:'آخر الأخبار المحلية والعالمية',education:'فيديوهات تعليمية وتعلم المهارات',quran:'تلاوة القرآن الكريم مع ترجمة باللغة العربية'},
+ ps:{trending:'مشهورې او ترېنډ ویډیوګانې',islamic:'اسلامي ویډیوګانې د قرآن تلاوت',health:'د روغتیا او طبي پوهاوي ویډیوګانې',news:'تازه سیمه ییز او نړیوال خبرونه',education:'ښوونیزې او تعلیمي ویډیوګانې',quran:'د قرآن عربي تلاوت له پښتو ژباړې سره'},
+ en:{trending:'popular trending videos',islamic:'Islamic videos Quran recitation',health:'health education medical awareness videos',news:'latest local and world news videos',education:'educational learning videos',quran:'Quran Arabic recitation with English translation subtitles'},
+ hi:{trending:'लोकप्रिय ट्रेंडिंग वीडियो',islamic:'इस्लामी वीडियो कुरान तिलावत',health:'स्वास्थ्य और चिकित्सा जागरूकता वीडियो',news:'ताज़ा स्थानीय और विश्व समाचार',education:'शैक्षिक और सीखने वाले वीडियो',quran:'अरबी कुरान तिलावत हिंदी अनुवाद सबटाइटल'},
+ pa:{trending:'ਪ੍ਰਸਿੱਧ ਟ੍ਰੈਂਡਿੰਗ ਵੀਡੀਓ',islamic:'ਇਸਲਾਮੀ ਵੀਡੀਓ ਕੁਰਾਨ ਤਿਲਾਵਤ',health:'ਸਿਹਤ ਅਤੇ ਮੈਡੀਕਲ ਜਾਗਰੂਕਤਾ ਵੀਡੀਓ',news:'ਤਾਜ਼ਾ ਸਥਾਨਕ ਅਤੇ ਵਿਸ਼ਵ ਖ਼ਬਰਾਂ',education:'ਸਿੱਖਿਆ ਅਤੇ ਸਿੱਖਣ ਵਾਲੀਆਂ ਵੀਡੀਓ',quran:'ਅਰਬੀ ਕੁਰਾਨ ਤਿਲਾਵਤ ਪੰਜਾਬੀ ਅਨੁਵਾਦ'},
+ bn:{trending:'জনপ্রিয় ট্রেন্ডিং ভিডিও',islamic:'ইসলামিক ভিডিও কুরআন তিলাওয়াত',health:'স্বাস্থ্য ও চিকিৎসা সচেতনতা ভিডিও',news:'সর্বশেষ স্থানীয় ও বিশ্ব সংবাদ',education:'শিক্ষামূলক ভিডিও',quran:'আরবি কুরআন তিলাওয়াত বাংলা অনুবাদ'},
+ fa:{trending:'ویدیوهای محبوب و پرطرفدار',islamic:'ویدیوهای اسلامی تلاوت قرآن',health:'ویدیوهای آموزش سلامت و پزشکی',news:'آخرین اخبار محلی و جهان',education:'ویدیوهای آموزشی',quran:'تلاوت عربی قرآن با ترجمه فارسی'},
+ tr:{trending:'popüler ve trend videolar',islamic:'İslami videolar Kuran tilaveti',health:'sağlık eğitimi ve tıbbi bilgilendirme videoları',news:'son yerel ve dünya haberleri',education:'eğitici ve öğretici videolar',quran:'Türkçe altyazılı Arapça Kuran tilaveti'},
+ id:{trending:'video populer dan trending',islamic:'video Islami tilawah Al Quran',health:'video edukasi kesehatan dan medis',news:'berita lokal dan dunia terbaru',education:'video pendidikan dan pembelajaran',quran:'tilawah Al Quran bahasa Arab dengan terjemahan Indonesia'},
+ ms:{trending:'video popular dan trending',islamic:'video Islam bacaan Al Quran',health:'video pendidikan kesihatan dan perubatan',news:'berita tempatan dan dunia terkini',education:'video pendidikan dan pembelajaran',quran:'bacaan Al Quran Arab dengan terjemahan Melayu'},
+ fr:{trending:'vidéos populaires et tendances',islamic:'vidéos islamiques récitation du Coran',health:'vidéos de santé et de prévention médicale',news:'dernières actualités locales et mondiales',education:'vidéos éducatives et apprentissage',quran:'récitation arabe du Coran avec traduction française'},
+ es:{trending:'videos populares y tendencias',islamic:'videos islámicos recitación del Corán',health:'videos de educación y salud',news:'últimas noticias locales y mundiales',education:'videos educativos y aprendizaje',quran:'recitación árabe del Corán con traducción al español'},
+ de:{trending:'beliebte und aktuelle Trendvideos',islamic:'islamische Videos Koran Rezitation',health:'Gesundheitsbildung und medizinische Aufklärung Videos',news:'aktuelle lokale und weltweite Nachrichten',education:'Lernvideos und Bildung',quran:'arabische Koranrezitation mit deutscher Übersetzung'},
+ pt:{trending:'vídeos populares e em alta',islamic:'vídeos islâmicos recitação do Alcorão',health:'vídeos de educação e saúde',news:'últimas notícias locais e mundiais',education:'vídeos educativos e aprendizagem',quran:'recitação árabe do Alcorão com tradução em português'},
+ ru:{trending:'популярные и трендовые видео',islamic:'исламские видео чтение Корана',health:'видео о здоровье и медицинском просвещении',news:'последние местные и мировые новости',education:'обучающие и образовательные видео',quran:'чтение Корана на арабском с русским переводом'},
+ zh:{trending:'热门和流行视频',islamic:'伊斯兰视频 古兰经诵读',health:'健康教育和医疗科普视频',news:'最新本地和国际新闻',education:'教育和学习视频',quran:'阿拉伯语古兰经诵读 中文翻译'},
+ ja:{trending:'人気のトレンド動画',islamic:'イスラム教の動画 クルアーン朗読',health:'健康教育と医療情報の動画',news:'最新の国内外ニュース',education:'教育と学習の動画',quran:'日本語字幕付きアラビア語クルアーン朗読'},
+ ko:{trending:'인기 급상승 동영상',islamic:'이슬람 영상 꾸란 낭송',health:'건강 교육 및 의료 정보 영상',news:'최신 국내 및 세계 뉴스',education:'교육 및 학습 동영상',quran:'한국어 번역 아랍어 꾸란 낭송'}
+};
+function deviceRegion(){
+ const locale=(navigator.language||'en').split('-');if(locale[1]&&/^[A-Za-z]{2}$/.test(locale[1]))return locale[1].toUpperCase();
+ const zone=Intl.DateTimeFormat().resolvedOptions().timeZone||'';
+ const regions={'Asia/Riyadh':'SA','Asia/Karachi':'PK','Asia/Kabul':'AF','Asia/Dubai':'AE','Asia/Qatar':'QA','Asia/Kuwait':'KW','Asia/Dhaka':'BD','Asia/Kolkata':'IN','Asia/Jakarta':'ID','Asia/Kuala_Lumpur':'MY','Europe/Bucharest':'RO','Europe/London':'GB','Europe/Paris':'FR','Europe/Berlin':'DE','Europe/Madrid':'ES','Europe/Istanbul':'TR','America/New_York':'US','America/Los_Angeles':'US','America/Toronto':'CA','Africa/Nairobi':'KE'};
+ return regions[zone]||'';
+}
+function updateLocalizedVideoLinks(){
+ const select=$('sykVideoLanguage'),host=$('sykLocalizedVideoLinks');if(!select||!host)return;
+ const selected=select.value||'auto',raw=selected==='auto'?(navigator.language||'en'):selected,parts=raw.split('-'),lang=(parts[0]||'en').toLowerCase(),region=(parts[1]||deviceRegion()).toUpperCase(),terms=localizedTerms[lang]||localizedTerms.en;
+ const topicLabels={trending:'🔥 عالمی ٹرینڈنگ',islamic:'🕌 اسلامی ویڈیوز',health:'🩺 صحت',news:'🌍 خبریں',education:'📚 تعلیم',quran:'📖 قرآن تلاوت + ترجمہ'};
+ host.querySelectorAll('a[data-syk-topic]').forEach(a=>{const topic=a.dataset.sykTopic,query=terms[topic]||localizedTerms.en[topic];const params=new URLSearchParams({search_query:query,hl:lang});if(region)params.set('gl',region);a.href='https://www.youtube.com/results?'+params.toString();a.textContent=topicLabels[topic]||a.textContent;});
+ const note=$('sykLanguageStatus');if(note)note.textContent='منتخب زبان: '+(languageNames[lang]||lang.toUpperCase())+(region?' · علاقائی نتائج: '+region:'');
+}
+
 const safeUrl=v=>{try{const u=new URL(String(v||'').trim());return u.protocol==='https:'&&!u.username&&!u.password?u.href:'';}catch(_){return '';}};
 const hosts={youtube:['youtube.com','youtu.be'],tiktok:['tiktok.com'],facebook:['facebook.com','fb.watch']};
 const valid=(p,v)=>{const u=safeUrl(v);if(!u||!hosts[p])return false;const h=new URL(u).hostname.toLowerCase();return hosts[p].some(x=>h===x||h.endsWith('.'+x));};
@@ -56,6 +92,7 @@ $('sykVideoDialogClose').onclick=()=>{$('sykVideoDialog').close();$('sykVideoSta
 $('sykVideoDialog').addEventListener('close',()=>{$('sykVideoStage').replaceChildren();});
 document.addEventListener('fullscreenchange',async()=>{if(!document.fullscreenElement)return;try{await screen.orientation?.lock?.('landscape');}catch(_){/* Android/browser may deny orientation lock; fullscreen still works. */}});
 $('sykVideoFullscreen').onclick=async()=>{const target=$('sykVideoStage').querySelector('iframe,img');if(!target)return;try{await (target.requestFullscreen?.()||$('sykVideoDialog').requestFullscreen?.());try{await screen.orientation?.lock?.('landscape');}catch(_){}}catch(e){say('اس browser میں fullscreen دستیاب نہیں۔');}};
+const languageSelect=$('sykVideoLanguage');if(languageSelect){const savedLanguage=localStorage.getItem('sk-video-language');if(savedLanguage&&languageSelect.querySelector('option[value="'+savedLanguage+'"]'))languageSelect.value=savedLanguage;languageSelect.addEventListener('change',()=>{localStorage.setItem('sk-video-language',languageSelect.value);updateLocalizedVideoLinks();say('ویڈیو سرچ کی زبان تبدیل ہوگئی۔');});updateLocalizedVideoLinks();}
 document.querySelectorAll('[data-video-category]').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.videoCategory)));$('sykVideoShuffle')?.addEventListener('click',()=>{lastItems=shuffleList(lastItems);renderFeed();say('ویڈیوز کی ترتیب بدل دی گئی ہے۔');});
 async function init(){const url=localStorage.getItem('skcyberhub_supabase_url'),key=localStorage.getItem('skcyberhub_supabase_anon_key');if(!url||!key||!window.supabase?.createClient){say('پہلے SYK Cyber Hub پر Database Configure کریں، پھر SYK Browser دوبارہ کھولیں۔');return;}db=window.SK_SUPABASE_CLIENT||window.supabase.createClient(url,key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});window.SK_SUPABASE_CLIENT=db;await auth();await load();db.auth.onAuthStateChange(()=>setTimeout(async()=>{await auth();await load();},0));}
 init().catch(e=>say('Creator Hub: '+(e.message||'Database connection error')));
