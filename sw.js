@@ -1,7 +1,7 @@
 /* SK Cyber Hub offline shell.
    Network-first for a small, explicit list of public app-shell pages only.
    Never cache API, authenticated, query-string, or third-party requests. */
-const CACHE_NAME = "sk-cyber-hub-shell-v17";
+const CACHE_NAME = "sk-cyber-hub-shell-v18";
 const APP_ROOT = new URL("./", self.location).href;
 const PUBLIC_SHELL_URLS = new Set([
   APP_ROOT,
