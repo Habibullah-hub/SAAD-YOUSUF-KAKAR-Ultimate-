@@ -1,0 +1,37 @@
+/* SYK Cyber Hub — unified neon glass visual layer (additive, feature-safe) */
+:root{--syk-bg:#080a14;--syk-panel:rgba(17,22,40,.88);--syk-panel2:rgba(23,30,52,.94);--syk-line:rgba(0,240,255,.22);--syk-text:#f3f7ff;--syk-muted:#aab7cf;--syk-cyan:#00eaff;--syk-pink:#ff4aa2}
+html,body{background:var(--syk-bg)!important;color:var(--syk-text)}
+body{background-image:radial-gradient(ellipse at 12% 0%,rgba(0,240,255,.11),transparent 35%),radial-gradient(ellipse at 92% 16%,rgba(255,0,128,.10),transparent 32%)!important}
+.top,.category-dock,.sk-bottom-nav{background:rgba(8,12,25,.91)!important;border-color:var(--syk-line)!important;backdrop-filter:blur(18px)!important}
+.brand{color:#f5f8ff!important}
+.brand .mark{min-width:44px!important;width:44px!important;height:44px!important;border-radius:14px!important;background:linear-gradient(140deg,#0b3042,#29132f)!important;border:1px solid rgba(0,240,255,.75)!important;color:#fff!important;box-shadow:0 0 20px rgba(0,240,255,.22),0 0 30px rgba(255,0,128,.13)!important;font-size:14px!important;letter-spacing:-1px}
+.brand small{color:#ff8bc5!important}
+.nav-actions button,.nav-actions a,.category-toggle,.language-toggle,.sk-easy-toggle{border-color:var(--syk-line)!important;background:linear-gradient(145deg,#131a30,#20152d)!important;color:#eafaff!important}
+.category-menu,.site-language-panel{background:#10182b!important;border:1px solid var(--syk-line)!important;color:#f3f7ff!important;box-shadow:0 18px 48px #0009!important}
+.category-menu a{color:#e7f6ff!important;border-color:#ffffff12!important}
+.category-menu a:hover{background:#172b42!important;color:var(--syk-cyan)!important}
+.searchbox,.news-search-panel,.manager,.notice,.section:not(.news-section),.sk-community-panel,.sk-connect-sidebar,.sk-connect-chat,.sk-live-stage,.sk-discovery,.sk-interest-mix,.bulk-panel{background:var(--syk-panel)!important;border-color:var(--syk-line)!important;color:var(--syk-text)!important;box-shadow:0 12px 34px #0004, inset 0 1px #ffffff0a!important}
+.tile,.resource,.sk-category-card,.sk-next-card,.news-result-card,.sk-creator-card,.sk-connect-person,.sk-connect-conversation,.sk-social-post,.sk-live-room-card{background:var(--syk-panel2)!important;border:1px solid var(--syk-line)!important;color:var(--syk-text)!important;box-shadow:0 10px 28px #0004!important;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease!important}
+.tile:hover,.resource:hover,.sk-category-card:hover,.sk-next-card:hover,.news-result-card:hover{transform:translateY(-3px);border-color:rgba(0,240,255,.62)!important;box-shadow:0 14px 34px rgba(0,240,255,.10),0 10px 28px #0005!important}
+.section h2,.section h3,.section p,.section label,.section strong,.section b,.news-section .section-head h2{color:inherit}
+.section-head{border-color:var(--syk-line)!important}
+.section-head h2:before{background:linear-gradient(180deg,var(--syk-cyan),var(--syk-pink))!important;box-shadow:0 0 12px #00eaff55}
+input,textarea,select,.manager input,.manager select{background:#0b1222!important;color:#f3f7ff!important;border-color:#35516b!important}
+input::placeholder,textarea::placeholder{color:#91a3bd!important}
+button,.primary,.secondary,.searchbox button{transition:transform .18s ease,filter .18s ease,box-shadow .18s ease}
+button:hover,.primary:hover,.secondary:hover{filter:brightness(1.12)}
+button:active{transform:scale(.98)}
+.primary,.searchbox button{background:linear-gradient(100deg,#00bcd4,#0879d1)!important;border-color:#00eaff!important;color:#03121b!important;box-shadow:0 0 18px #00eaff22!important}
+.sk-kicker,.sk-hero-kicker{color:var(--syk-cyan)!important}
+.store-hero,.sk-ultimate-hero{background:radial-gradient(ellipse at 80% 30%,#ff00801c,transparent 40%),linear-gradient(125deg,#101c34,#15132c 58%,#0c2535)!important;border:1px solid var(--syk-line)!important;box-shadow:0 20px 60px #0006!important}
+.sk-hero-orbit,.art-orbit{filter:drop-shadow(0 0 12px #00eaff44)}
+.brand .mark,.sk-hero-orbit{animation:sykGlow 5s ease-in-out infinite}
+@keyframes sykGlow{0%,100%{filter:drop-shadow(0 0 3px #00eaff33)}50%{filter:drop-shadow(0 0 12px #00eaff77)}}
+body.sk-day-mode{background:#edf3f8!important;color:#172b40!important;background-image:none!important}
+body.sk-day-mode .top,body.sk-day-mode .category-dock,body.sk-day-mode .sk-bottom-nav{background:#f7fbfff2!important;color:#172b40!important}
+body.sk-day-mode .section:not(.news-section),body.sk-day-mode .manager,body.sk-day-mode .notice,body.sk-day-mode .news-search-panel{background:#fff!important;border-color:#cbd9e7!important;color:#172b40!important}
+body.sk-day-mode .tile,body.sk-day-mode .resource,body.sk-day-mode .sk-category-card,body.sk-day-mode .sk-next-card,body.sk-day-mode .news-result-card,body.sk-day-mode .sk-creator-card{background:#f5f9fc!important;border-color:#cbd9e7!important;color:#172b40!important}
+body.sk-day-mode .section h2,body.sk-day-mode .section h3,body.sk-day-mode .section p,body.sk-day-mode .section label,body.sk-day-mode .section strong,body.sk-day-mode .section b{color:inherit}
+body.sk-day-mode input,body.sk-day-mode textarea,body.sk-day-mode select{background:#fff!important;color:#172b40!important;border-color:#bdcddd!important}
+@media(max-width:760px){.brand .mark{width:39px!important;height:39px!important;min-width:39px!important}.section{scroll-margin-top:145px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
