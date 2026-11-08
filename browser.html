@@ -7,8 +7,9 @@
 <link rel="canonical" href="https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/browser.html">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="stylesheet" href="./assets/sk-browser-experience.css?v=20261108-1">
-<link rel="stylesheet" href="./assets/sk-browser-video-hub.css?v=20261108-1">
-<title>SYK Browser — Your Digital World</title>
+<link rel="stylesheet" href="./assets/sk-browser-video-hub.css?v=20261108-2">
+<title>SYK Browser — Watch, Discover & Search</title>
+<link rel="icon" type="image/svg+xml" href="./assets/syk-cyber-hub-logo.svg">
 <style>
 :root{color-scheme:dark;--bg:#071421;--panel:#0e2033;--panel2:#142a40;--line:#29465f;--text:#f3f8ff;--muted:#9db2c9;--accent:#6be6d3;--accent2:#8bcaff;--shadow:0 18px 55px #0005}
 :root[data-theme=light]{color-scheme:light;--bg:#edf4f8;--panel:#fff;--panel2:#e5eff5;--line:#c8d8e4;--text:#102338;--muted:#526a80;--accent:#087f78;--accent2:#1765a0;--shadow:0 15px 40px #23415a18}
@@ -65,15 +66,64 @@ h1{letter-spacing:-.055em}
 }
 @media(prefers-reduced-motion:reduce){.tile{transition:none!important}}
 
+
+/* SYK Browser focused video-first home, accessible controls and theme parity */
+.mark img{width:100%;height:100%;display:block;object-fit:contain;padding:4px}
+.brand{letter-spacing:.45px;text-align:left}
+.brand>span:last-child{text-align:left}
+#homeView>.section:not(#sykVideoHub){display:none!important}
+#homeView>.hero{text-align:center;padding-top:34px;padding-bottom:14px}
+#homeView .hero p{text-align:justify;text-align-last:center;max-width:650px}
+#homeView .hero h1{text-align:center}
+#homeView .hero .hint{text-align:center}
+#homeView .hero>div[style*="text-align:left"],#homeView .hero .chips{display:none!important}
+#sykVideoHub{margin:12px 0 28px;padding:clamp(13px,2.4vw,22px);border-radius:22px}
+#sykVideoHub .sectionhead{align-items:flex-end}
+#sykVideoHub .sectionhead h2{text-align:left}
+.syk-video-feed{grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:14px}
+.syk-video-card{padding:11px;border-radius:17px;min-width:0}
+.syk-video-card>b{line-height:1.45;text-align:left}
+.syk-video-date{color:var(--muted);font-size:10px;line-height:1.5}
+.syk-video-trending{display:inline-flex;width:max-content;padding:3px 8px;border:1px solid #ff4aa2;border-radius:99px;color:#ff9bc8;font-size:10px;font-weight:850}
+.syk-video-poster{position:relative;display:grid;place-items:center;min-height:145px;aspect-ratio:16/9;border-radius:13px;background:radial-gradient(circle at 50% 45%,#184c66,#11152d 70%);font-size:14px}
+.syk-video-poster:after{content:"▶";display:grid;place-items:center;width:48px;height:48px;border:1px solid #00eaff99;border-radius:50%;background:#071421cc;color:#fff;font-size:19px;box-shadow:0 0 24px #00eaff44}
+#sykVideoDialog{width:min(1100px,98vw);max-width:98vw;max-height:96dvh;padding:10px;border-radius:18px}
+#sykVideoStage{width:100%;aspect-ratio:16/9;min-height:0;max-height:78dvh}
+#sykVideoStage iframe,#sykVideoStage img{width:100%;height:100%;min-height:0;object-fit:contain}
+#sykVideoDialogClose,#sykVideoFullscreen{min-height:42px;cursor:pointer}
+#sykMemberSubmit,#sykMyVideos{margin-top:12px;max-height:58vh;overflow:auto}
+#sykMemberSubmit h3,#sykMyVideos h3{margin:0 0 8px}
+#sykVideoSearch{display:inline-flex;margin:10px auto 0;min-height:42px;padding-inline:18px}
+#searchView .searchbox{margin:12px 0}
+button,a,.chip,.iconbtn,.navbtn{touch-action:manipulation}
+button,.iconbtn,.chip,.navbtn{min-height:42px}
+:focus-visible{outline:3px solid var(--accent)!important;outline-offset:3px}
+:root[data-theme=light]{--bg:#eef3fa;--panel:#fff;--panel2:#f4f7fc;--line:#c9d6e5;--text:#14243b;--muted:#52677f;--accent:#007f89;--accent2:#315fc4;color-scheme:light}
+:root[data-theme=light] body{background:radial-gradient(ellipse at 12% -10%,#d9efff,transparent 44%),var(--bg);color:var(--text)}
+:root[data-theme=light] .iconbtn,:root[data-theme=light] .chip,:root[data-theme=light] .quick,:root[data-theme=light] .result{background:#fff;color:#14243b;border-color:#c9d6e5}
+:root[data-theme=light] .top{border-color:#c9d6e5}
+:root[data-theme=light] .bottom{background:#f3f7fbeF;border-color:#c9d6e5}
+:root[data-theme=light] .navbtn{color:#52677f}
+:root[data-theme=light] .navbtn.active{background:#dcecf6;color:#006c78}
+:root[data-theme=light] .hero p,:root[data-theme=light] .hint,:root[data-theme=light] .foot,:root[data-theme=light] .tile small,:root[data-theme=light] .sectionhead p{color:#52677f}
+:root[data-theme=light] .searchbox{background:#fff;border-color:#9db8cd}
+:root[data-theme=light] .searchbox input{color:#14243b}
+:root[data-theme=light] #sykVideoHub{background:linear-gradient(145deg,#fff,#edf5fb);border-color:#b7d5e5}
+:root[data-theme=light] .syk-video-card{background:#fff;border-color:#c9d6e5}
+:root[data-theme=light] .syk-video-poster{color:#fff}
+:root[data-theme=light] #sykVideoDialog{background:#101522;color:#fff}
+@media(max-width:600px){#homeView>.hero{padding-top:25px}.syk-video-feed{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.syk-video-card{padding:8px}.syk-video-poster{min-height:100px}.syk-video-date{font-size:9px}.brand{font-size:12px}.mark{width:39px;height:39px}}
+@media(max-width:370px){.syk-video-feed{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
-<header class="top"><a class="brand" href="./browser.html"><span class="mark">SYK✦</span><span>SYK BROWSER<small>YOUR DIGITAL WORLD</small></span></a><div class="top-actions"><a class="iconbtn" href="./#community" aria-label="Member login" title="Member login" style="display:grid;place-items:center;text-decoration:none">♙</a><button class="iconbtn" id="theme" aria-label="Toggle light and dark theme">☼</button><button class="iconbtn" id="historyBtn" aria-label="Open recent searches">◷</button></div></header>
+<header class="top"><a class="brand" href="./browser.html"><span class="mark"><img src="./assets/syk-cyber-hub-logo.svg" alt=""></span><span>SYK BROWSER<small>YOUR DIGITAL WORLD</small></span></a><div class="top-actions"><button class="iconbtn" id="theme" aria-label="Toggle light and dark theme">☼</button><button class="iconbtn" id="historyBtn" aria-label="Open recent searches">◷</button></div></header>
 <main>
 <section class="view active" id="homeView">
-<div class="hero"><div class="eyebrow">ONE HUB · ENDLESS DISCOVERY</div><h1>Your world.<br><span style="color:var(--accent)">Your SK.</span></h1><p>A simpler way to discover apps, AI tools, software, learning, news and your community.</p>
-<form class="searchbox" id="searchForm"><span class="glass">⌕</span><input id="q" type="search" placeholder="Search anything on the web…" autocomplete="off" aria-label="Search the whole internet with Google"><button>Search Web ↗</button></form><div class="hint">Global search · Search websites, images, videos, news and more across the internet.</div><div style="max-width:720px;margin:12px auto 0;text-align:left"><button class="chip" id="skSearchToggle" type="button" aria-expanded="false" aria-controls="skSearchPanel">⌄ Explore SYK Apps &amp; Tools</button><div id="skSearchPanel" class="hidden" style="margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:15px;background:var(--panel)"><div style="font-size:12px;font-weight:800;margin:0 0 8px">Search inside SYK Cyber Hub</div><form class="searchbox" id="searchForm2" style="box-shadow:none;margin:0"><span class="glass">⌕</span><input id="q2" type="search" placeholder="Find apps, AI tools, software…"><button>Search SYK</button></form></div></div>
+<div class="hero"><div class="eyebrow">ONE HUB · ENDLESS DISCOVERY</div><h1>Discover.<br><span>Watch SYK.</span></h1><p>Approved videos from SYK and its creators — open any video to watch here.</p>
+<form class="searchbox" id="searchForm"><span class="glass">⌕</span><input id="q" type="search" placeholder="Search anything on the web…" autocomplete="off" aria-label="Search the whole internet with Google"><button>Search Web ↗</button></form><div class="hint">Search the web, or search videos in your language.</div><button class="chip" id="sykVideoSearch" type="button">▶ Search videos</button><div style="max-width:720px;margin:12px auto 0;text-align:left"><button class="chip" id="skSearchToggle" type="button" aria-expanded="false" aria-controls="skSearchPanel">⌄ Explore SYK Apps &amp; Tools</button><div id="skSearchPanel" class="hidden" style="margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:15px;background:var(--panel)"><div style="font-size:12px;font-weight:800;margin:0 0 8px">Search inside SYK Cyber Hub</div><form class="searchbox" id="searchForm2" style="box-shadow:none;margin:0"><span class="glass">⌕</span><input id="q2" type="search" placeholder="Find apps, AI tools, software…"><button>Search SYK</button></form></div></div>
 <div class="chips"><button class="chip" data-q="AI video">AI video</button><button class="chip" data-q="Android apps">Android apps</button><button class="chip" data-q="PDF tools">PDF tools</button><button class="chip" data-q="learning">Learning</button></div></div>
 <section class="section" id="sykVideoHub" aria-labelledby="sykVideoTitle">
  <div class="sectionhead"><div><div class="eyebrow">SYK CREATOR VIDEO HUB</div><h2 id="sykVideoTitle">منتخب ویڈیوز اور میڈیا</h2><p>ممبر صرف ایک ویڈیو بھیجیں گے؛ ہر ویڈیو Admin کی منظوری کے بعد ہی نظر آئے گی۔</p></div></div>
@@ -82,14 +132,14 @@ h1{letter-spacing:-.055em}
   <label>پلیٹ فارم<select id="sykMemberPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
   <label>ویڈیو کا عنوان (اختیاری)<input id="sykMemberTitle" maxlength="120" placeholder="ویڈیو کا نام"></label>
   <label>صرف اسی ویڈیو کا لنک<input id="sykMemberUrl" type="url" required placeholder="https://…"></label><button type="submit">Admin کو بھیجیں</button></form></div>
- <p id="sykLoginHint" class="syk-video-muted">ویڈیو بھیجنے کے لیے مرکزی SK Cyber Hub میں Member Login کریں۔</p>
+ <p id="sykLoginHint" class="syk-video-muted">ویڈیو لنک بھیجنے کے لیے Login کریں۔</p>
  <div id="sykMyVideos" class="syk-video-submit" hidden><h3>میری درخواستیں</h3></div>
  <div id="sykVideoAdmin" class="syk-video-admin" hidden><h3>Owner Admin · ویڈیو منظوری</h3><div id="sykVideoQueue"></div>
   <h3>Admin Media Publisher</h3><p class="syk-video-muted">Admin اپنی ویڈیو، تصویر یا چینل لنک شامل کر سکتا ہے۔ ممبر کے لیے صرف ویڈیو submission کھلی ہے۔</p>
   <form id="sykAdminMediaForm" class="syk-video-form">
-   <label>مواد کی قسم<select id="sykAdminKind"><option value="video">ویڈیو</option><option value="image">تصویر (HTTPS image link)</option><option value="channel">چینل لنک (صرف Admin)</option></select></label>
+   <input id="sykAdminKind" type="hidden" value="video">
    <label>پلیٹ فارم<select id="sykAdminPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
-   <label>عنوان<input id="sykAdminTitle" maxlength="120" required></label><label>ویڈیو / تصویر / چینل لنک<input id="sykAdminUrl" type="url" required placeholder="https://…"></label><button type="submit">Publish to SYK Browser</button>
+   <label>عنوان<input id="sykAdminTitle" maxlength="120" required></label><label>ویڈیو / تصویر / چینل لنک<input id="sykAdminUrl" type="url" required placeholder="https://…"></label><button type="submit">ویڈیو شائع کریں</button>
   </form>
  </div>
  <p id="sykVideoStatus" class="syk-video-muted" role="status" aria-live="polite">Creator Hub database سے رابطہ ہو رہا ہے…</p>
@@ -97,11 +147,11 @@ h1{letter-spacing:-.055em}
 <dialog id="sykVideoDialog"><button id="sykVideoDialogClose" type="button">بند کریں ✕</button><button id="sykVideoFullscreen" type="button">⛶ Full screen</button><div id="sykVideoStage"></div></dialog>
 <section class="section"><div class="sectionhead"><div><h2>Quick access</h2><p>Your everyday starting points</p></div><button class="textbtn" id="shuffle">Refresh ↻</button></div><div class="grid" id="discover"></div></section>
 <section class="section"><div class="sectionhead"><div><h2>Explore by interest</h2><p>Find the right place without hunting through menus</p></div></div><div class="quickbar"><a class="quick" href="./#apps"><span>📱</span>Apps</a><a class="quick" href="./#tools"><span>⚡</span>Tools</a><a class="quick" href="./#news"><span>🌍</span>News</a><a class="quick" href="./#community"><span>👥</span>Community</a></div></section>
-<section class="section"><div class="sectionhead"><div><h2>SK Game Center</h2><p>Play an original SK game, even offline</p></div></div><a class="tile" href="./games.html"><span class="emoji">🕹️</span><b>SK 2048 — Play now</b><small>Built into SK. Load once, then play offline with swipe controls.</small></a><a class="tile" href="https://play.google.com/store/apps/details?id=com.JindoBlu.OfflineGames" target="_blank" rel="noopener noreferrer"><span class="emoji">🎮</span><b>Offline Games by JindoBlu</b><small>Official Play Store listing. This installs separately as its own Android app.</small></a></section><section class="section"><div class="sectionhead"><div><h2>Made for your flow</h2><p>Keep exploring, learning and creating</p></div></div><div class="grid"><a class="tile" href="./#creator-studio"><span class="emoji">🎬</span><b>Creator Studio</b><small>Ideas, scripts and creator resources</small></a><a class="tile" href="./#smart-free-finder"><span class="emoji">✨</span><b>Free AI Finder</b><small>Explore AI tools and their free limits</small></a><a class="tile" href="./#documents"><span class="emoji">📚</span><b>Documents</b><small>Guides and useful learning material</small></a><a class="tile" href="./#security-privacy"><span class="emoji">🛡️</span><b>Safety Center</b><small>Privacy and account protection</small></a></div></section>
+<section class="section"><div class="sectionhead"><div><h2>SYK Game Center</h2><p>Play an original SYK game, even offline</p></div></div><a class="tile" href="./games.html"><span class="emoji">🕹️</span><b>SYK 2048 — Play now</b><small>Built into SK. Load once, then play offline with swipe controls.</small></a><a class="tile" href="https://play.google.com/store/apps/details?id=com.JindoBlu.OfflineGames" target="_blank" rel="noopener noreferrer"><span class="emoji">🎮</span><b>Offline Games by JindoBlu</b><small>Official Play Store listing. This installs separately as its own Android app.</small></a></section><section class="section"><div class="sectionhead"><div><h2>Made for your flow</h2><p>Keep exploring, learning and creating</p></div></div><div class="grid"><a class="tile" href="./#creator-studio"><span class="emoji">🎬</span><b>Creator Studio</b><small>Ideas, scripts and creator resources</small></a><a class="tile" href="./#smart-free-finder"><span class="emoji">✨</span><b>Free AI Finder</b><small>Explore AI tools and their free limits</small></a><a class="tile" href="./#documents"><span class="emoji">📚</span><b>Documents</b><small>Guides and useful learning material</small></a><a class="tile" href="./#security-privacy"><span class="emoji">🛡️</span><b>Safety Center</b><small>Privacy and account protection</small></a></div></section>
 </section>
-<section class="view" id="searchView"><div class="section" style="padding-top:26px"><div class="eyebrow">SK DIRECTORY SEARCH</div><h2>Find apps and tools inside SK</h2><form class="searchbox" id="searchForm3"><span class="glass">⌕</span><input id="q3" type="search" placeholder="Search SYK apps, tools, software…"><button>Search SYK</button></form><p class="hint" id="resultCount">Search across SYK Cyber Hub categories.</p><div id="results"><div class="empty">Enter a word above to explore SK.</div></div></div></section>
+<section class="view" id="searchView"><div class="section" style="padding-top:26px"><div class="eyebrow">SYK VIDEO SEARCH</div><h2>Search videos</h2><form class="searchbox" id="searchForm3"><span class="glass">⌕</span><input id="q3" type="search" placeholder="Search SYK apps, tools, software…"><button>Search SYK</button></form><p class="hint" id="resultCount">Search across SYK Cyber Hub categories.</p><div id="results"><div class="empty">Enter a word above to explore SYK.</div></div></div></section>
 <section class="view" id="savedView"><div class="section" style="padding-top:26px"><div class="eyebrow">YOUR SPACE</div><h2>Saved shortcuts</h2><p class="hint">Saved on this device only.</p><div id="savedList" class="empty">No saved shortcuts yet. Save a category from search results.</div></div></section>
-<section class="view" id="settingsView"><div class="section" style="padding-top:26px"><div class="eyebrow">PERSONALIZE</div><h2>Your browser settings</h2><a class="result" href="#" id="themeSetting"><span class="emoji">🌗</span><span><b>Appearance</b><small>Switch between light and dark mode</small></span><span class="arrow">↗</span></a><a class="result" href="./"><span class="emoji">🏠</span><span><b>Open full SYK Cyber Hub</b><small>Visit all platform sections</small></span><span class="arrow">↗</span></a><button class="result" style="width:100%;color:var(--text);text-align:left" id="clearHistory"><span class="emoji">🧹</span><span><b>Clear recent searches</b><small>Remove this device's local search history</small></span></button><p class="hint">SYK Browser is currently a branded SYK Cyber Hub discovery interface, not a full replacement for Chrome/Opera and does not include a VPN tunnel.</p></div></section>
+<section class="view" id="settingsView"><div class="section" style="padding-top:26px"><div class="eyebrow">PERSONALIZE</div><h2>Your browser settings</h2><a class="result" href="#" id="themeSetting"><span class="emoji">🌗</span><span><b>Appearance</b><small>Switch between light and dark mode</small></span><span class="arrow">↗</span></a><a class="result" href="./#apps"><span class="emoji">🏠</span><span><b>Explore SYK Cyber Hub sections</b><small>Visit all platform sections</small></span><span class="arrow">↗</span></a><button class="result" style="width:100%;color:var(--text);text-align:left" id="clearHistory"><span class="emoji">🧹</span><span><b>Clear recent searches</b><small>Remove this device's local search history</small></span></button><p class="hint">SYK Browser is currently a branded SYK Cyber Hub discovery interface, not a full replacement for Chrome/Opera and does not include a VPN tunnel.</p></div></section>
 </main>
 <div class="foot">SYK CYBER HUB · Designed to feel simple, clear and familiar.</div>
 </div>
@@ -113,20 +163,20 @@ function toast(s){$('toast').textContent=s;$('toast').classList.add('show');setT
 function show(id){views.forEach(v=>$(v).classList.toggle('active',v===id));document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.view===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='savedView')renderSaved()}
 document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>show(b.dataset.view)));
 function drawDiscover(){let pool=[...sections].sort(()=>Math.random()-.5).slice(0,6);$('discover').replaceChildren();pool.forEach(x=>{let a=document.createElement('a');a.className='tile';a.href='./#'+x[2];let i=document.createElement('span');i.className='emoji';i.textContent=x[0];let b=document.createElement('b');b.textContent=x[1];let d=document.createElement('small');d.textContent=x[3];a.append(i,b,d);$('discover').append(a)})}
-function search(q){q=q.trim().toLowerCase();if(!q){$('results').innerHTML='<div class="empty">Type a word to search the SK directory.</div>';$('resultCount').textContent='Search across SYK Cyber Hub categories.';return}
+function search(q){q=q.trim().toLowerCase();if(!q){$('results').innerHTML='<div class="empty">Type a word to search the SYK directory.</div>';$('resultCount').textContent='Search across SYK Cyber Hub categories.';return}
 let terms=q.split(/\s+/),hits=sections.map(x=>({x,score:terms.reduce((n,t)=>n+((x[1]+' '+x[3]).toLowerCase().includes(t)?1:0),0)})).filter(o=>o.score>0).sort((a,b)=>b.score-a.score);
 $('resultCount').textContent=hits.length+' matching SYK sections';$('results').replaceChildren();if(!hits.length){$('results').innerHTML='<div class="empty">No matching SYK category. Try a simpler keyword.</div>';return}
 hits.forEach(({x})=>{let a=document.createElement('a');a.className='result';a.href='./#'+x[2];let i=document.createElement('span');i.className='emoji';i.textContent=x[0];let wrap=document.createElement('span');let b=document.createElement('b');b.textContent=x[1];let d=document.createElement('small');d.textContent=x[3];wrap.append(b,d);let arrow=document.createElement('span');arrow.className='arrow';arrow.textContent='Explore →';let save=document.createElement('button');save.className='textbtn';save.textContent='☆ Save';save.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(!saved.some(y=>y[2]===x[2]))saved.push(x);localStorage.setItem('sk-browser-saved',JSON.stringify(saved));toast('Saved to your space')});a.append(i,wrap,save,arrow);$('results').append(a)})}
 function remember(q){history=[q,...history.filter(x=>x!==q)].slice(0,30);localStorage.setItem('sk-browser-history',JSON.stringify(history))}function submit(q){q=q.trim();if(!q)return;remember(q);const url='https://www.google.com/search?q='+encodeURIComponent(q);const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';document.body.append(a);a.click();a.remove();toast('Web search opened separately — SYK Browser stays open')}
-$('searchForm').addEventListener('submit',e=>{e.preventDefault();submit($('q').value)});$('searchForm2').addEventListener('submit',e=>{e.preventDefault();let q=$('q2').value.trim();if(!q)return;remember(q);search(q);show('searchView')});$('searchForm3').addEventListener('submit',e=>{e.preventDefault();let q=$('q3').value.trim();if(!q)return;remember(q);search(q)});$('skSearchToggle').addEventListener('click',()=>{let panel=$('skSearchPanel'),open=panel.classList.toggle('hidden')===false;$('skSearchToggle').setAttribute('aria-expanded',String(open));$('skSearchToggle').textContent=open?'⌃ Hide SYK Apps & Tools':'⌄ Explore SYK Apps & Tools';if(open)setTimeout(()=>$('q2').focus(),50)});document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>{ $('q').value=b.dataset.q;submit(b.dataset.q)}));
+$('searchForm').addEventListener('submit',e=>{e.preventDefault();submit($('q').value)});$('searchForm2').addEventListener('submit',e=>{e.preventDefault();let q=$('q2').value.trim();if(!q)return;remember(q);search(q);show('searchView')});$('searchForm3').addEventListener('submit',e=>{e.preventDefault();let q=$('q3').value.trim();if(!q)return;remember(q);search(q)});$('skSearchToggle').addEventListener('click',()=>{let panel=$('skSearchPanel'),open=panel.classList.toggle('hidden')===false;$('skSearchToggle').setAttribute('aria-expanded',String(open));$('skSearchToggle').textContent=open?'⌃ Hide SYK Apps & Tools':'⌄ Explore SYK Apps & Tools';if(open)setTimeout(()=>$('q2').focus(),50)});$('sykVideoSearch')?.addEventListener('click',()=>{const q=$('q').value.trim()||((navigator.language||'en').toLowerCase().startsWith('ur')?'مقبول ویڈیوز':(navigator.language||'en').toLowerCase().startsWith('ar')?'فيديوهات رائجة':'popular trending videos');const lang=(navigator.language||'en').split('-')[0];const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';const region=tz==='Asia/Riyadh'?' Saudi Arabia':'';const url='https://www.youtube.com/results?search_query='+encodeURIComponent(q+region)+'&hl='+encodeURIComponent(lang);window.open(url,'_blank','noopener');});document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>{ $('q').value=b.dataset.q;submit(b.dataset.q)}));
 function renderSaved(){let el=$('savedList');el.replaceChildren();if(!saved.length){el.className='empty';el.textContent='No saved shortcuts yet. Save a category from search results.';return}el.className='';saved.forEach(x=>{let a=document.createElement('a');a.className='result';a.href='./#'+x[2];a.textContent=x[0]+' '+x[1]+' →';el.append(a)})}
-function theme(){let t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;localStorage.setItem('sk-browser-theme',t);$('theme').textContent=t==='light'?'☾':'☼'}let t=localStorage.getItem('sk-browser-theme');if(t)document.documentElement.dataset.theme=t;$('theme').addEventListener('click',theme);$('themeSetting').addEventListener('click',e=>{e.preventDefault();theme()});
+function theme(){let t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('sk-cyber-hub-theme',t==='light'?'day':'night')}catch(_){}$('theme').textContent=t==='light'?'☾':'☼';$('theme').setAttribute('aria-label',t==='light'?'Switch to night mode':'Switch to day mode')}let t='dark';try{t=localStorage.getItem('sk-cyber-hub-theme')==='day'?'light':'dark'}catch(_){}document.documentElement.dataset.theme=t;$('theme').addEventListener('click',theme);$('themeSetting').addEventListener('click',e=>{e.preventDefault();theme()});
 $('shuffle').addEventListener('click',drawDiscover);$('historyBtn').addEventListener('click',()=>{show('searchView');$('results').replaceChildren();let head=document.createElement('div');head.style.display='flex';head.style.justifyContent='space-between';head.style.alignItems='center';head.style.gap='10px';head.style.margin='10px 0';let label=document.createElement('b');label.textContent='Recent searches';let clear=document.createElement('button');clear.className='chip';clear.textContent='Clear history';clear.addEventListener('click',()=>{history=[];localStorage.removeItem('sk-browser-history');$('results').replaceChildren();let empty=document.createElement('div');empty.className='empty';empty.textContent='Your search history is clear.';$('results').append(empty);toast('Search history cleared')});head.append(label,clear);$('results').append(head);if(!history.length){let empty=document.createElement('div');empty.className='empty';empty.textContent='No recent searches yet.';$('results').append(empty);return}history.forEach(q=>{let b=document.createElement('button');b.className='result';b.style.width='100%';b.style.color='var(--text)';b.textContent='◷  '+q;b.addEventListener('click',()=>{$('q').value=q;submit(q)});$('results').append(b)})});
 $('clearHistory').addEventListener('click',()=>{history=[];localStorage.removeItem('sk-browser-history');toast('Recent searches cleared');});
 drawDiscover();const initial=new URLSearchParams(location.search).get('q');if(initial){$('q').value=initial;submit(initial)}if(location.hash==='#searchView')show('searchView');
 })();
 </script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js" crossorigin="anonymous"></script>
-<script src="./assets/sk-browser-video-hub.js?v=20261108-1" defer></script>
+<script src="./assets/sk-browser-video-hub.js?v=20261108-2" defer></script>
 <script src="./assets/sk-account-presence.js?v=1" defer></script>
 <script src="./pwa-register.js" defer></script>
 </body></html>
