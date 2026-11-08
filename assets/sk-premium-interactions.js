@@ -74,14 +74,13 @@ async function bind(){
   user=session?.user||null;
   if(channel){try{channel.unsubscribe();}catch(_){}channel=null;}
   if(!user){role='member';$('skAccountUnreadBadge')?.remove();$('skAccountNotificationArea')?.remove();return;}
-  bind();
+  setTimeout(()=>bind(),0);
  });}
  try{const r=await client.auth.getSession();user=r.data?.session?.user||null;}catch(_){user=null;}
  if(!user){$('skAccountUnreadBadge')?.remove();$('skAccountNotificationArea')?.remove();return;}
  try{const r=await client.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();role=r.data?.role==='admin'?'admin':'member';}catch(_){role='member';}
  ensureBadge();ensurePanel();refresh(false);
  if(!channel){try{channel=client.channel('sk-profile-notifications-'+user.id)
-  .on('postgres_changes',{event:'*',schema:'public',table:'sk_notifications',filter:'recipient_id=eq.'+user.id},()=>refresh(false))
   .on('postgres_changes',{event:'*',schema:'public',table:'sk_inbox_messages',filter:'recipient_id=eq.'+user.id},()=>refresh(false));
   if(role==='admin')channel.on('postgres_changes',{event:'*',schema:'public',table:'sk_creator_admin_alerts'},()=>refresh(false));
   channel.subscribe();
