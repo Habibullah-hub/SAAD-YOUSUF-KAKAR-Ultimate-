@@ -38,16 +38,16 @@ do $constraints$
 begin
   if not exists (select 1 from pg_constraint where conname='sk_creator_channels_platform_host_check' and conrelid='public.sk_creator_channels'::regclass) then
     alter table public.sk_creator_channels add constraint sk_creator_channels_platform_host_check check (
-      (platform='youtube' and channel_url ~* '^https://([a-z0-9-]+\\.)*(youtube\\.com|youtu\\.be)([:/]|$)') or
-      (platform='tiktok' and channel_url ~* '^https://([a-z0-9-]+\\.)*tiktok\\.com([:/]|$)') or
-      (platform='facebook' and channel_url ~* '^https://([a-z0-9-]+\\.)*(facebook\\.com|fb\\.watch)([:/]|$)')
+      (platform='youtube' and channel_url ~* '^https://([a-z0-9-]+[.])*(youtube[.]com|youtu[.]be)([:/]|$)') or
+      (platform='tiktok' and channel_url ~* '^https://([a-z0-9-]+[.])*tiktok[.]com([:/]|$)') or
+      (platform='facebook' and channel_url ~* '^https://([a-z0-9-]+[.])*(facebook[.]com|fb[.]watch)([:/]|$)')
     ) not valid;
   end if;
   if not exists (select 1 from pg_constraint where conname='sk_creator_submissions_platform_host_check' and conrelid='public.sk_creator_submissions'::regclass) then
     alter table public.sk_creator_submissions add constraint sk_creator_submissions_platform_host_check check (
-      (platform='youtube' and url ~* '^https://([a-z0-9-]+\\.)*(youtube\\.com|youtu\\.be)([:/]|$)') or
-      (platform='tiktok' and url ~* '^https://([a-z0-9-]+\\.)*tiktok\\.com([:/]|$)') or
-      (platform='facebook' and url ~* '^https://([a-z0-9-]+\\.)*(facebook\\.com|fb\\.watch)([:/]|$)')
+      (platform='youtube' and url ~* '^https://([a-z0-9-]+[.])*(youtube[.]com|youtu[.]be)([:/]|$)') or
+      (platform='tiktok' and url ~* '^https://([a-z0-9-]+[.])*tiktok[.]com([:/]|$)') or
+      (platform='facebook' and url ~* '^https://([a-z0-9-]+[.])*(facebook[.]com|fb[.]watch)([:/]|$)')
     ) not valid;
   end if;
 end;
