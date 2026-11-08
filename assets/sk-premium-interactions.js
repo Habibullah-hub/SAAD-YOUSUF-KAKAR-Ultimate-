@@ -1,7 +1,7 @@
 /* SK Cyber Hub — notification badges, profile alerts and protected triple-tap admin access. */
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
-let client=null,user=null,role='member',channel=null,refreshing=false;
+let client=null,user=null,role='member',channel=null,refreshing=false,authBound=false;
 const escCount=n=>n>99?'99+':String(n);
 const safeDate=v=>{try{return new Date(v).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});}catch(_){return '';}};
 function ensureBadge(){
@@ -70,8 +70,14 @@ async function loadList(){
 async function bind(){
  const next=window.SK_SUPABASE_CLIENT||null;if(!next)return;
  client=next;
+ if(!authBound){authBound=true;client.auth.onAuthStateChange((_event,session)=>{
+  user=session?.user||null;
+  if(channel){try{channel.unsubscribe();}catch(_){}channel=null;}
+  if(!user){role='member';$('skAccountUnreadBadge')?.remove();$('skAccountNotificationArea')?.remove();return;}
+  bind();
+ });}
  try{const r=await client.auth.getSession();user=r.data?.session?.user||null;}catch(_){user=null;}
- if(!user)return;
+ if(!user){$('skAccountUnreadBadge')?.remove();$('skAccountNotificationArea')?.remove();return;}
  try{const r=await client.from('sk_profiles').select('role').eq('id',user.id).maybeSingle();role=r.data?.role==='admin'?'admin':'member';}catch(_){role='member';}
  ensureBadge();ensurePanel();refresh(false);
  if(!channel){try{channel=client.channel('sk-profile-notifications-'+user.id)
