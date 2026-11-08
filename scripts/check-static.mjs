@@ -197,7 +197,7 @@ if (!html.includes('id="skCreatorOwnerPlayer"') || !html.includes('id="skCreator
 if (!html.includes('id="skCreatorSubmitToggle"') || !html.includes('id="skCreatorMySubmissions"')) errors.push("Video-only member submit control or submission status panel is missing.");
 if (!html.includes('id="skCreatorSaveFeatured"')) errors.push("Owner featured-video-only setting is missing.");
 if (!html.includes('id="skCreatorRegisteredMembers"')) errors.push("Owner-only registered members panel is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v14"')) errors.push("Service worker cache was not advanced for Creator Hub.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v15"')) errors.push("Service worker cache was not advanced for Creator Hub.");
 for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]) if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 
 if (errors.length) {
