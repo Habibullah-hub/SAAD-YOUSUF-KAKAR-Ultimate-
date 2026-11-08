@@ -153,7 +153,7 @@ const browserHtml = fs.existsSync("browser.html") ? fs.readFileSync("browser.htm
 if (!browserHtml.includes('id="searchForm"') || !browserHtml.includes('id="searchForm3"')) {
   errors.push("SK Browser is missing its global or SK-directory search form.");
 }
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v11"')) {
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v12"')) {
   errors.push("Service worker cache version was not advanced for the updated public shell.");
 }
 for (const assetPath of ["assets/sk-motion-performance.css", "assets/sk-browser-experience.css"]) {
@@ -174,8 +174,8 @@ for (const [assetPath, page, label] of [
   else if (!page.includes(assetPath)) errors.push(`Homepage does not load ${assetPath}.`);
 }
 if (!fs.existsSync("assets/sk-theme-mode.js") || !html.includes("assets/sk-theme-mode.js")) errors.push("Persistent homepage day/night toggle is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v11"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
-for (const assetPath of ["assets/sk-theme-mode.css","assets/sk-theme-mode.js","assets/sk-news-premium.css"]) {
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v12"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
+for (const assetPath of ["assets/sk-theme-mode.css","assets/sk-theme-mode.js","assets/sk-news-premium.css","assets/syk-neon-refresh.css"]) {
   if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 }
 const browserExperience = fs.readFileSync("browser.html", "utf8");
@@ -190,7 +190,7 @@ for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]
 }
 if (!fs.existsSync("supabase/SK-CREATOR-HUB.sql")) errors.push("Creator Hub approval migration is missing.");
 if (!html.includes('id="skCreatorHub"') || !html.includes('id="skCreatorForm"')) errors.push("Creator Hub homepage or member submission form is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v11"')) errors.push("Service worker cache was not advanced for Creator Hub.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v12"')) errors.push("Service worker cache was not advanced for Creator Hub.");
 for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]) if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 
 if (errors.length) {
