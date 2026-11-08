@@ -154,7 +154,7 @@ const browserHtml = fs.existsSync("browser.html") ? fs.readFileSync("browser.htm
 if (!browserHtml.includes('id="searchForm"') || !browserHtml.includes('id="searchForm3"')) {
   errors.push("SK Browser is missing its global or SK-directory search form.");
 }
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v24"')) {
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v25"')) {
   errors.push("Service worker cache version was not advanced for the updated public shell.");
 }
 for (const assetPath of ["assets/sk-motion-performance.css", "assets/sk-browser-experience.css"]) {
@@ -178,7 +178,7 @@ if (!fs.existsSync("assets/sk-theme-mode.js") || !html.includes("assets/sk-theme
 if (!html.includes('id="skAdminButton"') || !html.includes('alt="SYK"')) errors.push("Visible homepage admin logo must use the SYK mark.");
 if (!html.includes("YouTube Only") || !html.includes("const mode=forcedMode||modeInput.value||'all';")) errors.push("Related-video search must honor the selected YouTube-only filter.");
 if (!html.includes("await initializeSKDatabase()")) errors.push("Admin login must retry database initialization before reporting a connection failure.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v24"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v25"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
 for (const assetPath of ["assets/sk-theme-mode.css","assets/sk-theme-mode.js","assets/sk-news-premium.css","assets/syk-neon-refresh.css"]) {
   if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 }
@@ -189,7 +189,22 @@ if (!browserHtml.includes('id="sykVideoHub"') || !browserHtml.includes('id="sykV
 if (!browserHtml.includes('id="sykAdminMediaForm"') || !browserHtml.includes('id="sykVideoDialog"')) errors.push("SYK Browser is missing owner media publishing or the video popup player.");
 if (!browserHtml.includes('sk-browser-video-hub.js')) errors.push("SYK Browser video hub controller is not loaded.");
 if (!fs.existsSync("supabase/SK-BROWSER-VIDEO-HUB.sql")) errors.push("Owner-managed video/image/channel media migration is missing.");
-const communityExperience = fs.readFileSync("assets/sk-community.js", "utf8");
+
+/* SYK Browser sticky discovery, owner-first ads, and video categories. */
+if (!browserHtml.includes('class="top"') || !browserHtml.includes('browser-sticky-search')) errors.push("SYK Browser logo and search must remain in the sticky header.");
+if (!browserHtml.includes('id="sykVideoShuffle"') || !browserHtml.includes('data-video-category="islamic"') || !browserHtml.includes('data-video-category="news"') || !browserHtml.includes('data-video-category="education"')) errors.push("SYK Browser must expose the Islamic, news and education video filters and shuffle control.");
+if (!browserHtml.includes('id="sykMemberCategory"') || !browserHtml.includes('id="sykAdminCategory"')) errors.push("Member and Owner Admin video forms must support explicit content categories.");
+if (!fs.existsSync("supabase/SYK-BROWSER-VIDEO-CATEGORIES.sql")) errors.push("Video category migration is missing.");
+const browserVideoJsPath = "assets/sk-browser-video-hub.js";
+const browserVideoCssPath = "assets/sk-browser-video-hub.css";
+if (fs.existsSync(browserVideoJsPath)) {
+  const videoJs = fs.readFileSync(browserVideoJsPath, "utf8");
+  if (!videoJs.includes("function shuffleList") || !videoJs.includes("is_owner_ad") || !videoJs.includes("data-video-category")) errors.push("Video feed must shuffle trending/approved videos while pinning owner featured ads first.");
+  const videoSyntax = spawnSync(process.execPath, ["--check", browserVideoJsPath], { encoding: "utf8" });
+  if (videoSyntax.status !== 0) errors.push(`SYK Browser video controller has a syntax error:\\n${videoSyntax.stderr || videoSyntax.stdout}`);
+}
+if (fs.existsSync(browserVideoCssPath) && !fs.readFileSync(browserVideoCssPath, "utf8").includes(".syk-video-filter.active")) errors.push("Video category filters are missing their active state styling.");
+\nconst communityExperience = fs.readFileSync("assets/sk-community.js", "utf8");
 if (!communityExperience.includes("SK Community Trending") || !communityExperience.includes("Rank ")) errors.push("Community trending ranks and truthful scope label are missing.");
 
 /* SK Creator Hub owner permission and embed regressions. */
@@ -203,7 +218,7 @@ if (!html.includes('id="skCreatorOwnerPlayer"') || !html.includes('id="skCreator
 if (!html.includes('id="skCreatorSubmitToggle"') || !html.includes('id="skCreatorMySubmissions"')) errors.push("Video-only member submit control or submission status panel is missing.");
 if (!html.includes('id="skCreatorSaveFeatured"')) errors.push("Owner featured-video-only setting is missing.");
 if (!html.includes('id="skCreatorRegisteredMembers"')) errors.push("Owner-only registered members panel is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v24"')) errors.push("Service worker cache was not advanced for Creator Hub.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v25"')) errors.push("Service worker cache was not advanced for Creator Hub.");
 for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]) if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 
 
@@ -227,7 +242,7 @@ if (!html.includes('data-syk-filter="soft"') || !html.includes('id="skLiveSwitch
 const liveExperience = fs.readFileSync("assets/sk-live.js","utf8");
 if (!liveExperience.includes("captureStream(24)") || !liveExperience.includes("publishTrack(videoTrack")) errors.push("SYK Live camera filters are not included in the broadcast stream.");
 if (!liveExperience.includes("skLiveLoginGate")) errors.push("SYK Live login gate is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v24"')) errors.push("Service worker cache was not advanced for the new SYK features.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v25"')) errors.push("Service worker cache was not advanced for the new SYK features.");
 
 
 /* Premium profile, header, triple-tap admin and Quran typography regressions. */
