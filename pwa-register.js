@@ -1,4 +1,4 @@
-/* SK Cyber Hub install, share-for-review and safe PWA updates. */
+/* SYK Cyber Hub install, share-for-review and safe PWA updates. */
 (() => {
   let deferredInstallPrompt = null;
   let waitingWorker = null;
@@ -12,18 +12,18 @@
     if (document.getElementById("skAppActions") || isStandalone()) return;
     const panel = document.createElement("div");
     panel.id = "skAppActions";
-    panel.setAttribute("aria-label", "SK Cyber Hub app actions");
+    panel.setAttribute("aria-label", "SYK Cyber Hub app actions");
     panel.style.cssText = "position:fixed;right:14px;bottom:14px;z-index:99990;display:flex;gap:8px;align-items:center;padding:8px;border:1px solid #c7d8e8;border-radius:14px;background:#fff;color:#17212b;box-shadow:0 8px 28px #0002;font:600 12px/1.3 system-ui,sans-serif";
     const install = document.createElement("button");
     install.type = "button";
     install.id = "skInstallApp";
     install.textContent = "Install App";
-    install.setAttribute("aria-label", "Install SK Cyber Hub app");
+    install.setAttribute("aria-label", "Install SYK Cyber Hub app");
     install.style.cssText = "padding:10px 13px;border:0;border-radius:9px;background:#0067b8;color:#fff;font-weight:800;cursor:pointer";
     const share = document.createElement("button");
     share.type = "button";
     share.textContent = "Share for review";
-    share.setAttribute("aria-label", "Share SK Cyber Hub with a friend for review");
+    share.setAttribute("aria-label", "Share SYK Cyber Hub with a friend for review");
     share.style.cssText = "padding:10px 11px;border:1px solid #b8c9d8;border-radius:9px;background:#f5f9fc;color:#17446b;font-weight:750;cursor:pointer";
     install.addEventListener("click", async () => {
       if (deferredInstallPrompt) {
@@ -37,8 +37,8 @@
     });
     share.addEventListener("click", async () => {
       const shareData = {
-        title: "SK Cyber Hub — Review",
-        text: "Please install and review SK Cyber Hub. Check its design, speed, navigation, buttons and features, then send me your honest feedback.",
+        title: "SYK Cyber Hub — Review",
+        text: "Please install and review SYK Cyber Hub. Check its design, speed, navigation, buttons and features, then send me your honest feedback.",
         url: window.location.href
       };
       try {
@@ -61,7 +61,7 @@
     event.preventDefault();
     deferredInstallPrompt = event;
     const button = document.getElementById("skInstallApp");
-    if (button) button.textContent = "Install SK App";
+    if (button) button.textContent = "Install SYK App";
   });
   window.addEventListener("appinstalled", () => {
     deferredInstallPrompt = null;
@@ -77,7 +77,7 @@
     notice.setAttribute("aria-live", "polite");
     notice.style.cssText = "position:fixed;left:12px;right:12px;bottom:76px;z-index:99999;max-width:620px;margin:auto;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #398d73;border-radius:14px;background:#0d211d;color:#f3fff9;box-shadow:0 12px 36px #0008;font:600 13px/1.45 system-ui,sans-serif";
     const message = document.createElement("span");
-    message.textContent = "SK Cyber Hub کا نیا ورژن تیار ہے۔ اپڈیٹ کے لیے دبائیں۔";
+    message.textContent = "SYK Cyber Hub کا نیا ورژن تیار ہے۔ اپڈیٹ کے لیے دبائیں۔";
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = "Update";
@@ -123,7 +123,7 @@
       });
       registration.update().catch(() => {});
     } catch (error) {
-      console.warn("SK Cyber Hub PWA registration unavailable:", error);
+      console.warn("SYK Cyber Hub PWA registration unavailable:", error);
     }
   });
 })();
