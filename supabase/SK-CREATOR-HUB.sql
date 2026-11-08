@@ -37,6 +37,7 @@ begin
   end if;
 end;
 $featured$;
+alter table public.sk_creator_channels validate constraint sk_creator_channels_featured_video_youtube_check;
 
 create index if not exists sk_creator_submissions_public_idx
   on public.sk_creator_submissions(is_trending desc,trend_order asc,created_at desc)
