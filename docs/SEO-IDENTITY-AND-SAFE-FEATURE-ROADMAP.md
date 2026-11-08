@@ -73,3 +73,38 @@ Video consultation can initially use an owner-approved booking request and a pri
 ## Performance and accessibility
 
 Targets remain LCP <= 2.5s, INP < 200ms, CLS < 0.1 at the 75th percentile. They are targets, not measured results. Keep motion subtle, respect `prefers-reduced-motion`, reserve image dimensions, lazy-load below-the-fold media, keep touch controls comfortable, and preserve visible keyboard focus and readable Urdu/Arabic RTL behavior.
+
+
+## SYK Browser video-home update (8 November 2026)
+
+The browser home now uses a compact sticky header containing the SYK logo, web search field, theme control and recent-search control. On mobile the search is a full-width second row; on wider screens it sits beside the brand. The main hero is simplified so the video feed is visible sooner.
+
+The default video feed supports:
+- Islamic, news, education and all-video filters.
+- A shuffle action. Admin-marked trending videos are randomized within their tier; other approved member videos are randomized after them.
+- Owner Admin featured media is pinned above member submissions and visibly labelled as sponsored/owner-featured.
+- YouTube thumbnail previews where a valid YouTube video ID can be extracted.
+- Video playback only after the visitor taps a card; no surprise autoplay popup.
+- Member category selection and owner category selection.
+
+Important truthfulness boundary: this is not a verified global popularity ranking. There is no view-count/YouTube Data API integration in this change. “Trending” means an Admin has explicitly marked an approved member submission as trending. Do not invent view counts, likes, popularity scores or claim live trending. Owner-uploaded featured/promotional items are visibly labelled as sponsored/owner featured.
+
+### Required additive database migration
+
+New category choices are persisted after the owner reviews and runs:
+`supabase/SYK-BROWSER-VIDEO-CATEGORIES.sql`
+
+This migration only adds a constrained category column and feed indexes to the existing `sk_creator_submissions` and `sk_creator_admin_media` tables. It does not change roles or RLS policies. Frontend code has a compatibility fallback so existing video feeds can still load if the migration has not yet been run; without the migration, category choices fall back to “other” and are not persisted.
+
+### Post-deployment phone checks
+
+1. Open SYK Browser on Android and scroll: the logo and search field should remain visible at the top.
+2. Confirm the web search still opens externally and recent-search/theme controls still work.
+3. Confirm default video feed shows owner-featured media first, labelled sponsored/owner featured.
+4. Tap Islamic, news, education and all filters; empty categories must show a truthful empty state.
+5. Press shuffle twice; trending items remain ahead of regular member videos, but order changes.
+6. Member submits one video and category; it remains pending and invisible to visitors until Owner Admin approves.
+7. Owner Admin marks an approved member video as trending; it appears in the trending tier.
+8. Open a YouTube card: thumbnail loads and player opens only after tap; close stops media.
+9. Test reduced-motion preference, light/dark theme, small screen, and slow connection.
+10. Apply the category SQL only after confirming the existing tables are present and taking a backup/export; never run it on a different or new Supabase project by mistake.
