@@ -33,7 +33,6 @@ create index if not exists sk_creator_submissions_review_idx
   on public.sk_creator_submissions(status,created_at desc);
 
 -- Enforce platform/host matching in the database as well as in the browser.
--- NOT VALID keeps pre-existing rows untouched while checking all new or changed rows.
 do $constraints$
 begin
   if not exists (select 1 from pg_constraint where conname='sk_creator_channels_platform_host_check' and conrelid='public.sk_creator_channels'::regclass) then
@@ -100,27 +99,25 @@ grant insert,update,delete on public.sk_creator_channels to authenticated;
 grant select,insert,update on public.sk_creator_submissions to authenticated;
 grant select on public.sk_creator_submissions to anon;
 grant select,update on public.sk_creator_admin_alerts to authenticated;
--- No direct sequence privileges are granted to browser clients.
 
 create or replace function public.sk_creator_submission_alert()
 returns trigger language plpgsql security definer set search_path=''
-as $$
+as $fn$
 begin
   if new.status='pending' then
     insert into public.sk_creator_admin_alerts(submission_id) values(new.id);
   end if;
   return new;
 end;
-$$;
+$fn$;
 revoke all on function public.sk_creator_submission_alert() from public,anon,authenticated;
 drop trigger if exists sk_creator_submission_alert_trigger on public.sk_creator_submissions;
 create trigger sk_creator_submission_alert_trigger
 after insert on public.sk_creator_submissions
 for each row execute function public.sk_creator_submission_alert();
 
--- Enable database-change notifications for the owner approval queue when the
--- standard Supabase Realtime publication is available.
-do $
+-- Enable database-change notifications for the owner approval queue when available.
+do $realtime$
 begin
   if exists (select 1 from pg_publication where pubname='supabase_realtime')
      and not exists (
@@ -129,6 +126,7 @@ begin
      ) then
     alter publication supabase_realtime add table public.sk_creator_submissions;
   end if;
-end $;
+end;
+$realtime$;
 
 commit;
