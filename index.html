@@ -3340,7 +3340,7 @@ if (!validDownloadUrl) {
             const status = document.getElementById('adminAuthStatus');
             const button = e.currentTarget?.querySelector('button[type="submit"]');
             const say = message => { if (status) status.textContent = message; };
-            if (!supabaseClient) { say('Database connected نہیں۔ پہلے Configure میں درست project URL اور public key چیک کریں۔'); return; }
+            if (!supabaseClient) { await initializeSKDatabase(); if (!supabaseClient) { say('Database ابھی connect نہیں۔ Configure میں اسی SYK Supabase project کا URL اور public anon key محفوظ کریں، پھر Admin Login دوبارہ کریں۔'); return; } }
             if (button) { button.disabled = true; button.textContent = 'Checking…'; }
             say('محفوظ طریقے سے Admin account چیک ہو رہا ہے…');
             try {
