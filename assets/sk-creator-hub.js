@@ -92,9 +92,12 @@ async function loadAdmin(db){
 }
 async function saveChannels(){
  const db=state.db;if(!state.isAdmin||!db)return;
- const rows=[...$('skCreatorChannelSettings').querySelectorAll('input[data-platform]')],payload=[];
- for(const input of rows){const url=input.value.trim();if(!url)continue;if(!safeUrl(url)){say('براہِ کرم ہر چینل کے لیے درست HTTPS لنک دیں۔');return;}payload.push({platform:input.dataset.platform,title:platformLabel(input.dataset.platform)+' · Official',channel_url:url,enabled:true,updated_at:new Date().toISOString()});}
- const r=await db.from('sk_creator_channels').upsert(payload,{onConflict:'platform'});if(r.error){say('Channel links محفوظ نہیں ہوئے: '+r.error.message);return;}say('آپ کے official channel links محفوظ ہوگئے۔');await loadPublic(db);
+ const rows=[...$('skCreatorChannelSettings').querySelectorAll('input[data-platform]')];
+ const payload=[],remove=[];
+ for(const input of rows){const url=input.value.trim();if(!url){remove.push(input.dataset.platform);continue;}if(!safeUrl(url)){say('براہِ کرم ہر چینل کے لیے درست HTTPS لنک دیں۔');return;}payload.push({platform:input.dataset.platform,title:platformLabel(input.dataset.platform)+' · Official',channel_url:url,enabled:true,updated_at:new Date().toISOString()});}
+ if(payload.length){const r=await db.from('sk_creator_channels').upsert(payload,{onConflict:'platform'});if(r.error){say('Channel links محفوظ نہیں ہوئے: '+r.error.message);return;}}
+ for(const platform of remove){const r=await db.from('sk_creator_channels').delete().eq('platform',platform);if(r.error){say('Channel link حذف نہیں ہوا: '+r.error.message);return;}}
+ say('آپ کے official channel links محفوظ ہوگئے۔');await loadPublic(db);
 }
 async function submit(event){
  event.preventDefault();if(!state.db||!state.user){say('لنک بھیجنے سے پہلے Member Login کریں۔');return;}
