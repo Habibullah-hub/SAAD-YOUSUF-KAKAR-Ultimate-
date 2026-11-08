@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const root=document.getElementById('skCreatorHub');if(!root)return;
 const $=id=>document.getElementById(id);
-const state={db:null,user:null,isAdmin:false,loaded:false};
+const state={db:null,user:null,isAdmin:false,loaded:false,authBound:false,realtime:null};
 const say=t=>{const n=$('skCreatorStatus');if(n)n.textContent=t;};
 const safeUrl=value=>{try{const u=new URL(value);return u.protocol==='https:'?u.href:'';}catch(_){return '';}};
 const platformLabel=p=>({youtube:'YouTube',tiktok:'TikTok',facebook:'Facebook'}[p]||p);
@@ -35,8 +35,8 @@ function makeVideo(item){
  const original=el('a','sk-creator-btn','Open on '+platformLabel(item.platform)+' ↗');original.href=item.url;original.target='_blank';original.rel='noopener noreferrer';body.append(original);card.append(preview,body);return card;
 }
 function renderVideos(items){
- const trending=$('skCreatorTrending'),more=$('skCreatorMore');trending.replaceChildren();more.replaceChildren();
- const videos=(items||[]).filter(x=>x.content_type==='video');
+ const trending=$('skCreatorTrending'),more=$('skCreatorMore'),members=$('skCreatorMemberChannels');trending.replaceChildren();more.replaceChildren();members.replaceChildren();
+ const videos=(items||[]).filter(x=>x.content_type==='video');const memberChannels=(items||[]).filter(x=>x.content_type==='channel').sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));memberChannels.forEach(x=>{const a=el('a','sk-creator-btn',platformLabel(x.platform)+' · '+x.title);a.href=x.url;a.target='_blank';a.rel='noopener noreferrer';members.append(a);});if(!memberChannels.length)members.append(el('p','sk-creator-muted','ابھی کوئی member channel منظور نہیں ہوا۔'));
  const top=videos.filter(x=>x.is_trending).sort((a,b)=>(a.trend_order||1000)-(b.trend_order||1000)).slice(0,6);
  const rest=videos.filter(x=>!x.is_trending).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,12);
  top.forEach(x=>trending.append(makeVideo(x)));rest.forEach(x=>more.append(makeVideo(x)));
@@ -70,7 +70,7 @@ async function loadAdmin(db){
   db.from('sk_creator_channels').select('platform,title,channel_url')
  ]);
  if(pending.error){say('Admin queue load نہیں ہوئی: '+pending.error.message);return;}
- badge.textContent=String(alerts.count||0);badge.hidden=!(alerts.count||0);
+ badge.textContent=String(pending.data?.length||0);badge.hidden=!(pending.data?.length);
  queue.replaceChildren();
  if(!pending.data?.length)queue.append(el('p','sk-creator-muted','کوئی نئی درخواست نہیں۔'));
  (pending.data||[]).forEach(item=>{
@@ -114,12 +114,14 @@ async function init(){
  const db=window.SK_SUPABASE_CLIENT;if(!db){say('SK database connect ہونے کے بعد Creator Hub فعال ہوگا۔');return;}
  state.db=db;const auth=await db.auth.getUser();state.user=auth.data?.user||null;
  await checkAdmin(db);await loadPublic(db);
- if(state.isAdmin){const alertIds=await db.from('sk_creator_admin_alerts').select('id').is('seen_at',null).limit(100);if(alertIds.data?.length){await db.from('sk_creator_admin_alerts').update({seen_at:new Date().toISOString()}).in('id',alertIds.data.map(x=>x.id));}}
+ if(!state.authBound){state.authBound=true;db.auth.onAuthStateChange((_event,session)=>{setTimeout(async()=>{state.user=session?.user||null;await checkAdmin(db);await loadPublic(db);},0);});}
+ if(state.isAdmin&&!state.realtime){state.realtime=db.channel('sk-creator-admin-queue').on('postgres_changes',{event:'INSERT',schema:'public',table:'sk_creator_submissions'},()=>loadAdmin(db)).subscribe();}
 }
 $('skCreatorForm')?.addEventListener('submit',submit);
 $('skCreatorSaveChannels')?.addEventListener('click',saveChannels);
 $('skCreatorRefresh')?.addEventListener('click',()=>state.db&&loadAdmin(state.db));
+document.querySelectorAll('[data-sk-creator-tab]').forEach(button=>button.addEventListener('click',()=>{const key=button.dataset.skCreatorTab;document.querySelectorAll('[data-sk-creator-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));$('skCreatorTrendingBlock').hidden=key!=='trending';$('skCreatorMoreBlock').hidden=key!=='more';$('skCreatorChannelsBlock').hidden=key!=='channels';}));
 window.addEventListener('sk:database-ready',()=>init());
 let attempts=0;const wait=()=>{if(window.SK_SUPABASE_CLIENT){init();return;}if(++attempts<30)setTimeout(wait,1000);};wait();
-if(window.SK_SUPABASE_CLIENT)window.SK_SUPABASE_CLIENT.auth.onAuthStateChange((_event,session)=>{setTimeout(async()=>{state.user=session?.user||null;if(state.db){await checkAdmin(state.db);await loadPublic(state.db);}},0);});
+
 })();
