@@ -11,7 +11,7 @@
 .syk-video-poster{position:relative;display:grid;place-items:center;background-image:linear-gradient(135deg,#133e56,#171a3c);background-size:cover;background-position:center;isolation:isolate}
 .syk-video-poster:after{content:"▶";display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#071421d9;border:1px solid #8fffee88;color:#a4fff2;font-size:20px;box-shadow:0 0 25px #55f4dc44}
 .syk-video-card.is-owner-ad{border-color:#f2c56a88;box-shadow:0 0 0 1px #f2c56a22,0 14px 35px #0004}
-.syk-video-card.is-owner-ad:before{content:"SPONSORED · OWNER FEATURED";font-size:9px;letter-spacing:1.1px;color:#f4d58e;font-weight:950}
+.syk-video-card.is-sponsored:before{content:"SPONSORED · OWNER AD";font-size:9px;letter-spacing:1.1px;color:#f4d58e;font-weight:950}.syk-video-card.is-owner-ad:not(.is-sponsored):before{content:"OWNER ADMIN · FEATURED";font-size:9px;letter-spacing:1.1px;color:#9dfff0;font-weight:950}
 .syk-video-card .syk-video-category{font-size:10px;color:var(--accent);font-weight:800}
 .syk-video-card .syk-video-trending{width:max-content;background:#163f50;color:#a8fff0;border:1px solid #55f4dc55;border-radius:99px;padding:4px 8px;font-size:9px}
 .syk-video-card .syk-video-admin-tag{font-size:9px;color:#f4d58e;font-weight:900}
