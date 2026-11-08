@@ -1625,6 +1625,36 @@ body.sk-day-mode .top .syk-home-header-search{background:#fff!important;border-c
 body.sk-day-mode .top .syk-home-header-search input{color:#172b40!important}
 body.sk-day-mode .top .syk-home-header-search input::placeholder{color:#60758a}
 body.sk-day-mode .top .sk-header-login{background:#e5f3fb!important;color:#075b91!important;border-color:#9bbbd3!important}
+</style><style id="syk-live-tiktok-ui-v1">
+#skLivePanel{display:grid;gap:14px}
+.syk-live-login-gate{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:17px;border:1px solid #3d7186;border-radius:18px;background:radial-gradient(circle at 8% 5%,#ff315b22,transparent 35%),linear-gradient(130deg,#101d32,#152b42);box-shadow:0 15px 38px #0004}
+.syk-live-login-gate[hidden]{display:none!important}
+.syk-live-gate-icon{display:grid;place-items:center;flex:none;width:54px;height:54px;border-radius:17px;background:linear-gradient(135deg,#ff365f,#ff764c);color:#fff;font-size:13px;font-weight:1000;letter-spacing:1px;box-shadow:0 0 28px #ff365f55}
+.syk-live-login-gate>div:nth-child(2){flex:1;min-width:180px}
+.syk-live-login-gate strong{color:#fff;font-size:16px}
+.syk-live-login-gate p{margin:5px 0 0;color:#b8c8db;font-size:12px;line-height:1.65}
+.syk-live-login-gate button{min-height:42px;padding:0 17px;border:0;border-radius:12px;background:linear-gradient(135deg,#ff365f,#ff704e);color:white;font-weight:900}
+#skLiveStartForm{padding:16px;border:1px solid #35536e;border-radius:17px;background:#0d1d31;gap:9px}
+#skLiveStartForm:not([hidden]){display:grid}
+#skLiveStartForm input,#skLiveStartForm textarea{width:100%;min-height:43px;border:1px solid #38516b;border-radius:10px;background:#081526;color:#f3f8ff;padding:10px}
+#skLiveStartForm button[type=submit]{min-height:46px;border:0;border-radius:12px;background:linear-gradient(120deg,#ff315f,#ff754b);color:white;font-weight:950}
+#skLiveRoomList{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+#skLiveRoomList .sk-live-room-card{position:relative;overflow:hidden;min-height:150px;padding:15px;border:1px solid #34516c;border-radius:17px;background:linear-gradient(150deg,#182e48,#0b182b);box-shadow:0 12px 28px #0004}
+#skLiveRoomList .sk-live-room-card:before{content:"LIVE";display:inline-flex;padding:4px 8px;border-radius:6px;background:#ff315f;color:white;font-size:9px;font-weight:950;letter-spacing:1px}
+#skLiveRoomList .sk-live-room-card b{display:block;margin:12px 0 5px;color:#fff;font-size:16px}
+#skLiveRoomList .sk-live-room-card p{color:#aebfd1;font-size:12px}
+#skLiveRoomList .sk-live-room-card button{min-height:39px;padding:0 15px;border:1px solid #ff5576;border-radius:10px;background:#ff315f;color:white;font-weight:850}
+#skLiveStage{overflow:hidden;border:1px solid #35516b;border-radius:18px;background:#060d18}
+#skLiveStage:not([hidden]){display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,32%)}
+#skLiveMedia{position:relative;min-height:420px;max-height:78vh;display:grid;place-items:center;background:radial-gradient(circle at 50% 20%,#243d59,#030813 70%);overflow:hidden}
+#skLiveMedia video{width:100%;height:100%;max-height:78vh;object-fit:contain;background:#02040a}
+#skLiveStage .sk-live-controls,#skLiveStage .sk-live-chat,#skLiveChatForm{grid-column:2}
+#skLiveStage .sk-live-controls{display:flex;flex-wrap:wrap;gap:7px;padding:12px}
+#skLiveStage .sk-live-controls button,#skLiveChatForm button{min-height:38px;border:1px solid #36546d;border-radius:9px;background:#142a40;color:#fff;padding:0 11px}
+#skLiveChat{height:260px;overflow:auto;padding:12px;border-top:1px solid #263b51;color:#e7f1fc}
+#skLiveChatForm{display:flex;gap:7px;padding:10px}
+#skLiveChatForm input{flex:1;min-width:0;border:1px solid #36546d;border-radius:9px;background:#0a1727;color:white;padding:9px}
+@media(max-width:700px){#skLiveStage:not([hidden]){grid-template-columns:minmax(0,1fr)}#skLiveMedia{min-height:54vh;max-height:68vh}#skLiveMedia video{max-height:68vh}#skLiveStage .sk-live-controls,#skLiveStage .sk-live-chat,#skLiveChatForm{grid-column:1}#skLiveChat{height:190px}.syk-live-login-gate{align-items:flex-start}.syk-live-login-gate button{width:100%}}
 </style></head>
 <body>
 <a class="skip-to-content" href="#tab-home">Skip to main content</a>
@@ -1973,6 +2003,7 @@ body.sk-day-mode .top .sk-header-login{background:#e5f3fb!important;color:#075b9
  <div class="section-head"><div><span class="sk-kicker">SYK LIVE · CREATOR BROADCAST</span><h2>Go live. Share a moment.</h2><p>Public live rooms with creator video, viewer access and live chat.</p></div><span class="section-count">FREE-QUOTA PILOT</span></div>
  <div id="skLivePanel">
   <p class="sk-connect-muted">Live video uses LiveKit WebRTC, not your phone or personal internet as a server. The free Build plan has hard monthly limits; when limits are reached, new sessions stop. No paid upgrade or card will be enabled without approval. The live-token function and LiveKit project must be configured before broadcasting. <a href="https://github.com/Habibullah-hub/SAAD-YOUSUF-KAKAR-Ultimate-/blob/main/supabase/SK-FREE-FIRST-DEPLOYMENT-GUIDE.md" target="_blank" rel="noopener noreferrer">Open free setup guide ↗</a></p>
+  <div class="syk-live-login-gate" id="skLiveLoginGate"><div class="syk-live-gate-icon">LIVE</div><div><strong>SYK LIVE</strong><p>براہِ راست ویڈیو دیکھنے کے لیے لاگ اِن ضروری نہیں۔ LIVE شروع کرنے کے لیے اپنے ممبر اکاؤنٹ میں لاگ اِن کریں۔</p></div><button id="skLiveLoginButton" type="button">Login to go LIVE</button></div>
   <form id="skLiveStartForm" hidden>
    <label for="skLiveTitle">Live title</label><input id="skLiveTitle" maxlength="100" placeholder="What are you sharing today?" required>
    <label for="skLiveDescription">Short description (optional)</label><textarea id="skLiveDescription" maxlength="300" rows="2" placeholder="Tell viewers what this live is about"></textarea>
