@@ -138,6 +138,31 @@ if (installHandler.includes("self.skipWaiting(")) {
   errors.push("Service worker must not skip the waiting phase during install; updates are user-controlled.");
 }
 
+
+/* SK Browser and lightweight experience regression checks. */
+for (const [assetPath, page, label] of [
+  ["assets/sk-motion-performance.css", html, "homepage motion"],
+  ["assets/sk-browser-experience.css", fs.readFileSync("browser.html", "utf8"), "browser experience"]
+]) {
+  if (!fs.existsSync(assetPath)) errors.push(`Missing ${label} stylesheet: ${assetPath}`);
+  else if (!page.includes(assetPath)) errors.push(`The expected page does not link ${assetPath}.`);
+}
+const browserHtml = fs.existsSync("browser.html") ? fs.readFileSync("browser.html", "utf8") : "";
+if (!browserHtml.includes('id="searchForm"') || !browserHtml.includes('id="searchForm3"')) {
+  errors.push("SK Browser is missing its global or SK-directory search form.");
+}
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v9"')) {
+  errors.push("Service worker cache version was not advanced for the updated public shell.");
+}
+for (const assetPath of ["assets/sk-motion-performance.css", "assets/sk-browser-experience.css"]) {
+  if (fs.existsSync(assetPath) && !serviceWorkerSource.includes(assetPath)) {
+    errors.push(`Service worker does not allowlist the new public stylesheet: ${assetPath}`);
+  }
+}
+if (!serviceWorkerSource.includes('new URL("browser.html", APP_ROOT).href')) {
+  errors.push("SK Browser is not included in the offline public shell allowlist.");
+}
+
 if (errors.length) {
   console.error(errors.join("\n\n"));
   process.exit(1);
