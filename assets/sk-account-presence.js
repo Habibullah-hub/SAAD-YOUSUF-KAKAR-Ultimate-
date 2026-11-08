@@ -55,7 +55,7 @@ function paintGuest(){
  const t=$('skAccountTitle'),s=$('skAccountSubtitle'),a=$('skAccountAvatar'),p=$('skAccountPopover'),b=$('skAccountTrigger');
  if(!t||!s||!a||!p||!b)return;
  t.textContent='Login';s.textContent='Sign in';a.textContent='+';b.dataset.signedIn='';
- p.innerHTML='<strong>Welcome to SYK Browser</strong><p>Login once to submit a video for Admin review.</p><a href="./#community">Login</a>';
+ const upload=document.getElementById('sykMemberSubmit'),mine=document.getElementById('sykMyVideos'),hub=document.getElementById('sykVideoHub');if(hub){if(upload)hub.append(upload);if(mine)hub.append(mine);}p.innerHTML='<strong>Welcome to SYK Browser</strong><p>Login once to submit a video for Admin review.</p><a href="./#community">Login</a>';
 }
 async function paintUser(user){
  const seq=++renderSeq,t=$('skAccountTitle'),s=$('skAccountSubtitle'),a=$('skAccountAvatar'),p=$('skAccountPopover'),b=$('skAccountTrigger');
