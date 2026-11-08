@@ -1655,7 +1655,20 @@ body.sk-day-mode .top .sk-header-login{background:#e5f3fb!important;color:#075b9
 #skLiveChatForm{display:flex;gap:7px;padding:10px}
 #skLiveChatForm input{flex:1;min-width:0;border:1px solid #36546d;border-radius:9px;background:#0a1727;color:white;padding:9px}
 @media(max-width:700px){#skLiveStage:not([hidden]){grid-template-columns:minmax(0,1fr)}#skLiveMedia{min-height:54vh;max-height:68vh}#skLiveMedia video{max-height:68vh}#skLiveStage .sk-live-controls,#skLiveStage .sk-live-chat,#skLiveChatForm{grid-column:1}#skLiveChat{height:190px}.syk-live-login-gate{align-items:flex-start}.syk-live-login-gate button{width:100%}}
-</style></head>
+</style><style id="syk-header-controls-visibility-repair">
+/* Keep the main SYK header actions visible on compact Android screens. */
+.top .nav-actions{display:flex!important;visibility:visible!important;opacity:1!important;align-items:center!important;justify-content:flex-end!important;gap:6px!important;min-width:0!important;max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;flex-wrap:nowrap!important}
+.top .nav-actions::-webkit-scrollbar{display:none!important}
+.top .nav-actions>*{display:inline-flex!important;visibility:visible!important;opacity:1!important;flex:0 0 auto!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important}
+.top .sk-header-login,.top .sk-easy-toggle,.top .language-toggle,.top .news-nav-link{min-height:38px!important;height:38px!important}
+@media(max-width:600px){
+ .top .nav{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:7px!important}
+ .top .nav>.brand{flex:1 1 100%!important;min-width:0!important}
+ .top .nav>.nav-actions{width:100%!important;flex:1 1 100%!important;justify-content:flex-start!important;padding:0!important}
+ .top .nav-actions>*{min-height:36px!important;height:36px!important;font-size:10px!important}
+}
+</style>
+</head>
 <body>
 <a class="skip-to-content" href="#tab-home">Skip to main content</a>
 <div id="google_translate_element" aria-hidden="true"></div><div id="configAlert" class="config-alert"><span>SYK Cyber Hub database is not connected. Set up its separate database tables to manage listings.</span><button type="button" onclick="openSupabaseModal()">Configure</button></div>
