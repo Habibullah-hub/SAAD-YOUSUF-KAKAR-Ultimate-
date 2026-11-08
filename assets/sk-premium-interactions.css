@@ -98,3 +98,6 @@ body.sk-day-mode .sk-notification-item{background:#fff;color:#173b54;border-colo
 body.sk-day-mode .sk-notification-item small,body.sk-day-mode .sk-notification-foot{color:#5b7488}
 body.sk-day-mode .sk-notification-empty{color:#526b82}
 body.sk-day-mode .syk-daily-fold-toggle{background:#e7f5f4;color:#14504e;border-color:#9ecfc8}
+
+.sk-account-pop.sk-pop-closing{animation:sk-profile-close .16s ease-in forwards!important;pointer-events:none}
+@keyframes sk-profile-close{to{opacity:0;transform:translateY(-7px) scale(.97);filter:blur(2px)}}
