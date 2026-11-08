@@ -6,7 +6,6 @@ const APP_ROOT = new URL("./", self.location).href;
 const PUBLIC_SHELL_URLS = new Set([
   APP_ROOT,
   new URL("browser.html", APP_ROOT).href,
-  new URL("browser.html", APP_ROOT).href,
   new URL("games.html", APP_ROOT).href
 ]);
 const PUBLIC_STATIC_ASSETS = new Set([
