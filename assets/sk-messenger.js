@@ -4,10 +4,10 @@ const $=id=>document.getElementById(id),root=$('skConnectPanel');if(!root)return
 let db=null,user=null,activeConversation=null,activePeer=null,messageChannel=null,incomingChannel=null,signalChannel=null,callChannel=null,pc=null,localStream=null,activeCall=null,queuedSignals=[],authBound=false;
 const say=t=>{const n=$('skConnectStatus');if(n)n.textContent=t;};
 const el=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n;};
-const safeName=p=>p?.display_name||'SK Member';
+const safeName=p=>p?.display_name||'SYK Member';
 function currentDb(){return window.SK_SUPABASE_CLIENT||null;}
 function show(n,v){if(n)n.hidden=!v;}
-function renderSignedOut(){say('نجی پیغامات اور کالز کے لیے مفت Member Login کریں۔');show($('skConnectSendForm'),false);$('skConnectSearch').disabled=true;$('skConnectSearchResults').replaceChildren();$('skConnectConversationList').replaceChildren(el('p','sk-connect-muted','Login کے بعد آپ کے conversations یہاں آئیں گے۔'));$('skConnectMessages').replaceChildren();}
+function renderSignedOut(){say('نجی پیغامات اور کالز کے لیے مفت Login کریں۔');show($('skConnectSendForm'),false);$('skConnectSearch').disabled=true;$('skConnectSearchResults').replaceChildren();$('skConnectConversationList').replaceChildren(el('p','sk-connect-muted','Login کے بعد آپ کے conversations یہاں آئیں گے۔'));$('skConnectMessages').replaceChildren();}
 async function init(){
  db=currentDb();if(!db){renderSignedOut();return;}
  if(!authBound){db.auth.onAuthStateChange(()=>setTimeout(()=>init(),0));authBound=true;}
@@ -42,7 +42,7 @@ async function loadConversations(){
   const members=await db.from('sk_conversation_members').select('user_id').eq('conversation_id',id);
   const other=(members.data||[]).find(x=>x.user_id!==user.id)?.user_id;if(!other)continue;
   const profile=await db.from('sk_public_profiles').select('id,display_name,bio').eq('id',other).maybeSingle();
-  const p=profile.data||{id:other,display_name:'SK Member'};
+  const p=profile.data||{id:other,display_name:'SYK Member'};
   const b=el('button','sk-connect-conversation',safeName(p));b.type='button';b.addEventListener('click',()=>openConversation(id,p));host.append(b);
  }
 }
@@ -150,7 +150,7 @@ async function acceptCall(){
  try{
   const r=await db.from('sk_call_sessions').update({status:'accepted'}).eq('id',call.id);
   if(r.error)throw r.error;
-  const p=await db.from('sk_public_profiles').select('id,display_name').eq('id',call.caller_id).maybeSingle();activePeer=p.data||{id:call.caller_id,display_name:'SK Member'};
+  const p=await db.from('sk_public_profiles').select('id,display_name').eq('id',call.caller_id).maybeSingle();activePeer=p.data||{id:call.caller_id,display_name:'SYK Member'};
   await setupPeer(call,false);say('Call accepted. Connecting…');
  }catch(e){say('Could not accept call: '+(e.message||'Network error'));await cleanupCall();}
 }
