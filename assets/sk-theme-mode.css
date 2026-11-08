@@ -18,3 +18,19 @@ body.sk-day-mode .sk-bottom-nav a,body.sk-day-mode .sk-bottom-nav button{color:#
 body.sk-day-mode #skThemeModeToggle{background:linear-gradient(135deg,#fff,#e5eff7)!important;color:#17324a!important;border-color:#b7c9d9!important}
 @media(max-width:600px){#skThemeModeToggle{min-height:38px;padding:7px 9px;font-size:11px}}
 @media(prefers-reduced-motion:reduce){#skThemeModeToggle{transition:none!important}}
+
+
+/* SYK day/night fix: apply the selected palette across the complete page, not only a few cards. */
+html[data-sk-theme="day"]{color-scheme:light!important;background:#edf3fa!important}
+html[data-sk-theme="night"]{color-scheme:dark!important;background:#070916!important}
+body.sk-day-mode{color:#172b40!important;background:radial-gradient(ellipse at 8% 0%,#d9eaf8,transparent 42%),#edf3fa!important}
+body.sk-day-mode :is(header,nav,.top,.category-dock,.sk-bottom-nav,.sk-more-panel,.category-menu,.site-language-panel,.section,.news-section,.store-hero,.manager,.notice,.sk-start-here,.sk-discovery,.sk-interest-mix,.sk-community-panel,.sk-connect-layout,.sk-connect-sidebar,.sk-connect-chat,.sk-live-stage,.sk-platform-panel,.sk-platform-hero,.sk-mail-layout,.sk-creator-hub,.sk-video-dialog,.news-reader,.news-search-panel,.news-result-card,.sk-social-post,.sk-category-card,.sk-next-card,.resource,.tile,.platform-card,.quick-tool,.trust-item,.sk-start-link){color:#172b40!important;border-color:#c8d8e7!important}
+body.sk-day-mode :is(.top,.category-dock,.sk-bottom-nav,.sk-more-panel,.category-menu,.site-language-panel,.section,.manager,.notice,.sk-start-here,.sk-discovery,.sk-interest-mix,.sk-community-panel,.sk-connect-layout,.sk-connect-sidebar,.sk-connect-chat,.sk-live-stage,.sk-platform-panel,.sk-platform-hero,.sk-mail-layout,.sk-creator-hub,.news-reader,.news-search-panel,.news-result-card,.sk-social-post,.sk-category-card,.sk-next-card,.resource,.tile,.platform-card,.quick-tool,.trust-item,.sk-start-link){background:#fff!important;box-shadow:0 8px 24px #18334b10!important}
+body.sk-day-mode :is(h1,h2,h3,h4,h5,p,small,label,strong,b,.section-head p,.tile p,.resource p,.sk-platform-note,.sk-creator-muted,.sk-video-help,.news-result-card p){color:inherit!important}
+body.sk-day-mode :is(a,.quick-nav a,.category-menu a,.sk-bottom-nav a,.sk-bottom-nav button,.sk-creator-btn,.sk-platform-ghost){color:#075b91!important}
+body.sk-day-mode :is(input,textarea,select,.searchbox,.category-toggle,.manager input,.manager select){color:#172b40!important;background:#fff!important;border-color:#b9ccdd!important}
+body.sk-day-mode :is(button,.primary,.secondary,.hero-secondary,.sk-platform-primary){color:#12334d!important;border-color:#a9c5dc!important}
+body.sk-day-mode .store-hero{background:linear-gradient(125deg,#e2f1fc,#f6fbff)!important}
+body.sk-day-mode .store-hero h1{color:#172b40!important}
+body.sk-day-mode .store-hero .intro{color:#425e75!important}
+body.sk-day-mode .brand .mark{background:linear-gradient(135deg,#0879bd,#5b62c8)!important;color:#fff!important}
