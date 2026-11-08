@@ -227,7 +227,7 @@ if (!html.includes('data-syk-filter="soft"') || !html.includes('id="skLiveSwitch
 const liveExperience = fs.readFileSync("assets/sk-live.js","utf8");
 if (!liveExperience.includes("captureStream(24)") || !liveExperience.includes("publishTrack(videoTrack")) errors.push("SYK Live camera filters are not included in the broadcast stream.");
 if (!liveExperience.includes("skLiveLoginGate")) errors.push("SYK Live login gate is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v23"')) errors.push("Service worker cache was not advanced for the new SYK features.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v24"')) errors.push("Service worker cache was not advanced for the new SYK features.");
 
 
 /* Premium profile, header, triple-tap admin and Quran typography regressions. */
@@ -236,6 +236,9 @@ if (!html.includes('data-sk-admin-gesture="triple"') || /id="skAdminButton"[^>]*
 if (!html.includes('id="sykDailyFoldToggle"') || !html.includes('class="syk-daily-content"')) errors.push("Quran fold/unfold control is missing.");
 const premiumJs = fs.readFileSync("assets/sk-premium-interactions.js", "utf8");
 if (!premiumJs.includes("1250") || !premiumJs.includes("skAccountUnreadBadge") || !premiumJs.includes("sk_inbox_messages")) errors.push("Triple-tap admin or real notification badge behavior is missing.");
+
+if (!premiumJs.includes("onAuthStateChange") || !premiumJs.includes("sk_creator_admin_alerts")) errors.push("Profile notification refresh or owner alert integration is missing.");
+if (!fs.readFileSync("assets/sk-premium-interactions.css", "utf8").includes("Noto Naskh Arabic")) errors.push("Quran Arabic typography fallback stack is missing.");
 
 if (errors.length) {
   console.error(errors.join("\n\n"));
