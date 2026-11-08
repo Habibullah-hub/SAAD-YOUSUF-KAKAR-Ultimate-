@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.content.Context;
@@ -30,6 +31,7 @@ import android.webkit.SslErrorHandler;
 import android.net.http.SslError;
 import android.content.ActivityNotFoundException;
 import android.content.pm.PackageManager;
+import android.content.pm.ActivityInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -54,7 +56,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    private static final String HOME = "https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/";
+    private static final String HOME = "https://habibullah-hub.github.io/SAAD-YOUSUF-KAKAR-Ultimate-/browser.html?native=1";
     private static final String PREFS = "sk_browser_data";
     private static final String HISTORY = "history";
     private static final int FILE_CHOOSER_REQUEST = 901;
@@ -73,6 +75,10 @@ public class MainActivity extends Activity {
     private final int teal = Color.rgb(105, 230, 211);
     private final List<String> recent = new ArrayList<>();
     private DownloadManager downloadManager;
+    private View customView;
+    private WebChromeClient.CustomViewCallback customViewCallback;
+    private int customViewOriginalOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+    private int customViewOriginalSystemUiVisibility = 0;
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -148,6 +154,18 @@ public class MainActivity extends Activity {
         if (Build.VERSION.SDK_INT >= 21) cookieManager.setAcceptThirdPartyCookies(web, false);
         if (Build.VERSION.SDK_INT >= 26) settings.setSafeBrowsingEnabled(true);
         web.setWebChromeClient(new WebChromeClient() {
+            @Override public void onShowCustomView(View view, CustomViewCallback callback) {
+                if (customView != null) { callback.onCustomViewHidden(); return; }
+                customView = view;
+                customViewCallback = callback;
+                customViewOriginalOrientation = getRequestedOrientation();
+                customViewOriginalSystemUiVisibility = getWindow().getDecorView().getSystemUiVisibility();
+                ViewGroup decor = (ViewGroup)getWindow().getDecorView();
+                decor.addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+            }
+            @Override public void onHideCustomView() { hideCustomView(); }
             @Override public void onProgressChanged(WebView view, int value) {
                 progress.setIndeterminate(false);
                 progress.setProgress(value);
@@ -258,6 +276,18 @@ public class MainActivity extends Activity {
         refresh.setOnClickListener(v -> { showLoading("Refreshing…"); web.reload(); });
         if (state == null) web.loadUrl(HOME);
         else if (web.restoreState(state) == null) web.loadUrl(HOME);
+    }
+
+    private void hideCustomView() {
+        if (customView == null) return;
+        View view = customView;
+        customView = null;
+        if (view.getParent() instanceof ViewGroup) ((ViewGroup)view.getParent()).removeView(view);
+        getWindow().getDecorView().setSystemUiVisibility(customViewOriginalSystemUiVisibility);
+        setRequestedOrientation(customViewOriginalOrientation);
+        WebChromeClient.CustomViewCallback callback = customViewCallback;
+        customViewCallback = null;
+        if (callback != null) callback.onCustomViewHidden();
     }
 
     private boolean handleNavigation(WebView view, Uri uri) {
@@ -497,10 +527,11 @@ public class MainActivity extends Activity {
     }
     private int dp(int v) { return (int)(v * getResources().getDisplayMetrics().density + 0.5f); }
     @Override protected void onSaveInstanceState(Bundle out) { super.onSaveInstanceState(out); if (web != null) web.saveState(out); }
-    @Override public void onBackPressed() { if (web != null && web.canGoBack()) web.goBack(); else super.onBackPressed(); }
+    @Override public void onBackPressed() { if (customView != null) { hideCustomView(); return; } if (web != null && web.canGoBack()) web.goBack(); else super.onBackPressed(); }
     @Override protected void onDestroy() {
         if (suggestionTask != null) handler.removeCallbacks(suggestionTask);
         if (filePathCallback != null) { filePathCallback.onReceiveValue(null); filePathCallback = null; }
+        if (customView != null) hideCustomView();
         if (web != null) { web.stopLoading(); web.destroy(); web = null; }
         super.onDestroy();
     }
