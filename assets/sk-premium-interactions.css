@@ -1,0 +1,103 @@
+/* SK Cyber Hub — premium profile, notifications and mobile header polish.
+   Keeps the existing brand mark/logo artwork untouched. */
+.top .nav{min-width:0;gap:clamp(8px,1.4vw,18px)}
+.top .brand{min-width:0;flex:0 1 auto}
+.top .brand>span{min-width:0;white-space:nowrap;line-height:1.18}
+.top .nav-actions{min-width:0;max-width:72%;display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:7px}
+.top .nav-actions>*{min-width:0;max-width:100%;white-space:nowrap}
+.top .news-nav-link,.top .sk-header-login,.top .sk-easy-toggle,.top .language-toggle,#skThemeModeToggle{
+ min-height:39px!important;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+ padding:0 11px!important;border:1px solid rgba(115,174,218,.28)!important;border-radius:12px!important;
+ background:linear-gradient(145deg,rgba(18,39,66,.96),rgba(10,24,43,.96))!important;
+ color:#eaf5ff!important;font-size:11px!important;font-weight:800!important;line-height:1.1;
+ box-shadow:inset 0 1px rgba(255,255,255,.06),0 7px 18px rgba(0,0,0,.12);
+}
+.top .news-nav-link:hover,.top .sk-header-login:hover,.top .sk-easy-toggle:hover,.top .language-toggle:hover,#skThemeModeToggle:hover{
+ border-color:rgba(97,242,223,.7)!important;color:#aafff2!important;transform:translateY(-1px)
+}
+.top .sk-header-login{background:linear-gradient(120deg,#58e9d5,#7fc5ff)!important;color:#061725!important;border-color:transparent!important}
+.top .nav-actions .sk-account-presence{flex:0 0 auto}
+.sk-account-avatar{box-shadow:0 0 0 2px rgba(97,242,223,.28),0 0 18px rgba(97,242,223,.15)}
+.sk-account-trigger{min-height:42px!important;border-color:rgba(97,242,223,.4)!important;box-shadow:0 8px 22px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.08)}
+.sk-account-pop{z-index:1005;transform-origin:top right;animation:sk-profile-open .24s cubic-bezier(.2,.8,.2,1) both}
+@keyframes sk-profile-open{from{opacity:0;transform:translateY(-9px) scale(.97);filter:blur(3px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+.sk-account-unread-badge{
+ position:absolute;z-index:4;top:-5px;right:-6px;min-width:17px;height:17px;padding:0 4px;
+ display:inline-flex;align-items:center;justify-content:center;border:2px solid #0b1628;border-radius:999px;
+ background:linear-gradient(135deg,#ff4d78,#ff1744);color:#fff;font:900 9px/1 system-ui;
+ box-shadow:0 0 12px rgba(255,23,68,.55)
+}
+.sk-account-unread-badge[hidden]{display:none!important}
+.sk-notification-area{margin:10px 0 2px;padding:10px;border:1px solid rgba(97,242,223,.22);border-radius:12px;background:linear-gradient(145deg,rgba(13,34,55,.96),rgba(10,23,41,.98))}
+.sk-notification-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px;border:1px solid rgba(97,242,223,.25);border-radius:9px;background:rgba(97,242,223,.08);color:#eafffb;font-family:inherit;font-size:12px;font-weight:800;line-height:1.3;cursor:pointer}
+.sk-notification-toggle>span:first-child{display:flex;align-items:center;gap:8px}
+.sk-notification-count{min-width:21px;height:21px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:#ff315f;color:#fff;font-size:10px;font-weight:900}
+.sk-notification-count[data-zero="true"]{background:#24435a;color:#c8e4f5}
+.sk-notification-list{display:grid;gap:7px;margin-top:9px}
+.sk-notification-list[hidden]{display:none!important}
+.sk-notification-item{display:flex;align-items:flex-start;gap:8px;padding:9px;border:1px solid rgba(130,171,207,.16);border-radius:8px;background:rgba(255,255,255,.035);color:#dcecff}
+.sk-notification-item p{flex:1;min-width:0;margin:0;font-size:11px;line-height:1.55;overflow-wrap:anywhere}
+.sk-notification-item small{display:block;margin-top:3px;color:#91aac4;font-size:9px}
+.sk-notification-item button{flex:none;padding:5px 7px;border:1px solid rgba(97,242,223,.25);border-radius:7px;background:rgba(97,242,223,.08);color:#aafff2;font-size:9px;font-weight:800;cursor:pointer}
+.sk-notification-empty{margin:0;padding:11px;color:#9eb4cc;text-align:center;font-size:10px}
+.sk-notification-foot{margin:8px 0 0;color:#819bb8;font-size:9px;line-height:1.5}
+.syk-daily-naseeha{border-radius:22px;box-shadow:0 22px 58px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.06)}
+.syk-daily-head{align-items:center}
+.syk-daily-fold-toggle{flex:none;min-height:38px;padding:7px 12px;border:1px solid rgba(133,236,218,.38);border-radius:11px;background:linear-gradient(135deg,rgba(31,105,105,.45),rgba(35,55,91,.6));color:#c8fff2;font-size:11px;font-weight:850;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.16)}
+.syk-daily-fold-toggle span{display:inline-block;margin-inline-start:5px;font-size:16px;transition:transform .28s cubic-bezier(.2,.75,.25,1)}
+.syk-daily-fold-toggle[aria-expanded="true"] span{transform:rotate(180deg)}
+.syk-daily-content{max-height:0;opacity:0;overflow:hidden;transform:translateY(-8px);transition:max-height .55s cubic-bezier(.2,.8,.2,1),opacity .28s ease,transform .38s cubic-bezier(.2,.8,.2,1)}
+.syk-daily-content.is-open{max-height:1400px;opacity:1;overflow:visible;transform:translateY(0)}
+.syk-daily-arabic{
+ direction:rtl!important;unicode-bidi:isolate!important;text-align:center!important;
+ font-family:"KFGQPC Uthmanic Script HAFS","KFGQPC Uthman Taha Naskh","Noto Naskh Arabic","Noto Naskh Arabic UI","Amiri","Scheherazade New","Traditional Arabic",serif!important;
+ font-size:clamp(30px,5vw,44px)!important;font-weight:500!important;line-height:2.2!important;
+ letter-spacing:normal!important;word-spacing:normal!important;font-kerning:normal!important;
+ font-variant-ligatures:common-ligatures contextual!important;font-feature-settings:"kern" 1,"liga" 1,"calt" 1!important;
+ text-rendering:optimizeLegibility!important;white-space:normal!important;overflow-wrap:normal!important;
+ padding:8px 12px 12px;text-shadow:0 2px 18px rgba(0,0,0,.2)
+}
+.syk-daily-reference{font-weight:850;letter-spacing:.03em}
+.syk-daily-translation-wrap{align-items:center}
+@media(max-width:760px){
+ .top .nav{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important;padding-top:9px;padding-bottom:9px}
+ .top .brand{justify-self:start;max-width:100%}
+ .top .nav-actions{width:100%;max-width:none;display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px!important;align-items:stretch}
+ .top .nav-actions>*{width:100%;min-width:0;max-width:none;min-height:37px!important;padding:0 3px!important;border-radius:10px!important;font-size:10px!important}
+ .top .news-nav-link{gap:3px}
+ .top .news-nav-link span{font-size:9px}
+ .top .sk-account-presence{width:100%;justify-content:center}
+ .top .sk-account-trigger{width:100%;min-width:0;min-height:37px!important;justify-content:center;padding:3px!important}
+ .top .sk-account-copy{display:none}
+ .top .sk-account-avatar{width:27px;height:27px;flex-basis:27px}
+ .top .nav-actions #skThemeModeToggle{font-size:9px!important}
+ .site-language-panel{top:115px!important;right:12px!important}
+ .syk-daily-naseeha{margin:14px auto 20px;padding:16px;border-radius:17px}
+ .syk-daily-head{gap:8px}
+ .syk-daily-head>div{min-width:0;flex:1}
+ .syk-daily-badge{display:none}
+ .syk-daily-fold-toggle{min-height:36px;padding:6px 9px;font-size:10px}
+ .syk-daily-arabic{font-size:32px!important;line-height:2.15!important;padding:5px 2px 9px}
+}
+@media(max-width:380px){
+ .top .brand>span{font-size:11px!important}
+ .top .brand small{font-size:8px!important;letter-spacing:.1em!important}
+ .top .nav-actions{gap:3px!important}
+ .top .nav-actions>*{font-size:9px!important;padding:0 1px!important}
+ .top .news-nav-link span{font-size:8px}
+ .top .sk-account-avatar{width:25px;height:25px;flex-basis:25px}
+ .syk-daily-arabic{font-size:29px!important}
+ .syk-daily-fold-toggle{padding:5px 7px}
+}
+@media(prefers-reduced-motion:reduce){
+ .sk-account-pop,.sk-daily-content,.syk-daily-fold-toggle span{animation:none!important;transition:none!important}
+}
+body.sk-day-mode .sk-notification-area{background:#f3f8fc;border-color:#c8ddeb}
+body.sk-day-mode .sk-notification-toggle{background:#e9f5fb;color:#173b54}
+body.sk-day-mode .sk-notification-item{background:#fff;color:#173b54;border-color:#d8e5ee}
+body.sk-day-mode .sk-notification-item small,body.sk-day-mode .sk-notification-foot{color:#5b7488}
+body.sk-day-mode .sk-notification-empty{color:#526b82}
+body.sk-day-mode .syk-daily-fold-toggle{background:#e7f5f4;color:#14504e;border-color:#9ecfc8}
+
+.sk-account-pop.sk-pop-closing{animation:sk-profile-close .16s ease-in forwards!important;pointer-events:none}
+@keyframes sk-profile-close{to{opacity:0;transform:translateY(-7px) scale(.97);filter:blur(2px)}}
