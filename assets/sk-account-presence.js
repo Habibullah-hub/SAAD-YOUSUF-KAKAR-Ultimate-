@@ -32,7 +32,7 @@ function addStyle(){
 }
 function mount(){
  const host=document.querySelector('.top .nav-actions')||document.querySelector('.top-actions');
- if(!host||$('skAccountPresence'))return false;
+ if($('skAccountPresence'))return true;if(!host)return false;
  addStyle();
  const wrap=document.createElement('div');wrap.className='sk-account-presence';wrap.id='skAccountPresence';
  const trigger=document.createElement('button');trigger.type='button';trigger.className='sk-account-trigger';trigger.id='skAccountTrigger';trigger.setAttribute('aria-expanded','false');
