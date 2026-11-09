@@ -5,7 +5,7 @@
 (()=>{'use strict';
 const ROOT='./';
 const esc=(s)=>String(s||'').slice(0,500);
-const safeUrl=(raw)=>{try{const u=new URL(raw);if(u.protocol!=='https:'||u.username||u.password)return null;return u;}catch(_){return null;}};
+const safeUrl=(raw)=>{try{const u=new URL(raw);if(u.protocol!=='https:'||u.username||u.password||u.origin===location.origin)return null;return u;}catch(_){return null;}};
 let overlay=null,frame=null,status=null,urlInput=null;
 function build(){
  if(overlay)return;
@@ -32,7 +32,7 @@ function build(){
 function show(){build();overlay.hidden=false;document.body.classList.add('sk-reader-open');const close=overlay.querySelector('.sk-reader-close');close.focus();}
 function hide(){if(!overlay)return;overlay.hidden=true;document.body.classList.remove('sk-reader-open');if(frame)frame.src='about:blank';}
 function openUrl(raw){
- build();const u=safeUrl(raw);if(!u){status.textContent='صرف درست HTTPS ویب ایڈریس قبول ہے۔';return false;}
+ build();const u=safeUrl(raw);if(!u){status.textContent='صرف کسی دوسری ویب سائٹ کا درست HTTPS ایڈریس درج کریں؛ اسی سائٹ یا غیر محفوظ لنک کی اجازت نہیں۔';return false;}
  const fallback=overlay.querySelector('.sk-reader-fallback a');fallback.href=u.href;fallback.hidden=false;
  urlInput.value=u.href;status.textContent='پبلشر کا صفحہ SYK کے برانڈڈ ریڈر میں لوڈ کرنے کی کوشش ہو رہی ہے۔ اگر embed منع ہو تو اصل پبلشر کا متبادل لنک دستیاب ہے۔';
  frame.src=u.href;show();return true;
@@ -48,8 +48,6 @@ window.SKReader={openUrl,openSearch,close:hide};
 document.addEventListener('DOMContentLoaded',()=>{
  const nav=document.querySelector('.bottom nav');
  if(nav&&!nav.querySelector('[data-sk-reader-nav]')){const b=document.createElement('button');b.type='button';b.className='navbtn';b.dataset.skReaderNav='1';b.innerHTML='<span>▣</span>Reader';b.addEventListener('click',()=>{build();show();urlInput.focus();});nav.append(b);}
- const form=document.getElementById('searchForm');
- if(form)form.addEventListener('submit',e=>{e.preventDefault();const q=document.getElementById('q')?.value||'';if(window.SKReader)openSearch(q);});
  const params=new URLSearchParams(location.search);const initial=params.get('q');if(initial){const q=document.getElementById('q');if(q)q.value=initial;openSearch(initial);}
 });
 })();
