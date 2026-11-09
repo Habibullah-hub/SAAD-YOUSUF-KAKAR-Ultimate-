@@ -18,7 +18,8 @@ function init(){
   {label:'☪ Islam360 · Quran & Islamic resources',href:'https://webapp.theislam360.com/',keywords:'islam360 islam quran hadith prayer salah deen'},
   {label:'👤 Profile & Community',href:'#community',keywords:'profile account member my profile community'},
   {label:'⚙ Settings & Privacy',href:'#security-privacy',keywords:'settings preferences privacy security'},
-  {label:'🌐 SYK Browser',href:'./browser.html',keywords:'browser web search videos reader'}
+  {label:'🌐 SYK Browser',href:'./browser.html',keywords:'browser web search videos reader'},
+  {label:'⬇ Media Downloader',href:'./browser.html#media-download-hub',keywords:'media downloader download video audio mp3 photo image'}
  ];
  extras.forEach(item=>{
   if(item.href.startsWith('#')&&!$(item.href.slice(1)))return;
