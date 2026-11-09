@@ -1,0 +1,25 @@
+/* SK Cyber Deck + branded reader shell — Phase 1 */
+:root{
+ --sk-obsidian:#07090F;--sk-cyan:#00F0FF;--sk-emerald:#00FF66;
+ --sk-purple:#9D4EDD;--sk-pink:#FF007F;
+ --sk-glass:rgba(13,18,34,.92);--sk-glass-line:rgba(0,240,255,.25);
+}
+.sk-reader-overlay{position:fixed;inset:0;z-index:9999;display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto auto;background:var(--sk-obsidian);color:#f6fbff;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.sk-reader-overlay[hidden]{display:none!important}
+body.sk-reader-open{overflow:hidden}
+.sk-reader-top,.sk-reader-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px max(14px,env(safe-area-inset-right)) 12px max(14px,env(safe-area-inset-left));background:var(--sk-glass);border-bottom:1px solid var(--sk-glass-line);backdrop-filter:blur(16px)}
+.sk-reader-brand{font-size:12px;font-weight:850;letter-spacing:.25px;color:var(--sk-cyan)}
+.sk-reader-close,.sk-reader-controls button,.sk-reader-open{min-height:42px;border:1px solid var(--sk-cyan);border-radius:12px;padding:9px 13px;background:#10212b;color:#f6fbff;font-weight:800}
+.sk-reader-controls{display:flex;gap:8px;padding:10px 12px}
+.sk-reader-controls input{flex:1;min-width:0;min-height:44px;border:1px solid var(--sk-glass-line);border-radius:11px;padding:9px 12px;background:#101728;color:#fff}
+.sk-reader-status{margin:0;padding:4px 14px 9px;color:#b8c8d9;font-size:11px}
+.sk-reader-frame{width:100%;height:100%;min-height:0;border:0;background:#fff}
+.sk-reader-fallback{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 14px;background:#11182a;color:#d7e2ef;font-size:11px}
+.sk-reader-fallback p{margin:0}
+.sk-reader-open{display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap}
+.sk-reader-bottom{justify-content:center;border-top:1px solid var(--sk-glass-line);border-bottom:0;color:var(--sk-cyan);font-size:10px;font-weight:800;text-align:center}
+.bottom nav{grid-template-columns:repeat(5,minmax(0,1fr))}
+.sk-reader-close:focus-visible,.sk-reader-controls button:focus-visible,.sk-reader-open:focus-visible{outline:3px solid var(--sk-emerald);outline-offset:3px}
+@media(max-width:420px){.sk-reader-brand{font-size:10px}.sk-reader-fallback{align-items:flex-start;flex-direction:column}.sk-reader-open{width:100%;justify-content:center}}
+@media(prefers-reduced-motion:reduce){.sk-reader-overlay *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+@media(max-width:700px){.sk-reader-top,.sk-reader-bottom{backdrop-filter:blur(8px)}}
