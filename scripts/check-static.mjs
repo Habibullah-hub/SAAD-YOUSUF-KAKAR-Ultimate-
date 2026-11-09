@@ -97,7 +97,8 @@ const jsAssets = [
   "assets/sk-theme-mode.js",
   "assets/sk-creator-hub.js",
   "assets/sk-browser-video-hub.js",
-  "assets/sk-sovereign-reader.js"
+  "assets/sk-sovereign-reader.js",
+  "assets/sk-directory-spotlight.js"
 ];
 for (const assetPath of jsAssets) {
   if (!fs.existsSync(assetPath)) {
@@ -155,7 +156,7 @@ const browserHtml = fs.existsSync("browser.html") ? fs.readFileSync("browser.htm
 if (!browserHtml.includes('id="searchForm"') || !browserHtml.includes('id="searchForm3"')) {
   errors.push("SK Browser is missing its global or SK-directory search form.");
 }
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v27"')) {
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v28"')) {
   errors.push("Service worker cache version was not advanced for the updated public shell.");
 }
 for (const assetPath of ["assets/sk-motion-performance.css", "assets/sk-browser-experience.css"]) {
@@ -179,7 +180,7 @@ if (!fs.existsSync("assets/sk-theme-mode.js") || !html.includes("assets/sk-theme
 if (!html.includes('id="skAdminButton"') || !html.includes('alt="SYK"')) errors.push("Visible homepage admin logo must use the SYK mark.");
 if (!html.includes("YouTube Only") || !html.includes("const mode=forcedMode||modeInput.value||'all';")) errors.push("Related-video search must honor the selected YouTube-only filter.");
 if (!html.includes("await initializeSKDatabase()")) errors.push("Admin login must retry database initialization before reporting a connection failure.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v27"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v28"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
 for (const assetPath of ["assets/sk-theme-mode.css","assets/sk-theme-mode.js","assets/sk-news-premium.css","assets/syk-neon-refresh.css"]) {
   if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 }
@@ -291,3 +292,13 @@ if (!readerSource.includes("u.protocol") || !readerSource.includes("setAttribute
 if (!readerSource.includes("اصل پبلشر")) errors.push("Reader must provide an explicit publisher fallback.");
 if (!browserExperience.includes("assets/sk-sovereign-reader.css") || !browserExperience.includes("assets/sk-sovereign-reader.js")) errors.push("Browser page is missing the branded reader assets.");
 if (!serviceWorkerSource.includes("sk-sovereign-reader.css") || !serviceWorkerSource.includes("sk-sovereign-reader.js")) errors.push("Service worker does not cache the Phase 1 reader assets.");
+
+
+/* Directory Spotlight, fixed five-item dock and low-effects regression checks. */
+const spotlightJsPath = "assets/sk-directory-spotlight.js";
+const spotlightCssPath = "assets/sk-directory-spotlight.css";
+for (const asset of [spotlightJsPath, spotlightCssPath]) if (!fs.existsSync(asset)) errors.push("Missing Directory Spotlight asset: " + asset);
+else if (asset.endsWith(".js")) { const result = spawnSync(process.execPath, ["--check", asset], { encoding: "utf8" }); if (result.status !== 0) errors.push("Directory Spotlight JavaScript syntax error: " + (result.stderr || result.stdout)); }
+if (!html.includes('id="skDirectorySpotlightSearch"') && !html.includes('assets/sk-directory-spotlight.js')) errors.push("Homepage must load the Directory Spotlight controller.");
+if (!html.includes('data-sk-profile') || !html.includes('data-sk-bottom="browser"') || !html.includes('data-sk-bottom="community"')) errors.push("Homepage bottom dock must contain Home, Apps, Browser, Community and Profile destinations.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v28"') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.js') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.css')) errors.push("Service worker must cache the Directory Spotlight assets in the v28 shell.");
