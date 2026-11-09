@@ -297,9 +297,9 @@ if (!html.includes('data-sk-profile') || !html.includes('data-sk-bottom="browser
 if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v28"') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.js') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.css')) errors.push("Service worker must cache the Directory Spotlight assets in the v28 shell.");
 
 /* One final gate after every regression check has been collected. */
-const bottomDockMatch = html.match(/<nav class="sk-bottom-nav"[^>]*>[\\s\\S]*?<\\/nav>/i);
+const bottomDockMatch = html.match(/<nav class="sk-bottom-nav"[^>]*>[\s\S]*?<\/nav>/i);
 const bottomDock = bottomDockMatch ? bottomDockMatch[0] : "";
-const bottomItems = (bottomDock.match(/<(?:a|button)\\b/gi) || []).length;
+const bottomItems = (bottomDock.match(/<(?:a|button)\b/gi) || []).length;
 if (bottomItems !== 5) errors.push("Android bottom dock must contain exactly five navigation controls.");
 for (const label of ["Home", "Apps", "Browser", "Community", "Profile"]) {
   if (!bottomDock.includes(">" + label + "</")) errors.push("Bottom dock is missing its " + label + " destination.");
@@ -311,7 +311,7 @@ for (const token of ["#07090F", "#00F0FF", "#00FF66", "sk-low-effects"]) {
 if (!spotlightJs.includes("skDirectorySpotlightSearch") || !spotlightJs.includes("Islam360") || !spotlightJs.includes("Settings")) errors.push("Directory Spotlight must provide searchable menu links and key shortcuts.");
 if (!spotlightJs.includes("sk-low-effects") || !spotlightJs.includes("localStorage")) errors.push("Low Effects mode must persist its user preference.");
 if (errors.length) {
-  console.error(errors.join("\\n\\n"));
+  console.error(errors.join("\n\n"));
   process.exit(1);
 }
 console.log(`Static checks passed: HTML basics verified; ${checked} inline JavaScript block(s) syntax-checked; all navigation, reader, cache and security regressions passed.`);
