@@ -4,7 +4,7 @@ const $=id=>document.getElementById(id);
 const LOW_KEY='sk-cyber-hub-low-effects';
 function init(){
  const panel=$('skMorePanel'),grid=panel?.querySelector('.sk-more-grid'),moreButton=document.querySelector('[data-sk-more]');
- if(!panel||!grid||panel.dataset.skSpotlightReady==='1')return;
+ if(!panel||!grid||panel.dataset.skSpotlightReady==='1')return false;
  panel.dataset.skSpotlightReady='1';
  const close=()=>{panel.classList.remove('is-open');moreButton?.setAttribute('aria-expanded','false');panel.hidden=true;};
  const searchWrap=document.createElement('section');searchWrap.id='skDirectorySpotlight';
@@ -17,7 +17,8 @@ function init(){
  const extras=[
   {label:'☪ Islam360 · Quran & Islamic resources',href:'https://webapp.theislam360.com/',keywords:'islam360 islam quran hadith prayer salah deen'},
   {label:'👤 Profile & Community',href:'#community',keywords:'profile account member my profile community'},
-  {label:'⚙ Settings & Privacy',href:'#security-privacy',keywords:'settings preferences privacy security'}
+  {label:'⚙ Settings & Privacy',href:'#security-privacy',keywords:'settings preferences privacy security'},
+  {label:'🌐 SYK Browser',href:'./browser.html',keywords:'browser web search videos reader'}
  ];
  extras.forEach(item=>{
   if(item.href.startsWith('#')&&!$(item.href.slice(1)))return;
@@ -46,7 +47,9 @@ function init(){
     const target=a.getAttribute('href').slice(1);
     if($(target)){event.preventDefault();close();window.skSetView?.(target);}
    }else if(a.href&&new URL(a.href,location.href).origin!==location.origin){
-    close();
+    event.preventDefault();close();
+    if(typeof window.SKReader?.openUrl==='function')window.SKReader.openUrl(a.href);
+    else window.open(a.href,'_blank','noopener,noreferrer');
    }
   });
  });
@@ -105,6 +108,14 @@ function init(){
   });
   footerObserver.observe(live,{childList:true,subtree:true});
  }
+ return true;
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+function boot(){
+ if(init())return;
+ // The legacy navigation builder creates #skMorePanel during DOMContentLoaded.
+ // Wait for that real node instead of silently abandoning the spotlight setup.
+ const observer=new MutationObserver(()=>{if(init())observer.disconnect();});
+ observer.observe(document.documentElement,{childList:true,subtree:true});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
