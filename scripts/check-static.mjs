@@ -286,6 +286,7 @@ for (const asset of ["assets/sk-sovereign-reader.js","assets/sk-sovereign-reader
 const readerSource = fs.existsSync("assets/sk-sovereign-reader.js") ? fs.readFileSync("assets/sk-sovereign-reader.js","utf8") : "";
 if (!readerSource.includes("u.protocol") || !readerSource.includes("setAttribute") || !readerSource.includes("no-referrer")) errors.push("Reader must enforce HTTPS, iframe sandbox and no-referrer policy.");
 if (!readerSource.includes("اصل پبلشر")) errors.push("Reader must provide an explicit publisher fallback.");
+if (readerSource.includes("google.com/search?q=") || !readerSource.includes("browser.html")) errors.push("Reader search must route to the SK in-app search page, not Google.");
 if (!browserExperience.includes("assets/sk-sovereign-reader.css") || !browserExperience.includes("assets/sk-sovereign-reader.js")) errors.push("Browser page is missing the branded reader assets.");
 if (!serviceWorkerSource.includes("sk-sovereign-reader.css") || !serviceWorkerSource.includes("sk-sovereign-reader.js")) errors.push("Service worker does not cache the Phase 1 reader assets.");
 
