@@ -1,0 +1,42 @@
+/* SK Cyber Hub — PWA action panels must never cover the fixed five-item dock. */
+:root{
+  --sk-bottom-dock-clearance:calc(72px + env(safe-area-inset-bottom,0px));
+  --sk-pwa-panel-gap:12px;
+  --sk-pwa-stack-bottom:calc(var(--sk-bottom-dock-clearance) + var(--sk-pwa-panel-gap));
+}
+html{scroll-padding-bottom:calc(var(--sk-bottom-dock-clearance) + 18px)}
+body{padding-bottom:max(92px,calc(var(--sk-bottom-dock-clearance) + 18px))}
+#skAppActions.sk-pwa-actions,
+#skPwaUpdateNotice.sk-pwa-update-notice{
+  position:fixed!important;
+  left:12px!important;
+  right:12px!important;
+  bottom:var(--sk-pwa-stack-bottom)!important;
+  z-index:70!important;
+  width:auto;
+  max-width:460px;
+  margin-inline:auto!important;
+  box-sizing:border-box;
+}
+#skAppActions.sk-pwa-actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+}
+#skAppActions.sk-pwa-actions button{min-width:0;min-height:42px;flex:1 1 auto;white-space:nowrap}
+#skPwaUpdateNotice.sk-pwa-update-notice{max-width:620px}
+#skPwaUpdateNotice.sk-pwa-update-notice button{min-height:42px}
+body.sk-pwa-actions-visible #skPwaUpdateNotice.sk-pwa-update-notice{
+  bottom:calc(var(--sk-pwa-stack-bottom) + 72px)!important;
+}
+.sk-bottom-nav{z-index:80!important}
+.sk-more-panel{z-index:90!important}
+@media(max-width:380px){
+  #skAppActions.sk-pwa-actions{gap:6px;padding:7px}
+  #skAppActions.sk-pwa-actions button{padding:9px 8px!important;font-size:11px}
+  #skPwaUpdateNotice.sk-pwa-update-notice{padding:10px;font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  #skAppActions,#skPwaUpdateNotice{scroll-behavior:auto!important;transition:none!important}
+}
