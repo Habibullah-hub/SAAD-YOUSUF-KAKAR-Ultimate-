@@ -76,8 +76,7 @@ async function search(raw){
 }
 window.SKSearch={search};
 document.addEventListener('DOMContentLoaded',()=>{
- const form=$('searchForm'),q=$('q');
- if(form&&q)form.addEventListener('submit',e=>{e.preventDefault();search(q.value);},true);
+ const q=$('q');
  const initial=new URLSearchParams(location.search).get('q');if(initial&&q){q.value=initial;search(initial);}
 });
 })();
