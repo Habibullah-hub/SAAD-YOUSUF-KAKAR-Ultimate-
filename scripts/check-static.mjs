@@ -240,6 +240,25 @@ if (!premiumJs.includes("1250") || !premiumJs.includes("skAccountUnreadBadge") |
 if (!premiumJs.includes("onAuthStateChange") || !premiumJs.includes("sk_creator_admin_alerts")) errors.push("Profile notification refresh or owner alert integration is missing.");
 if (!fs.readFileSync("assets/sk-premium-interactions.css", "utf8").includes("Noto Naskh Arabic")) errors.push("Quran Arabic typography fallback stack is missing.");
 
+
+// P0 multilingual typography, public Supabase key guard, and modal regression checks.
+const p0CssPath = "assets/sk-p0-rtl-modal.css";
+if (!fs.existsSync(p0CssPath)) errors.push("P0 Urdu/Arabic and Admin modal stylesheet is missing.");
+else {
+  const p0Css = fs.readFileSync(p0CssPath, "utf8");
+  if (!p0Css.includes('font-family: "Amiri"')) errors.push("Arabic Amiri font rule is missing.");
+  if (!p0Css.includes('font-family: "Noto Nastaliq Urdu"')) errors.push("Urdu Noto Nastaliq font rule is missing.");
+  if (!p0Css.includes("#authModal > .sk-admin-modal-panel")) errors.push("Android Admin modal sizing rule is missing.");
+}
+for (const pagePath of ["index.html", "browser.html"]) {
+  const page = fs.readFileSync(pagePath, "utf8");
+  if (!page.includes('assets/sk-p0-rtl-modal.css')) errors.push(`${pagePath} does not load the shared P0 typography/modal stylesheet.`);
+}
+if (!html.includes("function getPublicSupabaseKeyRole(value)")) errors.push("Supabase client initialization must validate public key type before connecting.");
+if (!html.includes("keyRole !== 'publishable' && keyRole !== 'anon'")) errors.push("Supabase browser client must reject secret/service-role keys.");
+if (!html.includes("safeProjectUrl = parsed.origin")) errors.push("Stored Supabase URL must be normalized to an HTTPS project origin.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v25"') || !serviceWorkerSource.includes('"assets/sk-p0-rtl-modal.css"')) errors.push("Service worker must version and cache the P0 stylesheet.");
+
 if (errors.length) {
   console.error(errors.join("\n\n"));
   process.exit(1);
