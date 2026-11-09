@@ -99,7 +99,8 @@ const jsAssets = [
   "assets/sk-browser-video-hub.js",
   "assets/sk-sovereign-reader.js",
   "assets/sk-directory-spotlight.js",
-  "assets/sk-inapp-search.js"
+  "assets/sk-inapp-search.js",
+  "assets/sk-media-download-hub.js"
 ];
 for (const assetPath of jsAssets) {
   if (!fs.existsSync(assetPath)) {
@@ -157,7 +158,7 @@ const browserHtml = fs.existsSync("browser.html") ? fs.readFileSync("browser.htm
 if (!browserHtml.includes('id="searchForm"') || !browserHtml.includes('id="searchForm3"')) {
   errors.push("SK Browser is missing its global or SK-directory search form.");
 }
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v29"')) {
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v30"')) {
   errors.push("Service worker cache version was not advanced for the updated public shell.");
 }
 for (const assetPath of ["assets/sk-motion-performance.css", "assets/sk-browser-experience.css"]) {
@@ -181,7 +182,7 @@ if (!fs.existsSync("assets/sk-theme-mode.js") || !html.includes("assets/sk-theme
 if (!html.includes('id="skAdminButton"') || !html.includes('alt="SYK"')) errors.push("Visible homepage admin logo must use the SYK mark.");
 if (!html.includes("YouTube Only") || !html.includes("const mode=forcedMode||modeInput.value||'all';")) errors.push("Related-video search must honor the selected YouTube-only filter.");
 if (!html.includes("await initializeSKDatabase()")) errors.push("Admin login must retry database initialization before reporting a connection failure.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v29"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v30"')) errors.push("Service worker cache version was not advanced for the latest homepage experience.");
 for (const assetPath of ["assets/sk-theme-mode.css","assets/sk-theme-mode.js","assets/sk-news-premium.css","assets/syk-neon-refresh.css"]) {
   if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 }
@@ -206,7 +207,7 @@ if (!html.includes('id="skCreatorOwnerPlayer"') || !html.includes('id="skCreator
 if (!html.includes('id="skCreatorSubmitToggle"') || !html.includes('id="skCreatorMySubmissions"')) errors.push("Video-only member submit control or submission status panel is missing.");
 if (!html.includes('id="skCreatorSaveFeatured"')) errors.push("Owner featured-video-only setting is missing.");
 if (!html.includes('id="skCreatorRegisteredMembers"')) errors.push("Owner-only registered members panel is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v29"')) errors.push("Service worker cache was not advanced for Creator Hub.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v30"')) errors.push("Service worker cache was not advanced for Creator Hub.");
 for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]) if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 
 
@@ -230,7 +231,7 @@ if (!html.includes('data-syk-filter="soft"') || !html.includes('id="skLiveSwitch
 const liveExperience = fs.readFileSync("assets/sk-live.js","utf8");
 if (!liveExperience.includes("captureStream(24)") || !liveExperience.includes("publishTrack(videoTrack")) errors.push("SYK Live camera filters are not included in the broadcast stream.");
 if (!liveExperience.includes("skLiveLoginGate")) errors.push("SYK Live login gate is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v29"')) errors.push("Service worker cache was not advanced for the new SYK features.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v30"')) errors.push("Service worker cache was not advanced for the new SYK features.");
 
 
 /* Premium profile, header, triple-tap admin and Quran typography regressions. */
@@ -260,7 +261,7 @@ for (const pagePath of ["index.html", "browser.html"]) {
 if (!html.includes("function getPublicSupabaseKeyRole(value)")) errors.push("Supabase client initialization must validate public key type before connecting.");
 if (!html.includes("keyRole !== 'publishable' && keyRole !== 'anon'")) errors.push("Supabase browser client must reject secret/service-role keys.");
 if (!html.includes("safeProjectUrl = parsed.origin")) errors.push("Stored Supabase URL must be normalized to an HTTPS project origin.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v29"') || !serviceWorkerSource.includes('"assets/sk-p0-rtl-modal.css"')) errors.push("Service worker must version and cache the P0 stylesheet.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v30"') || !serviceWorkerSource.includes('"assets/sk-p0-rtl-modal.css"')) errors.push("Service worker must version and cache the P0 stylesheet.");
 
 
 /* Neural Core and Privacy Center safety/regression checks. */
@@ -277,7 +278,7 @@ for (const id of ["sykDigitalLab", "skMiniGenerate", "skPrivacyRun", "skPrivacyC
 }
 const privacySource = fs.readFileSync("assets/sk-privacy-center.js", "utf8");
 if (/localStorage\.clear\s*\(|sessionStorage\.clear\s*\(/.test(privacySource)) errors.push("Privacy Center must never clear all local/session storage.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v29"') || !serviceWorkerSource.includes('"assets/sk-neural-core.js"') || !serviceWorkerSource.includes('"assets/sk-privacy-center.js"')) errors.push("Service worker must version/cache Neural Core and Privacy Center modules.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v30"') || !serviceWorkerSource.includes('"assets/sk-neural-core.js"') || !serviceWorkerSource.includes('"assets/sk-privacy-center.js"')) errors.push("Service worker must version/cache Neural Core and Privacy Center modules.");
 
 /* Phase 1 sovereign reader and design-system checks. */
 for (const asset of ["assets/sk-sovereign-reader.js","assets/sk-sovereign-reader.css"]) if (!fs.existsSync(asset)) errors.push("Missing Phase 1 reader asset: "+asset);
@@ -302,6 +303,18 @@ if (!browserPage.includes("assets/sk-inapp-search.js") || !browserPage.includes(
 if (!browserPage.includes("Search inside SYK") || browserPage.includes('aria-label="Search the whole internet with Google"')) errors.push("Browser primary search must be branded as an in-app search.");
 if (!serviceWorkerSource.includes("assets/sk-inapp-search.js") || !serviceWorkerSource.includes("assets/sk-inapp-search.css")) errors.push("Service worker must cache in-app search assets.");
 
+/* Safe media helper regression checks: direct files and local files only. */
+for (const asset of ["assets/sk-media-download-hub.js","assets/sk-media-download-hub.css"]) if (!fs.existsSync(asset)) errors.push("Missing SYK Media Hub asset: " + asset);
+if (fs.existsSync("assets/sk-media-download-hub.js")) {
+ const mediaCheck=spawnSync(process.execPath,["--check","assets/sk-media-download-hub.js"],{encoding:"utf8"});
+ if(mediaCheck.status!==0) errors.push("SYK Media Hub JavaScript syntax error: "+(mediaCheck.stderr||mediaCheck.stdout));
+ const mediaSource=fs.readFileSync("assets/sk-media-download-hub.js","utf8");
+ for(const token of ["https:","MAX_BYTES","SpeechRecognition","youtube.com","localObjectUrl"]) if(!mediaSource.includes(token)) errors.push("SYK Media Hub is missing safe behavior: "+token);
+ if(/proxy|cors-anywhere|allorigins/i.test(mediaSource)) errors.push("SYK Media Hub must not use public proxy services.");
+}
+if(!browserPage.includes('id="media-download-hub"')||!browserPage.includes("assets/sk-media-download-hub.js")) errors.push("Browser page is missing the SYK Media Download Hub.");
+if(!serviceWorkerSource.includes("assets/sk-media-download-hub.js")||!serviceWorkerSource.includes("assets/sk-media-download-hub.css")) errors.push("Service worker must cache SYK Media Hub assets.");
+
 /* Directory Spotlight, fixed five-item dock and low-effects regression checks. */
 const spotlightJsPath = "assets/sk-directory-spotlight.js";
 const spotlightCssPath = "assets/sk-directory-spotlight.css";
@@ -309,7 +322,7 @@ for (const asset of [spotlightJsPath, spotlightCssPath]) if (!fs.existsSync(asse
 else if (asset.endsWith(".js")) { const result = spawnSync(process.execPath, ["--check", asset], { encoding: "utf8" }); if (result.status !== 0) errors.push("Directory Spotlight JavaScript syntax error: " + (result.stderr || result.stdout)); }
 if (!html.includes('id="skDirectorySpotlightSearch"') && !html.includes('assets/sk-directory-spotlight.js')) errors.push("Homepage must load the Directory Spotlight controller.");
 if (!html.includes('data-sk-profile') || !html.includes('data-sk-bottom="browser"') || !html.includes('data-sk-bottom="community"')) errors.push("Homepage bottom dock must contain Home, Apps, Browser, Community and Profile destinations.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v29"') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.js') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.css')) errors.push("Service worker must cache the Directory Spotlight assets in the v29 shell.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v30"') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.js') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.css')) errors.push("Service worker must cache the Directory Spotlight assets in the v29 shell.");
 
 /* One final gate after every regression check has been collected. */
 const bottomDockMatch = html.match(/<nav class="sk-bottom-nav"[^>]*>[\s\S]*?<\/nav>/i);
