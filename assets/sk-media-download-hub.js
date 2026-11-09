@@ -57,7 +57,7 @@ voice?.addEventListener('click',()=>{
  const rec=new Recognition();rec.lang=navigator.language||'en-US';rec.interimResults=false;rec.maxAlternatives=1;
  rec.onresult=event=>{const phrase=event.results?.[0]?.[0]?.transcript||'';if(/^https:\/\//i.test(phrase.trim()))input.value=phrase.trim();input.focus();status.textContent='Voice command heard: '+phrase+'. Paste or confirm the direct media URL, then tap Check media link.';};
  rec.onerror=()=>{status.textContent='Voice input was unavailable. You can paste or type the media link.';};
- rec.start();
+ try{rec.start();}catch(_){status.textContent='Voice input could not start. Paste or type the media link instead.';}
 });
 window.SKMediaHub={analyze};
 })();
