@@ -4,6 +4,8 @@
   --sk-neon-cyan:#00F0FF;
   --sk-emerald:#00FF66;
 }
+.top{position:sticky;top:0;z-index:160;background:rgba(7,9,15,.96);backdrop-filter:blur(16px)}
+.sk-bottom-nav::after{content:'SK Cyber Hub — Powered by Yousuf Kakar (YK)';grid-column:1/-1;display:block;padding:2px 4px 0;color:#91a9b9;text-align:center;font-size:9px;font-weight:750;letter-spacing:.25px;line-height:1.3}
 #skMorePanel{
   z-index:180!important;
   max-height:min(70dvh,620px)!important;
@@ -35,14 +37,14 @@ body.sk-low-effects .sk-more-panel{transform:none!important}
 #skHeaderLiveResults{z-index:220!important}
 #authModal,#supabaseModal,#appModal,#newsReader,.sk-video-dialog{z-index:300!important}
 @media(max-width:600px){
-  #skMorePanel{left:8px!important;right:8px!important;bottom:calc(76px + env(safe-area-inset-bottom))!important;max-height:min(66dvh,560px)!important}
+  #skMorePanel{left:8px!important;right:8px!important;bottom:calc(94px + env(safe-area-inset-bottom))!important;max-height:min(66dvh,560px)!important}
   #skMorePanel .sk-more-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   #skDirectorySpotlight input{font-size:16px}
 }
 @media(max-width:360px){#skMorePanel .sk-more-grid{grid-template-columns:minmax(0,1fr)}}
 @media(prefers-reduced-motion:reduce){#skMorePanel *,#skDirectorySpotlight *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
-.sk-more-fab{position:fixed;left:12px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:130;display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:8px 13px;border:1px solid var(--sk-neon-cyan);border-radius:13px;background:linear-gradient(135deg,#102a35,#10251c);color:#eaffff;font-size:12px;font-weight:850;box-shadow:0 8px 24px #0008}
+.sk-more-fab{position:fixed;left:12px;bottom:calc(102px + env(safe-area-inset-bottom));z-index:130;display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:8px 13px;border:1px solid var(--sk-neon-cyan);border-radius:13px;background:linear-gradient(135deg,#102a35,#10251c);color:#eaffff;font-size:12px;font-weight:850;box-shadow:0 8px 24px #0008}
 .sk-more-fab span{color:var(--sk-neon-cyan);font-size:16px}
 .sk-more-fab[aria-expanded="true"]{border-color:var(--sk-emerald);box-shadow:0 0 0 3px rgba(0,255,102,.14),0 8px 24px #0008}
 body.sk-low-effects .sk-more-fab{box-shadow:none}
