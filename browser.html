@@ -178,6 +178,23 @@ button,.iconbtn,.chip,.navbtn{min-height:42px}
 <section class="section"><div class="sectionhead"><div><h2>Explore by interest</h2><p>Find the right place without hunting through menus</p></div></div><div class="quickbar"><a class="quick" href="./#apps"><span>📱</span>Apps</a><a class="quick" href="./#tools"><span>⚡</span>Tools</a><a class="quick" href="./#news"><span>🌍</span>News</a><a class="quick" href="./#community"><span>👥</span>Community</a></div></section>
 <section class="section"><div class="sectionhead"><div><h2>SYK Game Center</h2><p>Play an original SYK game, even offline</p></div></div><a class="tile" href="./games.html"><span class="emoji">🕹️</span><b>SYK 2048 — Play now</b><small>Built into SYK. Load once, then play offline with swipe controls.</small></a><a class="tile" href="https://play.google.com/store/apps/details?id=com.JindoBlu.OfflineGames" target="_blank" rel="noopener noreferrer"><span class="emoji">🎮</span><b>Offline Games by JindoBlu</b><small>Official Play Store listing. This installs separately as its own Android app.</small></a></section><section class="section"><div class="sectionhead"><div><h2>Made for your flow</h2><p>Keep exploring, learning and creating</p></div></div><div class="grid"><a class="tile" href="./#creator-studio"><span class="emoji">🎬</span><b>Creator Studio</b><small>Ideas, scripts and creator resources</small></a><a class="tile" href="./#smart-free-finder"><span class="emoji">✨</span><b>Free AI Finder</b><small>Explore AI tools and their free limits</small></a><a class="tile" href="./#documents"><span class="emoji">📚</span><b>Documents</b><small>Guides and useful learning material</small></a><a class="tile" href="./#security-privacy"><span class="emoji">🛡️</span><b>Safety Center</b><small>Privacy and account protection</small></a></div></section>
 </section>
+
+<section class="section" id="sykDigitalLab" aria-labelledby="sykDigitalLabTitle">
+ <div class="sectionhead"><div><div class="eyebrow">SYK NEURAL CORE</div><h2 id="sykDigitalLabTitle">Mini-App Lab</h2><p>چھوٹے مفید ٹولز اسی ڈیوائس پر بنائیں؛ اکاؤنٹ یا AI API ضروری نہیں۔</p></div></div>
+ <div class="syk-lab-panel">
+  <label for="skMiniTemplate">ٹول منتخب کریں</label>
+  <select id="skMiniTemplate"><option value="calculator">Unit Calculator</option><option value="expense">Offline Expense Log</option><option value="planner">Study & Task Planner</option></select>
+  <label for="skMiniTitle">ٹول کا نام</label><input id="skMiniTitle" maxlength="60" placeholder="My mini tool" value="My SYK Mini Tool">
+  <label for="skMiniAccent">رنگ</label><select id="skMiniAccent"><option value="#00F0FF">Neon Cyan</option><option value="#00FF66">Emerald Green</option><option value="#9D4EDD">Purple</option></select>
+  <button type="button" class="lab-primary" id="skMiniGenerate">ٹول بنائیں</button>
+  <div id="skMiniMount" class="syk-lab-result" aria-live="polite"><p class="hint">ٹول منتخب کرکے Generate دبائیں۔ آپ کا ڈیٹا اسی ڈیوائس پر محفوظ ہوگا۔</p></div>
+  <p class="hint" id="skMiniStatus" role="status">Offline-first local tools. No external AI or paid API.</p>
+ </div>
+</section>
+<section class="section" id="sykPrivacyPanel" aria-labelledby="skPrivacyTitle">
+ <div class="sectionhead"><div><div class="eyebrow">SYK PRIVACY CENTER</div><h2 id="skPrivacyTitle">Device Privacy Check</h2><p>صرف وہ معلومات دکھائی جاتی ہیں جو براؤزر خود فراہم کر سکتا ہے۔</p></div></div>
+ <div class="syk-lab-panel"><div id="skPrivacyResults" aria-live="polite"><p class="hint">یہ چیک DNS ٹریفک، تمام trackers یا فون کی مکمل security scan نہیں کرتا۔</p></div><button type="button" class="lab-primary" id="skPrivacyRun">ابھی چیک کریں</button><button type="button" class="lab-secondary" id="skPrivacyClear">صرف SYK کی مقامی سرچ ہسٹری صاف کریں</button><p class="hint" id="skPrivacyStatus" role="status">یہ بٹن لاگ اِن یا دوسرے ایپس کا ڈیٹا حذف نہیں کرتا۔</p></div>
+</section>
 <section class="view" id="searchView"><div class="section" style="padding-top:26px"><div class="eyebrow">SYK VIDEO SEARCH</div><h2>Search videos</h2><form class="searchbox" id="searchForm3"><span class="glass">⌕</span><input id="q3" type="search" placeholder="Search approved videos…"><button>Search videos</button></form><p class="hint" id="resultCount">اپنی زبان میں منظور شدہ ویڈیوز تلاش کریں۔</p><div id="results"><div class="empty">منظور شدہ ویڈیوز میں تلاش کریں۔</div></div></div></section>
 <section class="view" id="savedView"><div class="section" style="padding-top:26px"><div class="eyebrow">YOUR SPACE</div><h2>Saved shortcuts</h2><p class="hint">Saved on this device only.</p><div id="savedList" class="empty">No saved shortcuts yet. Save a category from search results.</div></div></section>
 <section class="view" id="settingsView"><div class="section" style="padding-top:26px"><div class="eyebrow">PERSONALIZE</div><h2>Your browser settings</h2><a class="result" href="#" id="themeSetting"><span class="emoji">🌗</span><span><b>Appearance</b><small>Switch between light and dark mode</small></span><span class="arrow">↗</span></a><a class="result" href="./#apps"><span class="emoji">🏠</span><span><b>Explore SYK Cyber Hub sections</b><small>Visit all platform sections</small></span><span class="arrow">↗</span></a><button class="result" style="width:100%;color:var(--text);text-align:left" id="clearHistory"><span class="emoji">🧹</span><span><b>Clear recent searches</b><small>Remove this device's local search history</small></span></button><p class="hint">SYK Browser is currently a branded SYK Cyber Hub discovery interface, not a full replacement for Chrome/Opera and does not include a VPN tunnel.</p></div></section>
@@ -203,6 +220,8 @@ $('clearHistory').addEventListener('click',()=>{history=[];localStorage.removeIt
 drawDiscover();const initial=new URLSearchParams(location.search).get('q');if(initial){$('q').value=initial;submit(initial)}if(location.hash==='#searchView')show('searchView');
 })();
 </script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js" crossorigin="anonymous"></script>
+<script src="./assets/sk-neural-core.js" defer></script>
+<script src="./assets/sk-privacy-center.js" defer></script>
 <script src="./assets/sk-browser-video-hub.js?v=20261108-3" defer></script>
 <script src="./assets/sk-account-presence.js?v=3" defer></script>
 <script src="./pwa-register.js" defer></script>
