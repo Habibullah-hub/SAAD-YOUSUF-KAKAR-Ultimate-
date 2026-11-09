@@ -98,7 +98,8 @@ const jsAssets = [
   "assets/sk-creator-hub.js",
   "assets/sk-browser-video-hub.js",
   "assets/sk-sovereign-reader.js",
-  "assets/sk-directory-spotlight.js",\n  "assets/sk-inapp-search.js"
+  "assets/sk-directory-spotlight.js",
+  "assets/sk-inapp-search.js"
 ];
 for (const assetPath of jsAssets) {
   if (!fs.existsSync(assetPath)) {
