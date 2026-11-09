@@ -57,6 +57,18 @@ else {
   const worker = spawnSync(process.execPath, ["--check", workerPath], { encoding: "utf8" });
   if (worker.status !== 0) errors.push(`Service worker has a JavaScript syntax error:\n${worker.stderr || worker.stdout}`);
 }
+const pwaRegisterPath = "pwa-register.js";
+if (fs.existsSync(pwaRegisterPath)) {
+  const pwaSyntax = spawnSync(process.execPath, ["--check", pwaRegisterPath], { encoding: "utf8" });
+  if (pwaSyntax.status !== 0) errors.push(`PWA register script has a JavaScript syntax error:\\n${pwaSyntax.stderr || pwaSyntax.stdout}`);
+  const pwaSource = fs.readFileSync(pwaRegisterPath, "utf8");
+  if (!pwaSource.includes('className = "sk-pwa-actions"') || !pwaSource.includes('className = "sk-pwa-update-notice"')) errors.push("PWA action panels must use the shared dock-safe layout classes.");
+  if (pwaSource.includes('bottom:14px') || pwaSource.includes('bottom:76px')) errors.push("PWA panels must not hard-code bottom offsets that overlap the dock.");
+}
+if (!html.includes("assets/sk-pwa-dock-spacing.css")) errors.push("Dock-safe PWA spacing stylesheet is not loaded.");
+if (!fs.existsSync("assets/sk-pwa-dock-spacing.css")) errors.push("Dock-safe PWA spacing stylesheet is missing.");
+if (!workerSource.includes("assets/sk-pwa-dock-spacing.css")) errors.push("Service worker must cache the dock-safe PWA spacing stylesheet.");
+
 if (!html.includes('rel="manifest"') || (!html.includes("serviceWorker.register") && !html.includes('src="./pwa-register.js"'))) {
   errors.push("index.html is missing the PWA manifest or service-worker registration.");
 }
