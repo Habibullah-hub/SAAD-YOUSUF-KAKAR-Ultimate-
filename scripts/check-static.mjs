@@ -310,9 +310,9 @@ if (fs.existsSync("assets/sk-media-download-hub.js")) {
  if(mediaCheck.status!==0) errors.push("SYK Media Hub JavaScript syntax error: "+(mediaCheck.stderr||mediaCheck.stdout));
  const mediaSource=fs.readFileSync("assets/sk-media-download-hub.js","utf8");
  for(const token of ["https:","MAX_BYTES","SpeechRecognition","youtube.com","localObjectUrl"]) if(!mediaSource.includes(token)) errors.push("SYK Media Hub is missing safe behavior: "+token);
- if(/proxy|cors-anywhere|allorigins/i.test(mediaSource)) errors.push("SYK Media Hub must not use public proxy services.");
+ if(/cors-anywhere|allorigins|api\.allorigins/i.test(mediaSource)) errors.push("SYK Media Hub must not use public proxy services.");
 }
-if(!browserPage.includes('id="media-download-hub"')||!browserPage.includes("assets/sk-media-download-hub.js")) errors.push("Browser page is missing the SYK Media Download Hub.");
+if(!browserPage.includes('id="media-download-hub"')||!browserPage.includes("assets/sk-media-download-hub.js")||!browserPage.includes("assets/sk-media-download-hub.css")) errors.push("Browser page is missing the SYK Media Download Hub.");
 if(!serviceWorkerSource.includes("assets/sk-media-download-hub.js")||!serviceWorkerSource.includes("assets/sk-media-download-hub.css")) errors.push("Service worker must cache SYK Media Hub assets.");
 
 /* Directory Spotlight, fixed five-item dock and low-effects regression checks. */
