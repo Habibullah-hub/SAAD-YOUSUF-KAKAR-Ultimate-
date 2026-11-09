@@ -1,7 +1,7 @@
 /* SK Cyber Hub offline shell.
    Network-first for a small, explicit list of public app-shell pages only.
    Never cache API, authenticated, query-string, or third-party requests. */
-const CACHE_NAME = "sk-cyber-hub-shell-v24";
+const CACHE_NAME = "sk-cyber-hub-shell-v25";
 const APP_ROOT = new URL("./", self.location).href;
 const PUBLIC_SHELL_URLS = new Set([
   APP_ROOT,
@@ -9,7 +9,7 @@ const PUBLIC_SHELL_URLS = new Set([
   new URL("games.html", APP_ROOT).href
 ]);
 const PUBLIC_STATIC_ASSETS = new Set([
-  "assets/sk-community.css","assets/sk-community.js",
+  "assets/sk-community.css","assets/sk-p0-rtl-modal.css","assets/sk-community.js",
   "assets/sk-connect.css","assets/sk-creator-monetization.css","assets/sk-creator-monetization.js",
   "assets/sk-digital-workbench.css","assets/sk-digital-workbench.js",
   "assets/sk-discovery.css","assets/sk-discovery.js",
