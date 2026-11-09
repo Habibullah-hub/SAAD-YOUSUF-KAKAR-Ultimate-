@@ -1,0 +1,50 @@
+/* SK Cyber Hub — Directory Spotlight + five-item Cyber-Deck dock */
+:root{
+  --sk-obsidian:#07090F;
+  --sk-neon-cyan:#00F0FF;
+  --sk-emerald:#00FF66;
+}
+.top{position:sticky;top:0;z-index:160;background:rgba(7,9,15,.96);backdrop-filter:blur(16px)}
+.sk-bottom-nav::after{content:'SK Cyber Hub — Powered by Yousuf Kakar (YK)';grid-column:1/-1;display:block;padding:2px 4px 0;color:#91a9b9;text-align:center;font-size:9px;font-weight:750;letter-spacing:.25px;line-height:1.3}
+#skMorePanel{
+  z-index:180!important;
+  max-height:min(70dvh,620px)!important;
+  padding:14px!important;
+  padding-bottom:max(14px,env(safe-area-inset-bottom))!important;
+  border-color:rgba(0,240,255,.38)!important;
+  background:rgba(7,9,15,.97)!important;
+  color:#f4fbff!important;
+}
+#skMorePanel .sk-more-panel-head{position:sticky;top:0;z-index:2;background:#07090F;padding:4px 2px 11px}
+#skDirectorySpotlight{display:grid;gap:7px;margin:10px 0 12px;padding:10px;border:1px solid rgba(0,240,255,.28);border-radius:13px;background:linear-gradient(145deg,rgba(0,240,255,.08),rgba(0,255,102,.04))}
+#skDirectorySpotlight label{font-size:10px;font-weight:850;letter-spacing:1px;color:var(--sk-neon-cyan)}
+#skDirectorySpotlight input{width:100%;min-width:0;min-height:46px;padding:10px 13px;border:1px solid rgba(0,240,255,.42);border-radius:10px;background:#0d1420;color:#f6fbff;font:inherit;font-size:16px;outline:none}
+#skDirectorySpotlight input:focus{border-color:var(--sk-emerald);box-shadow:0 0 0 3px rgba(0,255,102,.13)}
+#skDirectorySpotlight input::placeholder{color:#9aabba}
+#skDirectorySpotlightStatus{margin:0;color:#a8bacb;font-size:11px}
+#skMorePanel .sk-more-grid a[hidden]{display:none!important}
+#skMorePanel .sk-more-grid a{border-color:rgba(0,240,255,.2);background:linear-gradient(135deg,#101a28,#101b20);color:#eafaff}
+#skMorePanel .sk-more-grid a:focus-visible{outline:3px solid var(--sk-emerald);outline-offset:2px}
+#skMorePanel .sk-more-panel-close{border-color:var(--sk-neon-cyan);background:#10232c}
+#skLowEffectsToggle{min-height:36px;padding:7px 10px;border:1px solid rgba(0,255,102,.4);border-radius:9px;background:#0d2419;color:#caffdc;font-size:11px;font-weight:800}
+.sk-bottom-nav{z-index:90!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;background:rgba(7,9,15,.97)!important;border-top-color:rgba(0,240,255,.3)!important}
+.sk-bottom-nav a,.sk-bottom-nav button{min-width:0;color:#c6d8e4!important}
+.sk-bottom-nav a[aria-current="page"],.sk-bottom-nav a:focus-visible,.sk-bottom-nav button:focus-visible{border-color:var(--sk-neon-cyan)!important;background:rgba(0,240,255,.1)!important;color:#eaffff!important;outline-offset:2px}
+.sk-bottom-nav a span,.sk-bottom-nav button span{color:var(--sk-neon-cyan)}
+body.sk-low-effects *,body.sk-low-effects *::before,body.sk-low-effects *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;backdrop-filter:none!important;filter:none!important}
+body.sk-low-effects .sk-more-panel,body.sk-low-effects .sk-bottom-nav{box-shadow:none!important}
+body.sk-low-effects .sk-more-panel{transform:none!important}
+#skHeaderLiveResults{z-index:220!important}
+#authModal,#supabaseModal,#appModal,#newsReader,.sk-video-dialog{z-index:300!important}
+@media(max-width:600px){
+  #skMorePanel{left:8px!important;right:8px!important;bottom:calc(94px + env(safe-area-inset-bottom))!important;max-height:min(66dvh,560px)!important}
+  #skMorePanel .sk-more-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #skDirectorySpotlight input{font-size:16px}
+}
+@media(max-width:360px){#skMorePanel .sk-more-grid{grid-template-columns:minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){#skMorePanel *,#skDirectorySpotlight *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.sk-more-fab{position:fixed;left:12px;bottom:calc(102px + env(safe-area-inset-bottom));z-index:130;display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:8px 13px;border:1px solid var(--sk-neon-cyan);border-radius:13px;background:linear-gradient(135deg,#102a35,#10251c);color:#eaffff;font-size:12px;font-weight:850;box-shadow:0 8px 24px #0008}
+.sk-more-fab span{color:var(--sk-neon-cyan);font-size:16px}
+.sk-more-fab[aria-expanded="true"]{border-color:var(--sk-emerald);box-shadow:0 0 0 3px rgba(0,255,102,.14),0 8px 24px #0008}
+body.sk-low-effects .sk-more-fab{box-shadow:none}

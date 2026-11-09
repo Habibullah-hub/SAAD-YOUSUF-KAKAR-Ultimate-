@@ -12,8 +12,10 @@
     if (document.getElementById("skAppActions") || isStandalone()) return;
     const panel = document.createElement("div");
     panel.id = "skAppActions";
+    panel.className = "sk-pwa-actions";
     panel.setAttribute("aria-label", "SK Cyber Hub app actions");
-    panel.style.cssText = "position:fixed;right:14px;bottom:14px;z-index:99990;display:flex;gap:8px;align-items:center;padding:8px;border:1px solid #c7d8e8;border-radius:14px;background:#fff;color:#17212b;box-shadow:0 8px 28px #0002;font:600 12px/1.3 system-ui,sans-serif";
+    panel.style.cssText = "display:flex;gap:8px;align-items:center;padding:8px;border:1px solid #c7d8e8;border-radius:14px;background:#fff;color:#17212b;box-shadow:0 8px 28px #0002;font:600 12px/1.3 system-ui,sans-serif";
+    document.body.classList.add("sk-pwa-actions-visible");
     const install = document.createElement("button");
     install.type = "button";
     install.id = "skInstallApp";
@@ -67,15 +69,18 @@
     deferredInstallPrompt = null;
     const panel = document.getElementById("skAppActions");
     if (panel) panel.remove();
+    document.body.classList.remove("sk-pwa-actions-visible");
   });
 
   const showUpdateNotice = () => {
     if (document.getElementById("skPwaUpdateNotice")) return;
     const notice = document.createElement("aside");
     notice.id = "skPwaUpdateNotice";
+    notice.className = "sk-pwa-update-notice";
+    document.body.classList.add("sk-pwa-update-visible");
     notice.setAttribute("role", "status");
     notice.setAttribute("aria-live", "polite");
-    notice.style.cssText = "position:fixed;left:12px;right:12px;bottom:76px;z-index:99999;max-width:620px;margin:auto;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #398d73;border-radius:14px;background:#0d211d;color:#f3fff9;box-shadow:0 12px 36px #0008;font:600 13px/1.45 system-ui,sans-serif";
+    notice.style.cssText = "max-width:620px;margin:auto;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #398d73;border-radius:14px;background:#0d211d;color:#f3fff9;box-shadow:0 12px 36px #0008;font:600 13px/1.45 system-ui,sans-serif";
     const message = document.createElement("span");
     message.textContent = "SK Cyber Hub کا نیا ورژن تیار ہے۔ اپڈیٹ کے لیے دبائیں۔";
     const button = document.createElement("button");

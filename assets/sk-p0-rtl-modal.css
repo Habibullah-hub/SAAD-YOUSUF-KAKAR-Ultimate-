@@ -1,0 +1,85 @@
+/* SK Cyber Hub P0: multilingual typography and Android Admin modal safety */
+:lang(en) { direction: ltr; }
+:lang(ur), [lang="ur"], .sk-urdu-text {
+  font-family: "Noto Nastaliq Urdu", "Noto Naskh Arabic", serif !important;
+  direction: rtl;
+  text-align: right;
+  line-height: 2.6;
+  letter-spacing: normal;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+:lang(ar), [lang="ar"], .sk-arabic-text, .sk-quran-text {
+  font-family: "Amiri", "Noto Naskh Arabic", serif !important;
+  direction: rtl;
+  text-align: right;
+  line-height: 2.2;
+  letter-spacing: normal;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+body {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+[dir="rtl"] { direction: rtl; }
+[dir="ltr"] { direction: ltr; }
+.sk-quran-text {
+  text-align: center;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 2.2;
+}
+h1, h2, h3, h4, p, span, a {
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+#authModal {
+  box-sizing: border-box;
+  height: 100vh;
+  height: 100dvh;
+  padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+#authModal > .sk-admin-modal-panel {
+  box-sizing: border-box;
+  width: min(100%, 400px);
+  max-width: 400px;
+  max-height: calc(100vh - 32px);
+  max-height: min(85vh, calc(100dvh - 32px));
+  min-width: 0;
+  margin: auto;
+  padding: clamp(16px, 4vw, 24px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+#authModal form { width: 100%; min-width: 0; }
+#authModal input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: 48px;
+  min-height: 46px;
+  font-size: 16px;
+}
+#authModal button {
+  min-height: 44px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 380px) {
+  #authModal > .sk-admin-modal-panel { border-radius: 18px; padding: 16px; }
+}
+@media (max-height: 500px) {
+  #authModal { align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #authModal, #authModal * { scroll-behavior: auto !important; }
+}
