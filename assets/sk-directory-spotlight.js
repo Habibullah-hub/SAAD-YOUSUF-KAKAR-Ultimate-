@@ -22,7 +22,7 @@ function init(){
  extras.forEach(item=>{
   if(item.href.startsWith('#')&&!$(item.href.slice(1)))return;
   if([...grid.querySelectorAll('a')].some(a=>a.getAttribute('href')===item.href))return;
-  const a=document.createElement('a');a.href=item.href;a.textContent=item.label;a.dataset.spotlightKeywords=item.keywords;
+  const a=document.createElement('a');a.href=item.href;a.textContent=item.label;a.dataset.spotlightKeywords=item.keywords;a.dataset.spotlightExtra='1';
   if(!item.href.startsWith('#')){a.target='_blank';a.rel='noopener noreferrer';}
   grid.append(a);
  });
@@ -41,7 +41,7 @@ function init(){
   a.dataset.spotlightSearch=(a.textContent+' '+href+' '+(a.dataset.spotlightKeywords||'')+' '+(aliases[id]||'')).toLocaleLowerCase();
   if(a.dataset.skSpotlightBound==='1')return;
   a.dataset.skSpotlightBound='1';
-  a.addEventListener('click',event=>{
+  if(a.dataset.spotlightExtra==='1')a.addEventListener('click',event=>{
    if(a.getAttribute('href')?.startsWith('#')){
     const target=a.getAttribute('href').slice(1);
     if($(target)){event.preventDefault();close();window.skSetView?.(target);}
@@ -85,6 +85,7 @@ function init(){
  const profile=document.querySelector('[data-sk-profile]');
  profile?.addEventListener('click',()=>{
   if(typeof window.skSetView==='function')window.skSetView('community');
+  profile.setAttribute('aria-current','page');
   setTimeout(()=>{const field=$('skCommunityProfileName');field?.focus({preventScroll:true});field?.scrollIntoView({behavior:document.body.classList.contains('sk-low-effects')?'auto':'smooth',block:'center'});},180);
  });
  // Search result URLs from the command palette open in the branded reader where embedding is permitted.
