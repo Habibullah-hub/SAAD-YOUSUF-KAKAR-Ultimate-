@@ -205,7 +205,7 @@ if (!html.includes('id="skCreatorOwnerPlayer"') || !html.includes('id="skCreator
 if (!html.includes('id="skCreatorSubmitToggle"') || !html.includes('id="skCreatorMySubmissions"')) errors.push("Video-only member submit control or submission status panel is missing.");
 if (!html.includes('id="skCreatorSaveFeatured"')) errors.push("Owner featured-video-only setting is missing.");
 if (!html.includes('id="skCreatorRegisteredMembers"')) errors.push("Owner-only registered members panel is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v27"')) errors.push("Service worker cache was not advanced for Creator Hub.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v28"')) errors.push("Service worker cache was not advanced for Creator Hub.");
 for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]) if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 
 
@@ -229,7 +229,7 @@ if (!html.includes('data-syk-filter="soft"') || !html.includes('id="skLiveSwitch
 const liveExperience = fs.readFileSync("assets/sk-live.js","utf8");
 if (!liveExperience.includes("captureStream(24)") || !liveExperience.includes("publishTrack(videoTrack")) errors.push("SYK Live camera filters are not included in the broadcast stream.");
 if (!liveExperience.includes("skLiveLoginGate")) errors.push("SYK Live login gate is missing.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v27"')) errors.push("Service worker cache was not advanced for the new SYK features.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v28"')) errors.push("Service worker cache was not advanced for the new SYK features.");
 
 
 /* Premium profile, header, triple-tap admin and Quran typography regressions. */
@@ -259,7 +259,7 @@ for (const pagePath of ["index.html", "browser.html"]) {
 if (!html.includes("function getPublicSupabaseKeyRole(value)")) errors.push("Supabase client initialization must validate public key type before connecting.");
 if (!html.includes("keyRole !== 'publishable' && keyRole !== 'anon'")) errors.push("Supabase browser client must reject secret/service-role keys.");
 if (!html.includes("safeProjectUrl = parsed.origin")) errors.push("Stored Supabase URL must be normalized to an HTTPS project origin.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v27"') || !serviceWorkerSource.includes('"assets/sk-p0-rtl-modal.css"')) errors.push("Service worker must version and cache the P0 stylesheet.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v28"') || !serviceWorkerSource.includes('"assets/sk-p0-rtl-modal.css"')) errors.push("Service worker must version and cache the P0 stylesheet.");
 
 
 /* Neural Core and Privacy Center safety/regression checks. */
@@ -276,7 +276,7 @@ for (const id of ["sykDigitalLab", "skMiniGenerate", "skPrivacyRun", "skPrivacyC
 }
 const privacySource = fs.readFileSync("assets/sk-privacy-center.js", "utf8");
 if (/localStorage\.clear\s*\(|sessionStorage\.clear\s*\(/.test(privacySource)) errors.push("Privacy Center must never clear all local/session storage.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v27"') || !serviceWorkerSource.includes('"assets/sk-neural-core.js"') || !serviceWorkerSource.includes('"assets/sk-privacy-center.js"')) errors.push("Service worker must version/cache Neural Core and Privacy Center modules.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v28"') || !serviceWorkerSource.includes('"assets/sk-neural-core.js"') || !serviceWorkerSource.includes('"assets/sk-privacy-center.js"')) errors.push("Service worker must version/cache Neural Core and Privacy Center modules.");
 
 if (errors.length) {
   console.error(errors.join("\n\n"));
