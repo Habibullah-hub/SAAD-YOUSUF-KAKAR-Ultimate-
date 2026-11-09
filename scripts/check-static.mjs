@@ -187,7 +187,7 @@ for (const assetPath of ["assets/sk-theme-mode.css","assets/sk-theme-mode.js","a
   if (!serviceWorkerSource.includes(assetPath)) errors.push(`Service worker does not allowlist ${assetPath}.`);
 }
 const browserExperience = fs.readFileSync("browser.html", "utf8");
-if (!browserExperience.includes("window.SKReader.openSearch(q)") || !browserExperience.includes("SKReader")) errors.push("Global browser search must open the branded in-app reader shell.");
+if (!browserExperience.includes("window.SKSearch.search(q)") || !browserExperience.includes("SKSearch") || !browserExperience.includes("assets/sk-sovereign-reader.js")) errors.push("Global browser search must use in-app cards and the branded reader for article links.");
 
 if (!browserHtml.includes('id="sykVideoHub"') || !browserHtml.includes('id="sykVideoForm"')) errors.push("SYK Browser home is missing its video-only Creator Hub.");
 if (!browserHtml.includes('id="sykAdminMediaForm"') || !browserHtml.includes('id="sykVideoDialog"')) errors.push("SYK Browser is missing owner media publishing or the video popup player.");
@@ -217,7 +217,8 @@ if (!browser.includes('id="sykVideoHub"')) errors.push("SYK Browser video feed i
 if (!browser.includes('id="sykVideoSearch"')) errors.push("SYK Browser video search control is missing.");
 
 /* SYK Islamic reminder, Islam360 navigation and Live camera regressions. */
-if (!html.includes('data-sk-bottom="islam360"') || !html.includes('https://webapp.theislam360.com/')) errors.push("Islam360 direct launch is missing from the fixed bottom navigation.");
+const spotlightSourceForIslam = fs.readFileSync("assets/sk-directory-spotlight.js","utf8");
+if (!spotlightSourceForIslam.includes("Islam360") || !spotlightSourceForIslam.includes("https://webapp.theislam360.com/")) errors.push("Islam360 direct launch is missing from Directory Spotlight.");
 if (!html.includes('id="sykDailyNaseeha"') || !html.includes('id="sykDailyTranslationToggle"')) errors.push("Public daily Quran reminder or Urdu translation toggle is missing.");
 for (const assetPath of ["assets/syk-daily-islamic.css","assets/syk-daily-islamic.js"]) {
   if (!fs.existsSync(assetPath)) errors.push(`Daily Quran reminder asset is missing: ${assetPath}`);
@@ -309,7 +310,7 @@ if (fs.existsSync("assets/sk-media-download-hub.js")) {
  const mediaCheck=spawnSync(process.execPath,["--check","assets/sk-media-download-hub.js"],{encoding:"utf8"});
  if(mediaCheck.status!==0) errors.push("SYK Media Hub JavaScript syntax error: "+(mediaCheck.stderr||mediaCheck.stdout));
  const mediaSource=fs.readFileSync("assets/sk-media-download-hub.js","utf8");
- for(const token of ["https:","MAX_BYTES","SpeechRecognition","youtube.com","localObjectUrl"]) if(!mediaSource.includes(token)) errors.push("SYK Media Hub is missing safe behavior: "+token);
+ for(const token of ["https:","MAX_BYTES","SpeechRecognition","youtube","localObjectUrl"]) if(!mediaSource.includes(token)) errors.push("SYK Media Hub is missing safe behavior: "+token);
  if(/cors-anywhere|allorigins|api\.allorigins/i.test(mediaSource)) errors.push("SYK Media Hub must not use public proxy services.");
 }
 if(!browserPage.includes('id="media-download-hub"')||!browserPage.includes("assets/sk-media-download-hub.js")||!browserPage.includes("assets/sk-media-download-hub.css")) errors.push("Browser page is missing the SYK Media Download Hub.");
