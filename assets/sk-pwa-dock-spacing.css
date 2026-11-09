@@ -40,3 +40,6 @@ body.sk-pwa-actions-visible #skPwaUpdateNotice.sk-pwa-update-notice{
 @media(prefers-reduced-motion:reduce){
   #skAppActions,#skPwaUpdateNotice{scroll-behavior:auto!important;transition:none!important}
 }
+
+body.sk-pwa-actions-visible .sk-back-top,
+body.sk-pwa-update-visible .sk-back-top{display:none!important}
