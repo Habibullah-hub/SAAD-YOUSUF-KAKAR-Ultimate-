@@ -1,0 +1,62 @@
+/* SK Cyber Hub P0: Urdu/Arabic typography and Android modal safety */
+:lang(ur), [lang="ur"], .sk-urdu-text {
+  font-family: "Noto Nastaliq Urdu", "Noto Naskh Arabic", serif;
+  direction: rtl;
+  text-align: right;
+  line-height: 2.15;
+  letter-spacing: normal;
+  font-feature-settings: "liga" 1, "calt" 1;
+  overflow-wrap: anywhere;
+}
+:lang(ar), [lang="ar"], .sk-arabic-text, .sk-quran-text {
+  font-family: "Amiri", "Noto Naskh Arabic", serif;
+  direction: rtl;
+  text-align: right;
+  line-height: 1.9;
+  letter-spacing: normal;
+  font-feature-settings: "liga" 1, "calt" 1;
+  overflow-wrap: anywhere;
+}
+[dir="rtl"] { direction: rtl; }
+[dir="ltr"] { direction: ltr; }
+.sk-quran-text { text-align: center; font-size: clamp(24px, 4vw, 34px); line-height: 2; }
+#authModal {
+  box-sizing: border-box;
+  padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+#authModal > .sk-admin-modal-panel {
+  box-sizing: border-box;
+  width: min(100%, 400px);
+  max-width: 400px;
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  min-width: 0;
+  margin: auto;
+  padding: clamp(16px, 4vw, 24px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+#authModal form { width: 100%; min-width: 0; }
+#authModal input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  font-size: 16px;
+}
+#authModal button { max-width: 100%; overflow-wrap: anywhere; }
+@media (max-width: 380px) {
+  #authModal > .sk-admin-modal-panel { border-radius: 18px; padding: 16px; }
+}
+@media (max-height: 500px) {
+  #authModal { align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #authModal, #authModal * { scroll-behavior: auto !important; }
+}
