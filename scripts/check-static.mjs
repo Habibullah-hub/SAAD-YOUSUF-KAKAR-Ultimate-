@@ -301,14 +301,15 @@ if (fs.existsSync(inAppSearchPath)) {
 if (!browserPage.includes("assets/sk-inapp-search.js") || !browserPage.includes("assets/sk-inapp-search.css")) errors.push("Browser page must load the in-app search assets.");
 if (!browserPage.includes("Search inside SYK") || browserPage.includes('aria-label="Search the whole internet with Google"')) errors.push("Browser primary search must be branded as an in-app search.");
 if (!serviceWorkerSource.includes("assets/sk-inapp-search.js") || !serviceWorkerSource.includes("assets/sk-inapp-search.css")) errors.push("Service worker must cache in-app search assets.");
-\n/* Directory Spotlight, fixed five-item dock and low-effects regression checks. */
-const spotlightJsPath = "assets/sk-directory-spotlight.js",\n  "assets/sk-inapp-search.js";
+
+/* Directory Spotlight, fixed five-item dock and low-effects regression checks. */
+const spotlightJsPath = "assets/sk-directory-spotlight.js";
 const spotlightCssPath = "assets/sk-directory-spotlight.css";
 for (const asset of [spotlightJsPath, spotlightCssPath]) if (!fs.existsSync(asset)) errors.push("Missing Directory Spotlight asset: " + asset);
 else if (asset.endsWith(".js")) { const result = spawnSync(process.execPath, ["--check", asset], { encoding: "utf8" }); if (result.status !== 0) errors.push("Directory Spotlight JavaScript syntax error: " + (result.stderr || result.stdout)); }
 if (!html.includes('id="skDirectorySpotlightSearch"') && !html.includes('assets/sk-directory-spotlight.js')) errors.push("Homepage must load the Directory Spotlight controller.");
 if (!html.includes('data-sk-profile') || !html.includes('data-sk-bottom="browser"') || !html.includes('data-sk-bottom="community"')) errors.push("Homepage bottom dock must contain Home, Apps, Browser, Community and Profile destinations.");
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v29"') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.js') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.css')) errors.push("Service worker must cache the Directory Spotlight assets in the v28 shell.");
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v29"') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.js') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.css')) errors.push("Service worker must cache the Directory Spotlight assets in the v29 shell.");
 
 /* One final gate after every regression check has been collected. */
 const bottomDockMatch = html.match(/<nav class="sk-bottom-nav"[^>]*>[\s\S]*?<\/nav>/i);
