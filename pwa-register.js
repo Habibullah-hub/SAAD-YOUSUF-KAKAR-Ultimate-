@@ -77,6 +77,7 @@
     const notice = document.createElement("aside");
     notice.id = "skPwaUpdateNotice";
     notice.className = "sk-pwa-update-notice";
+    document.body.classList.add("sk-pwa-update-visible");
     notice.setAttribute("role", "status");
     notice.setAttribute("aria-live", "polite");
     notice.style.cssText = "max-width:620px;margin:auto;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #398d73;border-radius:14px;background:#0d211d;color:#f3fff9;box-shadow:0 12px 36px #0008;font:600 13px/1.45 system-ui,sans-serif";
