@@ -278,13 +278,6 @@ const privacySource = fs.readFileSync("assets/sk-privacy-center.js", "utf8");
 if (/localStorage\.clear\s*\(|sessionStorage\.clear\s*\(/.test(privacySource)) errors.push("Privacy Center must never clear all local/session storage.");
 if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v28"') || !serviceWorkerSource.includes('"assets/sk-neural-core.js"') || !serviceWorkerSource.includes('"assets/sk-privacy-center.js"')) errors.push("Service worker must version/cache Neural Core and Privacy Center modules.");
 
-if (errors.length) {
-  console.error(errors.join("\n\n"));
-  process.exit(1);
-}
-console.log(`Static checks passed: HTML basics verified; ${checked} inline JavaScript block(s) syntax-checked; no obvious service-role assignment or dynamic-code execution found.`);
-
-
 /* Phase 1 sovereign reader and design-system checks. */
 for (const asset of ["assets/sk-sovereign-reader.js","assets/sk-sovereign-reader.css"]) if (!fs.existsSync(asset)) errors.push("Missing Phase 1 reader asset: "+asset);
 const readerSource = fs.existsSync("assets/sk-sovereign-reader.js") ? fs.readFileSync("assets/sk-sovereign-reader.js","utf8") : "";
@@ -302,3 +295,23 @@ else if (asset.endsWith(".js")) { const result = spawnSync(process.execPath, ["-
 if (!html.includes('id="skDirectorySpotlightSearch"') && !html.includes('assets/sk-directory-spotlight.js')) errors.push("Homepage must load the Directory Spotlight controller.");
 if (!html.includes('data-sk-profile') || !html.includes('data-sk-bottom="browser"') || !html.includes('data-sk-bottom="community"')) errors.push("Homepage bottom dock must contain Home, Apps, Browser, Community and Profile destinations.");
 if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v28"') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.js') || !serviceWorkerSource.includes('assets/sk-directory-spotlight.css')) errors.push("Service worker must cache the Directory Spotlight assets in the v28 shell.");
+
+/* One final gate after every regression check has been collected. */
+const bottomDockMatch = html.match(/<nav class="sk-bottom-nav"[^>]*>[\\s\\S]*?<\\/nav>/i);
+const bottomDock = bottomDockMatch ? bottomDockMatch[0] : "";
+const bottomItems = (bottomDock.match(/<(?:a|button)\\b/gi) || []).length;
+if (bottomItems !== 5) errors.push("Android bottom dock must contain exactly five navigation controls.");
+for (const label of ["Home", "Apps", "Browser", "Community", "Profile"]) {
+  if (!bottomDock.includes(">" + label + "</")) errors.push("Bottom dock is missing its " + label + " destination.");
+}
+const spotlightCss = fs.existsSync(spotlightCssPath) ? fs.readFileSync(spotlightCssPath, "utf8") : "";
+for (const token of ["#07090F", "#00F0FF", "#00FF66", "sk-low-effects"]) {
+  if (!spotlightCss.includes(token)) errors.push("Directory Spotlight stylesheet is missing design token or Low Effects support: " + token);
+}
+if (!spotlightJs.includes("skDirectorySpotlightSearch") || !spotlightJs.includes("Islam360") || !spotlightJs.includes("Settings")) errors.push("Directory Spotlight must provide searchable menu links and key shortcuts.");
+if (!spotlightJs.includes("sk-low-effects") || !spotlightJs.includes("localStorage")) errors.push("Low Effects mode must persist its user preference.");
+if (errors.length) {
+  console.error(errors.join("\\n\\n"));
+  process.exit(1);
+}
+console.log(`Static checks passed: HTML basics verified; ${checked} inline JavaScript block(s) syntax-checked; all navigation, reader, cache and security regressions passed.`);
