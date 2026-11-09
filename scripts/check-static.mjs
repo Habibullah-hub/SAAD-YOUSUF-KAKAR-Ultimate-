@@ -304,6 +304,7 @@ if (bottomItems !== 5) errors.push("Android bottom dock must contain exactly fiv
 for (const label of ["Home", "Apps", "Browser", "Community", "Profile"]) {
   if (!bottomDock.includes(">" + label + "</")) errors.push("Bottom dock is missing its " + label + " destination.");
 }
+const spotlightJs = fs.existsSync(spotlightJsPath) ? fs.readFileSync(spotlightJsPath, "utf8") : "";
 const spotlightCss = fs.existsSync(spotlightCssPath) ? fs.readFileSync(spotlightCssPath, "utf8") : "";
 for (const token of ["#07090F", "#00F0FF", "#00FF66", "sk-low-effects"]) {
   if (!spotlightCss.includes(token)) errors.push("Directory Spotlight stylesheet is missing design token or Low Effects support: " + token);
