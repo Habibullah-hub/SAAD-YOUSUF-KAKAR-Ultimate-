@@ -34,7 +34,7 @@ function hide(){if(!overlay)return;overlay.hidden=true;document.body.classList.r
 function openUrl(raw){
  build();const u=safeUrl(raw);if(!u){status.textContent='صرف کسی دوسری ویب سائٹ کا درست HTTPS ایڈریس درج کریں؛ اسی سائٹ یا غیر محفوظ لنک کی اجازت نہیں۔';return false;}
  const fallback=overlay.querySelector('.sk-reader-fallback a');fallback.href=u.href;fallback.hidden=false;
- urlInput.value=u.href;status.textContent='پبلشر کا صفحہ SYK کے برانڈڈ ریڈر میں لوڈ کرنے کی کوشش ہو رہی ہے۔ اگر embed منع ہو تو اصل پبلشر کا متبادل لنک دستیاب ہے۔';
+ urlInput.value=u.href;status.textContent='پبلشر '+u.hostname+' کو SYK کے برانڈڈ ریڈر میں لوڈ کرنے کی کوشش ہو رہی ہے۔ اگر embed منع ہو تو اصل پبلشر کا متبادل لنک دستیاب ہے۔';
  frame.src=u.href;show();return true;
 }
 function openSearch(query){
