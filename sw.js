@@ -1,7 +1,7 @@
 /* SK Cyber Hub offline shell.
    Network-first for a small, explicit list of public app-shell pages only.
    Never cache API, authenticated, query-string, or third-party requests. */
-const CACHE_NAME = "sk-cyber-hub-shell-v30";
+const CACHE_NAME = "sk-cyber-hub-shell-v31";
 const APP_ROOT = new URL("./", self.location).href;
 const PUBLIC_SHELL_URLS = new Set([
   APP_ROOT,
@@ -9,7 +9,7 @@ const PUBLIC_SHELL_URLS = new Set([
   new URL("games.html", APP_ROOT).href
 ]);
 const PUBLIC_STATIC_ASSETS = new Set([
-  "assets/sk-directory-spotlight.css","assets/sk-directory-spotlight.js","assets/sk-inapp-search.css","assets/sk-inapp-search.js","assets/sk-media-download-hub.css","assets/sk-media-download-hub.js","assets/sk-community.css","assets/sk-p0-rtl-modal.css","assets/sk-sovereign-reader.css","assets/sk-sovereign-reader.js","assets/sk-neural-core.js","assets/sk-privacy-center.js","assets/sk-community.js",
+  "assets/sk-directory-spotlight.css","assets/sk-directory-spotlight.js","assets/sk-pwa-dock-spacing.css","assets/sk-inapp-search.css","assets/sk-inapp-search.js","assets/sk-media-download-hub.css","assets/sk-media-download-hub.js","assets/sk-community.css","assets/sk-p0-rtl-modal.css","assets/sk-sovereign-reader.css","assets/sk-sovereign-reader.js","assets/sk-neural-core.js","assets/sk-privacy-center.js","assets/sk-community.js",
   "assets/sk-connect.css","assets/sk-creator-monetization.css","assets/sk-creator-monetization.js",
   "assets/sk-digital-workbench.css","assets/sk-digital-workbench.js",
   "assets/sk-discovery.css","assets/sk-discovery.js",
