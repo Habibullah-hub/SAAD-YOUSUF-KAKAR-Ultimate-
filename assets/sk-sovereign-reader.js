@@ -39,10 +39,8 @@ function openUrl(raw){
 }
 function openSearch(query){
  const q=esc(query).trim();if(!q)return;
- build();urlInput.value='https://www.google.com/search?q='+encodeURIComponent(q);
- status.textContent='یہ بیرونی سرچ صفحہ embedded دکھانے کی کوشش ہوگی؛ سرچ انجن embedding روک سکتا ہے۔ SYK کی اپنی کیٹلاگ سرچ الگ دستیاب رہے گی۔';
- const u=safeUrl(urlInput.value);const fallback=overlay.querySelector('.sk-reader-fallback a');fallback.href=u.href;fallback.hidden=false;
- frame.src=u.href;show();
+ const target=new URL('./browser.html',location.href);target.searchParams.set('q',q);
+ location.assign(target.href);
 }
 window.SKReader={openUrl,openSearch,close:hide};
 document.addEventListener('DOMContentLoaded',()=>{
