@@ -3,7 +3,7 @@
 const $=id=>document.getElementById(id);
 const LOW_KEY='sk-cyber-hub-low-effects';
 function init(){
- const panel=$('skMorePanel'),grid=panel?.querySelector('.sk-more-grid'),moreButton=document.querySelector('.sk-bottom-nav [data-sk-more]');
+ const panel=$('skMorePanel'),grid=panel?.querySelector('.sk-more-grid'),moreButton=document.querySelector('[data-sk-more]');
  if(!panel||!grid||panel.dataset.skSpotlightReady==='1')return;
  panel.dataset.skSpotlightReady='1';
  const close=()=>{panel.classList.remove('is-open');moreButton?.setAttribute('aria-expanded','false');panel.hidden=true;};
