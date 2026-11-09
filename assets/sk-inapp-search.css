@@ -1,0 +1,17 @@
+/* SK Cyber Hub — in-app result cards */
+.sk-inapp-search{margin:18px 0;padding:16px;border:1px solid rgba(0,240,255,.28);border-radius:18px;background:rgba(7,9,15,.96);color:#f4fbff}
+.sk-inapp-search[hidden]{display:none!important}
+.sk-inapp-search-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sk-inapp-search-head h2{margin:0;font-size:17px;color:#00F0FF}
+.sk-inapp-search-close,.sk-inapp-search-card button{min-height:40px;padding:8px 12px;border:1px solid rgba(0,240,255,.42);border-radius:10px;background:#10212b;color:#efffff;font-weight:800}
+.sk-inapp-search-status{margin:9px 0 12px;color:#a9bdca;font-size:12px}
+.sk-inapp-search-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.sk-inapp-search-card{min-width:0;overflow:hidden;border:1px solid rgba(0,240,255,.2);border-radius:14px;background:linear-gradient(145deg,#111b2b,#101b20)}
+.sk-inapp-search-card>img{display:block;width:100%;height:112px;object-fit:cover;background:#0d1420}
+.sk-inapp-search-copy{padding:12px}
+.sk-inapp-search-copy h3{margin:0 0 6px;color:#f4fbff;font-size:14px}
+.sk-inapp-search-copy p{margin:0 0 11px;color:#b8c9d7;font-size:12px;line-height:1.5}
+.sk-inapp-search-card button{width:100%;font-size:11px}
+.sk-inapp-search-card button:focus-visible,.sk-inapp-search-close:focus-visible{outline:3px solid #00FF66;outline-offset:2px}
+.sk-inapp-search-empty{padding:16px;color:#a9bdca}
+@media(max-width:560px){.sk-inapp-search-grid{grid-template-columns:minmax(0,1fr)}.sk-inapp-search{padding:12px}.sk-inapp-search-card>img{height:145px}}
