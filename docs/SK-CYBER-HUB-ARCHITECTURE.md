@@ -51,7 +51,7 @@ Build a mobile-first, low-cost, trusted digital workspace that brings search, le
 - Use iframe sandbox with minimum permissions; do not allow top navigation, popups, downloads or arbitrary scripts beyond what a selected provider requires.
 - Many sites send `X-Frame-Options` or CSP `frame-ancestors`; they will refuse embedding. This cannot be overridden from a static frontend. Offer original publisher link when blocked.
 - Reader UI is a branded wrapper, not a content proxy or browser engine. Third-party cookies/login, cross-origin DOM inspection and downloads may not work.
-- Validate URL scheme (HTTPS only), reject credentials and dangerous schemes, use `referrerPolicy=no-referrer`, and show source domain.
+- Validate URL scheme (HTTPS only), reject credentials, dangerous schemes and same-origin URLs (to avoid weakening the parent origin), use `referrerPolicy=no-referrer`, and show source domain.
 
 ### SYK Media Player
 - First support own approved Creator Hub videos and direct media sources with clear rights.
