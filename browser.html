@@ -152,6 +152,20 @@ button,.iconbtn,.chip,.navbtn{min-height:42px}
 <div class="hero"><div class="eyebrow">ONE HUB · ENDLESS DISCOVERY</div><h1>Discover.<br><span>Watch SYK.</span></h1><p>Approved videos from SYK and its creators — open any video to watch here.</p>
 <form class="searchbox" id="searchForm"><span class="glass">⌕</span><input id="q" type="search" placeholder="Search SYK sections and article topics…" autocomplete="off" aria-label="Search SK Cyber Hub and article topics"><button>Search inside SYK</button></form><div class="hint">Internal section cards and article summaries appear here. Approved SYK videos remain searchable below.</div><button class="chip" id="sykVideoSearch" type="button">▶ Search videos</button>
 </div>
+<section class="section sk-media-hub" id="media-download-hub" aria-labelledby="skMediaHubTitle">
+ <div class="sectionhead"><div><div class="eyebrow">SYK MEDIA TOOLKIT</div><h2 id="skMediaHubTitle">Media Download Hub</h2><p>Direct media files and your own device files — preview and save inside the SK-branded workspace.</p></div></div>
+ <form id="skMediaUrlForm" class="sk-media-form">
+  <label for="skMediaUrl">Direct media file link</label>
+  <input id="skMediaUrl" type="url" inputmode="url" placeholder="https://example.com/video.mp4" autocomplete="url">
+  <div class="sk-media-actions"><button type="submit">Check media link</button><button type="button" id="skMediaVoice">🎙 Voice command</button></div>
+ </form>
+ <div class="sk-media-divider"><span>OR</span></div>
+ <label class="sk-media-file-label" for="skMediaFile">Choose a file from this device</label>
+ <input id="skMediaFile" type="file" accept="video/*,audio/*,image/*">
+ <div id="skMediaStatus" class="sk-media-status" role="status" aria-live="polite">Supported: direct MP4/WebM, MP3/M4A/WAV and JPG/PNG/WebP files. No account or paid API.</div>
+ <div id="skMediaResult" class="sk-media-result" hidden></div>
+ <p class="sk-media-note">Only direct media files and files you have permission to save are supported. Platform pages such as YouTube, Instagram and TikTok are not converted or stripped; use their official save/download options.</p>
+</section>
 <section class="section" id="sykVideoHub" aria-labelledby="sykVideoTitle">
  <div class="sectionhead"><div><div class="eyebrow">SYK CREATOR VIDEO HUB</div><h2 id="sykVideoTitle">منظور شدہ ویڈیوز</h2><p>ہر ویڈیو Admin کی منظوری کے بعد سب کو نظر آتی ہے۔</p></div></div>
  <div id="sykVideoFeed" class="syk-video-feed"><p class="syk-video-muted">منظور شدہ ویڈیوز لوڈ ہو رہی ہیں…</p></div>
@@ -225,6 +239,7 @@ drawDiscover();const initial=new URLSearchParams(location.search).get('q');if(in
 <script src="./assets/sk-neural-core.js" defer></script>
 <script src="./assets/sk-sovereign-reader.js" defer></script>
 <script src="./assets/sk-inapp-search.js" defer></script>
+<script src="./assets/sk-media-download-hub.js" defer></script>
 <script src="./assets/sk-privacy-center.js" defer></script>
 <script src="./assets/sk-browser-video-hub.js?v=20261108-3" defer></script>
 <script src="./assets/sk-account-presence.js?v=3" defer></script>
