@@ -1,0 +1,20 @@
+/* SYK Media Download Hub — direct files and user-owned local files only */
+.sk-media-hub{padding:16px;border:1px solid rgba(0,240,255,.25);border-radius:18px;background:linear-gradient(145deg,rgba(9,17,31,.98),rgba(11,25,29,.98))}
+.sk-media-form{display:grid;gap:8px;padding:13px;border:1px solid rgba(0,240,255,.22);border-radius:14px;background:#0d1420}
+.sk-media-form label,.sk-media-file-label{color:#dffaff;font-size:12px;font-weight:800}
+.sk-media-form input,.sk-media-hub input[type=file]{width:100%;min-width:0;min-height:45px;padding:10px;border:1px solid rgba(0,240,255,.34);border-radius:10px;background:#101a28;color:#f5fbff;font:inherit;font-size:14px}
+.sk-media-actions{display:flex;flex-wrap:wrap;gap:8px}
+.sk-media-actions button,.sk-media-result button,.sk-media-result a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 13px;border:1px solid rgba(0,240,255,.42);border-radius:10px;background:#10252c;color:#eaffff;font-size:12px;font-weight:850;text-decoration:none}
+.sk-media-actions button:first-child{border-color:rgba(0,255,102,.48);background:#0d2a1b;color:#d6ffe5}
+.sk-media-divider{display:flex;align-items:center;gap:10px;margin:12px 0;color:#8198a9;font-size:10px;font-weight:850}
+.sk-media-divider:before,.sk-media-divider:after{content:"";height:1px;flex:1;background:rgba(0,240,255,.18)}
+.sk-media-file-label{display:block;margin-bottom:7px}
+.sk-media-status,.sk-media-note{color:#a9bdca;font-size:11px;line-height:1.55}
+.sk-media-result{margin-top:12px;padding:12px;border:1px solid rgba(0,240,255,.22);border-radius:14px;background:#0c1420;color:#edfaff}
+.sk-media-result[hidden]{display:none!important}
+.sk-media-preview{display:block;max-width:100%;max-height:280px;margin:0 auto 10px;border-radius:10px;background:#05080d}
+.sk-media-result h3{margin:0 0 6px;font-size:14px;color:#00F0FF}
+.sk-media-result p{margin:0 0 10px;color:#b8c9d7;font-size:11px}
+.sk-media-result-actions{display:flex;flex-wrap:wrap;gap:8px}
+.sk-media-result button:focus-visible,.sk-media-result a:focus-visible,.sk-media-actions button:focus-visible{outline:3px solid #00FF66;outline-offset:2px}
+@media(max-width:520px){.sk-media-hub{padding:12px}.sk-media-actions>*{flex:1}.sk-media-result-actions>*{flex:1}}
