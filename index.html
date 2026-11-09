@@ -2400,6 +2400,7 @@ body.sk-day-mode .top .sk-header-login{background:#e5f3fb!important;color:#075b9
  <a href="#community" data-sk-view="community" data-sk-bottom="community"><span>💬</span>Community</a>
  <button type="button" data-sk-profile data-sk-bottom="profile" aria-label="Open member profile"><span>👤</span>Profile</button>
 </nav>
+<button type="button" class="sk-more-fab" data-sk-more aria-label="Open Directory Spotlight menu" aria-expanded="false"><span aria-hidden="true">☰</span> Explore</button>
 <button class="sk-back-top" id="skBackTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
 
 <footer class="wrap footer"><span>© <span id="year"></span> SYK Cyber Hub · SAAD YOUSUF KAKAR</span><span><a href="./browser.html">SYK Search</a> · <a href="about.html">About</a> · <a href="privacy.html">Privacy</a> · <a href="disclosure.html">Ads & Affiliate Disclosure</a> · <a href="#share-section">Share SYK Hub</a> · Built for everyone</span></footer>
@@ -4292,7 +4293,7 @@ body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
    document.addEventListener('click',e=>{if(!box.contains(e.target))close();});
   }
   /* Remove the old More button listeners by replacing the button node; keep one toggle only. */
-  const oldButton=document.querySelector('.sk-bottom-nav [data-sk-more]'),oldPanel=$('skMorePanel');
+  const oldButton=document.querySelector('[data-sk-more]'),oldPanel=$('skMorePanel');
   if(oldButton){
    const button=oldButton.cloneNode(true);oldButton.replaceWith(button);
    const panel=oldPanel;
