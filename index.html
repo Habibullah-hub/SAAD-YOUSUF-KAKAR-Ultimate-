@@ -3973,16 +3973,15 @@ if (!validDownloadUrl) {
      if(match)cardMatch=true;
     });
     const match=headingMatch||cardMatch||(!cards.length&&(sec.innerText||'').toLowerCase().includes(q));
-    sec.classList.remove('hidden');
-    sec.classList.toggle('sk-view-hidden',!match);
-    sec.classList.toggle('sk-view-active',match);
+    /* Keep every homepage section in the document; only filter non-matching cards. */
+    sec.classList.remove('hidden','sk-view-hidden','sk-view-active');
     if(match&&!first)first=sec;
    });
-   if(home)home.classList.toggle('hidden',!!first);
-   if(featured)featured.classList.toggle('hidden',!!first);
+   home?.classList.remove('hidden');
+   featured?.classList.remove('hidden');
    document.querySelectorAll('[data-sk-bottom]').forEach(a=>a.removeAttribute('aria-current'));
-   if(first)window.scrollTo({top:0,behavior:'smooth'});
-   else if(home)home.classList.remove('hidden');
+   if(first)first.scrollIntoView({behavior:'smooth',block:'start'});
+   else if(home)home.scrollIntoView({behavior:'smooth',block:'start'});
   }
   searchBtn?.addEventListener('click',searchAll);search?.addEventListener('input',searchAll);search?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchAll();}});
   const backTop=document.getElementById('skBackTop');if(backTop)backTop.style.display='none';
