@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./assets/sk-sovereign-reader.css">
 <link rel="stylesheet" href="./assets/sk-inapp-search.css">
 <link rel="stylesheet" href="./assets/sk-media-download-hub.css">
-<link rel="stylesheet" href="./assets/sk-browser-video-hub.css?v=20261110-owner-3">
+<link rel="stylesheet" href="./assets/sk-browser-video-hub.css?v=20261111-social-1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -170,9 +170,9 @@ button,.iconbtn,.chip,.navbtn{min-height:42px}
 <section class="section" id="sykVideoHub" aria-labelledby="sykVideoTitle">
  <div class="sectionhead syk-video-heading"><div><div class="eyebrow">SYK SHORT VIDEO EXPERIENCE</div><h2 id="sykVideoTitle">For You · SYK Videos</h2><p>عمودی ویڈیو فیڈ میں اوپر نیچے سوائپ کریں۔ ممبر کی ویڈیوز Admin کی منظوری کے بعد دکھائی جاتی ہیں۔</p></div><span class="syk-video-live">● LIVE FEED</span></div>
  <nav class="syk-video-tabs" aria-label="Video feed filters"><button type="button" class="is-active" data-syk-feed="for-you" aria-pressed="true">For You</button><button type="button" data-syk-feed="trending" aria-pressed="false">Trending</button><button type="button" data-syk-feed="latest" aria-pressed="false">Latest</button></nav>
- <div class="syk-video-searchbar"><input id="sykFeedSearch" type="search" placeholder="ویڈیوز تلاش کریں…" aria-label="Search videos"><button type="button" id="sykVoiceDiscover" aria-label="Voice search">🎙</button><select id="sykViewerRegion" aria-label="Your region"><option value="auto">Auto region</option><option>Pakistan</option><option>Saudi Arabia</option><option>United Kingdom</option><option>United States</option><option>Other</option></select><button type="button" id="sykFeedFullscreen" aria-label="Full screen feed">⛶</button></div><div id="sykVideoFeed" class="syk-video-feed" aria-label="Swipeable video feed"><p class="syk-video-muted">منظور شدہ ویڈیوز لوڈ ہو رہی ہیں…</p></div>
+ <div class="syk-video-searchbar"><button type="button" id="sykSearchReveal" aria-label="Search videos">⌕</button><input id="sykFeedSearch" type="search" placeholder="ویڈیو تلاش کریں…" aria-label="Search videos" hidden><button type="button" id="sykVoiceDiscover" aria-label="Voice search">🎙</button><select id="sykViewerRegion" aria-label="Your region"><option value="auto">Auto</option><option>Pakistan</option><option>Saudi Arabia</option><option>United Kingdom</option><option>United States</option><option>Other</option></select><button type="button" id="sykFeedFullscreen" aria-label="Full screen feed">⛶</button></div><div id="sykVideoFeed" class="syk-video-feed" aria-label="Swipeable video feed"><p class="syk-video-muted">منظور شدہ ویڈیوز لوڈ ہو رہی ہیں…</p></div>
  <div id="sykMemberSubmit" class="syk-video-submit" hidden><h3>اپنی ویڈیو بھیجیں</h3><p class="syk-video-muted">صرف ایک مخصوص ویڈیو کا لنک دیں، پورے چینل کا لنک نہیں۔</p><button class="chip" id="sykVideoSubmitToggle" type="button">＋ ویڈیو لنک بھیجیں</button><form id="sykVideoForm" class="syk-video-form" hidden>
-  <label>پلیٹ فارم<select id="sykMemberPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
+  <label>سوشل میڈیا پلیٹ فارم<select id="sykMemberPlatform"><option value="auto">خودکار شناخت (کوئی بھی پلیٹ فارم)</option><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option><option value="instagram">Instagram</option><option value="x">X / Twitter</option><option value="threads">Threads</option><option value="twitch">Twitch</option><option value="reddit">Reddit</option><option value="linkedin">LinkedIn</option><option value="snapchat">Snapchat</option><option value="other">Other HTTPS link</option></select></label>
   <label>ویڈیو کا عنوان (اختیاری)<input id="sykMemberTitle" maxlength="120" placeholder="ویڈیو کا نام"></label><label>موضوع<select id="sykMemberCategory"><option>Islamic</option><option>News</option><option>Gym & Fitness</option><option>Education</option><option>Technology</option><option>Entertainment</option><option>General</option></select></label><label>زبان<select id="sykMemberLanguage"><option>Urdu</option><option>English</option><option>Arabic</option><option>Punjabi</option><option>Pashto</option><option>Hindi</option><option>Other</option></select></label>
   <label>صرف اسی ویڈیو کا لنک<input id="sykMemberUrl" type="url" required placeholder="https://…"></label><button type="submit">Admin کو بھیجیں</button></form></div>
  <p id="sykLoginHint" class="syk-video-muted">ویڈیو لنک بھیجنے کے لیے Login کریں۔</p>
@@ -192,9 +192,9 @@ button,.iconbtn,.chip,.navbtn{min-height:42px}
   <button id="sykAdminMediaToggle" class="syk-video-action" type="button">＋ اپنی SYK تشہیری ویڈیو شامل کریں</button>
   <form id="sykAdminMediaForm" class="syk-video-form" hidden>
    <input id="sykAdminKind" type="hidden" value="video">
-   <label>ویڈیو پلیٹ فارم<select id="sykAdminPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
+   <label>ویڈیو پلیٹ فارم<select id="sykAdminPlatform"><option value="auto">خودکار شناخت</option><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option><option value="instagram">Instagram</option><option value="x">X / Twitter</option><option value="threads">Threads</option><option value="twitch">Twitch</option><option value="reddit">Reddit</option><option value="linkedin">LinkedIn</option><option value="snapchat">Snapchat</option><option value="other">Other HTTPS link</option></select></label>
    <label>عنوان<input id="sykAdminTitle" maxlength="120" required></label><label>موضوع<select id="sykAdminCategory"><option>Islamic</option><option>News</option><option>Gym & Fitness</option><option>Education</option><option>Technology</option><option>Entertainment</option><option>General</option></select></label><label>زبان<select id="sykAdminLanguage"><option>Urdu</option><option>English</option><option>Arabic</option><option>Punjabi</option><option>Pashto</option><option>Hindi</option><option>Other</option><option>Any</option></select></label><label>علاقہ<select id="sykAdminRegion"><option>All</option><option>Pakistan</option><option>Saudi Arabia</option><option>United Kingdom</option><option>United States</option><option>Other</option></select></label>
-   <label>ویڈیو لنک (یا نیچے فائل منتخب کریں)<input id="sykAdminUrl" type="url" placeholder="https://…"></label>
+   <label>ویڈیو لنک<input id="sykAdminUrl" type="url" placeholder="https://…" required></label><label>اپنے چینل / پروفائل کا لنک (اختیاری)<input id="sykAdminChannelUrl" type="url" placeholder="https://…"></label>
    <label>ویڈیو فائل اپ لوڈ<input id="sykAdminFile" type="file" accept="video/mp4,video/webm,video/quicktime" disabled><small>فائل اپ لوڈ محفوظ Storage ترتیب کے بعد فعال ہوگی۔ فی الحال ویڈیو لنک استعمال کریں۔</small></label>
    <button type="submit">SYK Featured ویڈیو شائع کریں</button>
   </form>
@@ -253,7 +253,7 @@ drawDiscover();const initial=new URLSearchParams(location.search).get('q');if(in
 <script src="./assets/sk-inapp-search.js" defer></script>
 <script src="./assets/sk-media-download-hub.js" defer></script>
 <script src="./assets/sk-privacy-center.js" defer></script>
-<script src="./assets/sk-browser-video-hub.js?v=20261110-owner-5" defer></script>
+<script src="./assets/sk-browser-video-hub.js?v=20261111-social-1" defer></script>
 <script src="./assets/sk-account-presence.js?v=4" defer></script>
 <script src="./pwa-register.js" defer></script>
 </body></html>
