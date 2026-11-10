@@ -1,5 +1,5 @@
 -- SYK Browser: owner-controlled feed and member publishing permission gate
--- Review this migration before applying it to the live Supabase project.
+-- Owner-controlled video feed, creator approval gate, RLS and permissions.
 begin;
 
 alter table public.sk_creator_submissions
@@ -85,7 +85,10 @@ grant select on public.sk_video_feed_settings to anon, authenticated;
 grant update on public.sk_video_feed_settings to authenticated;
 
 -- A member cannot submit a video until the Owner Admin has approved publishing access.
-create or replace function public.sk_require_creator_access()
+create schema if not exists private;
+revoke all on schema private from public, anon, authenticated;
+
+create or replace function private.sk_require_creator_access()
 returns trigger
 language plpgsql
 security definer
@@ -104,10 +107,10 @@ begin
 end;
 $fn$;
 
-revoke all on function public.sk_require_creator_access() from public, anon, authenticated;
+revoke all on function private.sk_require_creator_access() from public, anon, authenticated;
 drop trigger if exists sk_require_creator_access_before_submission on public.sk_creator_submissions;
 create trigger sk_require_creator_access_before_submission
 before insert on public.sk_creator_submissions
-for each row execute function public.sk_require_creator_access();
+for each row execute function private.sk_require_creator_access();
 
 commit;
