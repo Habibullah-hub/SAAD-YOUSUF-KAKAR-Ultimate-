@@ -172,6 +172,7 @@ if (!browserHtml.includes('id="searchForm"') || !browserHtml.includes('id="searc
   errors.push("SK Browser is missing its global or SK-directory search form.");
 }
 
+if (!html.includes("sec.querySelectorAll('.resource.hidden').forEach(card=>card.classList.remove('hidden'))")) errors.push("Clearing unified search must restore all previously filtered resource cards.");
 if (!html.includes("sec.classList.remove('hidden','sk-view-hidden','sk-view-active')")) errors.push("Unified search must preserve the continuous homepage section layout.");
 if (!html.includes("if(first)first.scrollIntoView({behavior:'smooth',block:'start'})")) errors.push("Unified search must scroll to the first matching homepage section.");
 if (!html.includes("window.skSetView=setView")) errors.push("Homepage section navigation controller is missing.");
