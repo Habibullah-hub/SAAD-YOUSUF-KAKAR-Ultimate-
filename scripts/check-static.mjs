@@ -233,7 +233,7 @@ for (const assetPath of ["assets/sk-creator-hub.css","assets/sk-creator-hub.js"]
 
 
 const browser = fs.readFileSync("browser.html","utf8");
-if (!html.includes("SYK Browser is the default public landing page")) errors.push("SYK Browser default homepage redirect is missing.");
+if (!html.includes('href="./browser.html"') || !browser.includes("SYK Browser is the branded home and discovery experience")) errors.push("SYK Browser public launch link or branded discovery page is missing.");
 if (!browser.includes('id="sykVideoHub"')) errors.push("SYK Browser video feed is missing.");
 if (!browser.includes('id="sykVideoSearch"')) errors.push("SYK Browser video search control is missing.");
 
