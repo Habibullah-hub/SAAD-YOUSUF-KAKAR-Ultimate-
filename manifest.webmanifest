@@ -1,8 +1,8 @@
 {
-  "name": "SYK Browser — SYK Cyber Hub",
-  "short_name": "SYK Browser",
-  "description": "SYK Browser video-first home with approved creator videos, web search and personalized discovery.",
-  "start_url": "./browser.html",
+  "name": "SYK Cyber Hub — Ultimate Digital Platform",
+  "short_name": "SYK Hub",
+  "description": "SYK Cyber Hub: discover apps, AI tools, software, games, news, learning, creator videos and digital services.",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
@@ -24,6 +24,12 @@
       "src": "./assets/sk-cyber-hub-icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
+    },
+    {
+      "src": "./assets/sk-cyber-hub-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
   "shortcuts": [
