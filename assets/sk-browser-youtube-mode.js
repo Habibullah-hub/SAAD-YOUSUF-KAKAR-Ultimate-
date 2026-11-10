@@ -27,7 +27,13 @@ feed.addEventListener('click',e=>{
  }
  setTimeout(()=>activateSound(card),250);
 },true);
-const watch=new MutationObserver(()=>{feed.querySelectorAll('.syk-video-card').forEach(card=>{
+const addSoundControl=card=>{
+ const rail=card.querySelector('.syk-video-actions');if(!rail||rail.querySelector('.syk-browser-sound'))return;
+ const btn=document.createElement('button');btn.type='button';btn.className='syk-video-rail-btn syk-browser-sound';btn.textContent='🔊';btn.setAttribute('aria-label','آواز آن کریں');
+ btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();let frame=card.querySelector('iframe.syk-video-inline-player');if(!frame){card.querySelector('.syk-video-poster')?.click();setTimeout(()=>activateSound(card),300);return;}activateSound(card);try{if(frame.src.includes('youtube'))frame.contentWindow?.postMessage(JSON.stringify({event:'command',func:'unMute',args:[]}), '*');}catch(_){}btn.textContent='🔊';});
+ rail.insertBefore(btn,rail.firstChild);
+};
+const watch=new MutationObserver(()=>{feed.querySelectorAll('.syk-video-card').forEach(card=>{addSoundControl(card);
  if(card.dataset.sykBrowserMode==='1')return;card.dataset.sykBrowserMode='1';
  card.addEventListener('click',e=>{if(e.target.closest('.syk-video-actions,.syk-video-channel-link'))return;enter();setTimeout(()=>activateSound(card),250);});
  });});
