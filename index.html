@@ -3958,7 +3958,7 @@ if (!validDownloadUrl) {
   const search=document.getElementById('search'),searchBtn=document.getElementById('searchBtn');
   function searchAll(){
    const q=(search?.value||'').trim().toLowerCase();
-   if(!q){setView('home');return;}
+   if(!q){sections.forEach(sec=>{sec.classList.remove('hidden','sk-view-hidden','sk-view-active');sec.querySelectorAll('.resource.hidden').forEach(card=>card.classList.remove('hidden'));});home?.classList.remove('hidden');featured?.classList.remove('hidden');setView('home');return;}
    if(typeof runSearch==='function')runSearch();
    let first=null;
    sections.forEach(sec=>{
