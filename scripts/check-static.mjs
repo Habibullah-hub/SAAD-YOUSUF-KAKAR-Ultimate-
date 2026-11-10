@@ -171,7 +171,12 @@ const browserHtml = fs.existsSync("browser.html") ? fs.readFileSync("browser.htm
 if (!browserHtml.includes('id="searchForm"') || !browserHtml.includes('id="searchForm3"')) {
   errors.push("SK Browser is missing its global or SK-directory search form.");
 }
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v32"')) {
+
+if (!html.includes("window.skSetView=setView")) errors.push("Homepage section navigation controller is missing.");
+if (!html.includes("target?.scrollIntoView({behavior:'smooth',block:'start'})") && !html.includes("document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})")) errors.push("Homepage navigation must scroll to sections without replacing the continuous homepage.");
+if (html.includes("#skCreatorHub{display:none!important}") || html.includes("#skFeaturedFeed,#sk-next-discovery{display:none!important}")) errors.push("Core homepage discovery or Creator Hub is forcibly hidden.");
+
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v33"')) {
   errors.push("Service worker cache version was not advanced for the updated public shell.");
 }
 for (const assetPath of ["assets/sk-motion-performance.css", "assets/sk-browser-experience.css"]) {
