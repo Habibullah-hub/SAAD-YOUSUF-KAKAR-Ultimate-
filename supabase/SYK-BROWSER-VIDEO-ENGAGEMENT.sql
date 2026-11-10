@@ -12,6 +12,7 @@ create unique index if not exists sk_video_likes_one_per_user_idx
   on public.sk_video_likes(video_source,video_id,user_id);
 create index if not exists sk_video_likes_video_idx
   on public.sk_video_likes(video_source,video_id);
+create index if not exists sk_video_likes_user_idx on public.sk_video_likes(user_id);
 
 create table if not exists public.sk_video_comments (
   id uuid primary key default gen_random_uuid(),
@@ -23,6 +24,7 @@ create table if not exists public.sk_video_comments (
 );
 create index if not exists sk_video_comments_video_idx
   on public.sk_video_comments(video_source,video_id,created_at desc);
+create index if not exists sk_video_comments_user_idx on public.sk_video_comments(user_id);
 
 alter table public.sk_video_likes enable row level security;
 alter table public.sk_video_comments enable row level security;
@@ -37,6 +39,9 @@ drop policy if exists syk_video_likes_own_delete on public.sk_video_likes;
 create policy syk_video_likes_own_delete on public.sk_video_likes
 for delete to authenticated using (user_id=(select auth.uid()) or public.sk_is_admin());
 
+drop policy if exists syk_video_comments_public_read on public.sk_video_comments;
+create policy syk_video_comments_public_read on public.sk_video_comments
+for select to anon,authenticated using (true);
 drop policy if exists syk_video_comments_member_insert on public.sk_video_comments;
 create policy syk_video_comments_member_insert on public.sk_video_comments
 for insert to authenticated with check (user_id=(select auth.uid()));
@@ -45,7 +50,7 @@ create policy syk_video_comments_member_delete on public.sk_video_comments
 for delete to authenticated using (user_id=(select auth.uid()) or public.sk_is_admin());
 
 create or replace view public.sk_video_public_comments
-with (security_invoker=false)
+with (security_invoker=true)
 as
 select id,video_source,video_id,body,created_at
 from public.sk_video_comments;
@@ -54,6 +59,7 @@ revoke all on public.sk_video_likes from anon,authenticated;
 grant select,insert,delete on public.sk_video_likes to authenticated;
 revoke all on public.sk_video_comments from anon,authenticated;
 grant insert,delete on public.sk_video_comments to authenticated;
+grant select (id,video_source,video_id,body,created_at) on public.sk_video_comments to anon,authenticated;
 revoke all on public.sk_video_public_comments from anon,authenticated;
 grant select on public.sk_video_public_comments to anon,authenticated;
 
