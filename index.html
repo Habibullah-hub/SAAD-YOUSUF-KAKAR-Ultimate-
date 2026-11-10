@@ -1593,7 +1593,7 @@ button{transition:transform .18s ease,background .18s ease,border-color .18s eas
 <link rel="stylesheet" href="./assets/sk-easy-mode.css">
 
 
-<style>#skCreatorHub{display:none!important}</style>
+<!-- Creator Video Hub is visible on the main SYK homepage. -->
 <!-- SYK Browser remains a separate destination; the GitHub Pages root stays on the full SYK Cyber Hub homepage. -->
 <style>.brand .mark img{display:block;width:100%;height:100%;object-fit:contain;padding:1px}.brand .mark{overflow:hidden}</style><style>body{text-rendering:optimizeLegibility}p,.notice,.resource p,.sk-social-post-body{text-align:justify}button{min-height:40px;cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #00eaff;outline-offset:3px}</style><style id="syk-home-header-search-final">
 /* Homepage search and compact but visible mobile navigation */
@@ -3924,20 +3924,26 @@ if (!validDownloadUrl) {
     searchInput.value='';
     if(typeof runSearch==='function')runSearch();
    }
-   sections.forEach(sec=>sec.classList.remove('hidden'));
-   homeIntro.forEach(el=>el.classList.toggle('hidden',!isHome));
-   if(home)home.classList.toggle('hidden',!isHome);
-   if(featured)featured.classList.toggle('hidden',!isHome);
-   sections.forEach(sec=>{const active=!isHome&&sec.id===id;sec.classList.toggle('sk-view-hidden',!active);sec.classList.toggle('sk-view-active',active);});
-   document.querySelectorAll('[data-sk-bottom]').forEach(a=>{if((isHome&&a.dataset.skBottom==='home')||(!isHome&&a.dataset.skView===id))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
-   const title=isHome?'SYK Cyber Hub':(document.querySelector('#'+CSS.escape(id)+' h2')?.textContent||id);
-   document.title=(isHome?'SYK Cyber Hub':title+' | SYK Cyber Hub');
+   /* Keep the complete hub as one continuous, scrollable homepage.
+      Category controls navigate to sections; they must never hide the other sections. */
+   document.querySelectorAll('#tab-home > section').forEach(sec=>{
+    sec.classList.remove('hidden','sk-view-hidden','sk-view-active');
+   });
+   homeIntro.forEach(el=>el.classList.remove('hidden'));
+   home?.classList.remove('hidden');
+   featured?.classList.remove('hidden');
+   document.querySelectorAll('[data-sk-bottom]').forEach(a=>{
+    if((isHome&&a.dataset.skBottom==='home')||(!isHome&&a.dataset.skView===id))a.setAttribute('aria-current','page');
+    else a.removeAttribute('aria-current');
+   });
+   document.title='SYK Cyber Hub | Your Digital World, Reimagined';
    const targetHash=isHome?'#home':'#'+id;
    if(location.hash!==targetHash){
     if(fromHistory)history.replaceState(null,'',targetHash);
     else history.pushState({skView:isHome?'home':id},'',targetHash);
    }
-   window.scrollTo({top:0,behavior:'smooth'});
+   if(isHome)window.scrollTo({top:0,behavior:'smooth'});
+   else document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});
    const menu=document.getElementById('categoryMenu'),toggle=document.getElementById('categoryToggle');menu?.classList.remove('is-open');toggle?.classList.remove('is-open');toggle?.setAttribute('aria-expanded','false');
   }
   document.querySelectorAll('[data-sk-view]').forEach(a=>a.addEventListener('click',e=>{const id=a.dataset.skView;if(!document.getElementById(id))return;e.preventDefault();setView(id);}));
@@ -5221,7 +5227,7 @@ body :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px
 .sk-universal-grid .sk-category-icon{font-size:27px!important}
 .sk-universal-grid .sk-category-card b{font-size:15px!important}
 .sk-universal-grid .sk-category-card small{line-height:1.5!important}
-#skFeaturedFeed,#sk-next-discovery{display:none!important}
+/* Featured resources and discovery remain visible on the continuous homepage. */
 @media(max-width:760px){.category-menu{grid-template-columns:1fr!important;max-height:65vh!important}.sk-universal-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}.sk-universal-grid .sk-category-card{min-height:142px!important;padding:13px!important}}
 @media(max-width:360px){.sk-universal-grid{grid-template-columns:1fr!important}}
 </style>
