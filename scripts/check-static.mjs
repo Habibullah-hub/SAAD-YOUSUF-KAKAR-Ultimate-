@@ -110,6 +110,7 @@ const jsAssets = [
   "assets/sk-theme-mode.js",
   "assets/sk-creator-hub.js",
   "assets/sk-browser-video-hub.js",
+  "assets/sk-account-presence.js",
   "assets/sk-sovereign-reader.js",
   "assets/sk-directory-spotlight.js",
   "assets/sk-inapp-search.js",
@@ -247,6 +248,16 @@ if (!browser.includes('id="sykFeedOrder"') || !browser.includes('id="sykBlockedC
 if (!browser.includes('id="sykRequestCreatorAccess"') || !browser.includes('id="sykFeedSearch"') || !browser.includes('id="sykVoiceDiscover"')) errors.push("Creator permission request, video search or opt-in voice discovery control is missing.");
 if (!browserVideoSource.includes("sk_creator_access_requests") || !browserVideoSource.includes("sk_video_feed_settings") || !browserVideoSource.includes("SpeechRecognition")) errors.push("Owner-controlled video feed settings, member access gate or opt-in voice search is missing.");
 if (!browserVideoSource.includes("requestFullscreen") || !browserVideoSource.includes("blocked_categories")) errors.push("Immersive video mode or owner blocked-category filtering is missing.");
+
+
+for (const migrationPath of ["supabase/SYK-BROWSER-OWNER-CONTROLS.sql","supabase/SYK-BROWSER-CREATOR-NOTIFICATIONS.sql","supabase/SYK-BROWSER-VIDEO-ENGAGEMENT.sql"]) {
+  if (!fs.existsSync(migrationPath)) errors.push(`Missing SYK Browser database migration: ${migrationPath}`);
+}
+const creatorControlsSql = fs.existsSync("supabase/SYK-BROWSER-OWNER-CONTROLS.sql") ? fs.readFileSync("supabase/SYK-BROWSER-OWNER-CONTROLS.sql","utf8") : "";
+if (!creatorControlsSql.includes("private.sk_require_creator_access") || !creatorControlsSql.includes("sk_creator_access_requests_admin_update") || !creatorControlsSql.includes("sk_video_feed_settings_admin_update")) errors.push("Creator approval gate or Owner-only feed settings RLS is missing.");
+const videoEngagementSql = fs.existsSync("supabase/SYK-BROWSER-VIDEO-ENGAGEMENT.sql") ? fs.readFileSync("supabase/SYK-BROWSER-VIDEO-ENGAGEMENT.sql","utf8") : "";
+if (!videoEngagementSql.includes("security_invoker=true") || !videoEngagementSql.includes("sk_video_likes_own_insert") || !videoEngagementSql.includes("sk_video_comments_member_insert")) errors.push("Video engagement must use an invoker-secure public comments view and authenticated write policies.");
+if (!browser.includes('id="sykCreatorAccess"') || !browser.includes('id="sykMemberSubmit"')) errors.push("Creator access request and member video submission must remain in the account menu.");
 
 /* SYK Islamic reminder, Islam360 navigation and Live camera regressions. */
 const spotlightSourceForIslam = fs.readFileSync("assets/sk-directory-spotlight.js","utf8");
