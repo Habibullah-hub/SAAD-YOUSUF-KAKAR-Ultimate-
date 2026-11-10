@@ -70,3 +70,41 @@
 
 /* Show YouTube video artwork immediately; playback starts only after a user tap. */
 .sk-creator-preview>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+
+
+/* SYK vertical short-video feed: swipe, snap, and on-video actions. */
+#skCreatorHub .sk-creator-head{position:relative}
+#skCreatorHub .sk-creator-head h2{font-size:clamp(25px,4vw,34px);letter-spacing:-.5px}
+#skCreatorHub .sk-creator-head p{max-width:620px}
+#skCreatorHub .sk-creator-owner-block,
+#skCreatorHub .sk-creator-member-block{background:transparent;border:0;padding:0;margin-top:20px}
+#skCreatorHub .sk-creator-owner-block>h3,
+#skCreatorHub .sk-creator-member-block>h3{margin:0 0 7px;font-size:17px}
+#skCreatorHub .sk-creator-owner-block>.sk-creator-muted,
+#skCreatorHub .sk-creator-member-block>.sk-creator-muted{margin:0 0 12px}
+#skCreatorOwnerFeatured{width:min(100%,520px);height:min(76svh,780px);min-height:440px;margin:12px auto 0;overflow:hidden;border:1px solid #315d72;border-radius:20px;background:#050b13;scroll-snap-align:start}
+#skCreatorOwnerPlayer{height:100%}
+#skCreatorOwnerPlayer .sk-creator-preview{width:100%;height:100%;min-height:0;aspect-ratio:auto;border-radius:0;background:#050b13}
+#skCreatorMemberVideos{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;height:min(78svh,820px);min-height:460px;overflow-y:auto;overscroll-behavior-y:contain;scroll-snap-type:y mandatory;scrollbar-width:thin;scrollbar-color:#20d9e9 #101a27;padding:2px 8px 18px}
+#skCreatorMemberVideos .sk-feed-card{position:relative;display:block;flex:0 0 min(74svh,760px);width:min(100%,520px);height:min(74svh,760px);min-height:430px;overflow:hidden;border:1px solid #315d72;border-radius:20px;background:#050b13;scroll-snap-align:start;scroll-snap-stop:always;box-shadow:0 14px 35px #0006}
+#skCreatorMemberVideos .sk-feed-card>.sk-creator-preview{position:absolute;inset:0;width:100%;height:100%;min-height:0;aspect-ratio:auto;border-radius:0;background:#050b13}
+#skCreatorMemberVideos .sk-feed-card>.sk-creator-preview>img{object-fit:cover}
+#skCreatorMemberVideos .sk-feed-card>.sk-creator-preview-play{z-index:1;background:linear-gradient(180deg,#06101a22,#06101a55);font-size:16px}
+#skCreatorMemberVideos .sk-feed-card>.sk-creator-card-body{position:absolute;z-index:2;left:0;right:68px;bottom:0;padding:52px 16px 18px;background:linear-gradient(0deg,#03070df2,transparent);pointer-events:none}
+#skCreatorMemberVideos .sk-feed-card-body h3{font-size:16px;color:#fff;margin:0 0 5px}
+#skCreatorMemberVideos .sk-feed-caption{margin:0;color:#d5e5ef;font-size:11px}
+#skCreatorMemberVideos .sk-feed-actions{position:absolute;z-index:3;right:12px;bottom:24px;display:grid;gap:13px}
+#skCreatorMemberVideos .sk-feed-action{display:grid;place-items:center;width:46px;height:46px;border:1px solid #80eaf2;border-radius:50%;background:#071c2bdc;color:#fff;font-size:19px;font-weight:900;text-decoration:none;box-shadow:0 5px 18px #0006;cursor:pointer}
+#skCreatorMemberVideos .sk-feed-action:hover{background:#07566b}
+#skCreatorMemberVideos .sk-feed-empty{width:min(100%,520px);padding:24px;border:1px dashed #41677c;border-radius:16px;text-align:center}
+#skCreatorHub .sk-creator-submit,#skCreatorHub .sk-creator-my-panel,#skCreatorHub .sk-creator-admin{max-width:900px;margin-left:auto;margin-right:auto}
+@media(max-width:600px){
+ #skCreatorHub{padding:12px;margin:12px auto;border-radius:16px}
+ #skCreatorOwnerFeatured{width:100%;height:72svh;min-height:390px;border-radius:16px}
+ #skCreatorMemberVideos{height:76svh;min-height:410px;padding:0 2px 14px;gap:10px}
+ #skCreatorMemberVideos .sk-feed-card{flex-basis:72svh;width:100%;height:72svh;min-height:390px;border-radius:16px}
+ #skCreatorMemberVideos .sk-feed-card>.sk-creator-card-body{right:60px;padding:44px 12px 14px}
+ #skCreatorMemberVideos .sk-feed-actions{right:8px;bottom:18px;gap:11px}
+ #skCreatorMemberVideos .sk-feed-action{width:42px;height:42px}
+}
+@media(prefers-reduced-motion:reduce){#skCreatorMemberVideos{scroll-behavior:auto;scroll-snap-type:y proximity}}
