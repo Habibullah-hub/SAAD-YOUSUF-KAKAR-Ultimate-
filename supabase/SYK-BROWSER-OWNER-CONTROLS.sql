@@ -4,7 +4,12 @@ begin;
 
 alter table public.sk_creator_submissions
   add column if not exists category text not null default 'General',
-  add column if not exists language text not null default 'Any';
+  add column if not exists language text not null default 'Any',
+  add column if not exists region text not null default 'All';
+alter table public.sk_creator_admin_media
+  add column if not exists category text not null default 'General',
+  add column if not exists language text not null default 'Any',
+  add column if not exists region text not null default 'All';
 
 create table if not exists public.sk_creator_access_requests (
   id uuid primary key default gen_random_uuid(),
@@ -27,6 +32,8 @@ create table if not exists public.sk_video_feed_settings (
   source_order text[] not null default array['owner','youtube','tiktok','members']::text[],
   topic text not null default 'All',
   language text not null default 'Any',
+  region text not null default 'All',
+  blocked_categories text[] not null default '{}',
   show_member_videos boolean not null default true,
   blocked_categories text[] not null default '{}',
   updated_at timestamptz not null default now(),
@@ -34,6 +41,9 @@ create table if not exists public.sk_video_feed_settings (
     source_order <@ array['owner','youtube','tiktok','members']::text[]
   )
 );
+alter table public.sk_video_feed_settings
+  add column if not exists region text not null default 'All',
+  add column if not exists blocked_categories text[] not null default '{}';
 insert into public.sk_video_feed_settings(singleton)
 values (true) on conflict (singleton) do nothing;
 
