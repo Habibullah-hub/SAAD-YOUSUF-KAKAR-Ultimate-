@@ -71,3 +71,6 @@
 #sykVideoHub.syk-feed-fullscreen #sykVideoFeed.syk-video-feed{height:calc(100dvh - 46px)!important;min-height:0!important}
 #sykViewerRegion{max-width:125px;border:0;border-bottom:1px solid #43dfe5;background:transparent;color:#bafcff;padding:5px 0;font-size:11px}
 #sykViewerRegion option{background:#081421;color:#fff}
+
+.syk-video-notice{display:block;width:100%;margin:7px 0;padding:10px;border:1px solid #34566b;border-radius:10px;background:#0d1b2a;color:#e9f7ff;text-align:left;font-size:11px;line-height:1.5;cursor:pointer}
+.syk-video-notice.is-unread{border-color:#38d9d9;box-shadow:inset 3px 0 #38d9d9;background:#102b39}
