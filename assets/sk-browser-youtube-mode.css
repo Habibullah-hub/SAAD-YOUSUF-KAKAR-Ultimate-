@@ -1,0 +1,29 @@
+/* SYK Browser video-first YouTube/TikTok-style experience. Browser page only. */
+#homeView>.hero,#media-download-hub,#sykVideoHub>.syk-video-heading,#sykVideoHub>.syk-video-tabs,#sykVideoHub>.syk-video-searchbar{display:none!important}
+#sykVideoHub{position:relative;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:#000!important}
+#homeView{padding:0!important}
+#sykVideoFeed.syk-video-feed{width:100%;height:calc(100dvh - 64px);min-height:520px;max-height:none;overflow-y:auto;scroll-snap-type:y mandatory;gap:0;padding:0!important;margin:0!important;background:#000}
+#sykVideoFeed .syk-video-card{position:relative;flex:0 0 100%;width:100%;height:calc(100dvh - 64px);min-height:520px;max-height:none;border:0;border-bottom:1px solid #263646;border-radius:0;background:#000;box-shadow:none;scroll-snap-align:start}
+#sykVideoFeed .syk-video-poster,#sykVideoFeed .syk-video-inline-player{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0;object-fit:contain;background:#000}
+#sykVideoFeed .syk-video-thumbnail{width:100%;height:100%;object-fit:cover}
+#sykVideoFeed .syk-video-meta{right:76px;bottom:8px;padding:90px 14px 24px;background:linear-gradient(0deg,#000e,transparent);text-align:left}
+#sykVideoFeed .syk-video-actions{right:14px;bottom:30px;gap:15px}
+#sykVideoFeed .syk-video-rail-btn{width:48px;height:48px;background:#101a2bd9;border:1px solid #80eaf2;color:#fff}
+#sykVideoFeed .syk-video-title{font-size:16px}
+#sykVideoFeed .syk-video-byline{font-size:12px}
+#sykVideoFeed .syk-video-channel-link{pointer-events:auto}
+#sykVideoFeed .syk-video-card.is-playing .syk-video-poster{opacity:0;pointer-events:none}
+#sykVideoHub.syk-feed-fullscreen{position:fixed!important;z-index:999999!important;inset:0!important;width:100vw!important;height:100dvh!important;margin:0!important;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)!important;background:#000!important}
+#sykVideoHub.syk-feed-fullscreen #sykVideoFeed.syk-video-feed{height:100dvh!important;min-height:0!important}
+#sykVideoHub.syk-feed-fullscreen #sykVideoFeed .syk-video-card{height:100dvh;min-height:0}
+#sykVideoHub.syk-feed-fullscreen #sykVideoFeed .syk-video-actions{bottom:calc(26px + env(safe-area-inset-bottom))}
+#sykVideoHub.syk-feed-fullscreen #sykVideoFeed .syk-video-meta{bottom:calc(8px + env(safe-area-inset-bottom))}
+#sykVideoHub.syk-feed-fullscreen .syk-video-tabs,#sykVideoHub.syk-feed-fullscreen .syk-video-heading{display:none!important}
+#sykVideoDialog[open],#sykVideoDialog:fullscreen{z-index:1000000}
+@media(max-width:600px){
+ #sykVideoFeed.syk-video-feed{height:calc(100dvh - 60px);min-height:420px}
+ #sykVideoFeed .syk-video-card{height:calc(100dvh - 60px);min-height:420px}
+ #sykVideoFeed .syk-video-actions{right:10px;bottom:24px;gap:12px}
+ #sykVideoFeed .syk-video-rail-btn{width:44px;height:44px}
+ #sykVideoFeed .syk-video-meta{right:66px;padding:70px 12px 20px}
+}
