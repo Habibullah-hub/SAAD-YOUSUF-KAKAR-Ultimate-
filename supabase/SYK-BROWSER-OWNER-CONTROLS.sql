@@ -16,6 +16,9 @@ create table if not exists public.sk_creator_access_requests (
 );
 create index if not exists sk_creator_access_requests_user_idx
   on public.sk_creator_access_requests(user_id, created_at desc);
+create unique index if not exists sk_creator_access_requests_one_active_idx
+  on public.sk_creator_access_requests(user_id)
+  where status in ('pending','approved');
 create index if not exists sk_creator_access_requests_pending_idx
   on public.sk_creator_access_requests(created_at desc) where status='pending';
 
@@ -48,10 +51,7 @@ on public.sk_creator_access_requests for insert to authenticated
 with check (
   user_id=(select auth.uid())
   and status='pending'
-  and not exists (
-    select 1 from public.sk_creator_access_requests r
-    where r.user_id=(select auth.uid()) and r.status in ('pending','approved')
-  )
+  and status='pending'
 );
 
 drop policy if exists sk_creator_access_requests_admin_update on public.sk_creator_access_requests;
