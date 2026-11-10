@@ -35,7 +35,6 @@ create table if not exists public.sk_video_feed_settings (
   region text not null default 'All',
   blocked_categories text[] not null default '{}',
   show_member_videos boolean not null default true,
-  blocked_categories text[] not null default '{}',
   updated_at timestamptz not null default now(),
   constraint sk_video_feed_source_order_check check (
     source_order <@ array['owner','youtube','tiktok','members']::text[]
@@ -60,7 +59,6 @@ create policy sk_creator_access_requests_member_insert
 on public.sk_creator_access_requests for insert to authenticated
 with check (
   user_id=(select auth.uid())
-  and status='pending'
   and status='pending'
 );
 
