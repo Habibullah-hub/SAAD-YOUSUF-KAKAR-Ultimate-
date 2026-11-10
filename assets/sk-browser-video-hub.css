@@ -74,3 +74,17 @@
 
 .syk-video-notice{display:block;width:100%;margin:7px 0;padding:10px;border:1px solid #34566b;border-radius:10px;background:#0d1b2a;color:#e9f7ff;text-align:left;font-size:11px;line-height:1.5;cursor:pointer}
 .syk-video-notice.is-unread{border-color:#38d9d9;box-shadow:inset 3px 0 #38d9d9;background:#102b39}
+
+/* Social discovery: hide video search on home; reveal only in full-screen viewer. */
+#sykVideoHub .syk-video-searchbar{display:none}
+#sykVideoHub.syk-feed-fullscreen .syk-video-searchbar{display:flex}
+#sykVideoHub.syk-feed-fullscreen #sykFeedSearch:not([hidden]){display:block}
+#sykSearchReveal{display:grid;place-items:center;min-width:42px;min-height:42px;font-size:24px}
+#sykFeedSearch[hidden]{display:none!important}
+.syk-video-channel-link{position:relative;z-index:4;width:max-content;max-width:100%;padding:6px 11px;border:1px solid #6be6d3;border-radius:999px;background:#092b36;color:#bafff1;font-size:11px;font-weight:850;pointer-events:auto}
+#sykVideoHub.syk-feed-fullscreen .syk-video-searchbar{max-width:none;padding:0 10px}
+#sykVideoHub.syk-feed-fullscreen #sykFeedSearch:not([hidden]){flex:1;min-width:0}
+.bottom nav{gap:8px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.bottom .navbtn{min-height:58px;padding:8px 4px;border:1px solid rgba(120,170,210,.16);border-radius:15px;font-size:11px;line-height:1.25;white-space:nowrap}
+.bottom .navbtn span{font-size:23px;line-height:1.15;margin-bottom:3px}
+@media(max-width:420px){.bottom{padding:7px 7px calc(8px + env(safe-area-inset-bottom))}.bottom nav{gap:5px}.bottom .navbtn{min-height:58px;font-size:10px;padding:7px 2px}}
