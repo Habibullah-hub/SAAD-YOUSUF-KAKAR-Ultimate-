@@ -67,3 +67,6 @@
 #skCreatorOwnerFeatured{margin-top:10px}
 #skCreatorOwnerPlayer .sk-creator-preview{width:min(100%,760px);border-radius:14px}
 @media(max-width:600px){.sk-creator-my-item{grid-template-columns:1fr}.sk-creator-admin-info{min-width:0}}
+
+/* Show YouTube video artwork immediately; playback starts only after a user tap. */
+.sk-creator-preview>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
