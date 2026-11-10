@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./assets/sk-sovereign-reader.css">
 <link rel="stylesheet" href="./assets/sk-inapp-search.css">
 <link rel="stylesheet" href="./assets/sk-media-download-hub.css">
-<link rel="stylesheet" href="./assets/sk-browser-video-hub.css?v=20261111-empty-state-1">
+<link rel="stylesheet" href="./assets/sk-browser-video-hub.css?v=20261111-tags-related-1">
 <link rel="stylesheet" href="./assets/sk-browser-youtube-mode.css?v=20261111-platform-1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -194,7 +194,7 @@ button,.iconbtn,.chip,.navbtn{min-height:42px}
   <form id="sykAdminMediaForm" class="syk-video-form" hidden>
    <input id="sykAdminKind" type="hidden" value="video">
    <label>ویڈیو پلیٹ فارم<select id="sykAdminPlatform"><option value="auto">خودکار شناخت</option><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option><option value="instagram">Instagram</option><option value="x">X / Twitter</option><option value="threads">Threads</option><option value="twitch">Twitch</option><option value="reddit">Reddit</option><option value="linkedin">LinkedIn</option><option value="snapchat">Snapchat</option><option value="other">Other HTTPS link</option></select></label>
-   <label>عنوان<input id="sykAdminTitle" maxlength="120" required></label><label>موضوع<select id="sykAdminCategory"><option>Islamic</option><option>News</option><option>Gym & Fitness</option><option>Education</option><option>Technology</option><option>Entertainment</option><option>General</option></select></label><label>زبان<select id="sykAdminLanguage"><option>Urdu</option><option>English</option><option>Arabic</option><option>Punjabi</option><option>Pashto</option><option>Hindi</option><option>Other</option><option>Any</option></select></label><label>علاقہ<select id="sykAdminRegion"><option>All</option><option>Pakistan</option><option>Saudi Arabia</option><option>United Kingdom</option><option>United States</option><option>Other</option></select></label>
+   <label>عنوان<input id="sykAdminTitle" maxlength="120" required></label><label>موضوع<select id="sykAdminCategory"><option>Islamic</option><option>News</option><option>Gym & Fitness</option><option>Education</option><option>Technology</option><option>Entertainment</option><option>General</option></select></label><label>زبان<select id="sykAdminLanguage"><option>Urdu</option><option>English</option><option>Arabic</option><option>Punjabi</option><option>Pashto</option><option>Hindi</option><option>Other</option><option>Any</option></select></label><label>ویڈیو Tags (comma separated)<input id="sykAdminTags" maxlength="500" placeholder="Islamic Urdu, Quran, Hadith, Ramadan"></label><label>علاقہ<select id="sykAdminRegion"><option>All</option><option>Pakistan</option><option>Saudi Arabia</option><option>United Kingdom</option><option>United States</option><option>Other</option></select></label>
    <label>ویڈیو لنک<input id="sykAdminUrl" type="url" placeholder="https://…" required></label><label>اپنے چینل / پروفائل کا لنک (اختیاری)<input id="sykAdminChannelUrl" type="url" placeholder="https://…"></label>
    <label>ویڈیو فائل اپ لوڈ<input id="sykAdminFile" type="file" accept="video/mp4,video/webm,video/quicktime" disabled><small>فائل اپ لوڈ محفوظ Storage ترتیب کے بعد فعال ہوگی۔ فی الحال ویڈیو لنک استعمال کریں۔</small></label>
    <button type="submit">SYK Featured ویڈیو شائع کریں</button>
@@ -254,7 +254,7 @@ drawDiscover();const initial=new URLSearchParams(location.search).get('q');if(in
 <script src="./assets/sk-inapp-search.js" defer></script>
 <script src="./assets/sk-media-download-hub.js" defer></script>
 <script src="./assets/sk-privacy-center.js" defer></script>
-<script src="./assets/sk-browser-video-hub.js?v=20261111-empty-state-1" defer></script>
+<script src="./assets/sk-browser-video-hub.js?v=20261111-tags-related-1" defer></script>
 <script src="./assets/sk-browser-youtube-mode.js?v=20261111-platform-1" defer></script>
 <script src="./assets/sk-account-presence.js?v=4" defer></script>
 <script src="./pwa-register.js" defer></script>
