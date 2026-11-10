@@ -107,3 +107,9 @@
 .syk-video-tags-input{width:100%;min-width:0;min-height:42px;margin:7px 0;padding:10px 12px;border:1px solid rgba(85,244,220,.3);border-radius:11px;background:#0b1325;color:#eef8ff;font:inherit;font-size:12px}
 .syk-video-tag{display:inline-flex;align-items:center;min-height:28px;margin:4px 5px 2px 0;padding:4px 9px;border:1px solid rgba(85,244,220,.32);border-radius:99px;background:rgba(20,50,67,.65);color:#a8fff0;font-size:10px;font-weight:800;cursor:pointer}
 .syk-video-tag:active{transform:scale(.96)}
+
+/* SYK video sound + rotation + continuous feed polish */
+.syk-video-sound-toggle{position:sticky;top:4px;z-index:12;align-self:flex-end;margin:2px 8px;padding:8px 13px;border:1px solid #20cfe0;border-radius:999px;background:#071b28;color:#e9feff;font-weight:800;box-shadow:0 0 14px #00d9e855;cursor:pointer}
+#sykVideoFeed .syk-video-feed-sentinel{flex:0 0 2px;width:100%;height:2px;pointer-events:none}
+@media (orientation:landscape){#sykVideoHub.syk-feed-fullscreen #sykVideoFeed.syk-video-feed{height:100dvh;min-height:0}#sykVideoHub.syk-feed-fullscreen #sykVideoFeed .syk-video-card{height:100dvh;flex-basis:100dvh;max-width:100vw;border-radius:0}#sykVideoHub.syk-feed-fullscreen{padding:0}}
+@media (orientation:portrait){#sykVideoHub.syk-feed-fullscreen #sykVideoFeed .syk-video-card{height:100dvh;flex-basis:100dvh}}
