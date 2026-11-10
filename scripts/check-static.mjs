@@ -180,7 +180,7 @@ if (!html.includes("window.skSetView=setView")) errors.push("Homepage section na
 if (!html.includes("target?.scrollIntoView({behavior:'smooth',block:'start'})") && !html.includes("document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})")) errors.push("Homepage navigation must scroll to sections without replacing the continuous homepage.");
 if (html.includes("#skCreatorHub{display:none!important}") || html.includes("#skFeaturedFeed,#sk-next-discovery{display:none!important}")) errors.push("Core homepage discovery or Creator Hub is forcibly hidden.");
 
-if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v39"')) {
+if (!serviceWorkerSource.includes('"sk-cyber-hub-shell-v40"')) {
   errors.push("Service worker cache version was not advanced for the updated public shell.");
 }
 for (const assetPath of ["assets/sk-motion-performance.css", "assets/sk-browser-experience.css"]) {
