@@ -240,7 +240,7 @@ if (!browser.includes('id="sykVideoSearch"')) errors.push("SYK Browser video sea
 const browserVideoSource = fs.readFileSync('assets/sk-browser-video-hub.js','utf8');
 if (!browserVideoSource.includes('const PUBLIC_PICKS=[') || !browserVideoSource.includes('BBC News اردو') || !browserVideoSource.includes('Khan Academy')) errors.push('Public starter video picks must render for visitors before login.');
 if (!browserVideoSource.includes('IntersectionObserver') || !browserVideoSource.includes('syk-video-inline-player') || !browserVideoSource.includes('mute=1')) errors.push('SYK short feed must lazy-load and autoplay only the active muted video.');
-if (!browserVideoSource.includes('Login کے بغیر بھی دیکھی جا سکتی ہیں')) errors.push('Public video playback must remain available when logged out.');
+if (!browserVideoSource.includes('const PUBLIC_PICKS=[') || !browserVideoSource.includes('const publicRows=[...PUBLIC_PICKS]') || !browserVideoSource.includes('if(!db){feedItems=[...PUBLIC_PICKS];renderFeed();return;}')) errors.push('Public video picks must render for logged-out visitors and when Supabase is unavailable.');
 if (/select\('id,title,platform,media_url,media_path,is_featured,created_at'\)/.test(browserVideoSource)) errors.push('Admin media query selects columns absent from the browser video SQL schema.');
 
 
