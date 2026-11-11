@@ -9,6 +9,9 @@ const order=["skUltimateTitle","skStartTitle","skDiscoveryHome","apps","document
 let last=-1;
 for(const id of order){const at=html.indexOf('id="'+id+'"');assert(at>last,"Homepage section order incorrect at "+id);last=at;}
 assert(html.includes('assets/sk-home-architecture-v1.css'),"Unified architecture CSS not loaded");
+assert(html.includes('id="syk-theme-first-paint"'),"First-paint guard missing; legacy theme may flash");
+assert(html.includes("classList.add(\'syk-theme-ready\')"),"Page must reveal only after final theme CSS load or failure");
+assert(html.includes("sk-home-architecture-v1.css?v=20261111-2"),"Theme stylesheet cache-bust version missing");
 assert(html.includes('assets/sk-home-architecture-v1.js'),"Orientation controller not loaded");
 assert(html.includes('id="skCreatorGeneratorStatus"'),"Creator generator status ID not separated");
 assert(html.includes('id="skCreatorTitleOutput"'),"Creator generator title output ID not separated");
