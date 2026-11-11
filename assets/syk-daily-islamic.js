@@ -25,7 +25,7 @@ async function render(){
   try{const q=await json('https://api.alquran.cloud/v1/ayah/'+sura+':'+aya+'/quran-uthmani');arabic=String(q?.data?.text||'').trim();}catch(_){}
   if(!arabic)arabic=String(item?.arabic_text||item?.arabic||item?.text_uthmani||'').trim();
   if(!arabic||!translation)throw new Error('آیت کا مکمل مستند متن دستیاب نہیں ہوا۔');
-  text('sykDailyArabic',arabic);
+  const arabicNode=$('sykDailyArabic');if(arabicNode){arabicNode.textContent=arabic;arabicNode.setAttribute('dir','rtl');arabicNode.setAttribute('lang','ar');}
   text('sykDailyReference','سورۃ نمبر '+sura+' · آیت '+aya);
   text('sykDailyTranslation',translation);
   const note=String(item?.footnotes||'').trim();
