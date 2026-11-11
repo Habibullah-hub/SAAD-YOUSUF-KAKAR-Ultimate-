@@ -1663,8 +1663,9 @@ body.sk-day-mode .top .sk-header-login{background:#e5f3fb!important;color:#075b9
 #skLiveChatForm{display:flex;gap:7px;padding:10px}
 #skLiveChatForm input{flex:1;min-width:0;border:1px solid #36546d;border-radius:9px;background:#0a1727;color:white;padding:9px}
 @media(max-width:700px){#skLiveStage:not([hidden]){grid-template-columns:minmax(0,1fr)}#skLiveMedia{min-height:54vh;max-height:68vh}#skLiveMedia video{max-height:68vh}#skLiveStage .sk-live-controls,#skLiveStage .sk-live-chat,#skLiveChatForm{grid-column:1}#skLiveChat{height:190px}.syk-live-login-gate{align-items:flex-start}.syk-live-login-gate button{width:100%}}
-</style></head>
-<body>
+</style><link rel="stylesheet" href="./assets/sk-home-architecture-v1.css?v=20261111-1">
+</head>
+<body class="sk-architecture-v1">
 <a class="skip-to-content" href="#tab-home">Skip to main content</a>
 <div id="google_translate_element" aria-hidden="true"></div><div id="configAlert" class="config-alert"><span>SYK Cyber Hub database is not connected. Set up its separate database tables to manage listings.</span><button type="button" onclick="openSupabaseModal()">Configure</button></div>
 <header class="top"><div class="wrap nav"><div class="brand"><button class="mark" id="skAdminButton" type="button" aria-label="Admin Login" title="ایڈمن لاگ اِن کے لیے لوگو پر تین بار تیزی سے ٹیپ کریں" data-sk-admin-gesture="triple"><img src="./assets/syk-cyber-hub-logo.svg" alt="SYK"></button><span>SYK CYBER HUB<small>SAAD YOUSUF KAKAR</small></span></div><div class="nav-actions"><a class="news-nav-link" href="#news" aria-label="Go to World News">⌁ <span>World News</span></a><button type="button" class="sk-header-login" onclick="openAuthModal()">Login</button><button type="button" class="sk-easy-toggle" id="skEasyModeToggle" aria-pressed="false" title="Make text and controls easier to read">Easy mode</button><button type="button" class="language-toggle" id="siteLanguageToggle" aria-expanded="false" aria-controls="siteLanguagePanel">🌐 ENG</button></div></div><div class="site-language-panel hidden" id="siteLanguagePanel"><label for="siteLanguageSearch">Choose or type a language</label><input id="siteLanguageSearch" class="language-one-field" type="text" list="siteLanguageOptions" placeholder="Type a language name…" autocomplete="off"><datalist id="siteLanguageOptions"></datalist><div id="siteLanguageChoices" class="language-choice-list" aria-label="Available languages"></div><p>Tap a language or type its name. Urdu and English are shown first.</p></div><select id="siteLanguageSelect" class="hidden" aria-hidden="true" tabindex="-1"><option value="en">English</option></select><button type="button" id="applySiteLanguage" class="hidden" tabindex="-1" aria-hidden="true">Apply</button><div class="category-dock"><div class="wrap dock-inner"><div class="category-dropdown">
@@ -1681,24 +1682,7 @@ body.sk-day-mode .top .sk-header-login{background:#e5f3fb!important;color:#075b9
 
 <p id="empty" class="empty hidden">No matching category found. Try another search.</p>
 <main id="tab-home">
-<section class="section wrap sk-creator-hub" id="skCreatorHub">
- <div class="sk-creator-head"><div><span class="sk-kicker">SYK VIDEO FEED</span><h2>For You · SYK Videos</h2><p>اوپر نیچے سوائپ کریں اور اگلی ویڈیو دیکھیں۔ تمام ممبر ویڈیوز Owner Admin کی منظوری کے بعد دکھائی جاتی ہیں۔</p></div><span class="sk-live-pill"><i></i> Admin reviewed</span></div>
- <div class="sk-creator-owner-block"><h3>SYK Featured Video</h3><div id="skCreatorOwnerFeatured" class="sk-creator-owner-featured" hidden><div id="skCreatorOwnerPlayer"></div></div><p id="skCreatorOwnerEmpty" class="sk-creator-muted">SYK کی ویڈیو جلد یہاں نظر آئے گی۔</p></div>
- <div class="sk-creator-member-block"><h3>Approved Member Videos</h3><p class="sk-creator-muted">صرف وہ ویڈیوز جو Owner Admin نے چیک کرکے منظور کی ہوں۔</p><div id="skCreatorMemberVideos" class="sk-creator-grid"></div></div>
- <div class="sk-creator-submit" id="skCreatorMemberSubmit" hidden><button type="button" class="sk-creator-submit-toggle" id="skCreatorSubmitToggle" aria-expanded="false">＋ اپنا ویڈیو لنک بھیجیں</button><p class="sk-creator-muted">صرف اپنی منتخب کردہ ایک ویڈیو کا لنک بھیجیں۔ پورا چینل یا چینل کی تمام ویڈیوز نہیں۔ ویڈیو منظوری سے پہلے عوام کو نظر نہیں آئے گی۔</p>
- <form id="skCreatorForm" class="sk-creator-form" hidden>
- <label>ویڈیو پلیٹ فارم<select id="skCreatorPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
- <label>ویڈیو کا نام (اختیاری)<input id="skCreatorTitle" maxlength="120" placeholder="ویڈیو کا مختصر نام"></label>
- <label style="grid-column:1/-1">صرف اس ویڈیو کا لنک<input id="skCreatorUrl" type="url" required placeholder="https://…" autocomplete="url"></label><button class="sk-creator-btn" type="submit">Admin کو ویڈیو بھیجیں</button></form></div>
- <p id="skCreatorLoginHint" class="sk-creator-muted">ویڈیو بھیجنے کے لیے پہلے <button type="button" class="sk-creator-btn" onclick="openMemberAuthModal('login')">Login</button> کریں۔</p>
- <div id="skCreatorMyPanel" class="sk-creator-my-panel" hidden><h3>میری بھیجی ہوئی ویڈیوز</h3><div id="skCreatorMySubmissions"></div></div>
- <p id="skCreatorStatus" class="sk-creator-status" role="status" aria-live="polite">Creator Hub database connection کا انتظار ہے۔</p>
- <div id="skCreatorAdmin" class="sk-creator-admin" hidden><h3>Owner Admin · Video Review</h3><p class="sk-creator-muted">ہر ویڈیو پہلے Preview کریں۔ Approve یا Reject کے ساتھ ممبر کے لیے پیغام بھی محفوظ ہوگا۔</p>
- <h3>SYK ہوم پیج ویڈیو</h3><div id="skCreatorChannelSettings" class="sk-creator-form"></div><button type="button" class="sk-creator-btn" id="skCreatorSaveFeatured">SYK ویڈیو محفوظ کریں</button>
- <h3 style="margin-top:18px">ممبر ویڈیوز کی منظوری</h3><button type="button" class="sk-creator-btn" id="skCreatorRefresh">درخواستیں Refresh کریں</button><div id="skCreatorQueue"></div>
- <h3 style="margin-top:18px">Registered Members</h3><p class="sk-creator-muted">یہ فہرست صرف Owner Admin دیکھ سکتا ہے۔</p><button type="button" class="sk-creator-btn" id="skCreatorMembersToggle" aria-expanded="false">Open registered members</button><div id="skCreatorRegisteredMembers" hidden></div></div>
- <p class="sk-creator-note">اس سیکشن میں چینل لنکس یا پورے چینل کی ویڈیوز نہیں ہوں گی۔ صرف SYK کی منتخب ویڈیو اور Admin-approved ممبر ویڈیوز دکھائی جائیں گی۔</p>
-</section>
+
 <section class="syk-daily-naseeha wrap" id="sykDailyNaseeha" aria-labelledby="sykDailyTitle" lang="ur" dir="rtl">
  <div class="syk-daily-head"><span class="syk-daily-mark" aria-hidden="true">۞</span><div><span class="syk-daily-kicker">روزانہ کی یاد دہانی</span><h2 id="sykDailyTitle">آج کی قرآنی نصیحت</h2></div><button id="sykDailyFoldToggle" class="syk-daily-fold-toggle" type="button" aria-expanded="false" aria-controls="sykDailyContent">آیت کھولیں <span aria-hidden="true">⌄</span></button></div>
  <p id="sykDailyLoading" class="syk-daily-loading" role="status" aria-live="polite">آج کی آیت اور ترجمہ حاصل کیا جا رہا ہے…</p>
@@ -1734,23 +1718,7 @@ body.sk-day-mode .top .sk-header-login{background:#e5f3fb!important;color:#075b9
   <span class="sk-hero-stat">EXPLORE · CREATE · CONNECT</span>
  </div>
 </section>
-<section class="trust-strip wrap" aria-label="Platform principles"><div class="trust-item"><span>✦</span><div>Free-first discovery<small>Find useful free options</small></div></div><div class="trust-item"><span>✓</span><div>Clear source links<small>Know where links lead</small></div></div><div class="trust-item"><span>▣</span><div>Mobile-first design<small>Built for every screen</small></div></div><div class="trust-item"><span>⌁</span><div>One digital hub<small>Tools, learning and news</small></div></div></section>
-
-<section class="sk-start-here wrap" aria-labelledby="skStartTitle">
- <div class="sk-start-head">
-  <div><span class="sk-start-kicker">START HERE · SIMPLE FOR EVERYONE</span><h2 id="skStartTitle">What would you like to do?</h2><p>Choose one clear starting point. You can explore the rest whenever you are ready.</p></div>
- </div>
- <nav class="sk-start-grid" aria-label="Popular starting points">
-  <a class="sk-start-link" href="#apps"><span class="sk-start-icon" aria-hidden="true">📱</span><b>Find an app</b><small>Android, iPhone & PC</small></a>
-  <a class="sk-start-link" href="#tools"><span class="sk-start-icon" aria-hidden="true">✨</span><b>Use AI tools</b><small>Writing, images & video</small></a>
-  <a class="sk-start-link" href="#creator-studio"><span class="sk-start-icon" aria-hidden="true">🎬</span><b>Create content</b><small>Ideas, scripts & captions</small></a>
-  <a class="sk-start-link" href="#documents"><span class="sk-start-icon" aria-hidden="true">📚</span><b>Learn something</b><small>Guides & documents</small></a>
-  <a class="sk-start-link" href="#news"><span class="sk-start-icon" aria-hidden="true">🌍</span><b>Read world news</b><small>Topics & publishers</small></a>
-  <a class="sk-start-link" href="#community"><span class="sk-start-icon" aria-hidden="true">👥</span><b>Join community</b><small>Connect & share safely</small></a>
- </nav>
-</section>
-
-<section class="sk-discovery wrap" id="skDiscoveryHome" aria-label="Explore SYK Cyber Hub">
+<section class="trust-strip wrap" aria-label="Platform principles"><div class="trust-item"><span>✦</span><div>Free-first discovery<small>Find useful free options</small></div></div><div class="trust-item"><span>✓</span><div>Clear source links<small>Know where links lead</small></div></div><div class="tru" aria-label="Explore SYK Cyber Hub">
  <div class="sk-discovery-head"><div><span class="sk-kicker">EXPLORE YOUR DIGITAL WORLD</span><h2>What do you want to do today?</h2><p>Choose a destination. Everything has its own clear space.</p></div><span class="sk-live-pill"><i></i> Free-first hub</span></div>
 
  <div class="sk-interest-mix" id="skInterestMix" aria-label="Personalize discovery">
@@ -1857,6 +1825,19 @@ body.sk-day-mode .top .sk-header-login{background:#e5f3fb!important;color:#075b9
 <a class="tile resource" data-search="freecodecamp free coding programming web development certificates" href="https://www.freecodecamp.org/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE · CODING EDUCATION</span><h3>freeCodeCamp</h3><p>Learn web development and programming through interactive lessons and projects.</p><span class="arrow">Learn to code ↗</span></a>
 <a class="tile resource" data-search="openlearn open university free courses" href="https://www.open.edu/openlearn/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE COURSES</span><h3>OpenLearn</h3><p>Explore free learning materials and courses from The Open University.</p><span class="arrow">Browse courses ↗</span></a>
 </div></section>
+<section class="syk-daily-naseeha wrap" id="sykDailyNaseeha" aria-labelledby="sykDailyTitle" lang="ur" dir="rtl">
+ <div class="syk-daily-head"><span class="syk-daily-mark" aria-hidden="true">۞</span><div><span class="syk-daily-kicker">روزانہ کی یاد دہانی</span><h2 id="sykDailyTitle">آج کی قرآنی نصیحت</h2></div><button id="sykDailyFoldToggle" class="syk-daily-fold-toggle" type="button" aria-expanded="false" aria-controls="sykDailyContent">آیت کھولیں <span aria-hidden="true">⌄</span></button></div>
+ <p id="sykDailyLoading" class="syk-daily-loading" role="status" aria-live="polite">آج کی آیت اور ترجمہ حاصل کیا جا رہا ہے…</p>
+ <div id="sykDailyContent" class="syk-daily-content" hidden>
+  <p id="sykDailyArabic" class="syk-daily-arabic" lang="ar" dir="rtl" translate="no"></p>
+  <p id="sykDailyReference" class="syk-daily-reference" dir="ltr"></p>
+  <div class="syk-daily-translation-wrap"><p id="sykDailyTranslation" class="syk-daily-translation" lang="ur" dir="rtl" translate="no"></p><button id="sykDailyTranslationToggle" type="button" aria-expanded="true">ترجمہ چھپائیں</button></div>
+  <p id="sykDailyFootnote" class="syk-daily-footnote" hidden></p>
+  <div class="syk-daily-footer"><span>ترجمہ: محمد جوناگڑھی · QuranEnc.com · نسخہ 1.1.3</span><a id="sykDailySource" href="https://quranenc.com/ur" target="_blank" rel="noopener noreferrer">اصل ماخذ ↗</a><a href="https://muftitaqiusmani.com/ur/books" target="_blank" rel="noopener noreferrer">مفتی تقی عثمانی کا ترجمہ ↗</a><button id="sykDailyRefresh" type="button">نئی نصیحت ↻</button></div>
+ </div>
+ <p class="syk-daily-note">یہ آیت کا ترجمہ ہے، ذاتی فتویٰ یا مکمل تفسیر نہیں۔</p>
+</section>
+
 
 <section class="section wrap" id="games"><div class="section-head"><div><h2>Games</h2><p>Check each game's price, age rating and platform before playing or installing.</p></div></div><div class="grid resource-grid">
 <a class="tile resource" data-search="itch.io free indie games browser pc" href="https://itch.io/games/free" target="_blank" rel="noopener noreferrer"><span class="tag">FREE GAMES SECTION</span><h3>itch.io — Free Games</h3><p>Discover independent games listed in the free category.</p><span class="arrow">Browse games ↗</span></a>
@@ -1882,6 +1863,25 @@ body.sk-day-mode .top .sk-header-login{background:#e5f3fb!important;color:#075b9
 <a class="tile resource" data-search="obs studio video screen recording streaming" href="https://obsproject.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE · OPEN SOURCE</span><h3>OBS Studio</h3><p>Record your screen and create live streams.</p><span class="arrow">Official website ↗</span></a>
 <a class="tile resource" data-search="handbrake video transcoder converter" href="https://handbrake.fr/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE · OPEN SOURCE</span><h3>HandBrake</h3><p>Convert video files using a trusted open-source tool.</p><span class="arrow">Official website ↗</span></a>
 </div></section>
+<section class="section wrap sk-creator-hub" id="skCreatorHub">
+ <div class="sk-creator-head"><div><span class="sk-kicker">SYK VIDEO FEED</span><h2>For You · SYK Videos</h2><p>اوپر نیچے سوائپ کریں اور اگلی ویڈیو دیکھیں۔ تمام ممبر ویڈیوز Owner Admin کی منظوری کے بعد دکھائی جاتی ہیں۔</p></div><span class="sk-live-pill"><i></i> Admin reviewed</span></div>
+ <div class="sk-creator-owner-block"><h3>SYK Featured Video</h3><div id="skCreatorOwnerFeatured" class="sk-creator-owner-featured" hidden><div id="skCreatorOwnerPlayer"></div></div><p id="skCreatorOwnerEmpty" class="sk-creator-muted">SYK کی ویڈیو جلد یہاں نظر آئے گی۔</p></div>
+ <div class="sk-creator-member-block"><h3>Approved Member Videos</h3><p class="sk-creator-muted">صرف وہ ویڈیوز جو Owner Admin نے چیک کرکے منظور کی ہوں۔</p><div id="skCreatorMemberVideos" class="sk-creator-grid"></div></div>
+ <div class="sk-creator-submit" id="skCreatorMemberSubmit" hidden><button type="button" class="sk-creator-submit-toggle" id="skCreatorSubmitToggle" aria-expanded="false">＋ اپنا ویڈیو لنک بھیجیں</button><p class="sk-creator-muted">صرف اپنی منتخب کردہ ایک ویڈیو کا لنک بھیجیں۔ پورا چینل یا چینل کی تمام ویڈیوز نہیں۔ ویڈیو منظوری سے پہلے عوام کو نظر نہیں آئے گی۔</p>
+ <form id="skCreatorForm" class="sk-creator-form" hidden>
+ <label>ویڈیو پلیٹ فارم<select id="skCreatorPlatform"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option><option value="facebook">Facebook</option></select></label>
+ <label>ویڈیو کا نام (اختیاری)<input id="skCreatorTitle" maxlength="120" placeholder="ویڈیو کا مختصر نام"></label>
+ <label style="grid-column:1/-1">صرف اس ویڈیو کا لنک<input id="skCreatorUrl" type="url" required placeholder="https://…" autocomplete="url"></label><button class="sk-creator-btn" type="submit">Admin کو ویڈیو بھیجیں</button></form></div>
+ <p id="skCreatorLoginHint" class="sk-creator-muted">ویڈیو بھیجنے کے لیے پہلے <button type="button" class="sk-creator-btn" onclick="openMemberAuthModal('login')">Login</button> کریں۔</p>
+ <div id="skCreatorMyPanel" class="sk-creator-my-panel" hidden><h3>میری بھیجی ہوئی ویڈیوز</h3><div id="skCreatorMySubmissions"></div></div>
+ <p id="skCreatorStatus" class="sk-creator-status" role="status" aria-live="polite">Creator Hub database connection کا انتظار ہے۔</p>
+ <div id="skCreatorAdmin" class="sk-creator-admin" hidden><h3>Owner Admin · Video Review</h3><p class="sk-creator-muted">ہر ویڈیو پہلے Preview کریں۔ Approve یا Reject کے ساتھ ممبر کے لیے پیغام بھی محفوظ ہوگا۔</p>
+ <h3>SYK ہوم پیج ویڈیو</h3><div id="skCreatorChannelSettings" class="sk-creator-form"></div><button type="button" class="sk-creator-btn" id="skCreatorSaveFeatured">SYK ویڈیو محفوظ کریں</button>
+ <h3 style="margin-top:18px">ممبر ویڈیوز کی منظوری</h3><button type="button" class="sk-creator-btn" id="skCreatorRefresh">درخواستیں Refresh کریں</button><div id="skCreatorQueue"></div>
+ <h3 style="margin-top:18px">Registered Members</h3><p class="sk-creator-muted">یہ فہرست صرف Owner Admin دیکھ سکتا ہے۔</p><button type="button" class="sk-creator-btn" id="skCreatorMembersToggle" aria-expanded="false">Open registered members</button><div id="skCreatorRegisteredMembers" hidden></div></div>
+ <p class="sk-creator-note">اس سیکشن میں چینل لنکس یا پورے چینل کی ویڈیوز نہیں ہوں گی۔ صرف SYK کی منتخب ویڈیو اور Admin-approved ممبر ویڈیوز دکھائی جائیں گی۔</p>
+</section>
+
 
 <section class="section wrap" id="images-design"><div class="section-head"><div><h2>Images & Design</h2><p>Creative tools and image resources. Check each site's license before reuse.</p></div></div><div class="grid resource-grid">
 <a class="tile resource" data-search="canva graphic design templates presentations" href="https://www.canva.com/" target="_blank" rel="noopener noreferrer"><span class="tag">FREE PLAN AVAILABLE</span><h3>Canva</h3><p>Create graphics, presentations, posters and social posts.</p><span class="arrow">Open design tool ↗</span></a>
@@ -1914,19 +1914,19 @@ body.sk-day-mode .top .sk-header-login{background:#e5f3fb!important;color:#075b9
  <div class="section-head"><div><h3>Creator Studio · Free Content Helpers</h3><p>Generate reusable drafts in your browser. These are template-based helpers, not a connected paid AI service.</p></div><span class="section-count">FREE · ON-DEVICE</span></div>
  <div class="creator-input-grid">
   <div><label for="skContentPackTopicV2V2">Video or post topic</label><input id="skContentPackTopicV2V2" type="text" maxlength="180" placeholder="مثلاً: صبر، محنت اور کامیابی"></div>
-  <div><label for="skCreatorPlatform">Platform</label><select id="skCreatorPlatform"><option value="TikTok">TikTok</option><option value="YouTube">YouTube</option><option value="Instagram">Instagram</option><option value="Facebook">Facebook</option></select></div>
+  <div><label for="skCreatorPlatformGenerator">Platform</label><select id="skCreatorPlatformGenerator"><option value="TikTok">TikTok</option><option value="YouTube">YouTube</option><option value="Instagram">Instagram</option><option value="Facebook">Facebook</option></select></div>
   <div><label for="skContentPackToneV2V2">Tone</label><select id="skContentPackToneV2V2"><option value="motivational">Motivational</option><option value="educational">Educational</option><option value="professional">Professional</option><option value="friendly">Friendly</option></select></div>
  </div>
  <div class="creator-actions"><button class="primary" type="button" id="skContentPackGenerateV2V2">Generate content pack</button><button class="secondary" type="button" id="skContentPackClearV2V2">Clear</button></div>
  <div class="creator-output-grid">
   <article class="platform-card"><h3>Caption & Description</h3><textarea id="skCreatorCaption" rows="4" readonly placeholder="Your caption will appear here."></textarea><button class="secondary" type="button" data-copy="skCreatorCaption">Copy caption</button></article>
   <article class="platform-card"><h3>Hashtags</h3><textarea id="skCreatorHashtags" rows="4" readonly placeholder="Your hashtags will appear here."></textarea><button class="secondary" type="button" data-copy="skCreatorHashtags">Copy hashtags</button></article>
-  <article class="platform-card"><h3>Video Title & Hook</h3><textarea id="skCreatorTitle" rows="4" readonly placeholder="Your title will appear here."></textarea><button class="secondary" type="button" data-copy="skCreatorTitle">Copy title</button></article>
+  <article class="platform-card"><h3>Video Title & Hook</h3><textarea id="skCreatorTitleOutput" rows="4" readonly placeholder="Your title will appear here."></textarea><button class="secondary" type="button" data-copy="skCreatorTitleOutput">Copy title</button></article>
   <article class="platform-card"><h3>Short Video Script</h3><textarea id="skCreatorScript" rows="5" readonly placeholder="Your script will appear here."></textarea><button class="secondary" type="button" data-copy="skCreatorScript">Copy script</button></article>
   <article class="platform-card"><h3>AI Image Prompt</h3><textarea id="skCreatorPrompt" rows="5" readonly placeholder="Your image prompt will appear here."></textarea><button class="secondary" type="button" data-copy="skCreatorPrompt">Copy prompt</button></article>
   <article class="platform-card"><h3>Social Bio</h3><textarea id="skCreatorBio" rows="4" readonly placeholder="Your bio idea will appear here."></textarea><button class="secondary" type="button" data-copy="skCreatorBio">Copy bio</button></article>
  </div>
- <p class="creator-status" id="skCreatorStatus" role="status" aria-live="polite">Enter a topic and generate a content pack. Review drafts before publishing.</p>
+ <p class="creator-status" id="skCreatorGeneratorStatus" role="status" aria-live="polite">Enter a topic and generate a content pack. Review drafts before publishing.</p>
 </div></section>
 
 <section class="section wrap" id="global-search"><div class="section-head"><div><h2>Global Search</h2><p>Search SYK Cyber Hub resources with filters, or open the dedicated SYK Search page for a focused search experience and trusted web providers.</p><p><a class="primary" href="./browser.html" style="display:inline-flex;margin-top:8px">Open SYK Browser ↗</a></p></div></div>
@@ -3712,8 +3712,8 @@ if (!validDownloadUrl) {
 
 <script>/* SKCYBERHUB_CREATOR_GLOBAL_V2_FIXED */
 (function(){function init(){
- const byId=id=>document.getElementById(id),topic=byId('skContentPackTopicV2V2'),platform=byId('skCreatorPlatform'),tone=byId('skContentPackToneV2V2'),status=byId('skCreatorStatus');
- const ids=['skCreatorCaption','skCreatorHashtags','skCreatorTitle','skCreatorScript','skCreatorPrompt','skCreatorBio'];
+ const byId=id=>document.getElementById(id),topic=byId('skContentPackTopicV2V2'),platform=byId('skCreatorPlatformGenerator'),tone=byId('skContentPackToneV2V2'),status=byId('skCreatorGeneratorStatus');
+ const ids=['skCreatorCaption','skCreatorHashtags','skCreatorTitleOutput','skCreatorScript','skCreatorPrompt','skCreatorBio'];
  const set=(id,v)=>{const el=byId(id);if(el)el.value=v;};
  const copy=async id=>{const el=byId(id);if(!el||!el.value)return;try{await navigator.clipboard.writeText(el.value);if(status)status.textContent='Copied to clipboard.';}catch(e){el.focus();el.select();if(status)status.textContent='Text selected. Use your phone’s Copy option.';}};
  byId('skContentPackGenerateV2V2')?.addEventListener('click',()=>{
@@ -5241,4 +5241,5 @@ body :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px
 <script src="./assets/sk-account-presence.js?v=4" defer></script>
 <script src="./assets/sk-premium-interactions.js?v=1" defer></script>
 <script src="./assets/syk-daily-islamic.js?v=1" defer></script>
+<script src="./assets/sk-home-architecture-v1.js?v=20261111-1" defer></script>
 </body></html>
