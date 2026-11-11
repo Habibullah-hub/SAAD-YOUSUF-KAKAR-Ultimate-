@@ -16,3 +16,7 @@ assert(html.includes('id="skCreatorPlatformGenerator"'),"Creator generator platf
 const js=fs.readFileSync("assets/sk-home-architecture-v1.js","utf8");
 assert(js.includes("IntersectionObserver")&&js.includes("aria-current"),"Active section navigation missing");
 console.log("SYK homepage architecture checks passed: unique static IDs, section order, asset wiring and active navigation.");
+
+const secondary=["browser.html","games.html","search.html","community.html","about.html","privacy.html","disclosure.html","404.html"];
+for(const path of secondary){const page=fs.readFileSync(path,"utf8");assert(page.includes('class="syk-subpage"'),path+" must use the shared page shell");assert(page.includes("syk-subpage-design-v1.css"),path+" must load the shared theme");}
+assert(fs.readFileSync("sw.js","utf8").includes("sk-cyber-hub-shell-v51"),"Service worker cache must be versioned");
