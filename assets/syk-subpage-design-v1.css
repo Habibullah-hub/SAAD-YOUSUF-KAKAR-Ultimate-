@@ -1,0 +1,44 @@
+/* SYK Cyber Hub — shared subpage design language. Keeps each page's feature layout intact. */
+body.syk-subpage{
+ --syk-bg:#070d17;--syk-surface:#102033;--syk-surface-2:#14283d;
+ --syk-border:rgba(137,190,220,.2);--syk-text:#f1f7fc;--syk-muted:#b2c2d0;
+ --syk-accent:#68ead5;--syk-cyan:#83cfff;
+ color-scheme:dark;background:radial-gradient(ellipse at 15% 0%,rgba(104,234,213,.09),transparent 35%),var(--syk-bg)!important;
+ color:var(--syk-text)!important;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif!important;
+}
+body.syk-subpage :where(h1,h2,h3,h4,strong,b){color:var(--syk-text)}
+body.syk-subpage :where(p,small,li,.muted,.sub){color:var(--syk-muted)}
+body.syk-subpage a{color:var(--syk-accent)}
+body.syk-subpage :where(a,button,input,select,textarea):focus-visible{outline:2px solid var(--syk-accent)!important;outline-offset:3px}
+body.syk-subpage :where(.panel,.card,.box,.game-panel,.search-panel,.community-panel){
+ background:linear-gradient(145deg,rgba(16,32,51,.97),rgba(10,23,37,.97))!important;
+ border:1px solid var(--syk-border)!important;border-radius:20px!important;
+ box-shadow:0 18px 45px rgba(0,0,0,.2);
+}
+body.syk-subpage :where(input,select,textarea){
+ background:#091725!important;color:var(--syk-text)!important;
+ border:1px solid #36516a!important;border-radius:11px;
+}
+body.syk-subpage :where(input,select,textarea)::placeholder{color:#91a5b5!important}
+body.syk-subpage :where(button,.button,.home,.primary){
+ border-radius:12px;transition:transform .16s ease,border-color .16s ease,filter .16s ease;
+}
+body.syk-subpage :where(button,.button,.home,.primary):hover{filter:brightness(1.08);transform:translateY(-1px)}
+body.syk-subpage .home,body.syk-subpage .primary{
+ background:linear-gradient(120deg,#68ead5,#83cfff)!important;color:#071522!important;
+ border:0!important;font-weight:850;
+}
+body.syk-subpage .brand,body.syk-subpage .top a{color:var(--syk-accent)}
+body.syk-subpage .muted{color:var(--syk-muted)!important}
+body.syk-subpage .card h1,body.syk-subpage .panel h1{line-height:1.2;letter-spacing:-.025em}
+body.syk-subpage .cell{border:1px solid rgba(255,255,255,.06)}
+body.syk-subpage .board{border:1px solid var(--syk-border)}
+body.syk-subpage .sk-bottom-nav{background:rgba(7,13,23,.96)!important}
+@media(max-width:640px){
+ body.syk-subpage{font-size:15px}
+ body.syk-subpage :where(.panel,.card){padding:clamp(14px,4vw,22px)}
+ body.syk-subpage h1{font-size:clamp(27px,7vw,38px)}
+}
+@media(prefers-reduced-motion:reduce){
+ body.syk-subpage *,body.syk-subpage *::before,body.syk-subpage *::after{transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important}
+}
