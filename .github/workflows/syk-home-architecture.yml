@@ -3,6 +3,17 @@ on:
   pull_request:
     paths:
       - "index.html"
+      - "scripts/check-static.mjs"
+      - "assets/syk-subpage-design-v1.css"
+      - "sw.js"
+      - "404.html"
+      - "disclosure.html"
+      - "privacy.html"
+      - "about.html"
+      - "community.html"
+      - "search.html"
+      - "games.html"
+      - "browser.html"
       - "assets/sk-home-architecture-v1.*"
       - "scripts/check-home-architecture.mjs"
       - ".github/workflows/syk-home-architecture.yml"
