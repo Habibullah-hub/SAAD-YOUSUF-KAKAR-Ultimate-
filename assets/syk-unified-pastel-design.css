@@ -137,3 +137,47 @@ html[data-theme="dark"] :where(h1,h2,h3,h4,.section-title,.sectionhead h2,.brows
 html[data-theme="dark"] :where(p,small,.muted,.hint,.description,.subtitle,.browser-directory-head p,.browser-choice small,.browser-directory-note){color:#a8b2d0!important}
 html[data-theme="dark"] :where(input,select,textarea){background:#10152a!important;color:#f1f4ff!important;border-color:rgba(154,177,255,.24)!important}
 html[data-theme="dark"] .browser-choice-icon{background:linear-gradient(145deg,#26335e,#171e38)!important;color:#e9edff!important}
+
+
+/* SYK Fluent UI direction — Microsoft-inspired, independently branded (no Microsoft assets). */
+:root{
+ --syk-ui-bg:#f5f5f5;--syk-ui-surface:#fff;--syk-ui-line:#e5e5e5;
+ --syk-ui-text:#242424;--syk-ui-muted:#616161;--syk-ui-violet:#0067b8;
+ --syk-ui-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+html,body{background:#f5f5f5!important;color:#242424!important}
+body{font-family:"Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,Arial,sans-serif!important}
+:where(.wrap,.container,.shell,.page,.main-content){color:#242424}
+:where(.panel,.card,.tile,.result,.resource,.feature,.feature-card,.game-panel,.search-panel,.community-panel,.box,.app-card,.tool-card,.news-card,.post-card,.profile-card,.browser-directory,.browser-choice){
+ background:#fff!important;color:#242424!important;border:1px solid #e5e5e5!important;
+ border-radius:8px!important;box-shadow:0 2px 8px rgba(0,0,0,.07)!important;
+ backdrop-filter:none!important
+}
+:where(h1,h2,h3,h4,.section-title,.sectionhead h2,.browser-directory-head h2,.browser-choice b){color:#242424!important}
+:where(p,small,.muted,.hint,.description,.subtitle,.browser-directory-head p,.browser-choice small){color:#616161!important}
+:where(button,.button,.primary,.pill,.chip,.quick,.navbtn,.iconbtn){
+ border-radius:4px!important;font-weight:600
+}
+:where(.primary,.searchbox button){background:#0067b8!important;border-color:#0067b8!important;color:#fff!important}
+:where(input,select,textarea){background:#fff!important;color:#242424!important;border:1px solid #8a8886!important;border-radius:4px!important}
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:2px solid #005a9e!important;outline-offset:2px}
+:where(.top,.site-header,.navbar,header){background:rgba(255,255,255,.96)!important;border-color:#e5e5e5!important;color:#242424!important;backdrop-filter:blur(16px)}
+:where(.bottom,.bottom nav,.sk-bottom-nav){background:rgba(255,255,255,.97)!important;border-color:#e5e5e5!important;box-shadow:0 -2px 10px rgba(0,0,0,.06)!important}
+:where(.navbtn,.quick,.chip){color:#424242!important}
+:where(.navbtn.active,.quick.active,.chip.active){background:#e6f2fb!important;color:#005a9e!important}
+:where(.hero,.store-hero,.page-hero,.subpage-hero){
+ background:linear-gradient(115deg,#004e8a,#0067b8 65%,#0f6cbd)!important;
+ border:0!important;border-radius:10px!important;box-shadow:0 8px 24px rgba(0,78,138,.16)!important;color:#fff!important
+}
+:where(.hero,.store-hero,.page-hero,.subpage-hero) :where(h1,h2,h3,p,.intro,.eyebrow){color:#fff!important}
+:where(.section-head,.sectionhead){border-color:#e5e5e5!important}
+:where(.section-head h2,.sectionhead h2){color:#242424!important}
+.browser-directory{background:#fff!important;border-radius:10px!important}
+.browser-choice{border-radius:8px!important}
+.browser-choice-icon{border-radius:8px!important}
+@media(max-width:700px){:where(.wrap,.container,.shell){max-width:100%}}
+/* User-selectable dark theme remains dark when the page explicitly marks it. */
+html[data-theme="dark"] body,body[data-theme="dark"]{background:#1b1a19!important;color:#f5f5f5!important}
+html[data-theme="dark"] :where(.panel,.card,.tile,.result,.resource,.feature-card,.game-panel,.search-panel,.community-panel,.box,.app-card,.tool-card,.news-card,.post-card,.profile-card,.browser-directory,.browser-choice){background:#292827!important;color:#f5f5f5!important;border-color:#484644!important}
+html[data-theme="dark"] :where(h1,h2,h3,h4,.section-title,.sectionhead h2,.browser-directory-head h2,.browser-choice b){color:#f5f5f5!important}
+html[data-theme="dark"] :where(p,small,.muted,.hint,.description,.subtitle,.browser-directory-head p,.browser-choice small){color:#c8c6c4!important}
