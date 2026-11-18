@@ -1,0 +1,92 @@
+/* SYK Cyber Hub — unified premium pastel design layer
+   Visual-only layer: does not alter app data, auth, Supabase, routes or feature logic. */
+:root{
+  --syk-ui-bg:#edf2ff;
+  --syk-ui-surface:rgba(255,255,255,.88);
+  --syk-ui-surface-2:#f7f8ff;
+  --syk-ui-line:rgba(108,119,190,.16);
+  --syk-ui-text:#293052;
+  --syk-ui-muted:#727b9d;
+  --syk-ui-violet:#777bdc;
+  --syk-ui-coral:#ff806f;
+  --syk-ui-blue:#86d4f2;
+  --syk-ui-mint:#8edfd7;
+  --syk-ui-shadow:0 14px 36px rgba(81,91,160,.12);
+}
+html{background:var(--syk-ui-bg)}
+body{
+  background:
+    radial-gradient(ellipse at 8% 4%,rgba(137,190,255,.30),transparent 34%),
+    radial-gradient(ellipse at 92% 14%,rgba(255,157,145,.18),transparent 31%),
+    linear-gradient(145deg,#edf3ff 0%,#f8f7ff 52%,#eaf5ff 100%) !important;
+  color:var(--syk-ui-text);
+}
+:where(.wrap,.container,.shell,.page,.main-content){color:var(--syk-ui-text)}
+:where(.section,.panel,.card,.tile,.result,.resource,.feature,.feature-card,.game-panel,.search-panel,.community-panel,.box,.app-card,.tool-card,.news-card,.post-card,.profile-card){
+  border-color:var(--syk-ui-line)!important;
+  border-radius:20px!important;
+}
+:where(.panel,.card,.tile,.result,.resource,.feature-card,.game-panel,.search-panel,.community-panel,.box,.app-card,.tool-card,.news-card,.post-card,.profile-card){
+  background:var(--syk-ui-surface)!important;
+  box-shadow:var(--syk-ui-shadow);
+  color:var(--syk-ui-text);
+  backdrop-filter:blur(14px);
+}
+:where(h1,h2,h3,h4,.section-title,.sectionhead h2){color:#343b70}
+:where(p,small,.muted,.hint,.description,.subtitle){color:var(--syk-ui-muted)}
+a{transition:color .18s ease}
+:where(button,.button,.primary,.pill,.chip,.quick,.navbtn,.iconbtn){
+  border-radius:14px!important;
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;
+}
+:where(button,.button,.primary,.pill):hover{transform:translateY(-1px);filter:saturate(1.06)}
+:where(input,select,textarea){
+  border-radius:13px!important;
+  border-color:var(--syk-ui-line)!important;
+  background:rgba(255,255,255,.92)!important;
+  color:#30385e!important;
+}
+:where(input,textarea)::placeholder{color:#9ba2bd!important}
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{
+  outline:3px solid rgba(119,123,220,.48)!important;outline-offset:3px;
+}
+:where(header,.top,.site-header,.navbar){
+  border-color:var(--syk-ui-line)!important;
+}
+:where(.bottom,.bottom nav,.sk-bottom-nav){
+  background:rgba(255,255,255,.91)!important;
+  border-color:var(--syk-ui-line)!important;
+  box-shadow:0 -8px 28px rgba(81,91,160,.09);
+  backdrop-filter:blur(18px);
+}
+:where(.navbtn,.quick,.chip){color:#626b9a}
+:where(.navbtn.active,.quick.active,.chip.active){
+  background:linear-gradient(120deg,rgba(119,123,220,.16),rgba(142,223,215,.22))!important;
+  color:#555bb2!important;
+}
+:where(.hero,.store-hero,.page-hero,.subpage-hero){
+  border-radius:28px!important;
+  border-color:rgba(119,123,220,.17)!important;
+  background:linear-gradient(115deg,#777bdc 0%,#8c91e8 55%,#ff8b7b 145%)!important;
+  box-shadow:0 20px 48px rgba(104,111,199,.19);
+  color:white!important;
+}
+:where(.hero,.store-hero,.page-hero,.subpage-hero) :where(h1,h2,h3,p,.intro,.eyebrow){color:white!important}
+:where(.hero,.store-hero,.page-hero,.subpage-hero) a{color:#fff}
+:where(.section-head,.sectionhead){border-color:var(--syk-ui-line)!important}
+:where(.section-head h2,.sectionhead h2){color:#454b83}
+:where(.eyebrow){letter-spacing:.08em}
+img,svg{max-width:100%}
+img{border-radius:inherit}
+@media(max-width:700px){
+  :where(.wrap,.container,.shell){max-width:100%}
+  :where(.section,.panel,.card,.tile){scroll-margin-top:84px}
+  :where(.grid,.cards,.resource-grid){gap:11px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+/* Preserve explicit dark-mode choices when the page exposes a dark theme attribute. */
+:where(html[data-theme="dark"],body[data-theme="dark"],:root[data-theme="dark"]) body{
+  background:#080d1b!important;color:#f1f4ff!important;
+}
