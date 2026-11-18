@@ -1,0 +1,76 @@
+/* SYK App UI System — original reusable components inspired by broad app UI patterns.
+   No Adobe Stock previews, templates, or proprietary assets are embedded here. */
+:root{
+ --syk-ui-bg:#f5f7fa;--syk-ui-surface:#fff;--syk-ui-surface-2:#f0f3f7;
+ --syk-ui-text:#20242b;--syk-ui-muted:#687386;--syk-ui-line:#dfe4eb;
+ --syk-ui-primary:#1769aa;--syk-ui-primary-soft:#e8f2fb;
+ --syk-ui-success:#16845b;--syk-ui-warning:#a45b08;--syk-ui-danger:#c43838;
+ --syk-ui-radius:12px;--syk-ui-shadow:0 2px 10px rgba(22,34,51,.07);
+}
+html[data-theme="dark"],html.dark{
+ --syk-ui-bg:#11151b;--syk-ui-surface:#1b222b;--syk-ui-surface-2:#252e39;
+ --syk-ui-text:#edf2f8;--syk-ui-muted:#aab5c4;--syk-ui-line:#34404e;
+ --syk-ui-primary:#69b8f2;--syk-ui-primary-soft:#20384c;
+ --syk-ui-success:#5bc99a;--syk-ui-warning:#f0b45d;--syk-ui-danger:#ff8585;
+ --syk-ui-shadow:0 3px 14px rgba(0,0,0,.22);
+}
+:where(button,input,select,textarea){font:inherit}
+:where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:2px solid var(--syk-ui-primary);outline-offset:3px}
+:where(.panel,.card,.tile,.resource,.result,.features>*,.score,.provider,.browser-choice,.syk-lab-panel,.manager,.notice){
+ border-color:var(--syk-ui-line);
+}
+:where(.panel,.card,.features>*,.score,.provider,.browser-choice,.syk-lab-panel){
+ background:var(--syk-ui-surface);color:var(--syk-ui-text);border-radius:var(--syk-ui-radius);box-shadow:var(--syk-ui-shadow)
+}
+:where(.panel,.card,.syk-lab-panel){padding:clamp(14px,2.2vw,22px)}
+:where(.muted,.hint,.note,.fine,.resource p,.browser-choice small){color:var(--syk-ui-muted)}
+:where(.primary,.lab-primary,.sk-media-actions button,.syk-video-form button[type=submit]){
+ background:var(--syk-ui-primary);color:#fff;border:1px solid var(--syk-ui-primary);border-radius:8px;min-height:40px;padding:9px 15px;font-weight:650
+}
+:where(.secondary,.lab-secondary,.chip,.iconbtn,.back,.textbtn){
+ border:1px solid var(--syk-ui-line);border-radius:8px;background:var(--syk-ui-surface);color:var(--syk-ui-text);min-height:36px;padding:7px 12px
+}
+:where(input:not([type=checkbox]):not([type=radio]),select,textarea){
+ max-width:100%;border:1px solid var(--syk-ui-line);border-radius:8px;background:var(--syk-ui-surface);color:var(--syk-ui-text);padding:10px 12px
+}
+:where(input,select,textarea)::placeholder{color:var(--syk-ui-muted);opacity:.85}
+:where(.grid,.resource-grid,.features,.browser-directory-grid){gap:12px}
+:where(.resource.tile,.tile,.browser-choice,.result){transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease}
+:where(.resource.tile:hover,.tile:hover,.browser-choice:hover,.result:hover){border-color:var(--syk-ui-primary)!important;box-shadow:var(--syk-ui-shadow);transform:translateY(-1px)}
+/* Reusable app-shell, navigation, dashboard and store patterns for current/future SYK modules. */
+.syk-ui-shell{width:min(1240px,calc(100% - 32px));margin-inline:auto}
+.syk-ui-appbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 16px;background:var(--syk-ui-surface);border-bottom:1px solid var(--syk-ui-line)}
+.syk-ui-appbar__brand{display:flex;align-items:center;gap:10px;font-weight:750;color:var(--syk-ui-text)}
+.syk-ui-appbar__spacer{flex:1}
+.syk-ui-tabs{display:flex;gap:6px;overflow-x:auto;padding:7px 0;border-bottom:1px solid var(--syk-ui-line);scrollbar-width:thin}
+.syk-ui-tabs a,.syk-ui-tabs button{flex:0 0 auto;border:0;border-radius:8px;background:transparent;color:var(--syk-ui-muted);padding:9px 13px;text-decoration:none}
+.syk-ui-tabs .active,.syk-ui-tabs [aria-current=page]{background:var(--syk-ui-primary-soft);color:var(--syk-ui-primary);font-weight:700}
+.syk-ui-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(180px,.8fr);gap:20px;align-items:center;padding:clamp(20px,4vw,42px);border:1px solid var(--syk-ui-line);border-radius:18px;background:linear-gradient(120deg,var(--syk-ui-surface),var(--syk-ui-primary-soft))}
+.syk-ui-hero h1{margin:0 0 10px;font-size:clamp(26px,4vw,44px);line-height:1.1;letter-spacing:-.035em}
+.syk-ui-hero p{max-width:62ch;color:var(--syk-ui-muted)}
+.syk-ui-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px}
+.syk-ui-card{min-width:0;overflow:hidden;border:1px solid var(--syk-ui-line);border-radius:14px;background:var(--syk-ui-surface);color:var(--syk-ui-text);box-shadow:var(--syk-ui-shadow)}
+.syk-ui-card__media{display:grid;place-items:center;min-height:116px;background:var(--syk-ui-primary-soft);color:var(--syk-ui-primary);font-size:32px}
+.syk-ui-card__body{padding:14px}
+.syk-ui-card__title{margin:0 0 6px;font-size:16px;font-weight:720}
+.syk-ui-card__meta{color:var(--syk-ui-muted);font-size:12px}
+.syk-ui-card__actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.syk-ui-stat{padding:14px;border:1px solid var(--syk-ui-line);border-radius:12px;background:var(--syk-ui-surface)}
+.syk-ui-stat strong{display:block;font-size:clamp(22px,3vw,30px);letter-spacing:-.03em}
+.syk-ui-stat span{color:var(--syk-ui-muted);font-size:12px}
+.syk-ui-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0}
+.syk-ui-toolbar .grow{flex:1}
+.syk-ui-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--syk-ui-line);border-radius:999px;padding:6px 10px;background:var(--syk-ui-surface);color:var(--syk-ui-muted);font-size:12px}
+.syk-ui-chip.is-active{background:var(--syk-ui-primary-soft);border-color:var(--syk-ui-primary);color:var(--syk-ui-primary)}
+.syk-ui-empty{padding:28px 16px;text-align:center;border:1px dashed var(--syk-ui-line);border-radius:12px;color:var(--syk-ui-muted)}
+.syk-ui-status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:650}
+.syk-ui-status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.syk-ui-status.success{color:var(--syk-ui-success)}.syk-ui-status.warning{color:var(--syk-ui-warning)}.syk-ui-status.danger{color:var(--syk-ui-danger)}
+.syk-ui-bottom-nav{position:sticky;bottom:0;z-index:45;display:flex;justify-content:space-around;gap:4px;padding:8px max(10px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));background:var(--syk-ui-surface);border-top:1px solid var(--syk-ui-line)}
+.syk-ui-bottom-nav a,.syk-ui-bottom-nav button{display:grid;justify-items:center;gap:3px;min-width:54px;border:0;background:transparent;color:var(--syk-ui-muted);font-size:11px;text-decoration:none}
+.syk-ui-bottom-nav .active{color:var(--syk-ui-primary);font-weight:700}
+.syk-ui-modal{width:min(620px,calc(100% - 24px));max-height:min(86vh,800px);overflow:auto;border:1px solid var(--syk-ui-line);border-radius:16px;background:var(--syk-ui-surface);color:var(--syk-ui-text);box-shadow:0 18px 60px #0003}
+.syk-ui-skeleton{border-radius:8px;background:linear-gradient(90deg,var(--syk-ui-surface-2),var(--syk-ui-line),var(--syk-ui-surface-2));background-size:200% 100%;animation:syk-ui-shimmer 1.4s linear infinite}
+@keyframes syk-ui-shimmer{to{background-position:-200% 0}}
+@media(max-width:700px){.syk-ui-shell{width:calc(100% - 24px)}.syk-ui-hero{grid-template-columns:1fr}.syk-ui-appbar{min-height:54px;padding-inline:12px}.syk-ui-card__media{min-height:90px}}
+@media(prefers-reduced-motion:reduce){.syk-ui-skeleton{animation:none}:where(.resource.tile,.tile,.browser-choice,.result){transition:none}}
