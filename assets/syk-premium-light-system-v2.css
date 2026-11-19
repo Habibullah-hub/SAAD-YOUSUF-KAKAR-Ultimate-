@@ -1,0 +1,123 @@
+/* SYK Cyber Hub — premium light system v2.
+   Scoped to the main hub day theme; preserves feature markup, IDs and backend contracts. */
+body.sk-architecture-v1.sk-day-mode{
+  --syk-page:#f3f8f7;--syk-panel:#ffffff;--syk-panel-raised:#eaf4f2;
+  --syk-border:#d7e8e4;--syk-copy:#173b3d;--syk-muted:#607a7b;
+  --syk-mint:#087f83;--syk-cyan:#167c9b;--syk-violet:#7256b5;
+  color-scheme:light;background:var(--syk-page)!important;color:var(--syk-copy)!important;
+}
+body.sk-architecture-v1.sk-day-mode :where(h1,h2,h3,h4,strong,b,label){color:var(--syk-copy)}
+body.sk-architecture-v1.sk-day-mode :where(p,small,.muted,.sk-creator-muted){color:var(--syk-muted)}
+body.sk-architecture-v1.sk-day-mode .top{
+  background:linear-gradient(105deg,#087f83,#075e68)!important;border:0!important;
+  box-shadow:0 5px 22px rgba(4,70,74,.13)!important;
+}
+body.sk-architecture-v1.sk-day-mode .brand,
+body.sk-architecture-v1.sk-day-mode .brand small,
+body.sk-architecture-v1.sk-day-mode .links{color:#fff!important}
+body.sk-architecture-v1.sk-day-mode .brand .mark{
+  background:rgba(255,255,255,.15)!important;border:1px solid rgba(255,255,255,.35)!important;color:#fff!important;
+}
+body.sk-architecture-v1.sk-day-mode .top .nav-actions>*{
+  background:rgba(255,255,255,.13)!important;border-color:rgba(255,255,255,.32)!important;color:#fff!important;
+}
+body.sk-architecture-v1.sk-day-mode .category-dock{
+  background:rgba(255,255,255,.97)!important;border-color:#d7e8e4!important;
+  box-shadow:0 7px 22px rgba(12,66,68,.06)!important;
+}
+body.sk-architecture-v1.sk-day-mode .category-toggle,
+body.sk-architecture-v1.sk-day-mode .searchbox{
+  background:#f6fbfa!important;border:1px solid #cfe3df!important;color:#173b3d!important;
+}
+body.sk-architecture-v1.sk-day-mode .searchbox input{color:#173b3d!important}
+body.sk-architecture-v1.sk-day-mode .searchbox input::placeholder{color:#82999a!important}
+body.sk-architecture-v1.sk-day-mode .quick-nav a{color:#476669!important}
+body.sk-architecture-v1.sk-day-mode .quick-nav a:hover,
+body.sk-architecture-v1.sk-day-mode .quick-nav a[aria-current=location]{
+  background:#e5f5f1!important;border-color:#b9e0d8!important;color:#08777b!important;
+}
+body.sk-architecture-v1.sk-day-mode .sk-ultimate-hero{
+  border:1px solid #cce4df!important;border-radius:25px!important;
+  background:linear-gradient(115deg,#075e68,#087f83 62%,#159b91)!important;
+  box-shadow:0 18px 42px rgba(7,93,96,.14)!important;
+}
+body.sk-architecture-v1.sk-day-mode .sk-ultimate-hero h1{color:#fff!important}
+body.sk-architecture-v1.sk-day-mode .sk-ultimate-hero h1 span{color:#f8df91!important}
+body.sk-architecture-v1.sk-day-mode .sk-hero-intro,
+body.sk-architecture-v1.sk-day-mode .sk-hero-search-note{color:#e1f5f2!important}
+body.sk-architecture-v1.sk-day-mode .sk-hero-kicker{color:#fff!important}
+body.sk-architecture-v1.sk-day-mode .sk-start-here,
+body.sk-architecture-v1.sk-day-mode .sk-discovery,
+body.sk-architecture-v1.sk-day-mode .sk-featured-section,
+body.sk-architecture-v1.sk-day-mode #sk-next-discovery,
+body.sk-architecture-v1.sk-day-mode .trust-strip,
+body.sk-architecture-v1.sk-day-mode .sk-creator-hub,
+body.sk-architecture-v1.sk-day-mode .sk-earn-card,
+body.sk-architecture-v1.sk-day-mode .platform-card,
+body.sk-architecture-v1.sk-day-mode .news-search-panel,
+body.sk-architecture-v1.sk-day-mode .manager,
+body.sk-architecture-v1.sk-day-mode .notice,
+body.sk-architecture-v1.sk-day-mode .user-resource{
+  background:#fff!important;border:1px solid #dcebe8!important;border-radius:20px!important;
+  color:#24494b!important;box-shadow:0 12px 34px rgba(14,75,78,.07)!important;
+}
+body.sk-architecture-v1.sk-day-mode .sk-start-link,
+body.sk-architecture-v1.sk-day-mode .sk-featured-grid>a,
+body.sk-architecture-v1.sk-day-mode .sk-next-grid>*,
+body.sk-architecture-v1.sk-day-mode .resource-grid .tile,
+body.sk-architecture-v1.sk-day-mode .tile.resource,
+body.sk-architecture-v1.sk-day-mode .sk-category-card,
+body.sk-architecture-v1.sk-day-mode .sk-earn-card,
+body.sk-architecture-v1.sk-day-mode .news-result-card,
+body.sk-architecture-v1.sk-day-mode .sk-creator-card{
+  background:#fff!important;border:1px solid #dcebe8!important;border-radius:17px!important;
+  color:#183f43!important;box-shadow:0 8px 22px rgba(14,75,78,.055)!important;
+}
+body.sk-architecture-v1.sk-day-mode .sk-start-link b,
+body.sk-architecture-v1.sk-day-mode .sk-category-card b,
+body.sk-architecture-v1.sk-day-mode .tile.resource h3,
+body.sk-architecture-v1.sk-day-mode .resource.tile h3,
+body.sk-architecture-v1.sk-day-mode .sk-earn-card h3{color:#183f43!important}
+body.sk-architecture-v1.sk-day-mode .sk-start-link small,
+body.sk-architecture-v1.sk-day-mode .sk-category-card small,
+body.sk-architecture-v1.sk-day-mode .tile.resource p,
+body.sk-architecture-v1.sk-day-mode .resource.tile p,
+body.sk-architecture-v1.sk-day-mode .sk-earn-card p{color:#607a7d!important}
+body.sk-architecture-v1.sk-day-mode .section-head{border-color:#dcebe8!important}
+body.sk-architecture-v1.sk-day-mode .section-head h2,
+body.sk-architecture-v1.sk-day-mode .sk-start-head h2,
+body.sk-architecture-v1.sk-day-mode .sk-discovery-head h2{color:#163f43!important}
+body.sk-architecture-v1.sk-day-mode .section-head p{color:#617a7d!important}
+body.sk-architecture-v1.sk-day-mode .section-head h2:before{background:#0b9693!important}
+body.sk-architecture-v1.sk-day-mode :where(input,select,textarea){
+  background:#fff!important;border:1px solid #cfe2de!important;color:#183f43!important;
+}
+body.sk-architecture-v1.sk-day-mode :where(input,textarea)::placeholder{color:#8aa0a0!important}
+body.sk-architecture-v1.sk-day-mode .sk-bottom-nav{
+  background:rgba(255,255,255,.97)!important;border-color:#dcebe8!important;
+  box-shadow:0 -8px 26px rgba(14,75,78,.07)!important;
+}
+body.sk-architecture-v1.sk-day-mode .sk-bottom-nav a,
+body.sk-architecture-v1.sk-day-mode .sk-bottom-nav button{color:#42686a!important}
+body.sk-architecture-v1.sk-day-mode .sk-bottom-nav a[aria-current=page],
+body.sk-architecture-v1.sk-day-mode .sk-bottom-nav a:hover,
+body.sk-architecture-v1.sk-day-mode .sk-bottom-nav button:hover{
+  background:#e5f5f1!important;color:#08777b!important;
+}
+body.sk-architecture-v1.sk-day-mode .footer{border-color:#dcebe8!important;background:transparent!important;color:#6b8586!important}
+body.sk-architecture-v1.sk-day-mode .sk-home-back-top{background:#087f83!important;color:#fff!important;border-color:#087f83!important}
+body.sk-architecture-v1.sk-day-mode :where(a,button,input,select,textarea,[tabindex]):focus-visible{
+  outline:3px solid #087f83!important;outline-offset:3px!important;
+}
+body.sk-architecture-v1.sk-day-mode .syk-future-lab{
+  background:radial-gradient(ellipse at 90% 0%,#542f8c55,transparent 34%),radial-gradient(ellipse at 0% 100%,#087f8366,transparent 42%),linear-gradient(145deg,#071522,#0b1427 58%,#10152c)!important;
+  color:#eef8ff!important;border-color:#244b66!important;
+}
+@media(max-width:760px){
+ body.sk-architecture-v1.sk-day-mode .sk-ultimate-hero{border-radius:19px!important}
+ body.sk-architecture-v1.sk-day-mode .sk-start-link,
+ body.sk-architecture-v1.sk-day-mode .sk-featured-grid>a{min-height:96px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.sk-architecture-v1.sk-day-mode *{transition:none!important;animation:none!important}
+}

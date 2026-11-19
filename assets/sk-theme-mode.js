@@ -21,7 +21,7 @@ function init(){
   const easy=document.getElementById('skEasyModeToggle');
   if(easy&&easy.parentElement===nav)nav.insertBefore(button,easy.nextSibling);else nav.appendChild(button);
  }
- let saved='night';try{saved=localStorage.getItem(KEY)||'night'}catch(_){}
+ let saved='day';try{saved=localStorage.getItem(KEY)||'day'}catch(_){}
  apply(saved);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
