@@ -27,7 +27,7 @@ const start=()=>{
  const appGrid=$('#appsGrid');
  if(appGrid){
   const refreshApps=()=>{
-   const cards=$$('.tile, a.resource',appGrid);
+   const cards=$('.app-resource, .tile, a.resource',appGrid);
    const empty=$('.empty',appGrid);
    if(empty&&cards.length===0){empty.hidden=true;empty.classList.add('sk-home-deduped');}
    const heading=appGrid.previousElementSibling;
@@ -103,6 +103,9 @@ const start=()=>{
  });
  const creatorUrdu=$('#skCreatorHub .sk-creator-head>div>p');
  if(creatorUrdu){creatorUrdu.setAttribute('dir','rtl');creatorUrdu.setAttribute('lang','ur');}
+ // Keep the full-section menu, but move its trigger into the existing header menu instead of floating over content.
+ const more=$('.sk-more-fab'),menu=$('#categoryMenu');
+ if(more&&menu&&!more.dataset.skMoved){more.dataset.skMoved='1';more.classList.add('sk-home-more-inline');more.textContent='Browse all sections';menu.appendChild(more);}
  // Do not add a second floating back-to-top; the page already has #skBackTop.
  const extra=$('.sk-home-back-top');if(extra)extra.remove();
 };
