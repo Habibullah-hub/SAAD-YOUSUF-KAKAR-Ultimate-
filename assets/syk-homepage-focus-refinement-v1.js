@@ -5,6 +5,7 @@ const start=()=>{
  const body=document.body;if(!body||body.dataset.skHomeRefine==='1')return;
  body.dataset.skHomeRefine='1';body.classList.add('sk-home-refine-v1');
  const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+ let syncGlobalSearch=()=>{};
  const addToggle=(container,items,limit,label)=>{
   if(!container||container.dataset.skToggleReady==='1'||items.length<=limit)return;
   container.dataset.skToggleReady='1';container.classList.add('sk-home-compact-grid');
@@ -35,7 +36,7 @@ const start=()=>{
    const old=appGrid.nextElementSibling;
    if(old&&old.classList.contains('sk-home-more-toggle'))old.remove();
    appGrid.classList.remove('sk-home-expanded');appGrid.dataset.skToggleReady='';
-   addToggle(appGrid,cards,4);
+   addToggle(appGrid,cards,4);syncGlobalSearch();
   };
   refreshApps();
   new MutationObserver(refreshApps).observe(appGrid,{childList:true,subtree:true});
@@ -103,6 +104,23 @@ const start=()=>{
  });
  const creatorUrdu=$('#skCreatorHub .sk-creator-head>div>p');
  if(creatorUrdu){creatorUrdu.setAttribute('dir','rtl');creatorUrdu.setAttribute('lang','ur');}
+ // Expand collapsed previews while the global search is active, so matches are never hidden below the fold.
+ const globalSearch=$('#search');
+ syncGlobalSearch=()=>{
+  const active=!!(globalSearch&&globalSearch.value.trim());
+  $('.sk-home-compact-grid').forEach(grid=>{
+   grid.classList.toggle('sk-home-expanded',active);
+   const button=grid.nextElementSibling;
+   if(button?.classList.contains('sk-home-more-toggle')){
+    button.disabled=active;
+    button.setAttribute('aria-expanded',String(active));
+    const count=grid.querySelectorAll('.sk-home-overflow-card').length+Math.min(4,grid.children.length);
+    button.textContent=active?'Showing search results':('View all '+count+' items');
+   }
+  });
+ };
+ if(globalSearch){globalSearch.addEventListener('input',syncGlobalSearch);globalSearch.addEventListener('change',syncGlobalSearch);}
+ syncGlobalSearch();
  // Keep the full-section menu, but move its trigger into the existing header menu instead of floating over content.
  const more=$('.sk-more-fab'),menu=$('#categoryMenu');
  if(more&&menu&&!more.dataset.skMoved){more.dataset.skMoved='1';more.classList.add('sk-home-more-inline');more.textContent='Browse all sections';menu.appendChild(more);}
