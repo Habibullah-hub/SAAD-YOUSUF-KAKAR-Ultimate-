@@ -5,7 +5,7 @@
  --sk-teal:#087f83;--sk-teal-dark:#075e68;--sk-mint:#dff5f1;
  --sk-paper:#f5faf9;--sk-card:#ffffff;--sk-line:#dcebe8;
  --sk-shadow:0 12px 34px rgba(14,75,78,.09);
- color-scheme:light;
+ color-scheme:inherit;
 }
 html,body{background:var(--sk-paper)!important;color:var(--sk-copy)!important}
 body{font-family:Inter,"Segoe UI",Arial,sans-serif!important}
@@ -72,3 +72,27 @@ body :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px
  body .resource.tile,body .tile.resource{border-radius:15px!important}
 }
 @media(prefers-reduced-motion:reduce){body *,body *:before,body *:after{transition:none!important;animation:none!important}}
+
+/* Keep the existing day/night switch functional: premium teal surfaces in day mode,
+   coordinated deep-teal surfaces in night mode. */
+html[data-sk-theme="night"]{color-scheme:dark!important}
+body:not(.sk-day-mode){background:#071419!important;color:#e5f3f0!important}
+body:not(.sk-day-mode) .category-dock{background:rgba(9,30,35,.96)!important;border-color:#24474a!important}
+body:not(.sk-day-mode) .category-toggle,body:not(.sk-day-mode) .dock-inner>.searchbox{background:#10292e!important;border-color:#31575a!important;color:#e4f3ef!important}
+body:not(.sk-day-mode) .quick-nav a{color:#b9d5d1!important}
+body:not(.sk-day-mode) .quick-nav a:hover,body:not(.sk-day-mode) .quick-nav a[aria-current=location]{background:#173d40!important;border-color:#347a76!important;color:#9ff0df!important}
+body:not(.sk-day-mode) .section-head h2,body:not(.sk-day-mode) .sk-start-head h2,body:not(.sk-day-mode) .sk-discovery-head h2{color:#e7f5f2!important}
+body:not(.sk-day-mode) .section-head p,body:not(.sk-day-mode) .sk-start-head p,body:not(.sk-day-mode) .sk-discovery-head p{color:#a7c3bf!important}
+body:not(.sk-day-mode) .resource.tile,body:not(.sk-day-mode) .tile.resource{background:#10262b!important;border-color:#28494c!important;color:#e6f4f1!important}
+body:not(.sk-day-mode) .resource h3,body:not(.sk-day-mode) .resource.tile h3,body:not(.sk-day-mode) .tile.resource h3{color:#e6f4f1!important}
+body:not(.sk-day-mode) .resource p,body:not(.sk-day-mode) .resource.tile p,body:not(.sk-day-mode) .tile.resource p{color:#b2c9c5!important}
+body:not(.sk-day-mode) .sk-start-here,body:not(.sk-day-mode) .sk-interest-mix{background:#10262b!important;border-color:#28494c!important;color:#e6f4f1!important}
+body:not(.sk-day-mode) .sk-start-link,body:not(.sk-day-mode) .sk-category-card{background:#142d32!important;border-color:#315256!important;color:#e6f4f1!important}
+body:not(.sk-day-mode) .sk-start-link b,body:not(.sk-day-mode) .sk-category-card b{color:#e6f4f1!important}
+body:not(.sk-day-mode) .sk-start-link small,body:not(.sk-day-mode) .sk-category-card small{color:#b2c9c5!important}
+body:not(.sk-day-mode) input,body:not(.sk-day-mode) select,body:not(.sk-day-mode) textarea{background:#10262b!important;border-color:#315256!important;color:#e6f4f1!important}
+body:not(.sk-day-mode) .manager,body:not(.sk-day-mode) .notice,body:not(.sk-day-mode) .user-resource{background:#10262b!important;border-color:#28494c!important;color:#c0d8d3!important}
+body:not(.sk-day-mode) .manager label,body:not(.sk-day-mode) .user-resource h3,body:not(.sk-day-mode) .notice b{color:#e6f4f1!important}
+body:not(.sk-day-mode) .footer{border-color:#28494c!important;color:#9dbbb6!important}
+body:not(.sk-day-mode) .sk-bottom-nav{background:rgba(9,30,35,.97)!important;border-color:#28494c!important}
+body:not(.sk-day-mode) .sk-bottom-nav a,body:not(.sk-day-mode) .sk-bottom-nav button{color:#c1d9d5!important}
