@@ -1,0 +1,80 @@
+/* SYK Cyber Hub — Friendly redesign v1
+   Visual-only layer. Existing routes, catalog, Supabase, auth and feature scripts stay intact. */
+:root{--friendly-bg:#f7faf8;--friendly-paper:#fff;--friendly-ink:#193b3c;--friendly-muted:#627b79;--friendly-teal:#087f78;--friendly-mint:#e4f5ef;--friendly-line:#e1ece7;--friendly-gold:#f3c96b;--friendly-shadow:0 10px 28px rgba(28,78,67,.075)}
+html,body{background:var(--friendly-bg)!important;color:var(--friendly-ink)!important}
+body{font-family:Inter,"Segoe UI",system-ui,sans-serif!important;line-height:1.6!important}
+.wrap{width:min(1280px,calc(100% - 40px))!important}
+body .top{background:linear-gradient(105deg,#087f78,#126d78)!important;border:0!important;box-shadow:0 5px 22px #164f4c20!important}
+body .top .nav{min-height:68px!important}
+body .brand,body .brand small{color:#fff!important}
+body .brand .mark{border:1px solid #ffffff55!important;background:#ffffff20!important;color:#fff!important;border-radius:13px!important;box-shadow:none!important}
+body .links{color:#eafff9!important}
+body .links a:hover{color:#ffe49a!important}
+body .nav-actions button,body .nav-actions a{background:#ffffff18!important;border:1px solid #ffffff45!important;color:#fff!important;border-radius:12px!important}
+body .primary,body .searchbox button{background:var(--friendly-gold)!important;border:1px solid var(--friendly-gold)!important;color:#294442!important;border-radius:12px!important;box-shadow:none!important}
+body .category-dock{position:sticky!important;top:68px!important;background:#ffffffed!important;border-bottom:1px solid var(--friendly-line)!important;box-shadow:0 6px 20px #204d4210!important;backdrop-filter:blur(16px)!important}
+body .category-toggle,body .dock-inner>.searchbox{background:#f7fbf9!important;border:1px solid #d6e8e1!important;border-radius:14px!important;color:var(--friendly-ink)!important;min-height:48px!important}
+body .category-toggle span{color:var(--friendly-teal)!important}
+body .searchbox input{color:var(--friendly-ink)!important}
+body .searchbox input::placeholder{color:#829894!important}
+body .quick-nav a{color:#55716d!important;border-radius:12px!important}
+body .quick-nav a:hover,body .quick-nav a[aria-current=location]{background:#e5f4ee!important;border-color:#c5e5d8!important;color:#08776e!important}
+body .hero.store-hero{background:radial-gradient(circle at 85% 20%,#ffffff24,transparent 28%),linear-gradient(115deg,#087c78,#176d7c 58%,#596b9b)!important;border:0!important;border-radius:28px!important;box-shadow:0 18px 42px #0d68651e!important}
+body .hero.store-hero:after{opacity:.08!important}
+body .store-hero h1{color:#fff!important}
+body .store-hero h1 span{background:linear-gradient(90deg,#fff,#ffe49a)!important;background-clip:text!important;-webkit-background-clip:text!important;color:transparent!important}
+body .store-hero .intro{color:#e6f8f3!important}
+body .eyebrow{background:#ffffff1c!important;border-color:#ffffff55!important;color:#fff!important;border-radius:99px!important}
+body .hero-secondary{background:#ffffff17!important;border:1px solid #ffffff66!important;color:#fff!important;border-radius:12px!important}
+body .art-tile{background:linear-gradient(145deg,#fff,#dff4eb)!important;border:1px solid #ffffff!important;color:#08776e!important;box-shadow:0 16px 32px #063c3833!important;border-radius:20px!important}
+body .art-tile span{color:#08776e!important}
+body .section{scroll-margin-top:145px!important}
+body .section-head{border-color:var(--friendly-line)!important}
+body .section-head h2,body .sk-start-head h2,body .sk-discovery-head h2{color:#214b48!important;letter-spacing:-.025em!important}
+body .section-head h2:before{background:#20a18e!important}
+body .section-head p,body .sk-start-head p,body .sk-discovery-head p{color:var(--friendly-muted)!important}
+body .section-count{background:#e8f6f0!important;border-color:#cfe9dc!important;color:#08786f!important}
+body .resource.tile,body .tile.resource{background:#fff!important;border:1px solid var(--friendly-line)!important;border-radius:18px!important;box-shadow:var(--friendly-shadow)!important;color:var(--friendly-ink)!important}
+body .resource.tile:hover,body .tile.resource:hover{background:#fcfffd!important;border-color:#a8d9c8!important;transform:translateY(-3px)!important}
+body .resource .app-icon{background:linear-gradient(145deg,#e9f8f1,#d4eee4)!important;border:1px solid #cce8dc!important;color:#087b73!important;border-radius:14px!important}
+body .resource h3,body .resource.tile h3,body .tile.resource h3{color:#214744!important}
+body .resource p,body .resource.tile p,body .tile.resource p{color:#647c78!important}
+body .resource .tag,body .resource.tile .tag{background:#edf8f3!important;border-color:#d6eee2!important;color:#08786f!important;border-radius:99px!important}
+body .resource .arrow,body .resource.tile .arrow{background:#eaf6f0!important;border-color:#cfe8dc!important;color:#08786f!important;border-radius:9px!important}
+body .sk-start-here,body .sk-interest-mix{background:#fff!important;border:1px solid var(--friendly-line)!important;border-radius:22px!important;box-shadow:var(--friendly-shadow)!important}
+body .sk-start-link,body .sk-category-card{background:linear-gradient(145deg,#fff,#f8fcfa)!important;border:1px solid var(--friendly-line)!important;border-radius:18px!important;color:#214744!important;box-shadow:0 7px 20px #204d420c!important}
+body .sk-start-link b,body .sk-category-card b{color:#214744!important}
+body .sk-start-link small,body .sk-category-card small{color:#6a817c!important}
+body .sk-start-link .sk-start-icon,body .sk-category-icon{color:#0a8c80!important}
+body .sk-interest-chip,body .sk-interest-reset{background:#f1f8f4!important;border:1px solid #d8ebe1!important;color:#41645d!important;border-radius:99px!important}
+body .sk-interest-chip[aria-pressed=true]{background:#ddf3e8!important;border-color:#9fd7bb!important;color:#08766d!important}
+body input,body select,body textarea{background:#fff!important;border:1px solid #d6e6df!important;color:#214744!important;border-radius:10px!important}
+body input::placeholder,body textarea::placeholder{color:#8aa09a!important}
+body .manager,body .notice,body .user-resource{background:#fff!important;border-color:var(--friendly-line)!important;color:#55716b!important;border-radius:16px!important}
+body .manager label,body .user-resource h3,body .notice b{color:#214744!important}
+body .footer{border-color:var(--friendly-line)!important;color:#718781!important}
+body .sk-bottom-nav{background:#ffffffed!important;border-top:1px solid var(--friendly-line)!important;box-shadow:0 -8px 25px #204d4210!important;backdrop-filter:blur(18px)!important}
+body .sk-bottom-nav a,body .sk-bottom-nav button{color:#55716d!important}
+body .back-top{background:#087f78!important;border-color:#087f78!important;color:#fff!important;border-radius:14px!important}
+body :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #e8b94f!important;outline-offset:3px!important}
+body .notice{line-height:1.8!important}
+@media(max-width:760px){body .top .nav{min-height:60px!important}body .category-dock{top:60px!important}body .hero.store-hero{border-radius:22px!important}body .resource.tile,body .tile.resource{border-radius:15px!important}body .section{margin-block:15px!important}}
+/* Night mode is keyed to the actual persistent theme setting. */
+html[data-sk-theme=night] body{background:#0d1d20!important;color:#e5f2ed!important}
+html[data-sk-theme=night] body .category-dock{background:#102629ed!important;border-color:#294448!important}
+html[data-sk-theme=night] body .category-toggle,html[data-sk-theme=night] body .dock-inner>.searchbox{background:#183438!important;border-color:#36575a!important;color:#edf8f3!important}
+html[data-sk-theme=night] body .quick-nav a{color:#bfd5ce!important}
+html[data-sk-theme=night] body .quick-nav a:hover,html[data-sk-theme=night] body .quick-nav a[aria-current=location]{background:#1d4140!important;border-color:#39756b!important;color:#a8f0d7!important}
+html[data-sk-theme=night] body .section-head h2,html[data-sk-theme=night] body .sk-start-head h2,html[data-sk-theme=night] body .sk-discovery-head h2{color:#e7f4ee!important}
+html[data-sk-theme=night] body .section-head p,html[data-sk-theme=night] body .sk-start-head p,html[data-sk-theme=night] body .sk-discovery-head p{color:#a9c1b8!important}
+html[data-sk-theme=night] body .resource.tile,html[data-sk-theme=night] body .tile.resource,html[data-sk-theme=night] body .sk-start-here,html[data-sk-theme=night] body .sk-interest-mix{background:#152c30!important;border-color:#2b4a4b!important;color:#e6f3ed!important}
+html[data-sk-theme=night] body .resource h3,html[data-sk-theme=night] body .resource.tile h3,html[data-sk-theme=night] body .tile.resource h3,html[data-sk-theme=night] body .sk-start-link b,html[data-sk-theme=night] body .sk-category-card b{color:#e6f3ed!important}
+html[data-sk-theme=night] body .resource p,html[data-sk-theme=night] body .resource.tile p,html[data-sk-theme=night] body .tile.resource p,html[data-sk-theme=night] body .sk-start-link small,html[data-sk-theme=night] body .sk-category-card small{color:#b1c8bf!important}
+html[data-sk-theme=night] body .sk-start-link,html[data-sk-theme=night] body .sk-category-card{background:#193438!important;border-color:#315456!important;color:#e6f3ed!important}
+html[data-sk-theme=night] body input,html[data-sk-theme=night] body select,html[data-sk-theme=night] body textarea{background:#152c30!important;border-color:#36575a!important;color:#e6f3ed!important}
+html[data-sk-theme=night] body .manager,html[data-sk-theme=night] body .notice,html[data-sk-theme=night] body .user-resource{background:#152c30!important;border-color:#2b4a4b!important;color:#c0d5ce!important}
+html[data-sk-theme=night] body .manager label,html[data-sk-theme=night] body .user-resource h3,html[data-sk-theme=night] body .notice b{color:#e6f3ed!important}
+html[data-sk-theme=night] body .footer{border-color:#2b4a4b!important;color:#a6beb6!important}
+html[data-sk-theme=night] body .sk-bottom-nav{background:#102629ed!important;border-color:#2b4a4b!important}
+html[data-sk-theme=night] body .sk-bottom-nav a,html[data-sk-theme=night] body .sk-bottom-nav button{color:#c3d9d1!important}
+@media(prefers-reduced-motion:reduce){body *,body *:before,body *:after{transition:none!important;animation:none!important}}
