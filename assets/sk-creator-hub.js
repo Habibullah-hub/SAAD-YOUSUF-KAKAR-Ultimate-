@@ -28,8 +28,9 @@ function renderVideos(items,append=false){
  const host=$('skCreatorMemberVideos');if(!host)return;
  if(!append){host.replaceChildren();state.feedSeen.clear();}
  const rows=(items||[]).filter(x=>x.content_type==='video'&&!state.feedSeen.has(x.id)).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+ if(rows.length)host.querySelector('.sk-feed-empty')?.remove();
  rows.forEach(x=>{state.feedSeen.add(x.id);host.append(videoCard(x));});
- if(!state.feedSeen.size)host.append(el('p','sk-creator-muted sk-feed-empty','ابھی کوئی ممبر ویڈیو منظور نہیں ہوئی۔'));
+ if(!state.feedSeen.size&&!host.querySelector('.sk-feed-empty'))host.append(el('p','sk-creator-muted sk-feed-empty','ابھی کوئی ممبر ویڈیو منظور نہیں ہوئی۔'));
  ensureFeedControls();
 }
 async function loadMorePublic(){
