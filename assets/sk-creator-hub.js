@@ -20,7 +20,8 @@ function ensureFeedControls(){
  state.feedButton=button;button.onclick=()=>loadMorePublic();
  if(state.feedObserver)state.feedObserver.disconnect();
  if(!state.feedSentinel){state.feedSentinel=el('div','sk-creator-feed-sentinel');state.feedSentinel.id='skCreatorFeedSentinel';state.feedSentinel.setAttribute('aria-hidden','true');}
- button.insertAdjacentElement('beforebegin',state.feedSentinel);
+ host.append(state.feedSentinel);
+ if(button.parentElement!==host.parentElement)host.insertAdjacentElement('afterend',button);
  if('IntersectionObserver'in window){state.feedObserver=new IntersectionObserver(entries=>{if(entries.some(x=>x.isIntersecting))loadMorePublic();},{root:host,rootMargin:'420px 0px'});state.feedObserver.observe(state.feedSentinel);}
 }
 function renderVideos(items,append=false){
