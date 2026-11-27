@@ -170,7 +170,8 @@ body.sk-architecture-v1 .sk-bottom-nav [aria-current="page"]{
   gap:8px!important;width:calc(100% - 24px)!important;
  }
  body.sk-architecture-v1 .dock-inner>.searchbox{position:relative!important;inset:auto!important;width:100%!important;min-height:46px!important}
- body.sk-architecture-v1 .category-menu{max-height:65vh!important;overflow:auto!important}
+ body.sk-architecture-v1 .category-menu{max-height:0!important;overflow:hidden!important}
+ body.sk-architecture-v1 .category-menu.is-open{max-height:min(65vh,520px)!important;overflow-y:auto!important}
  body.sk-architecture-v1 main#tab-home{width:100%!important;margin:0 auto!important}
  body.sk-architecture-v1 #empty{margin-left:12px!important}
  body.sk-architecture-v1 .sk-ultimate-hero{min-height:0!important;margin-top:14px!important;padding:25px 20px!important}
@@ -197,4 +198,16 @@ body.sk-architecture-v1 .sk-bottom-nav [aria-current="page"]{
 @media(min-width:1000px){
  [dir="rtl"] body.sk-architecture-v1 main#tab-home,
  [dir="rtl"] body.sk-architecture-v1 footer.wrap{margin-left:20px!important;margin-right:calc(var(--syk100-rail) + 24px)!important}
+}
+
+/* Version 100 navigation state: keep desktop rail visible, preserve the mobile disclosure control. */
+@media(min-width:1000px){
+ body.sk-architecture-v1 .category-menu .category-group{display:block!important}
+ body.sk-architecture-v1 .category-menu a{width:100%!important}
+}
+@media(max-width:999px){
+ body.sk-architecture-v1 .category-toggle{display:flex!important}
+}
+body.sk-architecture-v1 :where(button,a,input,select,textarea):focus-visible{
+ outline:2px solid #70e8f4!important;outline-offset:3px!important;
 }
