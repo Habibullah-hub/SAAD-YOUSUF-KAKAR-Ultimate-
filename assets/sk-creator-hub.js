@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const root=document.getElementById('skCreatorHub');if(!root)return;
 const $=id=>document.getElementById(id);
-const state={db:null,user:null,isAdmin:false,authBound:false,realtime:null,feedCursor:null,feedHasMore:true,feedLoading:false,feedObserver:null,feedButton:null,feedSeen:new Set()};
+const state={db:null,user:null,isAdmin:false,authBound:false,realtime:null,feedCursor:null,feedHasMore:true,feedLoading:false,feedObserver:null,feedButton:null,feedSentinel:null,feedSeen:new Set()};
 const say=t=>{const n=$('skCreatorStatus');if(n)n.textContent=t;};
 const safeUrl=value=>{try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:'';}catch(_){return '';}};
 const hosts={youtube:['youtube.com','youtu.be'],tiktok:['tiktok.com'],facebook:['facebook.com','fb.watch']};
@@ -19,7 +19,9 @@ function ensureFeedControls(){
  let button=$('skCreatorLoadMore');if(!button){button=el('button','sk-creator-load-more','مزید ویڈیوز دیکھیں ↓');button.id='skCreatorLoadMore';button.type='button';host.insertAdjacentElement('afterend',button);}
  state.feedButton=button;button.onclick=()=>loadMorePublic();
  if(state.feedObserver)state.feedObserver.disconnect();
- if('IntersectionObserver'in window){const sentinel=el('div','sk-creator-feed-sentinel');sentinel.setAttribute('aria-hidden','true');button.insertAdjacentElement('beforebegin',sentinel);state.feedObserver=new IntersectionObserver(entries=>{if(entries.some(x=>x.isIntersecting))loadMorePublic();},{root:host,rootMargin:'420px 0px'});state.feedObserver.observe(sentinel);}
+ if(!state.feedSentinel){state.feedSentinel=el('div','sk-creator-feed-sentinel');state.feedSentinel.id='skCreatorFeedSentinel';state.feedSentinel.setAttribute('aria-hidden','true');}
+ button.insertAdjacentElement('beforebegin',state.feedSentinel);
+ if('IntersectionObserver'in window){state.feedObserver=new IntersectionObserver(entries=>{if(entries.some(x=>x.isIntersecting))loadMorePublic();},{root:host,rootMargin:'420px 0px'});state.feedObserver.observe(state.feedSentinel);}
 }
 function renderVideos(items,append=false){
  const host=$('skCreatorMemberVideos');if(!host)return;
