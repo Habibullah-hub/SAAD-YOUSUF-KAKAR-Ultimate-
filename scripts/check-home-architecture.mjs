@@ -23,5 +23,5 @@ console.log("SYK homepage architecture checks passed: unique static IDs, section
 
 const secondary=["browser.html","games.html","search.html","community.html","about.html","privacy.html","disclosure.html","404.html"];
 for(const path of secondary){const page=fs.readFileSync(path,"utf8");assert(page.includes('class="syk-subpage"'),path+" must use the shared page shell");assert(page.includes("syk-subpage-design-v1.css"),path+" must load the shared theme");}
-assert(fs.readFileSync("sw.js","utf8").includes("sk-cyber-hub-shell-v54"),"Service worker cache must be versioned");
+assert(fs.readFileSync("sw.js","utf8").includes("sk-cyber-hub-shell-v55"),"Service worker cache must be versioned");
 assert(fs.readFileSync("sw.js","utf8").includes("assets/syk-premium-light-system-v2.css"),"Premium light system must be cached in the public shell");
