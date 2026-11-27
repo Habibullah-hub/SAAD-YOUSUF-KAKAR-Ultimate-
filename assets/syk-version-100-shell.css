@@ -57,6 +57,8 @@ body.sk-architecture-v1 .nav-actions .sk-header-login{
   width:100%!important;gap:12px!important;
  }
  body.sk-architecture-v1 .category-dropdown{width:100%!important}
+ body.sk-architecture-v1 .category-toggle{display:none!important}
+ body.sk-architecture-v1 .category-menu:before{content:"EXPLORE";display:block;padding:0 10px 9px;color:#8fa9c1;font-size:10px;font-weight:800;letter-spacing:.16em}
  body.sk-architecture-v1 .category-toggle{
   min-height:42px!important;border-radius:12px!important;
   background:linear-gradient(110deg,rgba(85,223,244,.13),rgba(167,139,250,.12))!important;
