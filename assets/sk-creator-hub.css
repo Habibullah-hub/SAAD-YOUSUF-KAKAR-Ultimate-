@@ -108,3 +108,21 @@
  #skCreatorMemberVideos .sk-feed-action{width:42px;height:42px}
 }
 @media(prefers-reduced-motion:reduce){#skCreatorMemberVideos{scroll-behavior:auto;scroll-snap-type:y proximity}}
+
+/* Version 100: accessible load-more state for the approved video stream. */
+.sk-creator-load-more{
+ display:flex;align-items:center;justify-content:center;width:min(100%,520px);
+ min-height:48px;margin:14px auto 2px;padding:11px 18px;
+ border:1px solid rgba(91,221,237,.42);border-radius:999px;
+ background:linear-gradient(110deg,#123d59,#25234d);color:#eafaff;
+ font:inherit;font-size:13px;font-weight:850;cursor:pointer;
+}
+.sk-creator-load-more:disabled{opacity:.65;cursor:wait}
+.sk-creator-load-more[hidden]{display:none!important}
+.sk-creator-feed-sentinel{height:1px;width:100%;pointer-events:none}
+#skCreatorMemberVideos .sk-feed-card{scroll-snap-align:start}
+@media(max-width:600px){
+ #skCreatorMemberVideos{height:calc(100svh - 190px);min-height:420px}
+ #skCreatorMemberVideos .sk-feed-card{width:100%;min-height:400px;height:calc(100svh - 220px);flex-basis:calc(100svh - 220px);border-radius:17px}
+}
+@media(prefers-reduced-motion:reduce){.sk-creator-load-more{transition:none!important}}

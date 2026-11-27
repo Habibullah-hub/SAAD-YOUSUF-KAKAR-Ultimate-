@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const root=document.getElementById('skCreatorHub');if(!root)return;
 const $=id=>document.getElementById(id);
-const state={db:null,user:null,isAdmin:false,authBound:false,realtime:null};
+const state={db:null,user:null,isAdmin:false,authBound:false,realtime:null,feedCursor:null,feedHasMore:true,feedLoading:false,feedObserver:null,feedButton:null,feedSentinel:null,feedSeen:new Set()};
 const say=t=>{const n=$('skCreatorStatus');if(n)n.textContent=t;};
 const safeUrl=value=>{try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:'';}catch(_){return '';}};
 const hosts={youtube:['youtube.com','youtu.be'],tiktok:['tiktok.com'],facebook:['facebook.com','fb.watch']};
@@ -14,8 +14,47 @@ function player(url,platform,title){const box=el('div','sk-creator-preview'),src
 function shareVideo(item){const data={title:item.title||'SYK Video',text:'SYK Cyber Hub پر یہ ویڈیو دیکھیں',url:item.url};if(navigator.share){navigator.share(data).catch(()=>{});return;}if(navigator.clipboard?.writeText){navigator.clipboard.writeText(item.url).then(()=>say('ویڈیو لنک کاپی ہوگیا۔')).catch(()=>say('شیئر کرنے کے لیے اصل ویڈیو کھولیں۔'));}else say('شیئر کرنے کے لیے اصل ویڈیو کھولیں۔');}
 function videoCard(item){const card=el('article','sk-creator-card sk-feed-card'),media=player(item.url,item.platform,item.title),body=el('div','sk-creator-card-body'),rail=el('div','sk-feed-actions');const share=el('button','sk-feed-action','↗');share.type='button';share.setAttribute('aria-label','ویڈیو شیئر کریں');share.addEventListener('click',()=>shareVideo(item));const open=el('a','sk-feed-action','▶');open.href=item.url;open.target='_blank';open.rel='noopener noreferrer';open.setAttribute('aria-label','اصل ویڈیو کھولیں');rail.append(share,open);body.append(el('span','sk-creator-tag',label(item.platform)),el('h3','',item.title||'SYK Member Video'),el('p','sk-feed-caption','SYK Cyber Hub · منظور شدہ ممبر ویڈیو'));card.append(media,body,rail);return card;}
 function renderOwner(rows){const host=$('skCreatorOwnerPlayer');host.replaceChildren();const row=(rows||[]).find(x=>x.platform==='youtube'&&x.featured_video_url);const section=$('skCreatorOwnerFeatured');const empty=$('skCreatorOwnerEmpty');if(!row||!embed('youtube',row.featured_video_url)){section.hidden=true;if(empty)empty.hidden=false;return;}section.hidden=false;if(empty)empty.hidden=true;host.append(player(row.featured_video_url,'youtube','SYK Owner featured video'));}
-function renderVideos(items){const host=$('skCreatorMemberVideos');host.replaceChildren();const rows=(items||[]).filter(x=>x.content_type==='video').sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));rows.forEach(x=>host.append(videoCard(x)));if(!rows.length)host.append(el('p','sk-creator-muted sk-feed-empty','ابھی کوئی ممبر ویڈیو منظور نہیں ہوئی۔'));}
-async function loadPublic(db){const [owner,videos]=await Promise.all([db.from('sk_creator_channels').select('platform,featured_video_url').eq('enabled',true),db.from('sk_creator_submissions').select('id,content_type,platform,title,url,created_at').eq('status','approved').eq('content_type','video').order('created_at',{ascending:false}).limit(60)]);if(owner.error||videos.error){say('Creator Hub database error: '+(owner.error?.message||videos.error?.message));return;}renderOwner(owner.data||[]);renderVideos(videos.data||[]);}
+function ensureFeedControls(){
+ const host=$('skCreatorMemberVideos');if(!host)return;
+ let button=$('skCreatorLoadMore');if(!button){button=el('button','sk-creator-load-more','مزید ویڈیوز دیکھیں ↓');button.id='skCreatorLoadMore';button.type='button';host.insertAdjacentElement('afterend',button);}
+ state.feedButton=button;button.onclick=()=>loadMorePublic();
+ if(state.feedObserver)state.feedObserver.disconnect();
+ if(!state.feedSentinel){state.feedSentinel=el('div','sk-creator-feed-sentinel');state.feedSentinel.id='skCreatorFeedSentinel';state.feedSentinel.setAttribute('aria-hidden','true');}
+ host.append(state.feedSentinel);
+ if(button.parentElement!==host.parentElement)host.insertAdjacentElement('afterend',button);
+ if('IntersectionObserver'in window){state.feedObserver=new IntersectionObserver(entries=>{if(entries.some(x=>x.isIntersecting))loadMorePublic();},{root:host,rootMargin:'420px 0px'});state.feedObserver.observe(state.feedSentinel);}
+}
+function renderVideos(items,append=false){
+ const host=$('skCreatorMemberVideos');if(!host)return;
+ if(!append){host.replaceChildren();state.feedSeen.clear();}
+ const rows=(items||[]).filter(x=>x.content_type==='video'&&!state.feedSeen.has(x.id)).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+ if(rows.length)host.querySelector('.sk-feed-empty')?.remove();
+ rows.forEach(x=>{state.feedSeen.add(x.id);host.append(videoCard(x));});
+ if(!state.feedSeen.size&&!host.querySelector('.sk-feed-empty'))host.append(el('p','sk-creator-muted sk-feed-empty','ابھی کوئی ممبر ویڈیو منظور نہیں ہوئی۔'));
+ ensureFeedControls();
+}
+async function loadMorePublic(){
+ const db=state.db,host=$('skCreatorMemberVideos');if(!db||!host||state.feedLoading||!state.feedHasMore)return;
+ state.feedLoading=true;if(state.feedButton){state.feedButton.disabled=true;state.feedButton.textContent='مزید ویڈیوز لوڈ ہو رہی ہیں…';}
+ try{
+  let query=db.from('sk_creator_submissions').select('id,content_type,platform,title,url,created_at').eq('status','approved').eq('content_type','video');
+  if(state.feedCursor){const stamp=state.feedCursor.created_at.replace(/[,()]/g,'');const id=state.feedCursor.id;query=query.or('created_at.lt.'+stamp+',and(created_at.eq.'+stamp+',id.lt.'+id+')');}
+  const result=await query.order('created_at',{ascending:false}).order('id',{ascending:false}).limit(30);
+  if(result.error)throw result.error;
+  const rows=result.data||[];
+  if(rows.length){const last=rows[rows.length-1];state.feedCursor={created_at:last.created_at,id:last.id};renderVideos(rows,true);}
+  if(rows.length<30)state.feedHasMore=false;
+  if(state.feedButton){state.feedButton.hidden=!state.feedHasMore;state.feedButton.disabled=false;state.feedButton.textContent=state.feedHasMore?'مزید ویڈیوز دیکھیں ↓':'آپ تمام دستیاب ویڈیوز دیکھ چکے ہیں';}
+ }catch(error){say('مزید ویڈیوز لوڈ نہیں ہو سکیں: '+(error.message||'Database error'));if(state.feedButton){state.feedButton.disabled=false;state.feedButton.textContent='دوبارہ کوشش کریں ↻';}}
+ finally{state.feedLoading=false;}
+}
+async function loadPublic(db){
+ const owner=await db.from('sk_creator_channels').select('platform,featured_video_url').eq('enabled',true);
+ if(owner.error){say('Creator Hub database error: '+owner.error.message);return;}
+ renderOwner(owner.data||[]);
+ state.feedCursor=null;state.feedHasMore=true;state.feedSeen.clear();renderVideos([],false);
+ await loadMorePublic();
+}
 async function loadMySubmissions(){if(!state.user||!state.db)return;const host=$('skCreatorMySubmissions');if(!host)return;host.replaceChildren(el('p','sk-creator-muted','آپ کی درخواستیں لوڈ ہو رہی ہیں…'));const r=await state.db.from('sk_creator_submissions').select('id,title,status,review_message,created_at').eq('user_id',state.user.id).eq('content_type','video').order('created_at',{ascending:false}).limit(30);host.replaceChildren();if(r.error){host.append(el('p','sk-creator-muted','درخواستوں کی حالت نہیں کھل سکی۔'));return;}if(!r.data?.length){host.append(el('p','sk-creator-muted','آپ نے ابھی کوئی ویڈیو نہیں بھیجی۔'));return;}r.data.forEach(item=>{const row=el('article','sk-creator-my-item');row.append(el('b','',item.title),el('span','sk-creator-status-pill',({pending:'زیرِ جائزہ',approved:'منظور',rejected:'مسترد'}[item.status]||item.status)));if(item.review_message)row.append(el('p','',item.review_message));host.append(row);});}
 async function checkAdmin(db){const r=await db.rpc('sk_is_admin');state.isAdmin=!r.error&&r.data===true;$('skCreatorAdmin').hidden=!state.isAdmin;$('skCreatorMemberSubmit').hidden=!state.user;$('skCreatorLoginHint').hidden=!!state.user;$('skCreatorMyPanel').hidden=!state.user;if(state.user)await loadMySubmissions();if(state.isAdmin)await loadAdmin(db);}
 const defaults={approved:'آپ کی ویڈیو SYK Cyber Hub پر منظور کر دی گئی ہے۔ شکریہ! ویڈیو اب ہوم پیج پر دکھائی دے گی۔',rejected:'شکریہ! آپ کی ویڈیو کا جائزہ لیا گیا، لیکن فی الحال یہ SYK Cyber Hub کے معیار یا پالیسی کے مطابق نہیں، اس لیے اسے منظور نہیں کیا گیا۔'};
