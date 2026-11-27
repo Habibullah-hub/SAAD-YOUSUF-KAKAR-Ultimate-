@@ -31,16 +31,16 @@ body:before{opacity:.055!important;background-size:72px 72px!important}
 .category-menu a:hover,.category-menu a:focus-visible{background:rgba(115,234,214,.1)!important}
 .quick-nav a{border-radius:999px!important;transition:background .2s var(--skx-ease),color .2s var(--skx-ease),border-color .2s var(--skx-ease)!important}
 .quick-nav a:hover,.quick-nav a[aria-current=location]{background:rgba(115,234,214,.1)!important;border-color:rgba(115,234,214,.25)!important;color:#bafff2!important}
-.store-hero{
+.store-hero,.sk-ultimate-hero{
  border:1px solid rgba(130,194,222,.24)!important;border-radius:30px!important;
  background:radial-gradient(ellipse at 82% 18%,rgba(115,234,214,.18),transparent 28%),
  radial-gradient(ellipse at 74% 100%,rgba(183,160,255,.14),transparent 34%),
  linear-gradient(128deg,#10253a 0%,#0d2036 52%,#1b2142 100%)!important;
  box-shadow:0 26px 75px rgba(0,0,0,.25),inset 0 1px rgba(255,255,255,.055)!important;
 }
-.store-hero h1{letter-spacing:-.055em!important;text-wrap:balance}
-.store-hero h1 span{background:linear-gradient(95deg,#73ead6,#83caff 55%,#b7a0ff)!important;background-clip:text!important;-webkit-background-clip:text!important;color:transparent!important}
-.store-hero .intro{color:#bfd0df!important;line-height:1.75!important}
+.store-hero h1,.sk-ultimate-hero h1{letter-spacing:-.055em!important;text-wrap:balance}
+.store-hero h1 span,.sk-ultimate-hero h1 span{background:linear-gradient(95deg,#73ead6,#83caff 55%,#b7a0ff)!important;background-clip:text!important;-webkit-background-clip:text!important;color:transparent!important}
+.store-hero .intro,.sk-hero-intro{color:#bfd0df!important;line-height:1.75!important}
 .eyebrow,.sk-hero-kicker,.sk-kicker{border-radius:999px!important;letter-spacing:.12em!important}
 .art-tile,.sk-hero-orbit,.sk-hero-ring{border-radius:18px!important}
 .section{scroll-margin-top:145px!important}
@@ -118,9 +118,9 @@ body.sk-day-mode{
  color:#172b40!important;
 }
 body.sk-day-mode .top,body.sk-day-mode .category-dock,body.sk-day-mode .sk-bottom-nav{background:rgba(248,251,255,.95)!important;border-color:#cfdae5!important}
-body.sk-day-mode .store-hero{background:linear-gradient(125deg,#e5f4f7,#e9effb 58%,#f0eafa)!important;border-color:#cbdce8!important}
-body.sk-day-mode .store-hero h1{color:#172b40!important}
-body.sk-day-mode .store-hero .intro{color:#425b70!important}
+body.sk-day-mode .store-hero,body.sk-day-mode .sk-ultimate-hero{background:linear-gradient(125deg,#e5f4f7,#e9effb 58%,#f0eafa)!important;border-color:#cbdce8!important}
+body.sk-day-mode .store-hero h1,body.sk-day-mode .sk-ultimate-hero h1{color:#172b40!important}
+body.sk-day-mode .store-hero .intro,body.sk-day-mode .sk-hero-intro{color:#425b70!important}
 body.sk-day-mode :where(.resource.tile,.tile.resource,.platform-card,.sk-category-card,.sk-start-link,.sk-earn-card,.sk-creator-benefit,.sk-future-card,.trust-item,.sk-next-card,.sk-discovery,.sk-interest-mix,.sk-start-here,.global-finder,.creator-workshop,.sk-connect-sidebar,.sk-connect-chat,.sk-community-panel,.sk-live-stage,.sk-platform-panel,.sk-mail-layout,.sk-creator-hub){
  background:linear-gradient(145deg,#fff,#f6f9fc)!important;border-color:#dbe5ed!important;color:#172b40!important;box-shadow:0 8px 24px rgba(24,54,78,.07)!important;
 }
