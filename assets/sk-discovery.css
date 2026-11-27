@@ -6,3 +6,22 @@
 #sk-next-discovery .sk-next-label{color:#72e5d4;font-size:9px;font-weight:900;letter-spacing:1.3px}
 @media(max-width:700px){#sk-next-discovery .sk-next-grid{grid-template-columns:1fr}#sk-next-discovery .sk-next-card{min-height:92px;padding:14px}}
 @media(prefers-reduced-motion:reduce){#sk-next-discovery .sk-next-card{transition:none}}
+
+/* Version 100: discovery cards feel like a rotating, personal content shelf. */
+#sk-next-discovery{overflow:hidden}
+#sk-next-discovery .sk-next-card{
+ position:relative;min-height:156px;padding:18px 18px 15px;
+ border:1px solid rgba(105,190,222,.25);border-radius:18px;
+ background:radial-gradient(circle at 100% 0,rgba(103,87,210,.22),transparent 48%),linear-gradient(145deg,#102a45,#111b34 72%,#1c1a3c);
+ box-shadow:0 12px 32px rgba(0,0,0,.16);
+}
+#sk-next-discovery .sk-next-card:nth-child(2){background:radial-gradient(circle at 100% 0,rgba(38,194,211,.2),transparent 48%),linear-gradient(145deg,#102d3d,#111c33)}
+#sk-next-discovery .sk-next-card:nth-child(3){background:radial-gradient(circle at 100% 0,rgba(173,90,232,.2),transparent 48%),linear-gradient(145deg,#24203e,#111d34)}
+#sk-next-discovery .sk-next-card b{font-size:16px;line-height:1.35}
+#sk-next-discovery .sk-next-open{margin-top:auto;color:#7ce8ed;font-size:11px;font-weight:850}
+#skShuffleDiscoveries{min-height:42px;border-radius:12px!important;border:1px solid rgba(103,220,236,.35)!important;background:linear-gradient(110deg,rgba(50,177,207,.15),rgba(137,105,224,.16))!important;color:#dffaff!important}
+#skShuffleDiscoveries:focus-visible{outline:2px solid #70e8f4;outline-offset:3px}
+@media(max-width:700px){
+ #sk-next-discovery .sk-next-grid{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(78%,1fr);grid-template-columns:none;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;padding:2px 2px 12px}
+ #sk-next-discovery .sk-next-card{min-height:142px;scroll-snap-align:start}
+}
